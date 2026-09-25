@@ -1,6 +1,6 @@
 # De onde vem cada número — relatório da Fase 1
 
-**Etapa 1 de 2 — 24/09/2026, revisada no mesmo dia com as decisões do dono.** O Meu ERP Online ainda está vazio: 0 produtos, 1 pessoa (Consumidor Final), 0 documentos, 0 contas a pagar; a importação dos cadastros está marcada para 25/09. Esta etapa mapeou a estrutura: o que cada endpoint promete e todas as tabelas do banco. Tudo que depende de dado real está marcado **(confirmar)** e será conferido na etapa 2, depois da importação e nos primeiros dias de outubro. A fase só fecha depois dela.
+**Etapa 1 de 2 — 24/09/2026, revisada no mesmo dia com as decisões do dono e com a conferência da importação dos cadastros (feita às 21h33 de 24/09).** Esta etapa mapeou a estrutura: o que cada endpoint promete e todas as tabelas do banco. Ainda não há venda no ERP. Tudo que depende de venda real está marcado **(confirmar)** e será conferido na etapa 2, nos primeiros dias de outubro. A fase só fecha depois dela.
 
 ## Resumo
 
@@ -9,6 +9,7 @@
 - **O SQL cobre tudo o que a API cobre, e mais.** A API entrega vendas completas (itens, custo do item, pagamentos, cliente) e a foto do estoque. Turno e conferência de caixa, histórico de estoque, contas pagas filtradas pela data do pagamento, cancelamento de item e fornecedor do produto só existem pelo SQL.
 - **Não existe registro de alteração de vendas.** O banco registra cada alteração de cadastro e de saldo de estoque, com número de versão, mas não de documentos. Para pegar venda atrasada do PDV e cancelamento posterior, o tradutor terá de reler uma janela de dias. Custa pouco: cerca de 40 vendas por dia cabem numa página.
 - **O limite de requisições não dá erro, dá espera.** São cerca de 20 chamadas por minuto do relógio; a 21ª fica retida até o minuto virar (medido: 22,7 s) e depois é respondida. Página de até 100 registros, na API e no SQL.
+- **A importação dos cadastros trouxe uma surpresa e duas escolhas do dono** (seção "Conferência da importação"). A surpresa: o código da Link não está na referência, e sim no próprio código do produto. As escolhas: o estoque entrou zerado, e o dono o lança depois; e entraram 1.022 produtos, contra 1.391 ativos na Link, porque o dono tirou os que a loja não trabalha mais.
 
 ## Decisões do dono (24/09/2026)
 
@@ -16,6 +17,46 @@
 2. **Quebra de caixa = informado − calculado** (`valconferido − valdisponivel`). O recontado não entra: no ERP anterior ele era digitado depois de o operador ver a resposta do sistema, o que contaminava a medição. O Meu ERP Online não tem campo de recontado, e isso não é uma falta.
 3. **Feriados municipais e estaduais ficam numa lista do Kaizen.** O ERP só tem os 13 nacionais.
 4. **A troca de mercadoria será configurada pelo suporte antes de 01/10, a pedido do dono.** Hoje a forma de pagamento e a natureza da troca estão vazias (`config_entrada_saida.idpagamentotrocamercadoria` e `idnaturezatrocamercadoria`). É o único item com prazo real: sem ela, a devolução não tem por onde entrar e o líquido das vendas nasce errado.
+
+## Conferência da importação (24/09/2026)
+
+Os cadastros entraram às 21h33 de 24/09. A API e o SQL dão os mesmos totais em tudo: 1.022 produtos, 1.022 linhas de estoque e de custo, 445 pessoas, 4 funcionários e 94 contas a pagar.
+
+| O quê | ERP novo | Link (cópia de 12/09) |
+| --- | --- | --- |
+| Produtos | 1.022, todos ativos | 1.391 ativos, 7 inativos |
+| Com estoque positivo | 0 (todos com saldo zero) | 863 |
+| Com estoque negativo | 0 | 66 |
+| Com custo zero | 84 | 138 |
+| Com preço zero | 9 | — |
+| Sem marca | 46 (4,5%) | 36,4% |
+| Com fornecedor no cadastro | 653 (63,9%) | — |
+| Com código de barras | 259 | — |
+| Pessoas | 445: 415 clientes, 26 fornecedores, 4 os dois | — |
+| Com CPF/CNPJ | 420: 330 CPF e 90 CNPJ; nenhum com tamanho errado, máscara, dígito repetido ou duplicado | — |
+| Sem CPF/CNPJ | 25, dos quais 22 clientes (entre eles o Consumidor Final) | — |
+| Com endereço, bairro e município | 445, dos quais 300 em São Luís | — |
+| Com latitude e longitude | 0 | — |
+| Funcionários | Igor Mendes Ribeiro e Daniele Fonseca Lima, vendedores; Erleide Alves Pereira (gerente) e Wallace Carvalho Pereira (estoque), sem tipo | — |
+| Contas a pagar pendentes | 94 parcelas, R$ 245.864,76; API e SQL batem ao centavo | 101 abertas entre as emitidas em 2026 |
+
+**O código da Link está no código do produto, não na referência.** Os códigos dos produtos no ERP novo vão de 60 a 5.362, a faixa dos códigos de tela da Link (`produto_codigo`). Os três códigos de tela citados na documentação da Link existem aqui, com descrições coerentes, e nenhum aparece na referência:
+
+- 1795: "SISTEMA DE CORRER PORTA DE PASSAGEM RO-7502V ROMETAL";
+- 5334: "BUCHA 8MM NYLON C/ ANEL", com estoque −200 na Link;
+- 1436: "COLA DE CONTATO 14 KG KISAFIX", a "cola de 14 kg" do dicionário da Link.
+
+A referência (`mercadoria_variacao.referencia`), preenchida em 469 produtos, guarda a referência do fabricante: "443689" numa broca Worker, "3000850" numa cola Afix. Oito vieram estragadas pela planilha em notação científica ("4,3411E+14", repetida em 6 produtos).
+
+Consequência: na Fase 3, o produto da Link liga pelo código (`_idmercadoriavariacao` = `produto_codigo` da Link). O `LOJA.md` e o `OBJETIVO.md` diziam que o código estava na referência e foram corrigidos em 24/09, com autorização do dono **(confirmar** contra a cópia da Link na Fase 3).
+
+**O estoque entrou zerado, e o dono o lança depois.** A importação criou um documento de modelo `IM` com os 1.022 produtos e quantidade zero; o histórico tem 1.022 linhas de 0 para 0. Enquanto o estoque não for lançado, cobertura, ruptura, encalhe e giro não têm base, e cada venda de outubro deixará o produto negativo (o ERP permite). A primeira entrada real de cada produto será a carga do estoque, quando vier. Se ela for feita por inventário, todos os produtos terão a mesma data, e a carência do produto novo vem da Link.
+
+**369 produtos a menos que na Link, de propósito.** Entraram 1.022, contra 1.391 ativos na cópia de 12/09: o dono tirou os produtos com que a loja não trabalha mais, e fez o mesmo com parte dos clientes. Consequência para a Fase 3: a venda desses produtos e clientes de abril a setembro existe na Link e não tem par no cadastro novo. Como a régua é bater com o ERP, ela precisa continuar somando no realizado daqueles meses; a Fase 3 decide como ela entra na história.
+
+**As datas de cliente não servem.** 442 das 445 pessoas vieram com cadastro em 31/12/1899 (a data vazia da planilha), e o "cliente desde" repete a mesma data. Recência, "cliente desde" e clientes que pararam de comprar dependem da história da Link (Fase 3).
+
+**Contas a pagar.** Das 94 parcelas pendentes, 12 venceram entre 27/05 e 23/09/2026 (R$ 27.617,38). Vencem de 24/09 a 01/10 outras 6 (R$ 18.648,83), e de 24/09 a 24/10, 38 (R$ 110.216,33). As 12 vencidas foram deixadas em aberto de propósito pelo dono.
 
 ## Em aberto para a Fase 2: por onde o tradutor lê
 
@@ -94,7 +135,7 @@ A API **não** entrega: turno de caixa, conferência às cegas, baixas filtradas
 | O que mudou desde a última leitura — só cadastros e saldo de estoque | `tabela_alteracao` (`_tabela`, `_oid`, `versao`, `datahora`) |
 | Como o próprio ERP calcula cada relatório | `relatorio.sql` (172 relatórios) |
 
-**Primeira entrada do produto.** O cadastro não tem data de criação, só a da última alteração. Mas o histórico de estoque é gravado pelo gatilho `tr_estoque` da tabela `documento`: todo documento emitido que mexe em estoque grava uma linha por item, com a data do documento (`datahora`), o documento de origem (`_iddocumento`) e o saldo antes e depois. A primeira entrada de cada produto sai de lá. Ressalvas: estoque lançado direto no saldo, sem documento, não deixa linha; e se o estoque inicial entrar por um documento de inventário na importação, todo produto migrado terá a mesma primeira entrada, e para esses a carência vem da Link (Fase 3) **(confirmar** na importação).
+**Primeira entrada do produto.** O cadastro não tem data de criação, só a da última alteração. Mas o histórico de estoque é gravado pelo gatilho `tr_estoque` da tabela `documento`: todo documento emitido que mexe em estoque grava uma linha por item, com a data do documento (`datahora`), o documento de origem (`_iddocumento`) e o saldo antes e depois. A primeira entrada de cada produto sai de lá. Ressalvas: estoque lançado direto no saldo, sem documento, não deixa linha; e se o estoque inicial entrar por um documento de inventário, todo produto migrado terá a mesma primeira entrada, e para esses a carência vem da Link (Fase 3). Na importação de 24/09 o documento `IM` gravou 1.022 linhas de saldo 0 para 0, que não contam como entrada; a primeira entrada será o lançamento do estoque, que o dono faz depois.
 
 Existem também `meta` e `meta_tipo` (metas no ERP). O Kaizen não as usa: as metas ficam no Kaizen, como decidido no `OBJETIVO.md`.
 
@@ -137,7 +178,7 @@ Existem também `meta` e `meta_tipo` (metas no ERP). O Kaizen não as usa: as me
 | Gaveta e sangrias | 1 + 2 | Documentos `RS`, `RT`, `RU` + `caixa_controle.valsuprimentoinicial` |
 | Recebíveis de cartão por data de crédito | 3 | Regra D+1 |
 
-Alertas, briefing e interpretação por IA usam os indicadores acima. Tarefas e anotações do vendedor são dados do próprio Kaizen. A geolocalização pode partir de `pessoa_endereco.latitude`/`longitude`, que o ERP já tem **(confirmar se vem preenchida)**.
+Alertas, briefing e interpretação por IA usam os indicadores acima. Tarefas e anotações do vendedor são dados do próprio Kaizen. A geolocalização tem campo no ERP (`pessoa_endereco.latitude`/`longitude`), mas veio vazia na importação: nenhum dos 445 endereços tem coordenada. Ela terá de ser preenchida pelo endereço, como o `OBJETIVO.md` já prevê.
 
 ## Respostas às perguntas da fase
 
@@ -155,7 +196,7 @@ Alertas, briefing e interpretação por IA usam os indicadores acima. Tarefas e 
 
 A forma "Prazo" existe mesmo sem venda a prazo na loja.
 
-**Como se distingue venda.** Pelo trio `tipomovimento = S` (saída), `tipomovimentofinanceiro = R` (gera recebimento) e `status = E`, e pelo `modelo`: `65` NFC-e, `55` NF-e, `PV` pré-venda, `PA` pedido, `OC` orçamento, `CN` condicional. Outros modelos: `RS`/`RT` retirada, `RU` fundo de caixa, `TM` troca, `LE` inventário, `PE` perda, `TS` transferência. Qual combinação conta depende do relatório (seção "Armadilha"); a régua é a do 154. **(Confirmar** que modelo o PDV da loja grava e se a pré-venda vira NFC-e, porque aí a mesma venda existe duas vezes.)
+**Como se distingue venda.** Pelo trio `tipomovimento = S` (saída), `tipomovimentofinanceiro = R` (gera recebimento) e `status = E`, e pelo `modelo`: `65` NFC-e, `55` NF-e, `PV` pré-venda, `PA` pedido, `OC` orçamento, `CN` condicional. Outros modelos: `RS`/`RT` retirada, `RU` fundo de caixa, `TM` troca, `LE` inventário, `PE` perda, `TS` transferência, `IM` importação de cadastro, `CP` conta a pagar (as 94 importadas são desse modelo). Qual combinação conta depende do relatório (seção "Armadilha"); a régua é a do 154. **(Confirmar** que modelo o PDV da loja grava e se a pré-venda vira NFC-e, porque aí a mesma venda existe duas vezes.)
 
 **Documento alterado depois de lido.** Não há registro de alteração para documentos (nenhum dos 154 gatilhos de alteração é de documento). O que existe:
 
@@ -168,28 +209,33 @@ Para cadastros e saldo de estoque há `tabela_alteracao`, com versão crescente,
 
 **Limite e páginas.**
 
-- Foram 70 chamadas, todas respondidas, nenhuma recusada.
+- Foram 91 chamadas, todas respondidas, nenhuma recusada.
 - O tempo típico de resposta foi de 0,2 s, variando de 0,1 a 1,2 s.
 - O limite conta por minuto do relógio: com 19 chamadas no minuto, a seguinte ficou retida 22,7 s e só foi respondida na virada do minuto.
 - Nenhum cabeçalho informa o limite.
 - A página padrão tem 50 registros e a máxima, 100, tanto nos endpoints quanto no SQL; pedir mais que isso devolve 100.
 
-**Código da Link e CPF/CNPJ.** O campo existe: `referenciaVariacao` na API, `mercadoria_variacao.referencia` no SQL. O item de venda também guarda uma cópia (`documento_mercadoria.referencia`). O CPF/CNPJ fica em `pessoa.cnpjcpf`, "normalmente só números"; a busca aceita com ou sem máscara. **(Confirmar** depois da importação quantos produtos e clientes vêm preenchidos.)
+**Código da Link e CPF/CNPJ.** O código da Link **não** está na referência da variação, como o `LOJA.md` dizia antes da correção de 24/09: ele é o próprio código do produto (`codigoMercadoriaVariacao` na API, `_idmercadoriavariacao` no SQL), conferido em 3 de 3 casos (seção "Conferência da importação"). A referência (`referenciaVariacao` na API, `mercadoria_variacao.referencia` no SQL, cópia em `documento_mercadoria.referencia`) guarda a do fabricante, em 469 dos 1.022 produtos. O CPF/CNPJ fica em `pessoa.cnpjcpf`, só números: 420 das 445 pessoas têm, 330 CPF e 90 CNPJ, sem duplicidade. A busca por CPF/CNPJ aceita com ou sem máscara.
 
 **Fuso.** O banco está em `America/Sao_Paulo`, que tem o mesmo horário de Fortaleza (UTC−3, sem horário de verão). As datas são gravadas sem fuso, na hora local.
 
 ## Etapa 2 — o que falta conferir
 
-Depois da importação dos cadastros (25/09):
+Depois da importação dos cadastros (feita em 24/09; resultados na seção "Conferência da importação"):
 
-- [ ] Quantos produtos, variações e clientes entraram.
-- [ ] Quantas variações têm `referencia` (código da Link) e quantos clientes têm CPF/CNPJ.
-- [ ] Como o estoque inicial entrou: por documento (gera histórico e fixa a primeira entrada de todo produto migrado na data da importação) ou direto no saldo (sem histórico).
-- [ ] Quantos produtos vieram com custo zero.
+- [x] Quantos produtos, variações e clientes entraram: 1.022 produtos (uma variação cada), 445 pessoas.
+- [x] Onde está o código da Link: no código do produto, não na referência; e quantos clientes têm CPF/CNPJ: 420 de 445.
+- [x] Como o estoque inicial entrou: não entrou; documento `IM` com quantidade zero em todos.
+- [x] Quantos produtos vieram com custo zero: 84.
+- [x] Os 369 produtos a menos que na Link: limpeza de propósito do dono, que fez o mesmo com parte dos clientes.
 
 Antes de 01/10:
 
 - [ ] Troca configurada pelo suporte (o dono pede).
+
+Quando o dono lançar o estoque:
+
+- [ ] Por qual documento o estoque entra, porque ele define a primeira entrada de todo produto migrado.
 
 Depois de 01/10, com vendas reais:
 
@@ -206,7 +252,7 @@ Depois de 01/10, com vendas reais:
 
 ## Como foi feito
 
-Um script descartável, fora do repositório, chamou a API com uma trava que só deixa passar leitura: GET, e POST apenas no `consulta/sql` com um único comando SELECT. Foram 70 chamadas (44 endpoints, 26 consultas SQL) e nenhuma escrita. O mapa do banco veio de `information_schema` (365 tabelas e 3 visões), dos gatilhos (inclusive o código do que grava o histórico de estoque) e do SQL dos 172 relatórios do próprio ERP.
+Um script descartável, fora do repositório, chamou a API com uma trava que só deixa passar leitura: GET, e POST apenas no `consulta/sql` com um único comando SELECT. Foram 91 chamadas (51 endpoints, 40 consultas SQL) e nenhuma escrita, das quais 21 na conferência da importação. O mapa do banco veio de `information_schema` (365 tabelas e 3 visões), dos gatilhos (inclusive o código do que grava o histórico de estoque) e do SQL dos 172 relatórios do próprio ERP.
 
 ## Tabelas e colunas (para a Fase 2)
 
@@ -277,8 +323,11 @@ Colunas com `_` na frente formam a chave da tabela. Todas as tabelas têm també
 **`mercadoria`** — produto.
 `_idmercadoria`, `descricao`, `referencia`, `idtipo`, `idsecao`, `idgrupo`, `idsubgrupo`, `dtalteracao`
 
-**`mercadoria_variacao`** — variação; é o código usado em venda e estoque.
-`_idmercadoriavariacao`, `idmercadoria`, `descricao`, `referencia` (código da Link), `codigobarras`, `idmarca`, `marca`, `dtalteracao`
+**`mercadoria_variacao`** — variação; é o código usado em venda e estoque. Na importação, `_idmercadoriavariacao` recebeu o código de tela da Link (`produto_codigo`); `referencia` é a referência do fabricante.
+`_idmercadoriavariacao`, `idmercadoria`, `descricao`, `referencia`, `codigobarras`, `idmarca`, `marca`, `dtalteracao`
+
+**`mercadoria_variacao_codigo_adicional`** — outros códigos do produto (734 linhas): `tipocodigo` `R` referência, `C` código de barras.
+`_idmercadoriavariacao`, `_idsequencia`, `codigoadicional`, `tipocodigo`
 
 **`mercadoria_variacao_empresa`** — situação da variação na loja.
 `_idempresa`, `_idmercadoriavariacao`, `flaginativo`, `qtdestoqueminimo`, `qtdestoquemaximo`
@@ -311,7 +360,7 @@ Colunas com `_` na frente formam a chave da tabela. Todas as tabelas têm també
 
 ### Clientes e vendedores
 
-**`pessoa`**
+**`pessoa`** — na importação, `datacadastro` e `dataclientedesde` vieram com 31/12/1899 em 442 das 445 pessoas; não servem de data.
 `_idpessoa`, `nome`, `sobrenome`, `tipo`, `cnpjcpf`, `datacadastro`, `dataclientedesde`, `flaginativo`, `idsituacao`, `idgrupo`, `referencia`, `codigoexterno`
 
 **`pessoa_endereco`**
@@ -334,68 +383,68 @@ Extraído automaticamente do SQL de cada relatório (`relatorio.sql`) em 24/09/2
 
 | Nº | Relatório | Tipos de documento | Status | Gera recebimento | Soma | Observação |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2 | TICKET MEDIO POR PDV | PV, PA, OC, CN, 55, 65 | E | sim | itens |  |
-| 3 | TICKET MEDIO POR FUNCIONÁRIO | PV, PA, OC, CN, 55, 65 | E | sim | itens |  |
-| 4 | TICKET MEDIO POR MODELO DE VENDA | escolhido na tela | E | sim | itens |  |
+| 2 | TICKET MEDIO POR PDV | PV, PA, OC, CN, 55, 65 | E | sim | itens | |
+| 3 | TICKET MEDIO POR FUNCIONÁRIO | PV, PA, OC, CN, 55, 65 | E | sim | itens | |
+| 4 | TICKET MEDIO POR MODELO DE VENDA | escolhido na tela | E | sim | itens | |
 | 5 | QUANTIDADE DE PRODUTOS VENDIDOS POR FUNCIONARIO | qualquer | E | sim | itens | só item com vendedor |
-| 7 | VALOR DE VENDA POR HORA | PV, PA, OC, CN, 55, 65 | E | sim | itens |  |
-| 10 | VALORES POR FORMA DE PAGAMENTO ANALÍTICO | ST, SD / RS, TM, RP / PV, OC, CN, PA, 65, 59, 55 / exceto SD, ST / exceto TR / TR / RT / TM | E | sim (N, R) | — |  |
-| 11 | RELATORIO MOVIMENTO DE PRODUTO POR POR NATUREZA OPERACAO | 55, 65, PV, PA, OR, CN / PV / PA / 55 / 65 / CN / OC / OS | qualquer | não exige | — |  |
-| 12 | VENDAS POR VENDEDOR E GRUPOS | 65, 55, PV, OC, OS, PA | E | sim | itens |  |
-| 13 | VENDAS DE MERCADORIAS POR PICO/HORA | 55, 65, PV, OC, PA | E | sim | itens |  |
-| 15 | REPOSIÇÃO DE MERCADORIA | 55, 65, PV, OC, PA, CN | E | não exige | — |  |
-| 17 | VENDAS POR PRODUTO COM CATÁLOGO | 55, 65, PV, OC, PA / DF | C, escolhido na tela | não exige | — |  |
-| 21 | KITS MAIS VENDIDOS POR PERÍODO | PV, PA, OC, CN, 65, 55, 59 | E | não exige | itens |  |
-| 25 | RELATÓRIO DE VENDAS COM FRETE/ENTREGA | 55, 65, 59, PV, PA, OC | escolhido na tela | sim | total do documento |  |
-| 27 | VENDAS FILTRADAS POR CFOP | 65 | escolhido na tela | sim | — |  |
-| 28 | ACRÉSCIMOS EM VENDAS | 55, 65, 59, PV, PA, OC, OS | escolhido na tela | sim | total do documento |  |
+| 7 | VALOR DE VENDA POR HORA | PV, PA, OC, CN, 55, 65 | E | sim | itens | |
+| 10 | VALORES POR FORMA DE PAGAMENTO ANALÍTICO | ST, SD / RS, TM, RP / PV, OC, CN, PA, 65, 59, 55 / exceto SD, ST / exceto TR / TR / RT / TM | E | sim (N, R) | — | |
+| 11 | RELATORIO MOVIMENTO DE PRODUTO POR POR NATUREZA OPERACAO | 55, 65, PV, PA, OR, CN / PV / PA / 55 / 65 / CN / OC / OS | qualquer | não exige | — | |
+| 12 | VENDAS POR VENDEDOR E GRUPOS | 65, 55, PV, OC, OS, PA | E | sim | itens | |
+| 13 | VENDAS DE MERCADORIAS POR PICO/HORA | 55, 65, PV, OC, PA | E | sim | itens | |
+| 15 | REPOSIÇÃO DE MERCADORIA | 55, 65, PV, OC, PA, CN | E | não exige | — | |
+| 17 | VENDAS POR PRODUTO COM CATÁLOGO | 55, 65, PV, OC, PA / DF | C, escolhido na tela | não exige | — | |
+| 21 | KITS MAIS VENDIDOS POR PERÍODO | PV, PA, OC, CN, 65, 55, 59 | E | não exige | itens | |
+| 25 | RELATÓRIO DE VENDAS COM FRETE/ENTREGA | 55, 65, 59, PV, PA, OC | escolhido na tela | sim | total do documento | |
+| 27 | VENDAS FILTRADAS POR CFOP | 65 | escolhido na tela | sim | — | |
+| 28 | ACRÉSCIMOS EM VENDAS | 55, 65, 59, PV, PA, OC, OS | escolhido na tela | sim | total do documento | |
 | 29 | TOTAL DE VENDAS POR FUNCIONARIO E PERIODO E SEÇÃO | qualquer | E | sim | itens | só item com vendedor |
-| 31 | RELATÓRIO DE COMPRAS DE PRODUTOS DE ORIGEM E VENDAS DE PRODUTOS DERIVADOS | 55, 1A / 55, 65, 59 | escolhido na tela | não exige | — |  |
-| 32 | RELATÓRIO DE PRODUTOS COM BAIXO GIRO DE ESTOQUE | 55, 1A / 55, 65, 59 / PV, PA / 55, 65, 59, PV, PA | E | sim (P, R) | — |  |
-| 57 | CUSTO X VENDA POR GRUPO | 55, 65, PV, OC, PA | E | sim | itens |  |
-| 59 | DOCUMENTOS EMITIDOS COM FORMA DE PAGAMENTO E CLIENTE | NS, OS, PV, 67, 65, 59, 57, 55, PA | E | sim | pagamentos |  |
-| 60 | DOCUMENTOS EMITIDOS POR CFOP (NF-e) | 55 | E, C, escolhido na tela | não exige | — |  |
-| 61 | DOCUMENTOS EMITIDOS POR MODELO E FORMA DE PAGAMENTO | escolhido na tela | escolhido na tela | sim | pagamentos |  |
-| 62 | DOCUMENTOS FISCAIS EMITIDOS POR NATUREZA OPERACAO | 65, 55, 59 | escolhido na tela | não exige | itens |  |
-| 63 | DOCUMENTOS FISCAIS EMITIDOS | 65, 55, 59 | escolhido na tela | não exige | itens |  |
-| 64 | ENTREGAS POR PERÍODO E ENTREGADOR | PV, PA, OC, CN, 55, 65, 59 | qualquer | não exige | itens, pagamentos |  |
-| 68 | Forma de pagamento por cliente | NS, OS, PV, 67, 65, 59, 57, 55, PA | E | sim | pagamentos |  |
-| 71 | HISTÓRICO DE MERCADORIAS | qualquer | E | não exige | — |  |
-| 74 | LUCRATIVIDADE POR USUÁRIO E DATA | 55, 65, PV, PA, OC | E | não exige | pagamentos |  |
-| 75 | LUCRO BRUTO DAS MERCADORIAS VENDIDAS NO PERIODO E DESCONTO | 55, 65, PV, OC, PA | E | sim | itens |  |
-| 76 | LUCRO BRUTO DAS MERCADORIAS VENDIDAS NO PERIODO | 55, 65, PV, OC, PA | E | sim | itens |  |
-| 81 | MERCADORIAS CADASTRADAS E FILTROS | 55, 65, 59 | E | não exige | — |  |
-| 91 | MERCADORIAS VENDIDAS NO PERIODO - NOVO | 55, 65, PV, OC, OS, PA | E | não exige | itens |  |
-| 92 | MERCADORIAS VENDIDAS NO PERIODO - NOVO | 55, 65, PV, OC, OS | E | não exige | itens |  |
-| 93 | MERCADORIAS VENDIDAS NO PERíodo COM VALOR POR CLIENTE | 55, 65, PV, OC, PA | E | não exige | — |  |
-| 94 | MERCADORIAS VENDIDAS NO PERÍODO DIARIO | 55, 65, PV, OC, PA | E | sim | itens |  |
-| 95 | MERCADORIAS VENDIDAS NO PERÍODO POR CLIENTE COM FUNCIONARIO | 55, 65, PV, OC | E | não exige | — |  |
-| 96 | MERCADORIAS VENDIDAS NO PERÍODO POR CLIENTE | 55, 65, PV, OC, PA | E | não exige | — |  |
-| 97 | MERCADORIAS VENDIDAS NO PERÍODO POR GRUPO E SUBGRUPO | 55, 65, PV, OC, PA | E | não exige | — |  |
-| 98 | MERCADORIAS VENDIDAS NO PERÍODO | escolhido na tela / 1A / 55 / 65 / 57 / 67 / 58 / 59 / NS / MN / MT / CN / PV / PA / OC / OS / OP / LC / 00 / 10 | E | não exige | — |  |
+| 31 | RELATÓRIO DE COMPRAS DE PRODUTOS DE ORIGEM E VENDAS DE PRODUTOS DERIVADOS | 55, 1A / 55, 65, 59 | escolhido na tela | não exige | — | |
+| 32 | RELATÓRIO DE PRODUTOS COM BAIXO GIRO DE ESTOQUE | 55, 1A / 55, 65, 59 / PV, PA / 55, 65, 59, PV, PA | E | sim (P, R) | — | |
+| 57 | CUSTO X VENDA POR GRUPO | 55, 65, PV, OC, PA | E | sim | itens | |
+| 59 | DOCUMENTOS EMITIDOS COM FORMA DE PAGAMENTO E CLIENTE | NS, OS, PV, 67, 65, 59, 57, 55, PA | E | sim | pagamentos | |
+| 60 | DOCUMENTOS EMITIDOS POR CFOP (NF-e) | 55 | E, C, escolhido na tela | não exige | — | |
+| 61 | DOCUMENTOS EMITIDOS POR MODELO E FORMA DE PAGAMENTO | escolhido na tela | escolhido na tela | sim | pagamentos | |
+| 62 | DOCUMENTOS FISCAIS EMITIDOS POR NATUREZA OPERACAO | 65, 55, 59 | escolhido na tela | não exige | itens | |
+| 63 | DOCUMENTOS FISCAIS EMITIDOS | 65, 55, 59 | escolhido na tela | não exige | itens | |
+| 64 | ENTREGAS POR PERÍODO E ENTREGADOR | PV, PA, OC, CN, 55, 65, 59 | qualquer | não exige | itens, pagamentos | |
+| 68 | Forma de pagamento por cliente | NS, OS, PV, 67, 65, 59, 57, 55, PA | E | sim | pagamentos | |
+| 71 | HISTÓRICO DE MERCADORIAS | qualquer | E | não exige | — | |
+| 74 | LUCRATIVIDADE POR USUÁRIO E DATA | 55, 65, PV, PA, OC | E | não exige | pagamentos | |
+| 75 | LUCRO BRUTO DAS MERCADORIAS VENDIDAS NO PERIODO E DESCONTO | 55, 65, PV, OC, PA | E | sim | itens | |
+| 76 | LUCRO BRUTO DAS MERCADORIAS VENDIDAS NO PERIODO | 55, 65, PV, OC, PA | E | sim | itens | |
+| 81 | MERCADORIAS CADASTRADAS E FILTROS | 55, 65, 59 | E | não exige | — | |
+| 91 | MERCADORIAS VENDIDAS NO PERIODO - NOVO | 55, 65, PV, OC, OS, PA | E | não exige | itens | |
+| 92 | MERCADORIAS VENDIDAS NO PERIODO - NOVO | 55, 65, PV, OC, OS | E | não exige | itens | |
+| 93 | MERCADORIAS VENDIDAS NO PERíodo COM VALOR POR CLIENTE | 55, 65, PV, OC, PA | E | não exige | — | |
+| 94 | MERCADORIAS VENDIDAS NO PERÍODO DIARIO | 55, 65, PV, OC, PA | E | sim | itens | |
+| 95 | MERCADORIAS VENDIDAS NO PERÍODO POR CLIENTE COM FUNCIONARIO | 55, 65, PV, OC | E | não exige | — | |
+| 96 | MERCADORIAS VENDIDAS NO PERÍODO POR CLIENTE | 55, 65, PV, OC, PA | E | não exige | — | |
+| 97 | MERCADORIAS VENDIDAS NO PERÍODO POR GRUPO E SUBGRUPO | 55, 65, PV, OC, PA | E | não exige | — | |
+| 98 | MERCADORIAS VENDIDAS NO PERÍODO | escolhido na tela / 1A / 55 / 65 / 57 / 67 / 58 / 59 / NS / MN / MT / CN / PV / PA / OC / OS / OP / LC / 00 / 10 | E | não exige | — | |
 | 99 | MERCADORIAS VENDIDAS POR FUNCIONARIO | qualquer | qualquer | não exige | — | só item com vendedor |
-| 100 | MERCADORIAS VENDIDAS POR MARCA | 55, MN, 65, 59, PV, OC, OS, PA | E | não exige | — |  |
-| 101 | MERCADORIAS VENDIDAS POR PAGAMENTO | PV, 55, 59, 65, PA | E | não exige | — |  |
-| 104 | NF-E EMITIDAS | 55 | escolhido na tela | não exige | itens |  |
-| 105 | NFC-E EMITIDAS | 65 | escolhido na tela | não exige | itens |  |
-| 126 | QUANTIDADE DE ESTOQUE MATRIZ E FILIAL | 55, 65, 59 / 55, 65, 59, PA, PV, OC | E | não exige | — |  |
-| 127 | QUANTIDADE DE PRODUTOS VENDIDOS COM CUSTO | qualquer | E | não exige | — |  |
-| 148 | TOP MERCADORIAS MAIS VENDIDAS POR GRUPO, SUBGRUPO E SEÇÃO | escolhido na tela | E | sim | itens |  |
-| 149 | TOP MERCADORIAS MAIS VENDIDAS POR PERIODO | 55, 65, 59, PV, OC, PA, OS | E | sim | itens |  |
-| 152 | TOTAL DE VENDAS POR EQUIPE DAS ORDENS DE SERVIÇO FINALIZADAS | qualquer | E | não exige | itens |  |
+| 100 | MERCADORIAS VENDIDAS POR MARCA | 55, MN, 65, 59, PV, OC, OS, PA | E | não exige | — | |
+| 101 | MERCADORIAS VENDIDAS POR PAGAMENTO | PV, 55, 59, 65, PA | E | não exige | — | |
+| 104 | NF-E EMITIDAS | 55 | escolhido na tela | não exige | itens | |
+| 105 | NFC-E EMITIDAS | 65 | escolhido na tela | não exige | itens | |
+| 126 | QUANTIDADE DE ESTOQUE MATRIZ E FILIAL | 55, 65, 59 / 55, 65, 59, PA, PV, OC | E | não exige | — | |
+| 127 | QUANTIDADE DE PRODUTOS VENDIDOS COM CUSTO | qualquer | E | não exige | — | |
+| 148 | TOP MERCADORIAS MAIS VENDIDAS POR GRUPO, SUBGRUPO E SEÇÃO | escolhido na tela | E | sim | itens | |
+| 149 | TOP MERCADORIAS MAIS VENDIDAS POR PERIODO | 55, 65, 59, PV, OC, PA, OS | E | sim | itens | |
+| 152 | TOTAL DE VENDAS POR EQUIPE DAS ORDENS DE SERVIÇO FINALIZADAS | qualquer | E | não exige | itens | |
 | 153 | TOTAL DE VENDAS POR FUNCIONARIO DAS ORDENS DE SERVIÇO | qualquer | qualquer | não exige | itens | só item com vendedor |
 | 154 | TOTAL DE VENDAS POR FUNCIONARIO E PERIODO | qualquer | E | sim | itens | só item com vendedor |
-| 158 | VALOR DE PIS/COFINS POR CST - SAÍDAS | 65, 59, 55 | E | não exige | — |  |
-| 159 | VALOR DE VENDA POR CLIENTE | 55, 65, PV, OC, PA | E | sim | itens |  |
-| 160 | VALOR DE VENDA POR FORMA DE PAGAMENTO E CAIXA | 55, 65, PV, PA, OC | E | sim | pagamentos |  |
-| 161 | VALOR DE VENDA POR FORMA DE PAGAMENTO, CAIXA E USUÁRIO | 55, 65, PV, PA, OC | E | sim | pagamentos |  |
+| 158 | VALOR DE PIS/COFINS POR CST - SAÍDAS | 65, 59, 55 | E | não exige | — | |
+| 159 | VALOR DE VENDA POR CLIENTE | 55, 65, PV, OC, PA | E | sim | itens | |
+| 160 | VALOR DE VENDA POR FORMA DE PAGAMENTO E CAIXA | 55, 65, PV, PA, OC | E | sim | pagamentos | |
+| 161 | VALOR DE VENDA POR FORMA DE PAGAMENTO, CAIXA E USUÁRIO | 55, 65, PV, PA, OC | E | sim | pagamentos | |
 | 162 | VALOR DE VENDA POR FORMA DE PAGAMENTO | 55, 65, PV, OC | E | sim | pagamentos | exclui pagamento de troca |
-| 163 | VALOR TOTAL DE VENDAS POR MODELO | 65, 55, 59, PV, PA | escolhido na tela | sim | itens |  |
-| 164 | VALORES POR FORMA DE PAGAMENTO | ST, SD / RS, TM, RP / PV, OC, CN, PA, 65, 59, 55 / exceto SD, ST / exceto TR / TR / RT / TM | E | sim (N, R) | — |  |
-| 165 | VENDA POR FORNECEDOR | PV, 55, 65, PA, OC / 55 | E | não exige | itens |  |
-| 166 | VENDAS EM DELIVERY | PA, PV, 55, 65, OC | E | sim | pagamentos |  |
-| 168 | VENDA POR FORNECEDOR | PV, 55, 65, PA, OC / 55 | E | não exige | itens |  |
-| 169 | VENDAS POR FUNCIONÁRIO | NS, OS, PV, 67, 65, 59, 57, 55, PA | E | sim | pagamentos |  |
-| 170 | VENDAS POR PRODUTO AGRUPADO POR USUÁRIO | qualquer | E | não exige | — |  |
-| 171 | VENDAS POR SEÇÃO COM DETALHE DE PRODUTOS | PV, PA, 65, 55, 57, OC, OS / escolhido na tela | E | não exige | itens |  |
-| 172 | VENDAS POR TABELA DE PREÇO | 65, 55, PV, PA, OC | E | não exige | itens |  |
+| 163 | VALOR TOTAL DE VENDAS POR MODELO | 65, 55, 59, PV, PA | escolhido na tela | sim | itens | |
+| 164 | VALORES POR FORMA DE PAGAMENTO | ST, SD / RS, TM, RP / PV, OC, CN, PA, 65, 59, 55 / exceto SD, ST / exceto TR / TR / RT / TM | E | sim (N, R) | — | |
+| 165 | VENDA POR FORNECEDOR | PV, 55, 65, PA, OC / 55 | E | não exige | itens | |
+| 166 | VENDAS EM DELIVERY | PA, PV, 55, 65, OC | E | sim | pagamentos | |
+| 168 | VENDA POR FORNECEDOR | PV, 55, 65, PA, OC / 55 | E | não exige | itens | |
+| 169 | VENDAS POR FUNCIONÁRIO | NS, OS, PV, 67, 65, 59, 57, 55, PA | E | sim | pagamentos | |
+| 170 | VENDAS POR PRODUTO AGRUPADO POR USUÁRIO | qualquer | E | não exige | — | |
+| 171 | VENDAS POR SEÇÃO COM DETALHE DE PRODUTOS | PV, PA, 65, 55, 57, OC, OS / escolhido na tela | E | não exige | itens | |
+| 172 | VENDAS POR TABELA DE PREÇO | 65, 55, PV, PA, OC | E | não exige | itens | |

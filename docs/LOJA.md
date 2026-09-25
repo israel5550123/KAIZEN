@@ -5,7 +5,7 @@ Material de leitura para quem implementa. Nada aqui é regra de código; é o qu
 ## A loja
 
 - Ferragens e acessórios para marceneiros, São Luís (MA). Comprada em setembro de 2026.
-- Equipe: dois vendedores (Igor e Daniele) e uma gerente (Erleide). O dono não fica na loja.
+- Equipe: dois vendedores (Igor e Daniele), uma gerente (Erleide) e Wallace, no estoque. O dono não fica na loja.
 - Abre às 7h, fecha às 18h, de segunda a sábado; sábado fecha ao meio-dia. Pico das 9h às 11h, queda no almoço, segundo pico às 17h.
 - Faturamento mensal em 2026: abril (parcial) 57 mil, maio 131 mil, junho 140 mil, julho 145 mil, agosto 140 mil. Setembro projetava uns 120 mil.
 - Cerca de 70% das vendas são Pix, 22% cartão, 7% dinheiro. Não há venda a prazo. Cartão cai em D+1.
@@ -50,7 +50,8 @@ A cópia congelada, esquema `erp` no Postgres da VPS, tem 26 tabelas, de 11/04/2
 
 ## O ERP atual (Meu ERP Online)
 
-- Cadastros migrados por planilha antes de 01/10/2026. O código de produto da Link foi gravado na **referência da variação** de cada produto; o cliente leva CPF/CNPJ.
+- Cadastros migrados por planilha em 24/09/2026. O código de tela do produto na Link virou o próprio **código do produto** no ERP novo; a referência da variação guarda a referência do fabricante. O cliente leva CPF/CNPJ.
+- Na migração, o dono deixou de fora os produtos com que a loja não trabalha mais, e parte dos clientes: entraram 1.022 produtos, contra 1.391 ativos na Link.
 - Documentos (vendas, entradas) existem só a partir de 01/10/2026.
 - O PDV funciona offline: a venda pode aparecer na API depois da hora em que foi feita.
 - Limites da API: cerca de 20 requisições por minuto, 50 registros por página. Um dia tem em torno de 40 vendas.

@@ -87,7 +87,7 @@ Pergunta de viabilidade, resultado é um relatório, não código de produto. Re
 - Os valores de `status` de documento, os tipos de pagamento e como se distingue venda de outros documentos.
 - Como identificar um documento alterado depois de lido (o PDV funciona offline; a venda pode chegar depois).
 - Como se comportam o limite de 20 requisições por minuto e as páginas de 50.
-- Como o cadastro do produto guarda o código do ERP anterior (campo referência da variação) e o cliente o CPF/CNPJ.
+- Como o cadastro do produto guarda o código do ERP anterior (é o próprio código do produto, não a referência da variação; ver `docs/FONTES.md`) e o cliente o CPF/CNPJ.
 
 Cadastros migram antes de 01/10; documentos só existem a partir de 01/10. O que depender de documento se responde depois do dia 1º.
 
@@ -101,7 +101,7 @@ Desenhar o esquema próprio a partir do destino, com a origem de cada coluna nas
 
 ### Fase 3 — Tradutor do ERP anterior
 
-Levar abril a setembro de 2026 da cópia congelada (esquema `erp`) para o esquema próprio. Produto ligado pelo código antigo, que está na referência da variação do cadastro novo; cliente pelo CPF/CNPJ; vendedor pelo nome. Onde a ligação falhar, tabela de-para.
+Levar abril a setembro de 2026 da cópia congelada (esquema `erp`) para o esquema próprio. Produto ligado pelo código antigo, que é o próprio código do produto no cadastro novo; cliente pelo CPF/CNPJ; vendedor pelo nome. Onde a ligação falhar, tabela de-para.
 
 Como a Link guardava venda, cancelamento, devolução e arredondamento está documentado no repositório anterior, em `C:\Projetos\prumo\docs\DICIONARIO.md` — leitura de referência, nada se copia.
 
