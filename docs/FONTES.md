@@ -1,22 +1,34 @@
 # De onde vem cada número — relatório da Fase 1
 
-**Etapa 1 de 2 — 24/09/2026, revisada no mesmo dia com as decisões do dono e com a conferência da importação dos cadastros (feita às 21h33 de 24/09).** Esta etapa mapeou a estrutura: o que cada endpoint promete e todas as tabelas do banco. Ainda não há venda no ERP. Tudo que depende de venda real está marcado **(confirmar)** e será conferido na etapa 2, nos primeiros dias de outubro. A fase só fecha depois dela.
+**Etapa 1 de 2 — 24/09/2026, revisada em 24 e 25/09 com as decisões do dono, a conferência da importação dos cadastros e a simulação do dono.** Esta etapa mapeou a estrutura: o que cada endpoint promete e todas as tabelas do banco. Ainda não há venda real no ERP, só as da simulação de 25/09. O que ainda depende de teste ou de venda real está marcado **(confirmar)** e listado em "Etapa 2".
 
 ## Resumo
 
 - **As três perguntas têm fonte.** A tabela de indicadores abaixo tem 25 linhas. A meta é cadastrada no Kaizen; 19 saem inteiramente do ERP; 5 precisam também de algo que o ERP não guarda (lista 3): feriados locais, saldo do banco e a regra de crédito do cartão.
 - **Os relatórios do próprio ERP discordam sobre o que é venda.** Nos relatórios que somam vendas há pelo menos dez combinações diferentes de tipos de documento, e uns somam os itens, outros os pagamentos. A régua do Kaizen é o relatório 154 (seção "Armadilha").
-- **O SQL cobre tudo o que a API cobre, e mais.** A API entrega vendas completas (itens, custo do item, pagamentos, cliente) e a foto do estoque. Turno e conferência de caixa, histórico de estoque, contas pagas filtradas pela data do pagamento, cancelamento de item e fornecedor do produto só existem pelo SQL.
+- **O SQL cobre tudo o que a API cobre, e mais.** A API entrega vendas completas (itens, custo do item, pagamentos, cliente) e a foto do estoque. A conferência do fechamento de caixa, o histórico de estoque, as contas pagas filtradas pela data do pagamento, o cancelamento de item e o fornecedor do produto só existem pelo SQL.
 - **Não existe registro de alteração de vendas.** O banco registra cada alteração de cadastro e de saldo de estoque, com número de versão, mas não de documentos. Para pegar venda atrasada do PDV e cancelamento posterior, o tradutor terá de reler uma janela de dias. Custa pouco: cerca de 40 vendas por dia cabem numa página.
 - **O limite de requisições não dá erro, dá espera.** São cerca de 20 chamadas por minuto do relógio; a 21ª fica retida até o minuto virar (medido: 22,7 s) e depois é respondida. Página de até 100 registros, na API e no SQL.
 - **A importação dos cadastros trouxe uma surpresa e duas escolhas do dono** (seção "Conferência da importação"). A surpresa: o código da Link não está na referência, e sim no próprio código do produto. As escolhas: o estoque entrou zerado, e o dono o lança depois; e entraram 1.022 produtos, contra 1.391 ativos na Link, porque o dono tirou os que a loja não trabalha mais.
+- **A simulação do dono em 25/09 confirmou a maior parte da etapa 2** (seção "Simulação do dono"). O caixa fecha pela conta do `LOJA.md`, ao centavo, e a troca e a devolução ficaram claras. Apareceram armadilhas novas, a principal delas o crédito de troca aparecendo como conta a pagar. O dono decidiu em 25/09 como o Realizado trata vendedor, devolução e orçamento (seção "Decisões do dono").
 
-## Decisões do dono (24/09/2026)
+## Decisões do dono (24 e 25/09/2026)
 
-1. **A régua do "Realizado" é o relatório 154 — "TOTAL DE VENDAS POR FUNCIONARIO E PERIODO".** É por ele que o dono confere. O que ele conta está na seção "Armadilha".
+1. **A régua do vendido é o relatório 154 — "TOTAL DE VENDAS POR FUNCIONARIO E PERIODO".** É por ele que o dono confere. O que ele conta está na seção "Armadilha"; o Realizado passou a ter três números (item 6).
 2. **Quebra de caixa = informado − calculado** (`valconferido − valdisponivel`). O recontado não entra: no ERP anterior ele era digitado depois de o operador ver a resposta do sistema, o que contaminava a medição. O Meu ERP Online não tem campo de recontado, e isso não é uma falta.
 3. **Feriados municipais e estaduais ficam numa lista do Kaizen.** O ERP só tem os 13 nacionais.
-4. **A troca de mercadoria será configurada pelo suporte antes de 01/10, a pedido do dono.** Hoje a forma de pagamento e a natureza da troca estão vazias (`config_entrada_saida.idpagamentotrocamercadoria` e `idnaturezatrocamercadoria`). É o único item com prazo real: sem ela, a devolução não tem por onde entrar e o líquido das vendas nasce errado.
+4. **A troca de mercadoria foi configurada em 25/09.** Forma de pagamento 5, "Troca/Devolução" (tipo 81), e natureza 900, "TROCA DE MERCADORIA" (`config_entrada_saida.idpagamentotrocamercadoria` e `idnaturezatrocamercadoria`). Era o único item com prazo real: sem ela, a devolução não tinha por onde entrar.
+5. **Vendedor obrigatório no caixa, a partir de 25/09.** O PDV passa a exigir o vendedor. Venda sem vendedor, se ainda aparecer, é exceção que o Kaizen sinaliza.
+6. **O Realizado vira três números:**
+   - **Vendido:** a regra do relatório 154 (itens de documento emitido, de saída, que gera recebimento, com vendedor), para conferir com o ERP;
+   - **Devoluções:** à parte, na data e no vendedor da troca (itens dos documentos `TM`);
+   - **Líquido:** vendido − devoluções, o que ficou de fato no mês.
+
+   O líquido é o número comparado à meta e usado no ritmo do vendedor. O `LOJA.md` foi atualizado com essas definições em 25/09, com autorização do dono.
+7. **A venda conta na data em que foi fechada, não na do orçamento.** Aqui o Kaizen se afasta do 154, que conta pela data do orçamento (`datahora`). A data do fechamento está em `datahoramovimento`: na simulação, o orçamento 58 foi feito às 15h09 e fechado às 15h48 **(confirmar** com um orçamento feito num dia e fechado no outro).
+
+   Consequência: nos dias e meses com orçamento fechado em outro dia, o vendido do Kaizen difere do 154 exatamente pelo valor desses orçamentos. O Kaizen lista quais são, para a conferência.
+8. **Devolução de item de orçamento:** o ERP permite (simulação, documento 63). O dono vai criar uma verificação na loja para impedir.
 
 ## Conferência da importação (24/09/2026)
 
@@ -34,7 +46,7 @@ Os cadastros entraram às 21h33 de 24/09. A API e o SQL dão os mesmos totais em
 | Com código de barras | 259 | — |
 | Pessoas | 445: 415 clientes, 26 fornecedores, 4 os dois | — |
 | Com CPF/CNPJ | 420: 330 CPF e 90 CNPJ; nenhum com tamanho errado, máscara, dígito repetido ou duplicado | — |
-| Sem CPF/CNPJ | 25, dos quais 22 clientes (entre eles o Consumidor Final) | — |
+| Sem CPF/CNPJ | 25, dos quais 22 clientes; o Consumidor Final original foi sobrescrito na importação (seção "Simulação do dono") | — |
 | Com endereço, bairro e município | 445, dos quais 300 em São Luís | — |
 | Com latitude e longitude | 0 | — |
 | Funcionários | Igor Mendes Ribeiro e Daniele Fonseca Lima, vendedores; Erleide Alves Pereira (gerente) e Wallace Carvalho Pereira (estoque), sem tipo | — |
@@ -58,11 +70,64 @@ Consequência: na Fase 3, o produto da Link liga pelo código (`_idmercadoriavar
 
 **Contas a pagar.** Das 94 parcelas pendentes, 12 venceram entre 27/05 e 23/09/2026 (R$ 27.617,38). Vencem de 24/09 a 01/10 outras 6 (R$ 18.648,83), e de 24/09 a 24/10, 38 (R$ 110.216,33). As 12 vencidas foram deixadas em aberto de propósito pelo dono.
 
+## Simulação do dono (25/09/2026)
+
+Das 14h16 às 15h53 de 25/09 o dono simulou a operação no ERP, num caixa só (Caixa 01, operador Igor): abertura, suprimento, vendas, orçamentos, pré-vendas, uma troca, uma devolução em dinheiro e o fechamento. Ficaram 18 documentos, do 51 ao 68. O estoque estava zerado, então as vendas deixaram produtos negativos.
+
+| Documento | Tipo (`modelo`) | Movimenta | Quantos |
+| --- | --- | --- | --- |
+| Abertura de caixa | `AX` | nada | 2 |
+| Suprimento (fundo de troco) | `SF` | entrada de R$ 1,00 em dinheiro | 1 |
+| Pedido de venda: foi a "venda" do caixa | `PA` | estoque sai; gera recebimento | 4 |
+| Orçamento | `OC` | nada | 2 |
+| Pré-venda | `PV` | nada | 2 |
+| Troca com crédito para o cliente ("Troca de Mercadoria - Adiantamento") | `TM` | estoque entra; gera pagamento | 1 |
+| Devolução com dinheiro de volta ("Troca de Mercadoria - Retirada") | `TM` | estoque entra; gera pagamento | 1 |
+| Liberação de permissão | `LP` | nada | 4 |
+| Fechamento de caixa | `FC` | nada; guarda a conferência | 1 |
+
+Nenhuma NFC-e foi emitida: a venda do caixa saiu como pedido de venda (`PA`).
+
+**O que a simulação confirmou:**
+
+- **O caixa fecha pela conta do `LOJA.md`, ao centavo.** O calculado em dinheiro no fechamento foi R$ 92,00: R$ 1,00 de suprimento, mais R$ 77,00, R$ 16,00 e R$ 16,00 de vendas em dinheiro, menos R$ 18,00 da devolução em dinheiro. O pedido sem pagamento (R$ 144,00) ficou fora, como deve.
+- **O turno não está em `caixa_controle`**, que continua vazia. Ele está nos documentos `AX` (abertura) e `FC` (fechamento), ligados pelo mesmo `idabertura`, com o suprimento em `SF`. A conferência às cegas fica em `documento_conferencia_caixa`, ligada ao `FC`, uma linha por forma de pagamento, inclusive uma linha "Troca/Devolução".
+- **Troco é uma linha negativa de dinheiro.** A venda 66 tem R$ 20,00 e −R$ 4,00 em dinheiro.
+- **A troca funciona como adiantamento.** O item volta ao estoque, e o valor vira crédito do cliente: pago com a forma 5, "Troca/Devolução" (tipo 81, criada pelo dono), e registrado como **parcela a pagar pendente**. O item devolvido aponta a venda de origem (`documento_mercadoria.iddocumentoorigem`), e o item da venda original marca a quantidade devolvida (`qtddevolucao`).
+- **A devolução em dinheiro** também devolve o item ao estoque e baixa na hora uma parcela a pagar em dinheiro, que sai da gaveta.
+- **Orçamento convertido em pedido continua no mesmo documento.** O 58 nasceu orçamento às 15h09 e virou pedido às 15h48 (em `documento_historico`, evento `TR`, `OC>PA`). O `datahora` continua 15h09, e o `datahoramovimento` passa a 15h48. O histórico de estoque também leva a hora do orçamento.
+- **Estoque:** cada venda e cada troca gravou linha no histórico e entrada em `tabela_alteracao` (5 produtos alterados). Dá para ler o estoque só pelo que mudou.
+- **API:** a lista de documentos trouxe itens, custo do item, pagamentos, parcelas, baixas e cliente em 18 dos 19 documentos. A exceção foi a parcela pendente do crédito de troca (documento 61), que não veio na lista embutida, embora exista no banco e apareça em `conta-pagar/pendentes`.
+
+**O que o relatório 154 mostraria em 25/09:** Igor Mendes Ribeiro, R$ 176,00, com os pedidos 58 (R$ 144,00), 66 e 67 (R$ 16,00 cada). Pela regra dele, ficaram fora:
+
+- o pedido 54, de R$ 77,00, vendido **sem vendedor**;
+- as duas devoluções (R$ 77,00 e R$ 18,00), porque documento de entrada não desconta nada;
+- orçamentos e pré-vendas, porque não geram recebimento.
+
+E entrou o pedido 58, feito fora do caixa e sem pagamento registrado.
+
+**Armadilhas que a simulação revelou:**
+
+1. **O crédito de troca aparece como conta a pagar.** `conta-pagar/pendentes` passou de 94 para 95 parcelas, com os R$ 77,00 da troca vencendo em 25/09. Para o Kaizen, crédito de cliente não é conta: sem tirar o modelo `TM`, a folga em 7 dias cairia R$ 77,00.
+2. **O crédito de troca entra no fechamento de caixa.** A linha "Troca/Devolução" teve calculado de −R$ 77,00; com o informado zero, virou sobra de R$ 77,00. A quebra de caixa do Kaizen precisa considerar só Dinheiro, Pix, Crédito e Débito.
+3. **Orçamento convertido conta no dia do orçamento.** O 154 soma por `DATE(datahora)`: um orçamento de segunda que vira venda na quarta entra na segunda. O Kaizen conta na data do fechamento (decisão de 25/09).
+4. **Pré-venda não fica ligada ao pedido.** As pré-vendas 64 e 65 (R$ 16,00 cada) e os pedidos 66 e 67 (R$ 16,00 cada, mesmo produto, de 1 a 3 minutos depois) não têm ligação gravada, e as pré-vendas continuam emitidas. O 154 não conta pré-venda, mas um relatório que conte pré-venda e pedido juntos, sem exigir recebimento, conta duas vezes **(confirmar** com o dono se as pré-vendas viraram esses pedidos).
+5. **A pré-venda está marcada para reservar estoque (`flagreservaestoque = T`), mas nenhuma reserva apareceu.** O gatilho de estoque ignora documento que não movimenta estoque, e a pré-venda não movimenta **(confirmar** depois do inventário).
+6. **O ERP deixou devolver item de um orçamento.** A devolução em dinheiro (documento 63) aponta como origem o orçamento 59, que nunca foi venda: o produto 1362 ficou com +1 no estoque, e a gaveta com −R$ 18,00.
+7. **A importação sobrescreveu o Consumidor Final.** A pessoa 2, que era o Consumidor Final do ERP, virou um cliente real da Link (uma empresa). O dono criou outro Consumidor Final (999007) às 14h57 e o pôs como cliente padrão. Mesmo assim, as vendas de teste das 15h40 às 15h43 foram para a pessoa 2 **(confirmar** que as próximas vão para o 999007). O crédito da troca ficou no Consumidor Final (saldo de R$ 77,00 pela API). Na Fase 3, o Consumidor Final da Link (cliente 1229) liga ao 999007.
+
+**Estoque deixado pela simulação**, que o inventário de 26/09 deve acertar: produto 60 com −2, 1362 com +1, 2138 com −10 e 5278 com −1.
+
+**Não foi simulado:** cancelamento (da venda inteira e de item antes de fechar), sangria, pagamento em Pix e em cartão, NFC-e e venda com o caixa sem internet.
+
+**O que o dono decidiu sobre isso (25/09):** o caixa passa a exigir o vendedor; o Realizado vira três números (vendido, devoluções e líquido); e a venda conta na data em que foi fechada, não na do orçamento. Os detalhes estão nos itens 5 a 7 de "Decisões do dono".
+
 ## Em aberto para a Fase 2: por onde o tradutor lê
 
 Duas posições, com o argumento de cada uma. A decisão é do brainstorming da Fase 2.
 
-- **Endpoint onde existe, SQL só para o que falta** (inclinação do dono). Os endpoints são interface pública, documentada no swagger. O SQL lê o esquema interno do ERP: não tem contrato e pode mudar sem aviso numa atualização. Nesse caminho, o SQL fica restrito ao que não tem endpoint: caixa (turno e conferência, o principal), contas pagas por data de pagamento, histórico de estoque (estoque médio e primeira entrada), item removido antes de fechar, hora do cancelamento e fornecedor do produto.
+- **Endpoint onde existe, SQL só para o que falta** (inclinação do dono). Os endpoints são interface pública, documentada no swagger. O SQL lê o esquema interno do ERP: não tem contrato e pode mudar sem aviso numa atualização. Nesse caminho, o SQL fica restrito ao que não tem endpoint: caixa (a conferência do fechamento, o principal), contas pagas por data de pagamento, histórico de estoque (estoque médio e primeira entrada), item removido antes de fechar, hora do cancelamento e fornecedor do produto.
 - **SQL como caminho único.** Um mecanismo só (uma paginação, um formato), alcance de todas as tabelas, e as colunas com os nomes listados no fim deste documento. A proteção contra mudança de esquema seria o tradutor conferir, a cada execução, se as colunas esperadas existem, e falhar com aviso.
 
 ## Armadilha: o que cada relatório do ERP chama de venda
@@ -94,9 +159,10 @@ Códigos: `65` NFC-e, `55` NF-e, `59` CF-e, `PV` pré-venda, `PA` pedido de vend
 **O que o 154 conta**, linha a linha do SQL dele:
 
 - itens (`documento_mercadoria.valtotalliquido`) de documentos com `status = 'E'`, `tipomovimento = 'S'` e `tipomovimentofinanceiro = 'R'`, pela data `DATE(datahora)`;
-- não filtra tipo de documento: quem deixa pré-venda, condicional, orçamento e pedido de fora é a exigência de gerar recebimento, porque as naturezas desses quatro não movimentam financeiro **(confirmar** que o documento herda isso);
-- só soma item com vendedor (`idpessoafuncionario > 0`): item vendido sem vendedor fica fora do total;
-- não desconta nenhum documento de entrada: se a devolução entrar como documento de troca separado, ela não reduz o número do 154 **(confirmar** quando a troca estiver configurada).
+- não filtra tipo de documento: quem deixa orçamento e pré-venda de fora é a exigência de gerar recebimento, porque os dois gravam `tipomovimentofinanceiro = 'N'` (conferido na simulação). O pedido de venda (`PA`) gera recebimento e conta, mesmo sem pagamento registrado. O condicional não foi testado;
+- só soma item com vendedor (`idpessoafuncionario > 0`): item vendido sem vendedor fica fora do total (na simulação, uma venda de R$ 77,00);
+- não desconta nenhum documento de entrada: troca e devolução são documentos `TM` de entrada e não reduzem o número do 154 (conferido na simulação);
+- soma pela data do documento (`datahora`): orçamento convertido em venda conta no dia do orçamento (conferido na simulação).
 
 ## Lista 1 — O que a API entrega (endpoints)
 
@@ -105,7 +171,7 @@ Códigos: `65` NFC-e, `55` NF-e, `59` CF-e, `PV` pré-venda, `PA` pedido de vend
 | Vendas e demais documentos, com itens, custo do item, pagamentos, parcelas, baixas e cópia do cliente, numa resposta só | `documento` (filtros `DataInicio`, `DataFim` sobre `dataHora`; `Modelo`, `Status`, `TipoMovimento`, `IdCaixa`) | `codigo`, `dataHora`, `modelo`, `status`, `tipoMovimento`, `tipoMovimentoFinanceiro`, `idPessoa`, `idCaixa`, `idAbertura`, `modificado`, `valTotal`; em `mercadoriasLista[]`: `idMercadoriaVariacao`, `qtd`, `valTotalLiquido`, `valDesconto`, `idPessoaFuncionario`, `nomePessoaFuncionario`, `qtdDevolucao`, `documentoMercadoriaCustoLista[].valCusto`; em `pagamentosLista[]`: `idPagamento`, `valor`, parcelas e baixas; em `pessoa`: `cnpjCpf`, `bairro`, `municipio`, `idIbgeMunicipio` |
 | Itens e pagamentos de um documento | `documento/{id}/mercadorias`, `documento/{id}/pagamentos` | mesmos campos, um documento por chamada |
 | Vendido por produto no período (já somado) | `documento/mercadorias-vendidas` | `idMercadoriaVariacao`, `qtd`, `valTotalLiquido` |
-| Sangria, retirada e fundo de caixa | `documento` com `Modelo` = `RS`, `RT`, `RU` | `pagamentosLista[].valor` **(confirmar)** |
+| Turno de caixa: abertura, suprimento, sangria e fechamento (sem os valores da conferência) | `documento` com `Modelo` = `AX`, `SF`, `RS`/`RT`, `FC` | `idAbertura`, `idCaixa`, `pagamentosLista[].valor`; sangria **(confirmar)** |
 | Estoque atual (foto) | `local-estoque/1/estoques` (há um único local: 1, "Local de estoque padrão") | `idMercadoriaVariacao`, `qtdSaldo`, `qtdSaldoReserva`, `dataHora` |
 | Custo atual | `mercadoria-custo` | `idMercadoriaVariacao`, `valCusto`, `valCustoMedio` |
 | Produtos | `mercadoria` | `codigoMercadoriaVariacao`, `descricao`, `referenciaVariacao`, `idGrupo`, `idSecao`, `idSubgrupo`, `idMarca`, `ativo`, `dataAlteracao` |
@@ -116,20 +182,19 @@ Códigos: `65` NFC-e, `55` NF-e, `59` CF-e, `PV` pré-venda, `PA` pedido de vend
 | Contas a pagar pendentes | `conta-pagar/pendentes` (filtro `inicio`/`fim` sobre o vencimento) | `idDocumento`, `idParcela`, `nome`, `dtVencimento`, `valOrigem`, `valPago`, `valSaldo`, `status` |
 | DRE | `dre` (`DataInicio`, `DataFim`) | linhas no formato da tela do ERP |
 
-A API **não** entrega: turno de caixa, conferência às cegas, baixas filtradas pela data de pagamento, histórico de estoque em lote (só produto por produto, `mercadoria/{id}/local-estoque/{local}/estoque-historico/{data}`), item cancelado antes de fechar, motivo e hora do cancelamento, fornecedor do produto.
+A API **não** entrega: a conferência às cegas do fechamento (calculado × informado), baixas filtradas pela data de pagamento, histórico de estoque em lote (só produto por produto, `mercadoria/{id}/local-estoque/{local}/estoque-historico/{data}`), item cancelado antes de fechar, motivo e hora do cancelamento, fornecedor do produto.
 
 ## Lista 2 — O que só o SQL entrega
 
 | O quê | Tabelas |
 | --- | --- |
-| Turno de caixa: abertura, fechamento, suprimento inicial, operador | `caixa_controle` |
 | Fechamento às cegas por forma: calculado × informado | `documento_conferencia_caixa` (+ `documento_conferencia`) |
 | Contas pagas por data de pagamento (liquidadas) | `documento_parcela` + `documento_parcela_pagamento` |
 | Saldo de estoque em qualquer data (estoque médio, giro) | `mercadoria_estoque_historico` |
 | Data da primeira entrada do produto (carência do encalhe) | `mercadoria_estoque_historico`: primeira linha do produto em que o saldo sobe (`qtdnovosaldo > qtdsaldoatual`) |
 | Item removido antes de fechar a venda | `documento_mercadoria_historico` com `tipoevento = 'CO'` |
 | Hora e motivo do cancelamento da venda | `documento_cancelamento_historico` |
-| Pré-venda convertida em nota (origem → destino) | `documento_historico` |
+| Orçamento convertido em pedido (origem → destino); a pré-venda não ficou ligada ao pedido na simulação | `documento_historico` |
 | Fornecedor do produto | `mercadoria_variacao_pessoa`, `mercadoria_fornecedor` |
 | Endereço de todos os clientes numa consulta, com latitude e longitude | `pessoa_endereco` |
 | O que mudou desde a última leitura — só cadastros e saldo de estoque | `tabela_alteracao` (`_tabela`, `_oid`, `versao`, `datahora`) |
@@ -153,7 +218,7 @@ Existem também `meta` e `meta_tipo` (metas no ERP). O Kaizen não as usa: as me
 | Indicador | Lista | Onde |
 | --- | --- | --- |
 | Meta da loja e do vendedor | — | Cadastrada no Kaizen |
-| Realizado do dia e do mês | 1 | Regra do relatório 154: itens de documento emitido, de saída, que gera recebimento, com vendedor; soma de `valtotalliquido` por `DATE(datahora)` |
+| Realizado do dia e do mês | 1 | Três números (decisão de 25/09). Vendido: regra do 154, mas na data do fechamento (`datahoramovimento`). Devoluções: itens dos documentos `TM`, na data e no vendedor da troca. Líquido: vendido − devoluções |
 | Projeção do mês por dia da semana | 1 + 3 | Realizado + feriados locais |
 | Ritmo por vendedor | 1 + 3 | Vendedor no item (`idpessoafuncionario`) + dias úteis (feriados locais) |
 | Ticket médio, itens por venda | 1 | Venda + itens |
@@ -170,12 +235,12 @@ Existem também `meta` e `meta_tipo` (metas no ERP). O Kaizen não as usa: as me
 | Ruptura | 1 | Vendeu no período e `qtdSaldo <= 0` |
 | Custo zero | 1 | `mercadoria-custo` com `valCusto = 0` |
 | Estoque negativo | 1 | `qtdSaldo < 0`; o ERP permite (`config_estoque.flagpermitirestoquenegativo = T`) |
-| Contas a pagar por vencimento | 1 | `conta-pagar/pendentes` |
-| Folga em 7 e 30 dias | 1 + 3 | Pendentes + saldo digitado |
+| Contas a pagar por vencimento | 1 | `conta-pagar/pendentes`, sem os créditos de troca (modelo `TM`) |
+| Folga em 7 e 30 dias | 1 + 3 | Pendentes, sem os créditos de troca, + saldo digitado |
 | Fluxo de caixa realizado | 1 + 2 | Entradas: pagamentos das vendas; saídas: baixas por `dtpagamento` |
 | Fluxo de caixa previsto | 1 + 3 | Pendentes + cartão a receber (regra D+1) |
-| Quebra de caixa por turno e forma | 2 | `valconferido − valdisponivel` por forma (decisão: sem recontado); turno em `caixa_controle` |
-| Gaveta e sangrias | 1 + 2 | Documentos `RS`, `RT`, `RU` + `caixa_controle.valsuprimentoinicial` |
+| Quebra de caixa por turno e forma | 2 | `valconferido − valdisponivel` por forma, só Dinheiro, Pix, Crédito e Débito, sem a linha "Troca/Devolução" (decisão: sem recontado); turno pelo `idabertura` dos documentos `AX` e `FC` |
+| Gaveta e sangrias | 1 + 2 | Suprimento (`SF`), sangria (`RS`/`RT`, a confirmar), vendas e devoluções em dinheiro; o calculado do ERP confere (R$ 92,00 = R$ 92,00 na simulação) |
 | Recebíveis de cartão por data de crédito | 3 | Regra D+1 |
 
 Alertas, briefing e interpretação por IA usam os indicadores acima. Tarefas e anotações do vendedor são dados do próprio Kaizen. A geolocalização tem campo no ERP (`pessoa_endereco.latitude`/`longitude`), mas veio vazia na importação: nenhum dos 445 endereços tem coordenada. Ela terá de ser preenchida pelo endereço, como o `OBJETIVO.md` já prevê.
@@ -196,7 +261,14 @@ Alertas, briefing e interpretação por IA usam os indicadores acima. Tarefas e 
 
 A forma "Prazo" existe mesmo sem venda a prazo na loja.
 
-**Como se distingue venda.** Pelo trio `tipomovimento = S` (saída), `tipomovimentofinanceiro = R` (gera recebimento) e `status = E`, e pelo `modelo`: `65` NFC-e, `55` NF-e, `PV` pré-venda, `PA` pedido, `OC` orçamento, `CN` condicional. Outros modelos: `RS`/`RT` retirada, `RU` fundo de caixa, `TM` troca, `LE` inventário, `PE` perda, `TS` transferência, `IM` importação de cadastro, `CP` conta a pagar (as 94 importadas são desse modelo). Qual combinação conta depende do relatório (seção "Armadilha"); a régua é a do 154. **(Confirmar** que modelo o PDV da loja grava e se a pré-venda vira NFC-e, porque aí a mesma venda existe duas vezes.)
+**Como se distingue venda.** Pelo trio `tipomovimento = S` (saída), `tipomovimentofinanceiro = R` (gera recebimento) e `status = E`, e pelo `modelo`: `65` NFC-e, `55` NF-e, `PV` pré-venda, `PA` pedido, `OC` orçamento, `CN` condicional. Outros modelos:
+
+- caixa: `AX` abertura, `SF` suprimento, `RS`/`RT` retirada (sangria), `FC` fechamento; `RU` fundo de caixa aparece em relatório do ERP, mas o suprimento da simulação saiu como `SF`;
+- troca e devolução: `TM`;
+- estoque: `LE` inventário, `PE` perda, `TS` transferência;
+- outros: `LP` liberação de permissão, `IM` importação de cadastro, `CP` conta a pagar (as 94 importadas são desse modelo).
+
+Qual combinação conta depende do relatório (seção "Armadilha"); a régua é a do 154. Na simulação, o caixa gravou a venda como pedido de venda (`PA`), e a pré-venda não ficou ligada ao pedido **(confirmar** se na operação real a venda será NFC-e).
 
 **Documento alterado depois de lido.** Não há registro de alteração para documentos (nenhum dos 154 gatilhos de alteração é de documento). O que existe:
 
@@ -209,7 +281,7 @@ Para cadastros e saldo de estoque há `tabela_alteracao`, com versão crescente,
 
 **Limite e páginas.**
 
-- Foram 91 chamadas, todas respondidas, nenhuma recusada.
+- Foram 117 chamadas, todas respondidas, nenhuma recusada.
 - O tempo típico de resposta foi de 0,2 s, variando de 0,1 a 1,2 s.
 - O limite conta por minuto do relógio: com 19 chamadas no minuto, a seguinte ficou retida 22,7 s e só foi respondida na virada do minuto.
 - Nenhum cabeçalho informa o limite.
@@ -231,7 +303,29 @@ Depois da importação dos cadastros (feita em 24/09; resultados na seção "Con
 
 Antes de 01/10:
 
-- [ ] Troca configurada pelo suporte (o dono pede).
+- [x] Troca configurada (25/09): forma 5, "Troca/Devolução", e natureza 900.
+
+Na simulação de 25/09 (seção "Simulação do dono"):
+
+- [x] Tipos de documento: a venda do caixa saiu como `PA`; orçamento e pré-venda não geram recebimento e ficam fora do 154.
+- [x] No 154: item sem vendedor fica fora (R$ 77,00); troca e devolução não reduzem o total.
+- [x] Como aparecem troca e devolução.
+- [x] Turno (documentos `AX` e `FC`) e conferência em `documento_conferencia_caixa`; o calculado bate com a conta do `LOJA.md`.
+- [x] Suprimento (`SF`) e devolução paga em dinheiro.
+- [x] As listas dentro de `documento` vêm preenchidas, exceto a parcela pendente do crédito de troca.
+- [x] O saldo de estoque gera entrada em `tabela_alteracao` a cada venda.
+
+Ainda por testar, o que pode ser feito junto com o inventário:
+
+- [ ] Cancelamento de venda inteira e de item antes de fechar.
+- [ ] Sangria (`RS`/`RT`).
+- [ ] Pagamento em Pix e em cartão, e venda com duas formas.
+- [ ] NFC-e, se a loja for emitir: tipo e status final.
+- [ ] Venda com o caixa sem internet: quanto demora a aparecer.
+- [ ] Se as próximas vendas sem cliente vão para o Consumidor Final 999007.
+- [ ] Se as pré-vendas 64 e 65 viraram os pedidos 66 e 67.
+- [ ] Orçamento feito num dia e fechado no outro: conferir que `datahoramovimento` leva a data do fechamento.
+- [ ] Que o caixa passou a exigir o vendedor.
 
 Quando o dono lançar o estoque:
 
@@ -239,20 +333,12 @@ Quando o dono lançar o estoque:
 
 Depois de 01/10, com vendas reais:
 
-- [ ] Quais tipos de documento a loja gera (`65`, `PV`, `OC`, `PA`) e status final da venda do PDV; se a pré-venda duplica.
-- [ ] No 154: se pré-venda e orçamento ficam fora por não gerar recebimento; quanto da venda fica sem vendedor; se a troca reduz o total.
-- [ ] Como aparecem troca e devolução.
-- [ ] Turno em `caixa_controle` e conferência em `documento_conferencia_caixa`.
-- [ ] Sangria e fundo de caixa (`RS`, `RT`, `RU`) e devolução paga em dinheiro.
-- [ ] Atraso do PDV offline: diferença entre a hora da venda e a hora em que ela aparece.
-- [ ] Proporção de vendas para Consumidor Final; itens por venda.
-- [ ] Se as listas dentro de `documento` (itens, pagamentos, custo) vêm preenchidas.
-- [ ] Se o saldo de estoque gera entrada em `tabela_alteracao` a cada venda.
+- [ ] Proporção de vendas para Consumidor Final; itens por venda; atraso real do caixa sem internet.
 - [ ] Se a DRE da API bate com a tela do ERP.
 
 ## Como foi feito
 
-Um script descartável, fora do repositório, chamou a API com uma trava que só deixa passar leitura: GET, e POST apenas no `consulta/sql` com um único comando SELECT. Foram 91 chamadas (51 endpoints, 40 consultas SQL) e nenhuma escrita, das quais 21 na conferência da importação. O mapa do banco veio de `information_schema` (365 tabelas e 3 visões), dos gatilhos (inclusive o código do que grava o histórico de estoque) e do SQL dos 172 relatórios do próprio ERP.
+Um script descartável, fora do repositório, chamou a API com uma trava que só deixa passar leitura: GET, e POST apenas no `consulta/sql` com um único comando SELECT. Foram 117 chamadas (55 endpoints, 62 consultas SQL) e nenhuma escrita: 21 na conferência da importação e 26 na leitura da simulação. O mapa do banco veio de `information_schema` (365 tabelas e 3 visões), dos gatilhos (inclusive o código do que grava o histórico de estoque) e do SQL dos 172 relatórios do próprio ERP.
 
 ## Tabelas e colunas (para a Fase 2)
 
@@ -295,16 +381,16 @@ Colunas com `_` na frente formam a chave da tabela. Todas as tabelas têm també
 
 ### Caixa
 
-**`caixa_controle`** — turno (abertura → fechamento).
+**`caixa_controle`** — tabela de turno, mas ficou vazia na simulação: o turno está nos documentos `AX` e `FC`, pelo `idabertura`. Colunas, caso ela passe a ser usada:
 `_idabertura`, `_idempresa`, `_idusuario`, `numeroabertura`, `datahoraabertura`, `datahorafechamento`, `valsuprimentoinicial`, `status`, `idconta`, `idpessoafuncionario`, `iddocumentoaberto`, `tipo`, `origem`
 
-**`documento_conferencia_caixa`** — fechamento às cegas, uma linha por forma. `valdisponivel` é o calculado pelo sistema; `valconferido` é o informado pelo operador. Quebra = `valconferido − valdisponivel` (decisão do dono: sem recontado); o ERP conta só conferências com `documento.status = 'E'`.
+**`documento_conferencia_caixa`** — fechamento às cegas, uma linha por forma. `valdisponivel` é o calculado pelo sistema; `valconferido` é o informado pelo operador. Quebra = `valconferido − valdisponivel` (decisão do dono: sem recontado); o ERP conta só conferências com `documento.status = 'E'`. Traz também uma linha da forma "Troca/Devolução", que o Kaizen deixa fora da quebra.
 `_iddocumento`, `_idpagamento`, `descricao`, `valdisponivel`, `valconferido`, `observacao`
 
 **`documento_conferencia`** — quem conferiu e quando.
 `_iddocumento`, `idusuario`, `datahora`
 
-**Sangria e suprimento** — são linhas de `documento` com `modelo` `RS` (retirada saque), `RT` (retirada transferência) ou `RU` (fundo de caixa); o valor está em `documento_pagamento.valor`.
+**Turno, suprimento e sangria** — são linhas de `documento` com o mesmo `idabertura` e `idcaixa`: `AX` abertura, `SF` suprimento, `RS` (retirada saque) e `RT` (retirada transferência) para sangria, e `FC` fechamento. O valor está em `documento_pagamento.valor`. `RU` (fundo de caixa) aparece em relatório do ERP, mas o suprimento da simulação saiu como `SF`.
 
 **`config_pos`** — configuração de cada caixa.
 `numero`, `idcontapadrao`, `flagsomarsuprimento`, `valtrocoinicial`, `tipofechamento`

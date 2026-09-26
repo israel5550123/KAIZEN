@@ -22,15 +22,17 @@ Material de leitura para quem implementa. Nada aqui é regra de código; é o qu
 
 ## Trocas e cancelamentos
 
-- Devolução é lançada dentro de uma venda nova (troca) e conta na data e no vendedor dessa troca.
+- No ERP atual, troca e devolução são um documento próprio: o item volta ao estoque e vira crédito do cliente (troca) ou dinheiro devolvido (devolução). Contam na data e no vendedor desse documento. No ERP anterior, a devolução era lançada dentro de uma venda nova.
 - Cancelamento tem dois níveis: item removido antes de fechar a venda e venda cancelada inteira. Venda cancelada não conta em nada.
 - Seis vendas de abril a junho são testes da implantação do ERP anterior (quatro em Israel, uma em Luis Henrique, uma em Sistema). Continuam somando no total, como o ERP soma.
 
 ## O que cada número significa
 
 - **Venda válida**: venda fechada e não cancelada. É a única que conta em qualquer indicador.
-- **Realizado**: soma do líquido das vendas válidas no período, após desconto e devolução. É o número do relatório de vendas por vendedor do ERP.
-- **Meta**: valor mensal cadastrado no app para a loja e para cada vendedor.
+- **Vendido**: soma do líquido dos itens das vendas válidas, depois do desconto, na data em que a venda foi fechada. Bate com o relatório 154 do ERP ("Total de vendas por funcionário e período"), menos no orçamento fechado em outro dia: o 154 conta no dia do orçamento, e o Kaizen no dia da venda.
+- **Devoluções**: trocas e devoluções do período, na data e no vendedor da troca.
+- **Realizado**: vendido − devoluções. É o líquido, o que ficou de fato, e é o número que se compara à meta.
+- **Meta**: valor mensal cadastrado no app para a loja e para cada vendedor, comparado com o realizado (o líquido).
 - **Projeção do mês**: realizado até ontem mais a média por dia da semana dos dias que faltam.
 - **Ritmo do vendedor**: realizado ÷ meta × fração de dias úteis já decorridos. Não é projeção.
 - **Curva ABC**: produtos ordenados pelo líquido acumulado no período; A até 80%, B até 95%, C o resto; o produto que atravessa o corte cai na classe de baixo. Existe por valor e por quantidade; em empate de quantidade, desempata por valor.
@@ -54,4 +56,5 @@ A cópia congelada, esquema `erp` no Postgres da VPS, tem 26 tabelas, de 11/04/2
 - Na migração, o dono deixou de fora os produtos com que a loja não trabalha mais, e parte dos clientes: entraram 1.022 produtos, contra 1.391 ativos na Link.
 - Documentos (vendas, entradas) existem só a partir de 01/10/2026.
 - O PDV funciona offline: a venda pode aparecer na API depois da hora em que foi feita.
-- Limites da API: cerca de 20 requisições por minuto, 50 registros por página. Um dia tem em torno de 40 vendas.
+- Desde 25/09/2026, o caixa exige o vendedor em toda venda.
+- Limites da API: cerca de 20 requisições por minuto do relógio (o excesso espera a virada do minuto, não dá erro) e até 100 registros por página (50 por padrão). Um dia tem em torno de 40 vendas.
