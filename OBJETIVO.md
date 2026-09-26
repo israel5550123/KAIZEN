@@ -22,8 +22,8 @@ O Kaizen **não vende, não compra e não lança nada no ERP**. A operação int
 
 Estas decisões já foram tomadas e não se reabrem sem conversa com o dono.
 
-- **Fonte de dados a partir de 01/10/2026: Meu ERP Online**, pela API pública (`docs/api/swagger.json`, `docs/api/GUIA_CLAUDE_CODE.md`). O token dá leitura e escrita; o Kaizen usa **somente leitura por construção**: só chamadas GET e o endpoint `consulta/sql`, que a própria API limita a SELECT.
-- **Fonte de dados de abril a setembro de 2026: o ERP anterior (Link)**, cuja cópia congelada está no Postgres da VPS, esquema `erp`. Não muda mais.
+- **Fonte de dados a partir de 28/09/2026, início da operação real: Meu ERP Online**, pela API pública (`docs/api/swagger.json`, `docs/api/GUIA_CLAUDE_CODE.md`). O token dá leitura e escrita; o Kaizen usa **somente leitura por construção**: só chamadas GET e o endpoint `consulta/sql`, que a própria API limita a SELECT.
+- **Fonte de dados de abril a 25/09/2026, último dia de venda na Link: o ERP anterior (Link)**, cuja cópia final, tirada depois desse dia, fica no Postgres da VPS, esquema `erp`. Não muda mais.
 - **Banco próprio**, Postgres na VPS (o mesmo da stack `prumo`, já no ar), com **esquema próprio desenhado pelas três perguntas**, não por nenhum dos dois ERPs. Só o que os indicadores precisam. Cada linha sabe de qual fonte veio e qual era o registro de origem.
 - **Um tradutor por fonte** alimenta o esquema próprio. Tradutor traduz fato e copia número; não decide regra nem recalcula. As regras (o que é venda válida, como corta a curva ABC) vivem num lugar só, sobre o esquema próprio.
 - **Rotina na VPS** calcula os indicadores de hora em hora, de segunda a sábado, e grava o resultado pronto. **Ela avisa o dono quando falha.**
@@ -89,7 +89,7 @@ Pergunta de viabilidade, resultado é um relatório, não código de produto. Re
 - Como se comportam o limite de 20 requisições por minuto e as páginas de 50.
 - Como o cadastro do produto guarda o código do ERP anterior (é o próprio código do produto, não a referência da variação; ver `docs/FONTES.md`) e o cliente o CPF/CNPJ.
 
-Cadastros migram antes de 01/10; documentos só existem a partir de 01/10. O que depender de documento se responde depois do dia 1º.
+Os cadastros migraram em 24/09; documentos de verdade só existem a partir de 28/09 (os de 24 a 26/09 são a importação e os testes do dono). O que depender de documento real se responde a partir de 28/09.
 
 **Pronto quando:** existe um relatório em `docs/` com três listas — o que a API entrega, o que só o SQL entrega, o que não existe em lugar nenhum — e cada indicador do destino aponta para uma das três.
 
@@ -97,15 +97,15 @@ Cadastros migram antes de 01/10; documentos só existem a partir de 01/10. O que
 
 Desenhar o esquema próprio a partir do destino, com a origem de cada coluna nas duas fontes escrita ao lado. Construir o tradutor da API: incremental, relê uma janela de dias, pode rodar duas vezes sem duplicar, guarda de onde veio cada linha.
 
-**Pronto quando:** as vendas, o estoque e o a pagar de outubro estão no esquema próprio, atualizados de hora em hora na VPS, com registro de cada execução e aviso quando falha.
+**Pronto quando:** as vendas, o estoque e o a pagar desde 28/09 estão no esquema próprio, atualizados de hora em hora na VPS, com registro de cada execução e aviso quando falha.
 
 ### Fase 3 — Tradutor do ERP anterior
 
-Levar abril a setembro de 2026 da cópia congelada (esquema `erp`) para o esquema próprio. Produto ligado pelo código antigo, que é o próprio código do produto no cadastro novo; cliente pelo CPF/CNPJ; vendedor pelo nome. Onde a ligação falhar, tabela de-para.
+Levar de abril a 25/09/2026 da cópia final da Link (esquema `erp`) para o esquema próprio. Produto ligado pelo código antigo, que é o próprio código do produto no cadastro novo; cliente pelo CPF/CNPJ; vendedor pelo nome. Onde a ligação falhar, tabela de-para.
 
 Como a Link guardava venda, cancelamento, devolução e arredondamento está documentado no repositório anterior, em `C:\Projetos\prumo\docs\DICIONARIO.md` — leitura de referência, nada se copia.
 
-**Pronto quando:** a história de abril a setembro está no esquema próprio, ligada ao cadastro novo, e uma venda de junho e uma de outubro têm a mesma forma.
+**Pronto quando:** a história de abril a 25/09 está no esquema próprio, ligada ao cadastro novo, e uma venda de junho e uma de outubro têm a mesma forma.
 
 ### Fase 4 — Indicadores e rotina
 

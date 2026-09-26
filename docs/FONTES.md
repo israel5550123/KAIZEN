@@ -29,6 +29,8 @@
 
    Consequência: nos dias e meses com orçamento fechado em outro dia, o vendido do Kaizen difere do 154 exatamente pelo valor desses orçamentos. O Kaizen lista quais são, para a conferência.
 8. **Devolução de item de orçamento:** o ERP permite (simulação, documento 63). O dono vai criar uma verificação na loja para impedir.
+9. **Documentos que a loja vai usar:** pré-venda, orçamento, pedido de venda, NFC-e e NF-e. Condicional não. NFC-e e NF-e ainda não estavam configuradas em 25/09, por isso não apareceram na simulação.
+10. **A operação real no ERP novo começa na segunda-feira, 28/09/2026, não em 01/10.** O inventário é lançado em 26/09 e precisa estar certo na segunda. O último dia de venda na Link foi sexta-feira, 25/09; haverá uma cópia final dela no Postgres da VPS. A virada de fonte passou de 01/10 para 28/09 no `OBJETIVO.md` e no `LOJA.md`, com autorização do dono. Setembro fica dividido: de 1º a 25/09 pela Link, e de 28 a 30/09 pelo ERP novo. O sábado, 26/09, não tem venda em nenhum dos dois, porque é o dia do inventário; o Kaizen o trata como a pausa da virada, e não como queda de venda. Os documentos do ERP novo de 24 a 26/09 (importação e testes) ficam fora.
 
 ## Conferência da importação (24/09/2026)
 
@@ -62,9 +64,9 @@ A referência (`mercadoria_variacao.referencia`), preenchida em 469 produtos, gu
 
 Consequência: na Fase 3, o produto da Link liga pelo código (`_idmercadoriavariacao` = `produto_codigo` da Link). O `LOJA.md` e o `OBJETIVO.md` diziam que o código estava na referência e foram corrigidos em 24/09, com autorização do dono **(confirmar** contra a cópia da Link na Fase 3).
 
-**O estoque entrou zerado, e o dono o lança depois.** A importação criou um documento de modelo `IM` com os 1.022 produtos e quantidade zero; o histórico tem 1.022 linhas de 0 para 0. Enquanto o estoque não for lançado, cobertura, ruptura, encalhe e giro não têm base, e cada venda de outubro deixará o produto negativo (o ERP permite). A primeira entrada real de cada produto será a carga do estoque, quando vier. Se ela for feita por inventário, todos os produtos terão a mesma data, e a carência do produto novo vem da Link.
+**O estoque entrou zerado, e o dono o lança no inventário de 26/09, antes da operação real.** A importação criou um documento de modelo `IM` com os 1.022 produtos e quantidade zero; o histórico tem 1.022 linhas de 0 para 0. Enquanto o estoque não for lançado, cobertura, ruptura, encalhe e giro não têm base, e cada venda deixa o produto negativo (o ERP permite). A primeira entrada real de cada produto será a carga do estoque, quando vier. Se ela for feita por inventário, todos os produtos terão a mesma data, e a carência do produto novo vem da Link.
 
-**369 produtos a menos que na Link, de propósito.** Entraram 1.022, contra 1.391 ativos na cópia de 12/09: o dono tirou os produtos com que a loja não trabalha mais, e fez o mesmo com parte dos clientes. Consequência para a Fase 3: a venda desses produtos e clientes de abril a setembro existe na Link e não tem par no cadastro novo. Como a régua é bater com o ERP, ela precisa continuar somando no realizado daqueles meses; a Fase 3 decide como ela entra na história.
+**369 produtos a menos que na Link, de propósito.** Entraram 1.022, contra 1.391 ativos na cópia de 12/09: o dono tirou os produtos com que a loja não trabalha mais, e fez o mesmo com parte dos clientes. Consequência para a Fase 3: a venda desses produtos e clientes de abril a 25/09 existe na Link e não tem par no cadastro novo. Como a régua é bater com o ERP, ela precisa continuar somando no realizado daqueles meses; a Fase 3 decide como ela entra na história.
 
 **As datas de cliente não servem.** 442 das 445 pessoas vieram com cadastro em 31/12/1899 (a data vazia da planilha), e o "cliente desde" repete a mesma data. Recência, "cliente desde" e clientes que pararam de comprar dependem da história da Link (Fase 3).
 
@@ -112,10 +114,10 @@ E entrou o pedido 58, feito fora do caixa e sem pagamento registrado.
 1. **O crédito de troca aparece como conta a pagar.** `conta-pagar/pendentes` passou de 94 para 95 parcelas, com os R$ 77,00 da troca vencendo em 25/09. Para o Kaizen, crédito de cliente não é conta: sem tirar o modelo `TM`, a folga em 7 dias cairia R$ 77,00.
 2. **O crédito de troca entra no fechamento de caixa.** A linha "Troca/Devolução" teve calculado de −R$ 77,00; com o informado zero, virou sobra de R$ 77,00. A quebra de caixa do Kaizen precisa considerar só Dinheiro, Pix, Crédito e Débito.
 3. **Orçamento convertido conta no dia do orçamento.** O 154 soma por `DATE(datahora)`: um orçamento de segunda que vira venda na quarta entra na segunda. O Kaizen conta na data do fechamento (decisão de 25/09).
-4. **Pré-venda não fica ligada ao pedido.** As pré-vendas 64 e 65 (R$ 16,00 cada) e os pedidos 66 e 67 (R$ 16,00 cada, mesmo produto, de 1 a 3 minutos depois) não têm ligação gravada, e as pré-vendas continuam emitidas. O 154 não conta pré-venda, mas um relatório que conte pré-venda e pedido juntos, sem exigir recebimento, conta duas vezes **(confirmar** com o dono se as pré-vendas viraram esses pedidos).
+4. **Pré-venda não fica ligada ao pedido.** As pré-vendas 64 e 65 (R$ 16,00 cada) e os pedidos 66 e 67 (R$ 16,00 cada, mesmo produto, de 1 a 3 minutos depois) não têm ligação gravada, e as pré-vendas continuam emitidas. O 154 não conta pré-venda, mas um relatório que conte pré-venda e pedido juntos, sem exigir recebimento, conta duas vezes. O dono confirmou que as pré-vendas viraram esses pedidos, em ordem cruzada: a 65 virou o 66, e a 64 virou o 67. A ligação existe só como texto na observação do pedido ("Docs Origem: 18"), e o 18 é o número que o caixa dá à pré-venda (`documento.idexterno`), não o código do documento.
 5. **A pré-venda está marcada para reservar estoque (`flagreservaestoque = T`), mas nenhuma reserva apareceu.** O gatilho de estoque ignora documento que não movimenta estoque, e a pré-venda não movimenta **(confirmar** depois do inventário).
 6. **O ERP deixou devolver item de um orçamento.** A devolução em dinheiro (documento 63) aponta como origem o orçamento 59, que nunca foi venda: o produto 1362 ficou com +1 no estoque, e a gaveta com −R$ 18,00.
-7. **A importação sobrescreveu o Consumidor Final.** A pessoa 2, que era o Consumidor Final do ERP, virou um cliente real da Link (uma empresa). O dono criou outro Consumidor Final (999007) às 14h57 e o pôs como cliente padrão. Mesmo assim, as vendas de teste das 15h40 às 15h43 foram para a pessoa 2 **(confirmar** que as próximas vão para o 999007). O crédito da troca ficou no Consumidor Final (saldo de R$ 77,00 pela API). Na Fase 3, o Consumidor Final da Link (cliente 1229) liga ao 999007.
+7. **A importação sobrescreveu o Consumidor Final.** A pessoa 2, que era o Consumidor Final do ERP, virou um cliente real da Link (uma empresa). O dono criou outro Consumidor Final (999007) às 14h57 e o pôs como cliente padrão. O ERP não deixa vender sem cliente: no balcão, fica o Consumidor Final. Mesmo assim, as vendas de teste das 15h40 às 15h43 foram para a pessoa 2 **(confirmar** que as próximas vão para o 999007). O crédito da troca ficou no Consumidor Final (saldo de R$ 77,00 pela API). Na Fase 3, o Consumidor Final da Link (cliente 1229) liga ao 999007.
 
 **Estoque deixado pela simulação**, que o inventário de 26/09 deve acertar: produto 60 com −2, 1362 com +1, 2138 com −10 e 5278 com −1.
 
@@ -301,7 +303,7 @@ Depois da importação dos cadastros (feita em 24/09; resultados na seção "Con
 - [x] Quantos produtos vieram com custo zero: 84.
 - [x] Os 369 produtos a menos que na Link: limpeza de propósito do dono, que fez o mesmo com parte dos clientes.
 
-Antes de 01/10:
+Antes da operação real:
 
 - [x] Troca configurada (25/09): forma 5, "Troca/Devolução", e natureza 900.
 
@@ -314,25 +316,27 @@ Na simulação de 25/09 (seção "Simulação do dono"):
 - [x] Suprimento (`SF`) e devolução paga em dinheiro.
 - [x] As listas dentro de `documento` vêm preenchidas, exceto a parcela pendente do crédito de troca.
 - [x] O saldo de estoque gera entrada em `tabela_alteracao` a cada venda.
+- [x] As pré-vendas 64 e 65 viraram os pedidos 67 e 66; a ligação é só texto na observação do pedido.
 
-Ainda por testar, o que pode ser feito junto com o inventário:
+Testes de 26/09, **antes** do inventário, porque depois dele nada de teste pode mexer no estoque:
 
 - [ ] Cancelamento de venda inteira e de item antes de fechar.
 - [ ] Sangria (`RS`/`RT`).
 - [ ] Pagamento em Pix e em cartão, e venda com duas formas.
-- [ ] NFC-e, se a loja for emitir: tipo e status final.
 - [ ] Venda com o caixa sem internet: quanto demora a aparecer.
-- [ ] Se as próximas vendas sem cliente vão para o Consumidor Final 999007.
-- [ ] Se as pré-vendas 64 e 65 viraram os pedidos 66 e 67.
-- [ ] Orçamento feito num dia e fechado no outro: conferir que `datahoramovimento` leva a data do fechamento.
+- [ ] Se a venda com o cliente padrão do caixa cai no Consumidor Final 999007, e não na pessoa 2. O ERP não deixa vender sem cliente (dono, 25/09).
 - [ ] Que o caixa passou a exigir o vendedor.
+- [ ] Uso ou cancelamento do crédito de troca de R$ 77,00 da simulação, que senão entra na operação real como conta a pagar.
 
-Quando o dono lançar o estoque:
+Depois do inventário de 26/09:
 
-- [ ] Por qual documento o estoque entra, porque ele define a primeira entrada de todo produto migrado.
+- [ ] Que o saldo de cada produto ficou igual ao contado, inclusive nos produtos que os testes deixaram diferentes de zero. A configuração tem "zerar itens negativos" ligada e "substituir saldo dos itens contados" desligada (`config_estoque`).
+- [ ] Por qual documento o estoque entrou, porque ele define a primeira entrada de todo produto migrado.
 
-Depois de 01/10, com vendas reais:
+Na operação real, a partir de 28/09:
 
+- [ ] Primeira NFC-e e primeira NF-e: tipo, status final, e se a venda fica um documento só ou dois (pedido e nota). Se ficarem dois, o 154 pode contar em dobro.
+- [ ] Primeiro orçamento fechado em outro dia: conferir que `datahoramovimento` leva a data do fechamento.
 - [ ] Proporção de vendas para Consumidor Final; itens por venda; atraso real do caixa sem internet.
 - [ ] Se a DRE da API bate com a tela do ERP.
 

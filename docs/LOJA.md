@@ -45,7 +45,7 @@ Material de leitura para quem implementa. Nada aqui é regra de código; é o qu
 
 ## O ERP anterior (Link), para o tradutor da história
 
-A cópia congelada, esquema `erp` no Postgres da VPS, tem 26 tabelas, de 11/04/2026 até 30/09/2026. O que a Link guarda e como se lê está documentado em `C:\Projetos\prumo\docs\DICIONARIO.md` (repositório arquivado). Dois pontos que valem antecipar:
+A cópia congelada, esquema `erp` no Postgres da VPS, tem 26 tabelas e vai de 11/04/2026 a 25/09/2026, o último dia de venda na Link; a cópia final é tirada depois desse dia. O que a Link guarda e como se lê está documentado em `C:\Projetos\prumo\docs\DICIONARIO.md` (repositório arquivado). Dois pontos que valem antecipar:
 
 - A Link arredonda o líquido de cada item antes de somar; o valor gravado é o que vale, não se recalcula.
 - Estoque na Link é foto do dia da cópia; não há histórico de movimento.
@@ -54,7 +54,8 @@ A cópia congelada, esquema `erp` no Postgres da VPS, tem 26 tabelas, de 11/04/2
 
 - Cadastros migrados por planilha em 24/09/2026. O código de tela do produto na Link virou o próprio **código do produto** no ERP novo; a referência da variação guarda a referência do fabricante. O cliente leva CPF/CNPJ.
 - Na migração, o dono deixou de fora os produtos com que a loja não trabalha mais, e parte dos clientes: entraram 1.022 produtos, contra 1.391 ativos na Link.
-- Documentos (vendas, entradas) existem só a partir de 01/10/2026.
+- A operação real começa em 28/09/2026. Antes disso, os documentos do ERP são a importação (24/09) e os testes do dono (25 e 26/09), que o Kaizen não lê. O sábado, 26/09, não tem venda: é o dia do inventário, a pausa entre a Link e o ERP novo.
 - O PDV funciona offline: a venda pode aparecer na API depois da hora em que foi feita.
 - Desde 25/09/2026, o caixa exige o vendedor em toda venda.
+- Toda venda tem cliente: o ERP não fecha venda sem um. No balcão, fica o Consumidor Final (código 999007), que é o padrão do caixa. O Consumidor Final original (código 2) foi sobrescrito na importação por um cliente real.
 - Limites da API: cerca de 20 requisições por minuto do relógio (o excesso espera a virada do minuto, não dá erro) e até 100 registros por página (50 por padrão). Um dia tem em torno de 40 vendas.
