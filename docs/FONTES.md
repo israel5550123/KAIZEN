@@ -705,3 +705,13 @@ Extraído automaticamente do SQL de cada relatório (`relatorio.sql`) em 24/09/2
 | 170 | VENDAS POR PRODUTO AGRUPADO POR USUÁRIO | qualquer | E | não exige | — | |
 | 171 | VENDAS POR SEÇÃO COM DETALHE DE PRODUTOS | PV, PA, 65, 55, 57, OC, OS / escolhido na tela | E | não exige | itens | |
 | 172 | VENDAS POR TABELA DE PREÇO | 65, 55, PV, PA, OC | E | não exige | itens | |
+
+## Ensaio da Fase 2 (27/09/2026)
+
+O tradutor rodou no PC, lendo o ERP de verdade, só leitura, e gravando no Postgres local.
+
+- Cada consulta do tradutor rodou uma vez no ERP: a mais lenta levou 1.234 ms (limite: 30.000 ms). Nenhuma coluna esperada falta, e só existem a empresa 1 e o local de estoque 1.
+- Documentos acima do corte com data anterior a 28/09: 44 ajustes de custo (`AC`), de 27/09, números 94 a 137. Decisão: entram como reais (docs/DECISOES.md).
+- Execução da noite: 44 documentos, 0 movimentos de estoque, 1.029 produtos, 447 pessoas, 9 funcionários. A comparação dos totais por dia deu zero diferença em 1 dia (27/09).
+- Execução da hora: ok, sem documento novo (os mesmos 44 já lidos pela noite).
+- Avisos: nenhum.
