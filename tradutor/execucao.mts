@@ -2,23 +2,27 @@ import { emTransacao } from './banco.mts'
 import type { Cliente } from './banco.mts'
 import { avisoDocumentoApagado, avisoExecucaoPulada, avisoMovimentoSumiu } from './avisos.mts'
 import { apagarSumidos, colocarEntrada, gravarCadastros, gravarDocumentos, gravarEstoque, podeApagar } from './carga.mts'
+import { compararTotais } from './comparacao.mts'
 import { avisosDeFaltas, codigosSemTraducao, estoqueDiverge, fechamentosComResto } from './conferencias.mts'
-import { FOLGA_OID, PRAZO_MIN, TRAVA } from './constantes.mts'
+import { FOLGA_OID, PRAZO_MIN, TAMANHO_FATIA, TRAVA } from './constantes.mts'
 import { ErroErp } from './erp.mts'
 import type { Erp } from './erp.mts'
 import { emFortaleza, horariosFaltando, inicioDaJanela, proximoHorario, rotuloHora } from './janela.mts'
 import { contarDocumentosErp, lerCortes, maiorOid, oidsComParcelaAberta } from './kaizen.mts'
-import { conferirColunas, conferirEmpresaLocal, lerCadastros, lerDocumentosHora, lerEstoque, lerVivos } from './leitura.mts'
+import {
+  conferirColunas, conferirEmpresaLocal, lerCadastros, lerDocumentosFaixa, lerDocumentosHora,
+  lerEstoque, lerTotaisErp, lerVivos,
+} from './leitura.mts'
 import { aplicarMigracoes } from './migracoes.mts'
 import {
-  anteriorValida, execucaoPresa, horaDaUltimaBoa, marcarInterrompidas, marcarTelegram,
-  registrarFim, registrarInicio, registrarPulada, ultimaNoiteBoa, ultimoInicioNaoManualMs,
+  anteriorValida, avisosParaResumo, execucaoPresa, horaDaUltimaBoa, marcarInterrompidas, marcarResumo,
+  marcarTelegram, registrarFim, registrarInicio, registrarPulada, ultimaNoiteBoa, ultimoInicioNaoManualMs,
 } from './registro.mts'
 import type { Anterior } from './registro.mts'
-import { deveAvisarFalha, deveAvisarVolta, textoFalha, textoVolta } from './telegram.mts'
+import { deveAvisarFalha, deveAvisarVolta, textoFalha, textoResumo, textoVolta } from './telegram.mts'
 import type { Enviar } from './telegram.mts'
 import { ErroKaizen } from './tipos.mts'
-import type { Aviso, MotivoFalha, Resultado, TipoExecucao } from './tipos.mts'
+import type { Aviso, Cortes, MotivoFalha, Resultado, TipoExecucao } from './tipos.mts'
 
 export type Dependencias = {
   erp: Erp
@@ -88,6 +92,49 @@ async function idDaAberta(cliente: Cliente): Promise<number | null> {
   return r.rows[0].id === null ? null : Number(r.rows[0].id)
 }
 
+// Resumo das 22h: junta os avisos desde o último resumo enviado. Devolve o resultado do envio, ou undefined se não enviou.
+async function enviarResumo(cliente: Cliente, enviar: Enviar, id: number, agora: number): Promise<boolean | null | undefined> {
+  const { avisos, chavesAnteriores } = await avisosParaResumo(cliente)
+  const resumo = textoResumo(avisos, chavesAnteriores, emFortaleza(agora).data)
+  if (resumo.texto === null) {
+    // Dia limpo: não chega nada, e o próximo resumo começa daqui.
+    await marcarResumo(cliente, id, [])
+    return undefined
+  }
+  const ok = await enviarSemErro(enviar, resumo.texto)
+  // Se o Telegram recusou, estes avisos vão de novo no próximo resumo.
+  if (ok !== false) await marcarResumo(cliente, id, resumo.chaves)
+  return ok
+}
+
+async function conferirVivos(cliente: Cliente, vivos: number): Promise<void> {
+  const pode = podeApagar(await contarDocumentosErp(cliente), vivos)
+  if (!pode.ok) throw new ErroKaizen({ tipo: 'outra', detalhe: pode.motivo })
+}
+
+// Na noite, o movimento do Kaizen que não voltou do ERP é apagado. Uma lista que veio vazia ou com menos da
+// metade apagaria o histórico: é falha, com a mesma regra da lista de documentos vivos.
+async function conferirMovimentos(cliente: Cliente, textoEstoque: string): Promise<void> {
+  const r = await cliente.query<{ n: string }>(`select count(*) as n from kaizen.estoque_movimento where fonte = 'meuerp'`)
+  // Do JSON só sai a contagem; os saldos continuam texto e vão inteiros ao Postgres.
+  const lidos = (JSON.parse(textoEstoque) as { movimentos: unknown[] }).movimentos.length
+  if (!podeApagar(Number(r.rows[0].n), lidos).ok) {
+    throw new ErroKaizen({ tipo: 'outra', detalhe: 'a lista de movimentos do ERP veio vazia ou menor que a metade; nada foi apagado' })
+  }
+}
+
+// A consulta ao ERP tem no máximo 30 s; uma fatia que passa disso volta como erro de consulta.
+async function lerFatia(erp: Erp, cortes: Cortes, de: number, ate: number): Promise<string> {
+  try {
+    return await lerDocumentosFaixa(erp, cortes, de, ate)
+  } catch (erro) {
+    if (erro instanceof ErroErp && erro.tipo === 'consulta') {
+      throw new ErroKaizen({ tipo: 'outra', detalhe: `a fatia de documentos de oid ${de} a ${ate} falhou: ${erro.message}` })
+    }
+    throw erro
+  }
+}
+
 export async function executar(opcoes: Opcoes, dep: Dependencias): Promise<Saida> {
   const agora = dep.agora()
   const hora = emFortaleza(agora).hora
@@ -129,6 +176,7 @@ export async function executar(opcoes: Opcoes, dep: Dependencias): Promise<Saida
 
 async function rodar(cliente: Cliente, opcoes: Opcoes, dep: Dependencias, estado: Estado, id: number, agora: number): Promise<Saida> {
   const erp = dep.erp
+  const noite = opcoes.tipo === 'noite'
   if (!opcoes.manual) {
     const faltando = horariosFaltando(await ultimoInicioNaoManualMs(cliente, id), agora)
     estado.faltaram = faltando.length > 0
@@ -146,26 +194,38 @@ async function rodar(cliente: Cliente, opcoes: Opcoes, dep: Dependencias, estado
     throw new ErroKaizen({ tipo: 'estrutura', detalhe: `apareceu outra empresa ou local de estoque: ${lista}` })
   }
 
-  if (opcoes.tipo === 'noite') {
-    // A releitura da noite entra na tarefa 14; até lá, pedir a noite é falha registrada.
-    throw new ErroKaizen({ tipo: 'outra', detalhe: 'a leitura da noite ainda não existe nesta versão do tradutor' })
+  let documentos: string[]
+  let textoVivos: string
+  // Na noite, o maior oid da lista de vivos é o limite da releitura e da comparação de totais.
+  let maiorVivo = cortes.documento
+  if (noite) {
+    // A noite relê todo documento acima do corte, qualquer que seja a data: primeiro a lista de vivos, depois as fatias.
+    textoVivos = await lerVivos(erp, cortes)
+    const vivos = JSON.parse(textoVivos) as number[]
+    await conferirVivos(cliente, vivos.length)
+    maiorVivo = vivos.reduce((maior, oid) => Math.max(maior, oid), cortes.documento)
+    documentos = []
+    for (let de = cortes.documento + 1; de <= maiorVivo; de += TAMANHO_FATIA) {
+      documentos.push(await lerFatia(erp, cortes, de, de + TAMANHO_FATIA - 1))
+    }
+  } else {
+    const maiorDocumento = (await maiorOid(cliente, 'documento')) ?? cortes.documento
+    const selecao = {
+      novosAcimaDe: Math.max(cortes.documento, maiorDocumento - FOLGA_OID),
+      inicio: inicioDaJanela(agora, await ultimaNoiteBoa(cliente)),
+      pendentes: await oidsComParcelaAberta(cliente),
+    }
+    documentos = [await lerDocumentosHora(erp, cortes, selecao)]
+    textoVivos = await lerVivos(erp, cortes)
+    await conferirVivos(cliente, (JSON.parse(textoVivos) as number[]).length)
   }
-  const maiorDocumento = (await maiorOid(cliente, 'documento')) ?? cortes.documento
-  const selecao = {
-    novosAcimaDe: Math.max(cortes.documento, maiorDocumento - FOLGA_OID),
-    inicio: inicioDaJanela(agora, await ultimaNoiteBoa(cliente)),
-    pendentes: await oidsComParcelaAberta(cliente),
-  }
-  const documentos = [await lerDocumentosHora(erp, cortes, selecao)]
-
-  const textoVivos = await lerVivos(erp, cortes)
-  const vivos = JSON.parse(textoVivos) as number[]
-  const pode = podeApagar(await contarDocumentosErp(cliente), vivos.length)
-  if (!pode.ok) throw new ErroKaizen({ tipo: 'outra', detalhe: pode.motivo })
 
   const maiorMovimento = (await maiorOid(cliente, 'estoque_movimento')) ?? cortes.mercadoria_estoque_historico
-  const movimentosAcimaDe = Math.max(cortes.mercadoria_estoque_historico, maiorMovimento - FOLGA_OID)
+  const movimentosAcimaDe = noite
+    ? cortes.mercadoria_estoque_historico
+    : Math.max(cortes.mercadoria_estoque_historico, maiorMovimento - FOLGA_OID)
   const textoEstoque = await lerEstoque(erp, cortes, movimentosAcimaDe)
+  if (noite) await conferirMovimentos(cliente, textoEstoque)
   const textoCadastros = await lerCadastros(erp)
 
   // Os avisos da carga só valem se ela for gravada: ficam aqui até o commit.
@@ -181,13 +241,20 @@ async function rodar(cliente: Cliente, opcoes: Opcoes, dep: Dependencias, estado
     avisosDaCarga.push(...(await fechamentosComResto(cliente)))
     const apagados = await apagarSumidos(cliente)
     avisosDaCarga.push(...apagados.map(avisoDocumentoApagado))
-    const estoque = await gravarEstoque(cliente, false)
+    // Na noite a leitura é completa: movimento que não voltou sumiu do ERP.
+    const estoque = await gravarEstoque(cliente, noite)
     avisosDaCarga.push(...estoque.sumidos.map((s) => avisoMovimentoSumiu(s.origem_id, s.produto)))
     return { cadastros, lidos, apagados: apagados.length, estoque }
   })
   estado.avisos.push(...avisosDaCarga)
   estado.avisos.push(...(await codigosSemTraducao(cliente)))
   estado.avisos.push(...(await estoqueDiverge(cliente)))
+  if (noite) {
+    // Depois de gravar, só lendo: os totais de cada dia no ERP e no Kaizen, até o maior oid lido.
+    const movimentoAte = (await maiorOid(cliente, 'estoque_movimento')) ?? cortes.mercadoria_estoque_historico
+    const totais = await lerTotaisErp(erp, cortes, maiorVivo, movimentoAte)
+    estado.avisos.push(...(await compararTotais(cliente, totais, maiorVivo, movimentoAte)))
+  }
 
   const contagens: Record<string, number> = {
     documentos_lidos: carga.lidos.lidos,
@@ -205,10 +272,15 @@ async function rodar(cliente: Cliente, opcoes: Opcoes, dep: Dependencias, estado
   await registrarFim(cliente, id, { resultado, mensagem: null, contagens, avisos: estado.avisos })
 
   // Os dados já estão gravados: um erro daqui em diante não pode virar falha da leitura.
+  let ultimoEnvio: boolean | null | undefined
   if (deveAvisarVolta(resultado, estado.anterior, estado.faltaram)) {
-    const ok = await enviarSemErro(dep.enviar, textoVolta(emFortaleza(agora).hora))
-    await marcarTelegram(cliente, id, ok).catch(() => undefined)
+    ultimoEnvio = await enviarSemErro(dep.enviar, textoVolta(emFortaleza(agora).hora))
   }
+  if (noite) {
+    const doResumo = await enviarResumo(cliente, dep.enviar, id, agora).catch(() => false)
+    if (doResumo !== undefined) ultimoEnvio = doResumo
+  }
+  if (ultimoEnvio !== undefined) await marcarTelegram(cliente, id, ultimoEnvio).catch(() => undefined)
   return { resultado, avisos: estado.avisos, mensagem: null, contagens }
 }
 
@@ -231,6 +303,8 @@ async function falhar(cliente: Cliente, opcoes: Opcoes, dep: Dependencias, estad
   }
   if (estado.id !== null) {
     await registrarFim(cliente, estado.id, { resultado: 'falha', mensagem: motivo.detalhe, avisos: estado.avisos }).catch(() => undefined)
+    // A noite que falha depois de gravar a sua linha manda o resumo mesmo assim.
+    if (opcoes.tipo === 'noite') await enviarResumo(cliente, dep.enviar, estado.id, agora).catch(() => undefined)
   }
   if (deveAvisarFalha(estado.anterior)) {
     const ok = await enviarSemErro(dep.enviar, textoFalha(emFortaleza(agora).hora, motivo, horaBoa, textoProximo(agora)))
@@ -243,7 +317,7 @@ async function falhar(cliente: Cliente, opcoes: Opcoes, dep: Dependencias, estad
 }
 
 // Chamada pelo comando quando a execução passa do prazo: com uma conexão nova, marca como falha
-// a execução que ficou aberta e manda a mensagem, se for o caso.
+// a execução que ficou aberta e manda a mensagem, se for o caso. Na noite, o resumo sai antes.
 export async function registrarEstouro(opcoes: Opcoes, dep: Dependencias): Promise<void> {
   const agora = dep.agora()
   const hora = emFortaleza(agora).hora
@@ -259,6 +333,7 @@ export async function registrarEstouro(opcoes: Opcoes, dep: Dependencias): Promi
     }
     anterior = await anteriorValida(cliente, id)
     horaBoa = await horaDaUltimaBoa(cliente, id)
+    if (opcoes.tipo === 'noite' && id !== null) await enviarResumo(cliente, dep.enviar, id, agora)
   } catch {
     // sem banco, a mensagem sai mesmo assim
   }
