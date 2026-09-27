@@ -1,6 +1,6 @@
 # De onde vem cada número — relatório da Fase 1
 
-**Etapa 1 de 2 — 24/09/2026, revisada em 24, 25 e 26/09.** As revisões trouxeram as decisões do dono, a conferência da importação dos cadastros, a simulação e os testes do dono, e uma revisão completa do documento em 26/09. Esta etapa mapeou a estrutura: o que cada endpoint promete e todas as tabelas do banco. Ainda não há venda real no ERP, só as de teste de 25 e 26/09, que o suporte vai apagar. O que ainda depende de venda real está marcado **(confirmar)** e listado em "Etapa 2".
+**Fase 1 fechada em 27/09/2026, com o aval do dono.** O relatório foi escrito de 24 a 27/09. Nesses dias entraram as decisões do dono, a conferência da importação dos cadastros, a simulação e os testes, a revisão completa do documento, e a conferência da limpeza da base e do inventário. Ele mapeia o que cada endpoint promete e todas as tabelas do banco. Ainda não há venda real no ERP, que começa em 28/09. O que depende de venda real está marcado **(confirmar)** e listado em "Etapa 2"; é o primeiro passo da Fase 2.
 
 ## Resumo
 
@@ -17,7 +17,7 @@
   - o vendedor gravado foi quase sempre o Igor, inclusive nas vendas da Daniele e do suporte.
 
   Não apareceram cancelamento nem uma venda sem internet identificável.
-- **O que falta para fechar a fase.** As três listas existem, e os 25 indicadores apontam para elas, que é o "Pronto quando" do `OBJETIVO.md`. O que resta em "Etapa 2" é conferência: a limpeza da base pelo suporte e o inventário, antes de segunda, e o que só a operação real mostra, a partir de 28/09.
+- **A fase fechou em 27/09.** As três listas existem, e os 25 indicadores apontam para elas, que é o "Pronto quando" do `OBJETIVO.md`. A limpeza e o inventário foram conferidos em 27/09, e o inventário saiu certo. A limpeza apagou junto as 94 contas a pagar, que o dono vai importar de novo, e deixou restos sem documento, que o dono decidiu não mandar apagar (decisão 12). O que fica em aberto, listado em "Etapa 2", é o que só a operação real mostra a partir de 28/09, e isso passa a ser o primeiro passo da Fase 2.
 
 ## Decisões do dono (24 a 26/09/2026)
 
@@ -45,6 +45,11 @@
 
     Para a carência do encalhe, a data de entrada dos produtos migrados continua vindo da Link.
 11. **A limpeza da base é feita pelo suporte, direto no banco (combinado em 26/09).** O suporte apaga as movimentações de teste: documentos 51 a 118, menos os 5 ajustes de custo `AC` 76 a 80, que são reais. Mantém os cadastros de clientes, usuários, funcionários e produtos, as contas a pagar, as tarefas e as configurações. O Kaizen não apaga nem altera nada. Ele só confere, lendo, contra a fotografia de 26/09 (seção "Limpeza da base").
+12. **Fechamento da Fase 1 (27/09).** O dono fechou a fase com a conferência de 27/09 e decidiu duas coisas:
+    - **Contas a pagar:** a limpeza apagou as 94 parcelas. O dono vai importá-las de novo, e isso não atrapalha o projeto.
+    - **Restos da limpeza:** 30 linhas de conferência de caixa, 25 de histórico de estoque e 6 do documento 58 ficaram sem documento. O dono decidiu não pedir outra limpeza ao suporte.
+
+    Por isso, a Fase 2 leva em conta duas coisas. Linha de histórico de estoque com data anterior a 26/09, 22h40, é resto e fica fora. E, na conferência de caixa, um fechamento com mais de uma linha por forma de pagamento, ou com valores que não batem com as vendas do turno, é sinal de resto e vira aviso.
 
 ## Conferência da importação (24/09/2026)
 
@@ -192,6 +197,42 @@ O suporte vai apagar, direto no banco, as movimentações de teste, para o inven
 E o que tem de sair: os documentos de teste 51 a 118, que são 20 pedidos, 6 pré-vendas, 5 orçamentos, 2 trocas, 10 aberturas, 6 fechamentos, 4 suprimentos (`SF` e `SD`), 1 sangria, 8 liberações e o inventário "TESTE". Com eles saem os itens, os pagamentos, as parcelas (inclusive as 4 contas a receber de teste, de R$ 59,50), as conferências de caixa e as 25 linhas de histórico de estoque.
 
 **O ponto de atenção é o estoque.** Apagar documento direto no banco não desfaz o que ele fez no estoque, porque o gatilho `tr_estoque`, que atualiza o saldo, só roda quando um documento é incluído ou alterado. Na fotografia, 12 produtos tinham saldo de teste. Antes de encerrar o inventário, o saldo e a reserva de todos os produtos precisam estar em zero. Com o estoque zerado, tanto faz se o encerramento substitui o saldo pelo contado ou soma o contado ao saldo: o resultado é o mesmo.
+
+## Conferência depois da limpeza e do inventário (27/09/2026)
+
+Leitura de 27/09, comparada com a fotografia de 26/09.
+
+| O quê | Fotografia (26/09) | Agora (27/09) | Resultado |
+| --- | --- | --- | --- |
+| Documentos de teste 51 a 118 | 68 documentos | nenhum | apagados |
+| Contas a receber de teste | 4 (R$ 59,50) | nenhuma | apagadas |
+| **Contas a pagar** | **94 parcelas, R$ 245.864,76** | **nenhuma** | **apagadas junto: precisam ser importadas de novo** |
+| Produtos | 1.029 | 1.029 | iguais |
+| Custos | soma R$ 17.967,88; 84 com custo zero | soma R$ 17.888,83; 85 com custo zero | o produto 2978 ficou com custo 0 (custo médio R$ 79,05), às 21h51 de 26/09, de propósito |
+| Preços | soma R$ 33.841,65 | soma R$ 34.090,65 | 2 alterados, de propósito: o 2962 (R$ 250,00) e o 60 (R$ 16,00) |
+| Pessoas, funcionários e tarefas | 447, 9 e 219 | 447, 9 e 219 | iguais |
+| Leads do CRM | — | 575 | os da "Carteira antiga SNK", importados em 26/09; são reais |
+| Configuração | — | igual | só mudaram as regras do inventário: agora substitui o saldo dos contados e não zera negativos |
+
+**O inventário saiu certo.** O "BALANÇO 1" foi encerrado às 22h47 de 26/09 e virou o documento `LE` 48, com 788 itens e 54.660,5 unidades. Os números, produto a produto:
+
+- **Os 1.029 produtos** estão com o saldo igual ao contado.
+- **714 produtos têm estoque,** que soma 54.660,5 unidades.
+- **315 produtos ficaram com zero.**
+- **Nenhum produto está negativo,** e a reserva está zerada.
+- **Os 69 produtos contados mais de uma vez** tiveram as contagens somadas.
+
+Antes do encerramento, o suporte zerou os 12 produtos que os testes tinham mexido, com 5 ajustes de saldo (`AS`) às 22h40. O encerramento gravou 788 linhas no histórico de estoque. Por isso, a primeira entrada dos produtos contados é 26/09, às 22h47; para 12 deles, é o ajuste das 22h40. Como previsto, a carência do produto novo para os migrados vem da Link.
+
+**Dois problemas encontrados** (o dono decidiu como tratar cada um: decisão 12):
+
+1. **As 94 contas a pagar foram apagadas junto com os testes.** `conta-pagar/pendentes` está vazia. Sem elas, a folga em 7 e 30 dias sai errada. O dono vai importá-las de novo.
+2. **Ficaram restos dos testes sem o documento a que pertenciam:**
+   - 30 linhas de conferência de caixa (documentos 68, 71, 74, 98, 99 e 118);
+   - 25 linhas de histórico de estoque (documentos 54 a 117);
+   - 6 linhas do documento 58 em outras tabelas.
+
+   A numeração dos documentos recomeçou do 1 e hoje vai até o 49. Os documentos novos vão reusar os números 50 a 118, provavelmente já na segunda, e esses restos passam a parecer deles. Um fechamento novo com um desses números apareceria com a conferência de teste, e uma venda nova herdaria movimentos de estoque de teste. Isso já aconteceu uma vez: as 1.022 linhas de histórico da importação antiga (documento 1) agora aparecem ligadas ao documento 1 novo, um ajuste de custo. Como essas linhas são de 0 para 0, esse caso é inofensivo. O dono decidiu não mandar apagar esses restos; a Fase 2 os trata como diz a decisão 12.
 
 ## Em aberto para a Fase 2: por onde o tradutor lê
 
@@ -358,7 +399,7 @@ Para cadastros e saldo de estoque há `tabela_alteracao`, com versão crescente,
 
 **Limite e páginas.**
 
-- Foram 150 chamadas, todas respondidas, nenhuma recusada pelo limite (uma voltou com erro 400, por uma coluna errada numa consulta de leitura).
+- Foram 180 chamadas, todas respondidas, nenhuma recusada pelo limite (uma voltou com erro 400, por uma coluna errada numa consulta de leitura).
 - O tempo típico de resposta foi de 0,2 s, variando de 0,1 a 1,2 s.
 - O limite conta por minuto do relógio: com 19 chamadas no minuto, a seguinte ficou retida 22,7 s e só foi respondida na virada do minuto.
 - Nenhum cabeçalho informa o limite.
@@ -369,6 +410,8 @@ Para cadastros e saldo de estoque há `tabela_alteracao`, com versão crescente,
 **Fuso.** O banco está em `America/Sao_Paulo`, que tem o mesmo horário de Fortaleza (UTC−3, sem horário de verão). As datas são gravadas sem fuso, na hora local.
 
 ## Etapa 2 — o que falta conferir
+
+Com o fechamento da Fase 1, em 27/09, os itens abertos desta lista mudam de dono. Os da operação real ("Na operação real, a partir de 28/09") passam a ser o primeiro passo da Fase 2. Os outros ficam com o dono, como indicado em cada um.
 
 Depois da importação dos cadastros (feita em 24/09; resultados na seção "Conferência da importação"):
 
@@ -400,23 +443,31 @@ Testes de 26/09, antes de encerrar o inventário (seção "Testes do dono"):
 - [x] A venda com o cliente padrão cai no Consumidor Final 999007. O ERP não deixa vender sem cliente.
 - [x] O caixa exige o vendedor.
 - [x] O crédito de troca de R$ 77,00 foi consumido e a conta a pagar dele sumiu.
-- [ ] Cancelamento de venda inteira e de item antes de fechar: não aparece nos dados; conferir nos primeiros cancelamentos reais.
-- [ ] Venda com o caixa sem internet: não dá para identificar nos dados. Medir na operação real, comparando a hora em que o tradutor vê a venda com a hora gravada nela.
+- [x] Cancelamento de venda inteira e de item antes de fechar: não apareceu nos dados. Passou para "Na operação real".
+- [x] Venda com o caixa sem internet: não dá para identificar nos dados. Passou para "Na operação real": medir na operação real, comparando a hora em que o tradutor vê a venda com a hora gravada nela.
 
 Depois da limpeza da base pelo suporte, antes de encerrar o inventário (seção "Limpeza da base"; isso substitui "fechar os 5 turnos" e "limpar as 4 contas a receber"):
 
-- [ ] Sumiram os documentos de teste 51 a 118. `conta-receber/pendentes` voltou a 0, e não sobrou turno aberto.
-- [ ] Ficaram as 94 parcelas a pagar (R$ 245.864,76): `conta-pagar/pendentes` com 94 parcelas e esse total.
-- [ ] Ficaram os cadastros, as tarefas, a configuração e a contagem do "BALANÇO 1", com os números da fotografia.
-- [ ] Ficaram os custos dos produtos (soma de R$ 17.967,88), mesmo se os ajustes `AC` 76 a 80 forem apagados.
-- [ ] Todo produto está com saldo e reserva zero, e o histórico de estoque tem só as 1.022 linhas da importação.
+Conferido em 27/09 (seção "Conferência depois da limpeza e do inventário"):
+
+- [x] Sumiram os documentos de teste 51 a 118. `conta-receber/pendentes` voltou a 0, e não sobrou turno aberto. Ficaram restos sem documento (30 linhas de conferência, 25 de histórico, 6 do documento 58).
+- [x] Conferido: as 94 parcelas a pagar (R$ 245.864,76) **não** ficaram. Foram apagadas junto, e `conta-pagar/pendentes` está vazia (decisão 12).
+- [x] Ficaram os cadastros, as tarefas, a configuração e a contagem do "BALANÇO 1", com os números da fotografia.
+- [x] Ficaram os custos, exceto o produto 2978, que ficou com custo 0 às 21h51 de 26/09.
+- [x] Os 12 produtos mexidos pelos testes foram zerados antes do inventário, com 5 ajustes de saldo `AS`.
+
+Com o dono (decisão 12):
+
+- [ ] Importar de novo as 94 contas a pagar. O dono resolve depois, e isso não atrapalha o projeto.
+- [x] Restos sem documento (30 linhas de `documento_conferencia_caixa`, 25 de `mercadoria_estoque_historico` e 6 do documento 58): o dono decidiu não mandar apagar. A Fase 2 trata esses restos como descrito na decisão 12.
+- [x] O custo 0 do produto 2978 e os preços novos do 2962 e do 60 são de propósito (dono, 27/09).
 
 Depois do encerramento do inventário:
 
-- [ ] Que o saldo de cada produto ficou igual ao contado: comparar `mercadoria_estoque.qtdsaldo` com `inventario_encerramento.qtdcontada`. Pela API, `inventario/2/encerramentos` traz `qtdAnterior` e `qtdContada` por produto, e `local-estoque/1/estoques` traz o saldo depois do encerramento.
-- [ ] Os produtos sem contagem: dos 1.029, 714 estavam contados em 26/09, e faltavam 315. Com "zerar itens não contados" desligada, cada produto não contado fica com o saldo que tinha no encerramento, zero depois da limpeza. O dono confirma que esses produtos não têm mesmo mercadoria na loja. Produto com mercadoria e saldo zero vira ruptura falsa na primeira venda e sai da cobertura, do giro e do encalhe. Para comparar: na Link, em 12/09, 863 produtos tinham estoque positivo.
-- [ ] Os 69 produtos contados mais de uma vez (por exemplo, o 1583 e o 1585, com duas contagens cada): se o saldo final é a soma das contagens, e se era para somar (o mesmo produto em dois lugares) ou se foi contagem repetida.
-- [ ] Por qual documento o estoque entrou, e se ele grava itens e linhas em `mercadoria_estoque_historico`. O `LE` 72, do inventário "TESTE", não gravou nenhuma linha, e é dessas linhas que sai a primeira entrada de cada produto.
+- [x] O saldo de cada produto ficou igual ao contado, nos 1.029: `mercadoria_estoque.qtdsaldo` igual a `inventario_encerramento.qtdcontada`.
+- [ ] Com o dono: confirmar os produtos sem contagem. Dos 1.029, 714 foram contados, e os 315 restantes ficaram com saldo zero. Com "zerar itens não contados" desligada, cada produto não contado fica com o saldo que tinha no encerramento, zero depois da limpeza. O dono confirma que esses produtos não têm mesmo mercadoria na loja. Produto com mercadoria e saldo zero vira ruptura falsa na primeira venda e sai da cobertura, do giro e do encalhe. Para comparar: na Link, em 12/09, 863 produtos tinham estoque positivo.
+- [x] Os 69 produtos contados mais de uma vez tiveram as contagens somadas no encerramento. Falta o dono confirmar que era para somar (o mesmo produto em dois lugares) e que não foi contagem repetida.
+- [x] O estoque entrou pelo documento `LE` 48, que gravou 788 itens e 788 linhas em `mercadoria_estoque_historico`. A primeira entrada dos produtos contados é 26/09, 22h47.
 
 Na operação real, a partir de 28/09:
 
@@ -432,7 +483,7 @@ Na operação real, a partir de 28/09:
 
 ## Como foi feito
 
-Um script descartável, fora do repositório, chamou a API com uma trava que só deixa passar leitura: GET, e POST apenas no `consulta/sql` com um único comando SELECT. Foram 150 chamadas (59 endpoints, 91 consultas SQL) e nenhuma escrita: 21 na conferência da importação, 26 na leitura da simulação, 26 na leitura dos testes de 26/09 e 7 na fotografia antes da limpeza. O mapa do banco veio de `information_schema` (365 tabelas e 3 visões), dos gatilhos (inclusive o código do que grava o histórico de estoque) e do SQL dos 172 relatórios do próprio ERP.
+Um script descartável, fora do repositório, chamou a API com uma trava que só deixa passar leitura: GET, e POST apenas no `consulta/sql` com um único comando SELECT. Foram 180 chamadas (63 endpoints, 117 consultas SQL) e nenhuma escrita: 21 na conferência da importação, 26 na leitura da simulação, 26 na leitura dos testes de 26/09, 7 na fotografia antes da limpeza e 30 na conferência depois dela. O mapa do banco veio de `information_schema` (365 tabelas e 3 visões), dos gatilhos (inclusive o código do que grava o histórico de estoque) e do SQL dos 172 relatórios do próprio ERP.
 
 A revisão também foi feita de forma independente. As conclusões sobre os testes de 26/09 passaram por três verificadores, e o documento inteiro, em 26/09, por cinco revisores (completude, coerência, exatidão contra os dados, utilidade para a Fase 2 e clareza para o dono). Cada revisor teve um verificador que tentou derrubar os achados. Os 60 achados foram confirmados e corrigidos neste documento.
 
