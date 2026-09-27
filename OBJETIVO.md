@@ -31,7 +31,7 @@ Estas decisões já foram tomadas e não se reabrem sem conversa com o dono.
 - **App Flutter** exibe. Material 3, `fl_chart` para gráficos. Não calcula nada.
 - **Firebase só para autenticação** (Google e e-mail/senha) **e notificação push**. Plano gratuito. Nenhum serviço com cota diária ou cartão de crédito entra no projeto.
 - **Servidor em TypeScript** (tradutores, rotina, API), como a VPS já roda.
-- **Dois ambientes**: local (Postgres em Docker no PC) e VPS (Docker Swarm, stack `prumo`, segredos do Swarm para senhas e token).
+- **Dois ambientes**: local (Postgres em Docker no PC) e VPS (Docker Swarm, stack `kaizen`, ligada ao Postgres da stack `prumo`, e segredos do Swarm para senhas e token). A stack própria foi decidida pelo dono em 27/09/2026, na spec da Fase 2.
 - Fuso horário `America/Fortaleza`. Textos, commits, testes e relatórios em português.
 
 ## Destino completo

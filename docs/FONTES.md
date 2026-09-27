@@ -50,6 +50,7 @@
     - **Restos da limpeza:** 30 linhas de conferência de caixa, 25 de histórico de estoque e 6 do documento 58 ficaram sem documento. O dono decidiu não pedir outra limpeza ao suporte.
 
     Por isso, a Fase 2 leva em conta duas coisas. Linha de histórico de estoque com data anterior a 26/09, 22h40, é resto e fica fora. E, na conferência de caixa, um fechamento com mais de uma linha por forma de pagamento, ou com valores que não batem com as vendas do turno, é sinal de resto e vira aviso.
+13. **Ajustes de custo de 27/09 (confirmado pelo dono no mesmo dia).** Os 44 documentos `AC` feitos das 14h20 às 14h33, com números 94 a 137, são reais. Eles ficam acima do corte da Fase 2 e entram no Kaizen como os outros ajustes.
 
 ## Conferência da importação (24/09/2026)
 
@@ -236,7 +237,7 @@ Antes do encerramento, o suporte zerou os 12 produtos que os testes tinham mexid
 
 ## Em aberto para a Fase 2: por onde o tradutor lê
 
-Duas posições, com o argumento de cada uma. A decisão é do brainstorming da Fase 2.
+**Decidido pelo dono em 27/09, no brainstorming da Fase 2: SQL como caminho único.** O motivo é que o endpoint não dispensa o SQL (caixa, contas pagas, fornecedor) e traria duas exceções, porque só filtra documento pela data de criação. O desenho está em `docs/superpowers/specs/2026-09-27-fase2-esquema-e-tradutor-design.md`. As duas posições que estavam em discussão:
 
 - **Endpoint onde existe, SQL só para o que falta** (inclinação do dono). Os endpoints são interface pública, documentada no swagger. O SQL lê o esquema interno do ERP: não tem contrato e pode mudar sem aviso numa atualização. Nesse caminho, o SQL fica restrito ao que não tem endpoint: caixa (a conferência do fechamento, o principal), contas pagas por data de pagamento, histórico de estoque (estoque médio e primeira entrada), item removido antes de fechar, hora do cancelamento e fornecedor do produto.
 - **SQL como caminho único.** Um mecanismo só (uma paginação, um formato), alcance de todas as tabelas, e as colunas com os nomes listados no fim deste documento. A proteção contra mudança de esquema seria o tradutor conferir, a cada execução, se as colunas esperadas existem, e falhar com aviso.

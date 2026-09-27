@@ -1,6 +1,6 @@
 # Fase 2 — esquema próprio e tradutor do ERP novo
 
-**Desenho aprovado seção por seção pelo dono em 27/09/2026.** Este documento é a spec da Fase 2 do `OBJETIVO.md`. Ele diz o que se guarda, de onde vem cada coluna nas duas fontes, como o tradutor lê e grava, onde roda, como avisa, como se testa e quando a fase fecha. Depois de escrita, ela passou por uma revisão independente com cinco lentes e um verificador: dos 92 achados, 59 se sustentaram e estão incorporados aqui. O plano de implementação vem depois, a partir daqui.
+**Desenho aprovado seção por seção pelo dono em 27/09/2026, e a spec escrita aprovada no mesmo dia.** Este documento é a spec da Fase 2 do `OBJETIVO.md`. Ele diz o que se guarda, de onde vem cada coluna nas duas fontes, como o tradutor lê e grava, onde roda, como avisa, como se testa e quando a fase fecha. Depois de escrita, ela passou por uma revisão independente com cinco lentes e um verificador: dos 92 achados, 59 se sustentaram e estão incorporados aqui. O plano de implementação vem depois, a partir daqui.
 
 ## 1. Resumo
 
@@ -26,7 +26,7 @@
 | 1 | O tradutor lê o ERP novo **só pelo SQL** (`POST /api/consulta/sql/v1`, só SELECT), não pelos endpoints. Os endpoints não dispensam o SQL (caixa, contas pagas, fornecedor) e só filtram documento pela data de criação, o que traria duas exceções: o orçamento fechado dias depois no próprio documento e o cancelamento fora da janela. Proteção contra mudança do esquema interno: o tradutor confere as colunas a cada execução e para com aviso. | Dono, 27/09 (fecha a questão em aberto do `FONTES.md`) |
 | 2 | Aviso de falha **pelo Telegram, mandado pelo próprio tradutor**. O dono aceitou o limite: se o tradutor nem rodar (VPS desligada, serviço parado, agendamento quebrado depois de uma atualização), não chega aviso na hora. Quando ele voltar a rodar, o resumo diz que houve leitura faltando. | Dono, 27/09 |
 | 3 | Formato do esquema: **documento em palavras do negócio**. Uma tabela de documento para todos os tipos, com itens, pagamentos, parcelas e conferência. O tipo vem de uma tabela de tradução; "venda válida" é regra da Fase 4. | Dono, 27/09 |
-| 4 | **Exceção declarada**, para a Fase 3: o tradutor da Link calcula o valor líquido do item vendido com a conta da própria Link (arredondamento meio-par por item e rateio do desconto e do acréscimo da negociação, `C:\Projetos\prumo\docs\DICIONARIO.md`), conferindo contra o total gravado (`valor_total_venda`). É a única exceção a "o tradutor não recalcula". | Dono, 27/09 |
+| 4 | **Exceção declarada**, para a Fase 3: o tradutor da Link calcula o valor líquido do item com a conta da própria Link, porque ela não grava o valor por item. No item vendido, a conta é o arredondamento meio-par por item e o rateio do desconto e do acréscimo da negociação (`C:\Projetos\prumo\docs\DICIONARIO.md`), conferida contra `valor_total_venda`. No item devolvido, é `qtd × preco_liquido_unitario`, conferida contra `valor_total_devolucao`. É a única exceção a "o tradutor não recalcula". | Dono, 27/09 (o item devolvido foi incluído no aval da spec) |
 | 5 | O tradutor roda numa **stack própria, `kaizen`**, ligada à rede do Postgres da stack `prumo`. O banco é o mesmo do `OBJETIVO.md`; o Kaizen nunca reimplanta a stack `prumo`. | Dono, 27/09 |
 | 6 | O a pagar entra inteiro: todas as parcelas pendentes, de qualquer data, e não só as de 28/09 em diante. | Dono, 27/09 (responde à pergunta da Fase 1) |
 | 7 | As conferências da operação real ("Na operação real, a partir de 28/09" no `FONTES.md`) viram tarefas desta fase (seção 9). A conferência da DRE sai da lista: o Kaizen não usa a DRE. | Dono, 27/09 |
@@ -43,10 +43,10 @@
 
 4. Importar de novo as contas a pagar.
 5. Criar um robô no BotFather do Telegram e mandar uma mensagem para ele. O token só vai para o segredo da VPS, no dia da implantação.
-6. Autorizar ajustar no `OBJETIVO.md` a linha "stack `prumo`" para "stack `kaizen`, ligada ao Postgres da stack `prumo`" (decisão 5).
-7. Responder: a exceção da decisão 4 cobre também o item devolvido da Link? A Link também não grava o valor do item devolvido, que sai de `qtd × preco_liquido_unitario`.
-8. Tomar ciência do limite do estoque antes de 28/09 (seção 11).
-9. Conferir os documentos acima do corte com data anterior a 28/09 (seção 5.4). Hoje são os 44 ajustes de custo feitos em 27/09, das 14h20 às 14h33.
+6. ~~Autorizar o ajuste no `OBJETIVO.md`~~: autorizado e feito em 27/09.
+7. ~~Responder se a exceção da decisão 4 cobre o item devolvido~~: cobre (27/09).
+8. ~~Tomar ciência do limite do estoque antes de 28/09 (seção 11)~~: ciente (27/09).
+9. Conferir os documentos acima do corte com data anterior a 28/09 (seção 5.4). Os 44 ajustes de custo de 27/09, das 14h20 às 14h33, são reais (dono, 27/09; `FONTES.md`, decisão 13). O que aparecer depois disso até a abertura de 28/09 volta ao dono.
 
 **Na implantação,** pelo roteiro do plano, na VPS, como `root`, entre hh:10 e hh:50, fora da hora em que o tradutor roda. Quem implementa não tem acesso à VPS.
 
@@ -136,7 +136,7 @@
 | `sentido` | text | S = saiu da loja; E = entrou; N = não mexe no estoque | `tipomovimento` do documento | S no item vendido; E no item devolvido e no item de nota |
 | `produto` | text | código do produto | `idmercadoriavariacao` | `produto.produto_codigo` (via `id_produto`) |
 | `quantidade` | numeric, pode faltar | | `qtd` (vazia no ajuste de custo `AC`) | `qtd` (nota: `qtd_produto`) |
-| `valor_liquido` | numeric, pode faltar | valor do item depois do desconto | `valtotalliquido` (vazio nos ajustes `AS` e `AC`) | vendido: a conta da Link (decisão 4). Devolvido: `qtd × preco_liquido_unitario`, sem arredondar, conferido contra `valor_total_devolucao` arredondando linha a linha; a Link não grava o valor por item devolvido (pergunta 7 da seção 3) |
+| `valor_liquido` | numeric, pode faltar | valor do item depois do desconto | `valtotalliquido` (vazio nos ajustes `AS` e `AC`) | vendido: a conta da Link (decisão 4). Devolvido: `qtd × preco_liquido_unitario`, sem arredondar, conferido contra `valor_total_devolucao` arredondando linha a linha (decisão 4) |
 | `vendedor` | text, pode faltar | código do vendedor | `idpessoafuncionario` (0 ou vazio → vazio) | `negociacao.id_usuario` |
 
 #### `documento_pagamento` — forma e valor de cada documento
@@ -695,7 +695,7 @@ O comando também imprime as execuções esperadas e feitas e o resultado da com
 ## 12. Para as próximas fases
 
 - **Fase 3 (Link):**
-  - o valor do item pela conta da Link (decisão 4) e a resposta do dono sobre o item devolvido;
+  - o valor do item pela conta da Link, vendido e devolvido (decisão 4);
   - o vale-crédito e a devolução em dinheiro, que vêm do razão;
   - a regra de conta a pagar da Link, com conta de destino e sinal na parcela;
   - a fronteira do a pagar: as contas abertas da Link foram migradas para o ERP novo, então a mesma conta existe nas duas fontes;
