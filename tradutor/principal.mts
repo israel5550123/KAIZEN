@@ -1,4 +1,5 @@
 import { conectar } from './banco.mts'
+import { rodarConferencia } from './conferencia-dono.mts'
 import { lerConfig } from './config.mts'
 import { PRAZO_MIN } from './constantes.mts'
 import { criarErp } from './erp.mts'
@@ -8,7 +9,7 @@ import { criarEnvioTelegram, textoTeste } from './telegram.mts'
 import { ErroKaizen } from './tipos.mts'
 import type { TipoExecucao } from './tipos.mts'
 
-const USO = 'uso: node tradutor/principal.mts hora|noite [--manual] | teste-telegram'
+const USO = 'uso: node tradutor/principal.mts hora|noite [--manual] | teste-telegram | conferencia [produto ...]'
 
 export async function comPrazo<T>(fazer: () => Promise<T>, prazoMs: number, aoEstourar: () => Promise<void>): Promise<T> {
   return new Promise<T>((resolver, rejeitar) => {
@@ -54,6 +55,12 @@ export async function principal(argumentos: string[], env: Record<string, string
     if (ok === null) console.log('teste-telegram: TELEGRAM_TOKEN e TELEGRAM_CHAT não estão configurados; a mensagem saiu só aqui')
     else console.log(ok ? 'teste-telegram: o Telegram aceitou a mensagem' : 'teste-telegram: o Telegram não aceitou a mensagem')
     return ok === true ? 0 : 1
+  }
+  if (comando === 'conferencia') {
+    // Só lê o banco do Kaizen: os argumentos que vierem depois são os códigos dos produtos para o saldo.
+    const config = lerConfig(env)
+    console.log(await rodarConferencia(config.kaizenUrl, resto, Date.now()))
+    return 0
   }
   const manual = resto.length === 1 && resto[0] === '--manual'
   if ((comando !== 'hora' && comando !== 'noite') || (resto.length > 0 && !manual)) {
