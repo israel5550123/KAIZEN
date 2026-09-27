@@ -1,0 +1,5 @@
+publicacao/crontab text eol=lf
+.githooks/* text eol=lf
+*.sh text eol=lf
+*.mts text eol=lf
+*.sql text eol=lf
