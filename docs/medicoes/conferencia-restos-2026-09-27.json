@@ -1,0 +1,276 @@
+{
+ "medido_em": "2026-09-27 14:34:38.495841-03",
+ "origem": "meuerp documento_conferencia_caixa (restos dos testes de 25-26/09; nenhum documento existe)",
+ "linhas": [
+  {
+   "oid": "1",
+   "iddocumento": "68",
+   "idpagamento": "1",
+   "descricao": "Dinheiro",
+   "valdisponivel": "92.00",
+   "valconferido": "0.00",
+   "documento_existe": false
+  },
+  {
+   "oid": "2",
+   "iddocumento": "68",
+   "idpagamento": "2",
+   "descricao": "Pix",
+   "valdisponivel": "0.00",
+   "valconferido": "0.00",
+   "documento_existe": false
+  },
+  {
+   "oid": "3",
+   "iddocumento": "68",
+   "idpagamento": "3",
+   "descricao": "Cartão Crédito",
+   "valdisponivel": "0.00",
+   "valconferido": "0.00",
+   "documento_existe": false
+  },
+  {
+   "oid": "4",
+   "iddocumento": "68",
+   "idpagamento": "4",
+   "descricao": "Cartão Débito",
+   "valdisponivel": "0.00",
+   "valconferido": "0.00",
+   "documento_existe": false
+  },
+  {
+   "oid": "5",
+   "iddocumento": "68",
+   "idpagamento": "5",
+   "descricao": "Troca/Devolução",
+   "valdisponivel": "-77.00",
+   "valconferido": "0.00",
+   "documento_existe": false
+  },
+  {
+   "oid": "6",
+   "iddocumento": "71",
+   "idpagamento": "1",
+   "descricao": "Dinheiro",
+   "valdisponivel": "0.00",
+   "valconferido": "0.00",
+   "documento_existe": false
+  },
+  {
+   "oid": "7",
+   "iddocumento": "71",
+   "idpagamento": "2",
+   "descricao": "Pix",
+   "valdisponivel": "0.00",
+   "valconferido": "0.00",
+   "documento_existe": false
+  },
+  {
+   "oid": "8",
+   "iddocumento": "71",
+   "idpagamento": "3",
+   "descricao": "Cartão Crédito",
+   "valdisponivel": "0.00",
+   "valconferido": "0.00",
+   "documento_existe": false
+  },
+  {
+   "oid": "9",
+   "iddocumento": "71",
+   "idpagamento": "4",
+   "descricao": "Cartão Débito",
+   "valdisponivel": "0.00",
+   "valconferido": "0.00",
+   "documento_existe": false
+  },
+  {
+   "oid": "10",
+   "iddocumento": "71",
+   "idpagamento": "5",
+   "descricao": "Troca/Devolução",
+   "valdisponivel": "0.00",
+   "valconferido": "0.00",
+   "documento_existe": false
+  },
+  {
+   "oid": "11",
+   "iddocumento": "74",
+   "idpagamento": "1",
+   "descricao": "Dinheiro",
+   "valdisponivel": "0.00",
+   "valconferido": "0.00",
+   "documento_existe": false
+  },
+  {
+   "oid": "12",
+   "iddocumento": "74",
+   "idpagamento": "2",
+   "descricao": "Pix",
+   "valdisponivel": "0.00",
+   "valconferido": "0.00",
+   "documento_existe": false
+  },
+  {
+   "oid": "13",
+   "iddocumento": "74",
+   "idpagamento": "3",
+   "descricao": "Cartão Crédito",
+   "valdisponivel": "0.00",
+   "valconferido": "0.00",
+   "documento_existe": false
+  },
+  {
+   "oid": "14",
+   "iddocumento": "74",
+   "idpagamento": "4",
+   "descricao": "Cartão Débito",
+   "valdisponivel": "0.00",
+   "valconferido": "0.00",
+   "documento_existe": false
+  },
+  {
+   "oid": "15",
+   "iddocumento": "74",
+   "idpagamento": "5",
+   "descricao": "Troca/Devolução",
+   "valdisponivel": "0.00",
+   "valconferido": "0.00",
+   "documento_existe": false
+  },
+  {
+   "oid": "16",
+   "iddocumento": "98",
+   "idpagamento": "1",
+   "descricao": "Dinheiro",
+   "valdisponivel": "58.00",
+   "valconferido": "20.00",
+   "documento_existe": true
+  },
+  {
+   "oid": "17",
+   "iddocumento": "98",
+   "idpagamento": "2",
+   "descricao": "Pix",
+   "valdisponivel": "0.60",
+   "valconferido": "0.00",
+   "documento_existe": true
+  },
+  {
+   "oid": "18",
+   "iddocumento": "98",
+   "idpagamento": "3",
+   "descricao": "Cartão Crédito",
+   "valdisponivel": "0.80",
+   "valconferido": "0.00",
+   "documento_existe": true
+  },
+  {
+   "oid": "19",
+   "iddocumento": "98",
+   "idpagamento": "4",
+   "descricao": "Cartão Débito",
+   "valdisponivel": "0.00",
+   "valconferido": "0.00",
+   "documento_existe": true
+  },
+  {
+   "oid": "20",
+   "iddocumento": "98",
+   "idpagamento": "5",
+   "descricao": "Troca/Devolução",
+   "valdisponivel": "0.00",
+   "valconferido": "0.00",
+   "documento_existe": true
+  },
+  {
+   "oid": "21",
+   "iddocumento": "99",
+   "idpagamento": "1",
+   "descricao": "Dinheiro",
+   "valdisponivel": "115.00",
+   "valconferido": "0.00",
+   "documento_existe": true
+  },
+  {
+   "oid": "22",
+   "iddocumento": "99",
+   "idpagamento": "2",
+   "descricao": "Pix",
+   "valdisponivel": "15.00",
+   "valconferido": "0.00",
+   "documento_existe": true
+  },
+  {
+   "oid": "23",
+   "iddocumento": "99",
+   "idpagamento": "3",
+   "descricao": "Cartão Crédito",
+   "valdisponivel": "5.00",
+   "valconferido": "0.00",
+   "documento_existe": true
+  },
+  {
+   "oid": "24",
+   "iddocumento": "99",
+   "idpagamento": "4",
+   "descricao": "Cartão Débito",
+   "valdisponivel": "0.00",
+   "valconferido": "0.00",
+   "documento_existe": true
+  },
+  {
+   "oid": "25",
+   "iddocumento": "99",
+   "idpagamento": "5",
+   "descricao": "Troca/Devolução",
+   "valdisponivel": "0.00",
+   "valconferido": "0.00",
+   "documento_existe": true
+  },
+  {
+   "oid": "26",
+   "iddocumento": "118",
+   "idpagamento": "1",
+   "descricao": "Dinheiro",
+   "valdisponivel": "45.00",
+   "valconferido": "0.00",
+   "documento_existe": true
+  },
+  {
+   "oid": "27",
+   "iddocumento": "118",
+   "idpagamento": "2",
+   "descricao": "Pix",
+   "valdisponivel": "0.00",
+   "valconferido": "0.00",
+   "documento_existe": true
+  },
+  {
+   "oid": "28",
+   "iddocumento": "118",
+   "idpagamento": "3",
+   "descricao": "Cartão Crédito",
+   "valdisponivel": "0.00",
+   "valconferido": "0.00",
+   "documento_existe": true
+  },
+  {
+   "oid": "29",
+   "iddocumento": "118",
+   "idpagamento": "4",
+   "descricao": "Cartão Débito",
+   "valdisponivel": "0.00",
+   "valconferido": "0.00",
+   "documento_existe": true
+  },
+  {
+   "oid": "30",
+   "iddocumento": "118",
+   "idpagamento": "5",
+   "descricao": "Troca/Devolução",
+   "valdisponivel": "77.00",
+   "valconferido": "0.00",
+   "documento_existe": true
+  }
+ ]
+}
