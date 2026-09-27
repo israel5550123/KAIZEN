@@ -1,0 +1,2 @@
+0 8-19 * * 1-6 cd /kaizen && node --env-file=/run/secrets/kaizen_env tradutor/principal.mts hora
+0 22 * * 1-6 cd /kaizen && node --env-file=/run/secrets/kaizen_env tradutor/principal.mts noite
