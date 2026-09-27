@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs'
 import type { QueryResult } from 'pg'
 import type { Cliente } from './banco.mts'
+import { LIMIAR_VIVOS } from './constantes.mts'
 
 function lerCarga(nome: string): string {
   return readFileSync(new URL(`../sql/carga/${nome}.sql`, import.meta.url), 'utf8')
@@ -38,7 +39,6 @@ export async function gravarDocumentos(cliente: Cliente): Promise<CargaDocumento
 export type Apagado = { origem_id: string; codigo: string; tipo: string | null; criado_em: string; valor: string; vendedores: string | null }
 
 // Spec 6.3, passo 7: com menos de 20 documentos do ERP novo no Kaizen, só a lista vazia é recusada.
-const LIMIAR_VIVOS = 20
 const MOTIVO_VIVOS = 'a lista de documentos do ERP veio vazia ou menor que a metade; nada foi apagado'
 
 export function podeApagar(noKaizen: number, vivos: number): { ok: true } | { ok: false; motivo: string } {
