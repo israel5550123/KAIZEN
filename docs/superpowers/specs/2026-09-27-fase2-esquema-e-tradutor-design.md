@@ -31,6 +31,19 @@
 | 6 | O a pagar entra inteiro: todas as parcelas pendentes, de qualquer data, e não só as de 28/09 em diante. | Dono, 27/09 (responde à pergunta da Fase 1) |
 | 7 | As conferências da operação real ("Na operação real, a partir de 28/09" no `FONTES.md`) viram tarefas desta fase (seção 9). A conferência da DRE sai da lista: o Kaizen não usa a DRE. | Dono, 27/09 |
 
+### Alternativas consideradas
+
+O critério que decidiu cada uma é o do `OBJETIVO.md`: menos peças, menos regras, menos dependências, nenhuma exceção para funcionar.
+
+- **Endpoint onde existe, SQL só para o que falta** (decisão 1). O dono preferia de início. Perdeu porque o SQL continuaria necessário (caixa, contas pagas, fornecedor), e o endpoint traria duas exceções: orçamento fechado dias depois e cancelamento fora da janela.
+- **Healthchecks.io avisando por e-mail ou Telegram** (decisão 2). Cobriria também o "nem rodou", mas é um serviço de fora a mais. O dono escolheu o Telegram direto, aceitando o limite.
+- **E-mail direto pelo Gmail** (decisão 2). Pedia uma senha de app e não cobre o "nem rodou" melhor que o Telegram.
+- **Uma tabela por fato: vendas, trocas, turnos, contas** (decisão 3). Deixaria as consultas mais diretas, mas faria o tradutor decidir o que é venda. Se a NFC-e sair como segundo documento, seria preciso mudar o tradutor e reler tudo.
+- **Cópia das tabelas do ERP como estão** (decisão 3). Contraria o "esquema próprio" do `OBJETIVO.md`, e a Link não caberia.
+- **Estoque diário por foto do saldo.** Perdeu para o histórico de movimentos: um dia sem leitura não se refaz, e o tradutor entra no ar dias depois de 28/09.
+- **Reimplantar a stack `prumo` com o serviço do Kaizen dentro** (decisão 5). Arriscaria reiniciar ou alterar o banco, cuja definição mora no repositório arquivado do Prumo.
+- **Guardar as partes do valor do item da Link e calcular na Fase 4** (decisão 4). Deixaria na Fase 4 uma regra que só vale para a Link.
+
 ## 3. O que o dono faz
 
 **Hoje, 27/09, se ainda não fez.** Na VPS, como `root`, antes das 8h de segunda:
@@ -358,7 +371,11 @@ Esta é a conferência de que o esquema responde o destino. As regras em si são
 
 ### 6.1 Peças
 
-Cada peça faz uma coisa e pode ser testada sozinha.
+Cada peça faz uma coisa e pode ser testada sozinha. Pastas:
+- **`tradutor/`:** o código em TypeScript, com o teste de cada arquivo ao lado. Na Fase 3, o tradutor da Link reaproveita as peças comuns daqui: banco, migrações, registro, Telegram e janela.
+- **`sql/`:** as migrações, as consultas ao ERP (`sql/erp/`), a carga (`sql/carga/`) e as consultas ao Kaizen (`sql/kaizen/`).
+- **`ferramentas/`:** o contador de testes, o gerador da virada, o ensaio e a consulta livre ao ERP.
+- **`publicacao/`:** Dockerfile, crontab, stack e o roteiro do dono.
 
 1. **Cliente do ERP.** Faz as chamadas HTTP com o token.
    - Só deixa sair `POST /api/consulta/sql/v1` com um único SELECT ou WITH, sem `;`.
@@ -453,7 +470,7 @@ São de 10 a 11 chamadas por execução, de 0,1 a 1,2 s cada (`FONTES.md`). O te
    - todos os movimentos acima do corte.
 
    Os documentos vêm em fatias por faixa de `oid`, de tamanho fixo no código. Uma fatia que passe de 30 s é falha, com a faixa na mensagem.
-2. Lê todas as fatias primeiro e grava tudo numa só transação, do mesmo jeito que a hora: documento atualizado, filhos trocados por inteiro. Movimento do Kaizen que não voltou na leitura completa sai, com aviso.
+2. Lê todas as fatias primeiro e grava tudo numa só transação, do mesmo jeito que a hora: documento atualizado, filhos trocados por inteiro. Movimento do Kaizen que não voltou na leitura completa sai, com aviso. A mesma proteção da lista de vivos (6.3, passo 7) vale para a lista completa de movimentos: vazia ou com menos da metade dos movimentos do Kaizen é falha, e nada é apagado.
 3. **Compara os totais,** depois de gravar, só lendo. Os dois lados usam os mesmos filtros da carga:
    - **Documento:** `oid` acima do corte e até o maior `oid` lido nesta execução.
    - **Linha filha:** `oid` acima do corte da sua tabela, ligada por `_iddocumento`.
@@ -478,7 +495,7 @@ São de 10 a 11 chamadas por execução, de 0,1 a 1,2 s cada (`FONTES.md`). O te
 - o ERP recusou o token (resposta 401 ou 403): é preciso trocar o segredo na VPS;
 - uma coluna esperada sumiu;
 - apareceu outra empresa ou outro local de estoque;
-- a lista de documentos vivos veio vazia ou caiu mais da metade (6.3, passo 7);
+- a lista de documentos vivos veio vazia ou caiu mais da metade (6.3, passo 7); na noite, o mesmo vale para a lista completa de movimentos de estoque (6.4, passo 2);
 - uma migração não se aplicou;
 - erro ao gravar no banco do Kaizen;
 - a execução passou do prazo, ou a trava ficou presa além dele;
@@ -573,7 +590,7 @@ Cada execução lista todos os horários esperados entre a última linha de `exe
 - **Na primeira tarefa do plano,** o repositório ganha:
   - `.gitignore` para arquivos de segredo (`.env*`, `*.pem`, `*.key`);
   - `.gitattributes` com LF para crontab e scripts;
-  - `.claude/settings.json` bloqueando `ssh`, `scp`, `docker service`, `docker stack` e `docker secret`, como havia no Prumo.
+  - as travas mecânicas ficam com o dono: `.claude/settings.json` e `.claude/hooks/`, do modo autônomo (`docs/AUTONOMIA.md`). O plano não mexe nelas.
 
 ## 8. Testes
 
