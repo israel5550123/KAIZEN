@@ -71,3 +71,19 @@ export async function lerCadastros(erp: Erp): Promise<string> {
 export async function lerAntesDaVirada(erp: Erp, cortes: Cortes): Promise<string> {
   return erp.consultar(montar(modeloErp('antes-da-virada'), { corte_documento: inteiro(cortes.documento) }))
 }
+
+// Noite: totais por dia no ERP, com os mesmos filtros da carga, até o maior oid lido nesta execução.
+export async function lerTotaisErp(erp: Erp, cortes: Cortes, documentoAte: number, movimentoAte: number): Promise<string> {
+  const sql = montar(modeloErp('totais'), {
+    corte_documento: inteiro(cortes.documento),
+    corte_item: inteiro(cortes.documento_mercadoria),
+    corte_pagamento: inteiro(cortes.documento_pagamento),
+    corte_parcela: inteiro(cortes.documento_parcela),
+    corte_baixa: inteiro(cortes.documento_parcela_pagamento),
+    corte_conferencia: inteiro(cortes.documento_conferencia_caixa),
+    corte_historico: inteiro(cortes.mercadoria_estoque_historico),
+    documento_ate: inteiro(documentoAte),
+    movimento_ate: inteiro(movimentoAte),
+  })
+  return erp.consultar(sql)
+}
