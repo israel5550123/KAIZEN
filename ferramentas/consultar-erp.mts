@@ -18,7 +18,8 @@ if (import.meta.main) {
   const config = lerConfig(process.env)
   const erp = criarErp({ url: config.erpUrl, token: config.erpToken })
   const dados = await erp.consultar(embrulhar(sql))
-  const linhas = JSON.parse(dados) as unknown[]
-  console.log(JSON.stringify(linhas, null, 2))
-  console.log(`${linhas.length} linha(s)`)
+  // Sai o texto como o Postgres do ERP escreveu (10.50 continua 10.50): nenhum número passa por number do JavaScript.
+  // O JSON.parse serve só para contar as linhas.
+  console.log(dados)
+  console.log(`${(JSON.parse(dados) as unknown[]).length} linha(s)`)
 }

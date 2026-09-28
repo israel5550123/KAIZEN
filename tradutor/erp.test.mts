@@ -59,6 +59,8 @@ test('envia o POST certo e devolve o texto da coluna dados', async () => {
   assert.equal(cabecalhos['Content-Type'], 'application/json')
   assert.equal(chamadas[0].init.body, JSON.stringify({ sql: 'select 1 as dados' }))
   assert.ok(chamadas[0].init.signal instanceof AbortSignal)
+  // Um 307/308 nunca reenvia o POST, com o token, para outro endereço.
+  assert.equal(chamadas[0].init.redirect, 'error')
 
   // a URL do ERP com barra no fim leva ao mesmo endereço
   const comBarra = montar([{ status: 200, corpo: envelope('[]') }], { url: `${URL_ERP}/` })

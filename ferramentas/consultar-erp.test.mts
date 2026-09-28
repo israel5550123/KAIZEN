@@ -13,4 +13,6 @@ test('embrulhar põe a consulta livre dentro de um json_agg com a coluna dados',
 test('embrulhar recusa consulta que escreve, antes de sair do PC', () => {
   assert.throws(() => embrulhar('delete from documento'), /recusado/)
   assert.throws(() => embrulhar('select 1; drop table documento'), /recusado/)
+  // Um DELETE montado por concatenação dentro de um dblink_exec também não sai.
+  assert.throws(() => embrulhar("select dblink_exec('dbname=erp', 'del' || 'ete from documento') as n"), /recusado/)
 })

@@ -72,6 +72,8 @@ export function criarErp(opcoes: OpcoesErp): Erp {
         method: 'POST',
         headers: { Authorization: `Authentication ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ sql }),
+        // Um redirecionamento nunca reenvia o POST com o token para outro endereço: vira erro de rede.
+        redirect: 'error',
         signal: AbortSignal.timeout(prazoMs),
       })
       return { status: resposta.status, corpo: await resposta.text() }

@@ -102,7 +102,8 @@ test('empresa-local: acusa idempresa 2 acima do corte e ignora abaixo dele', asy
 test('empresa-local: acusa cada uma das oito colunas conferidas, uma vez por valor', async () => {
   await limpar()
   await inserirTudoNaEmpresaUm()
-  await falso.inserir('documento', [{ oid: 188, idempresa: 2 }])
+  // A empresa vazia também é diferente de 1 (spec 6.3, passo 5).
+  await falso.inserir('documento', [{ oid: 188, idempresa: 2 }, { oid: 189, idempresa: null }])
   await falso.inserir('mercadoria_estoque_historico', [{ oid: 1847, _idlocalestoque: 9 }, { oid: 1849, _idlocalestoque: 2 }])
   await falso.inserir('mercadoria_estoque', [{ oid: 2, _idempresa: 3, _idlocalestoque: 1 }, { oid: 3, _idempresa: 1, _idlocalestoque: 4 }])
   await falso.inserir('mercadoria_custo', [{ _idempresa: 5 }, { _idempresa: 5 }])
@@ -111,6 +112,7 @@ test('empresa-local: acusa cada uma das oito colunas conferidas, uma vez por val
   await falso.inserir('pessoa_funcionario', [{ _idempresa: 8 }])
   assert.deepEqual(JSON.parse(await consultarEmpresaLocal()), [
     { tabela: 'documento.idempresa', valor: 2 },
+    { tabela: 'documento.idempresa', valor: null },
     { tabela: 'mercadoria_custo._idempresa', valor: 5 },
     { tabela: 'mercadoria_estoque._idempresa', valor: 3 },
     { tabela: 'mercadoria_estoque._idlocalestoque', valor: 4 },

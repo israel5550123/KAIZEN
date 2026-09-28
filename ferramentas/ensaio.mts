@@ -4,7 +4,7 @@
 //   node --env-file=.env ferramentas/ensaio.mts antes-da-virada  lista documentos acima do corte com data antes de 28/09
 import { lerConfig } from '../tradutor/config.mts'
 import { criarErp } from '../tradutor/erp.mts'
-import { conectar } from '../tradutor/banco.mts'
+import { conectar, garantirLocal } from '../tradutor/banco.mts'
 import { aplicarMigracoes } from '../tradutor/migracoes.mts'
 import { lerCortes } from '../tradutor/kaizen.mts'
 import {
@@ -30,6 +30,8 @@ async function medir(nome: string, fazer: () => Promise<string | unknown[]>): Pr
 const modo = process.argv[2]
 const config = lerConfig(process.env)
 const erp = criarErp({ url: config.erpUrl, token: config.erpToken })
+// O ensaio é só do PC: aplica migrações no banco de KAIZEN_URL, que tem de ser o Postgres local.
+garantirLocal(config.kaizenUrl)
 const cliente = await conectar(config.kaizenUrl)
 try {
   await aplicarMigracoes(cliente)
