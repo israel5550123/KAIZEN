@@ -2,6 +2,7 @@
 // Todo o trabalho é SQL (sql/link/), numa transação só; nenhum valor passa pelo JavaScript.
 import { readFileSync } from 'node:fs'
 import type { QueryResult } from 'pg'
+import { emTransacao } from './banco.mts'
 import type { Cliente } from './banco.mts'
 
 export class ErroLink extends Error {}
@@ -57,4 +58,20 @@ export async function ligarLink(cliente: Cliente): Promise<void> {
     const lista = invalidas.map((l) => `${l.entidade} ${l.codigo_origem} → ${l.codigo_kaizen}`).join(', ')
     throw new ErroLink(`decisão da de_para aponta para código que não existe no ERP novo: ${lista}`)
   }
+}
+
+// As famílias de documento; o cadastro só da Link vem depois de todas, porque junta o que elas citam.
+const FAMILIAS = ['vendas']
+
+export type ContagensLink = { documentos: string; novos: string; itens: string; pagamentos: string; conferencias: string; parcelas: string; baixas: string }
+
+export async function traduzirLink(cliente: Cliente): Promise<ContagensLink> {
+  await conferirEntradaLink(cliente)
+  return emTransacao(cliente, async () => {
+    await ligarLink(cliente)
+    for (const familia of FAMILIAS) await rodar(cliente, familia)
+    await rodar(cliente, 'cadastros')
+    const [contagens] = await rodar(cliente, 'gravar')
+    return contagens as unknown as ContagensLink
+  })
 }
