@@ -37,13 +37,14 @@ Tirar a cópia do esquema `erp` (a história da Link, de abril a 25/09) e confer
 ```bash
 PG=$(docker ps -q -f name=prumo_postgres)
 ARQ=/root/erp-link-$(date +%F).dump
-docker exec $PG pg_dump -U prumo -d prumo -Fc -n erp > $ARQ
+docker exec $PG psql -U prumo -d prumo -At -c "select count(*) from pg_tables where schemaname = 'erp'"
+docker exec $PG pg_dump -U prumo -d prumo -Fc -n erp > $ARQ && echo OK
 ls -l $ARQ
 sha256sum $ARQ
 docker exec -i $PG pg_restore --list < $ARQ | grep -c 'TABLE DATA erp '
 ```
 
-Saída esperada: o `ls -l` mostra o arquivo `/root/erp-link-AAAA-MM-DD.dump`, com a data, e alguns milhões de bytes; o `sha256sum` mostra um código de 64 letras e números seguido do nome do arquivo (anote o código e o nome); o último comando imprime `26`.
+Saída esperada: o `psql` imprime `26`, as tabelas do esquema `erp` no banco; o `pg_dump` termina com `OK` (sem `OK`, a cópia falhou: pare); o `ls -l` mostra o arquivo `/root/erp-link-AAAA-MM-DD.dump`, com a data, e alguns milhões de bytes; o `sha256sum` mostra um código de 64 letras e números seguido do nome do arquivo (anote o código e o nome); o último comando imprime `26`.
 
 Copiar o arquivo para o PC. Estes comandos rodam **no PC**, no PowerShell (troque `<endereço da VPS>` pelo endereço que você usa no `ssh`, e `<nome>` pelo nome do arquivo que o `ls -l` mostrou, por exemplo `erp-link-2026-09-27.dump`):
 
