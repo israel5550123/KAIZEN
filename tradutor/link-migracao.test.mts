@@ -208,6 +208,8 @@ test('toda migração que grava decisão na de_para atualiza a falha que já est
   assert.deepEqual(semClausula, [], `sem "on conflict ... do update" na insert de kaizen.de_para: ${semClausula.join(', ')}`)
 })
 
+// Este teste muda o banco do arquivo direto (sem transação): grava as duas falhas e aplica a migração 008 de verdade.
+// Por isso ele precisa ser o último daqui, senão os testes seguintes leriam a de_para já alterada por ele.
 test('a resposta do dono (008) entra num banco em que a falha do cliente 1 já está gravada, e a leitura de hora em hora aplica as migrações sem erro', async () => {
   // O estado do PC antes da resposta: sql/link/cadastros.sql grava as duas falhas de pessoa assim, depois de uma rodada.
   await banco.cliente.query(`
@@ -217,7 +219,8 @@ test('a resposta do dono (008) entra num banco em que a falha do cliente 1 já e
   // A mesma chamada da leitura de hora em hora (tradutor/execucao.mts): sem pasta, ela lê o sql/migracoes do repositório,
   // onde a 008 já existe além da 007 que este banco tem.
   const aplicadas = await aplicarMigracoes(banco.cliente)
-  // As migrações de depois da 008, se um dia existirem, não quebram este teste.
+  // Só esta conferência (aplicadas[0]) resiste a migrações futuras: mesmo que outras venham depois da 008, ela continua
+  // sendo a primeira aplicada aqui, porque o banco do arquivo só tem até a 007.
   assert.equal(aplicadas[0], '008_de_para_link_resposta_dono.sql')
   assert.deepEqual(
     (
@@ -231,6 +234,8 @@ test('a resposta do dono (008) entra num banco em que a falha do cliente 1 já e
       { codigo_origem: '900001', codigo_kaizen: 'link:900001' },
     ],
   )
+  // Esta contagem vale só para as migrações até a 008: uma migração futura que grave ou apague linha de kaizen.de_para
+  // muda estes dois números.
   assert.deepEqual(
     (
       await banco.cliente.query(

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { criarBancoKaizen, type BancoTeste } from './apoio-teste.mts'
 import { carregarCasosLink, criarLinkFalsa, lerCasosLink, type LinkFalsa } from './link-falsa.mts'
-import { traduzirLink } from './link.mts'
+import { resumoLink, traduzirLink } from './link.mts'
 
 // Cada teste roda o comando de novo (ele é idempotente) e lê o que ficou no Kaizen. Os valores esperados são os que
 // este mesmo SQL gravou, no protótipo, para estes casos reais da cópia antiga. As consultas olham só as negociações
@@ -366,6 +366,7 @@ test('a falha vira link:<código> no documento, no cadastro fonte link e na de_p
     },
   ])
   // O cliente 1 nunca falha (a decisão já vale desde a primeira rodada), então o cadastro link:1 de pessoa não existe.
+  // (Depende da ordem: o teste seguinte cria esse cadastro e nunca o apaga; rodando antes dele, quebraria esta conferência.)
   assert.deepEqual(await linhas(`
       select codigo from kaizen.pessoa where fonte = 'link' and codigo = 'link:1'`), [])
   assert.deepEqual(await linhas(`
@@ -402,6 +403,17 @@ test('uma decisão nova na de_para vale na rodada seguinte e tira a falha', asyn
       { entidade: 'produto', codigo_origem: '1993', codigo_kaizen: 'link:1993' },
       { entidade: 'produto', codigo_origem: '2396', codigo_kaizen: 'link:2396' },
     ])
+    // O mesmo estado que 0336cc3 provava na venda: o cadastro que a falha cria, linha inteira, com os dados da Link.
+    assert.deepEqual(await linhas(`
+        select codigo, nome, cpf_cnpj, bairro, municipio, ibge, uf, ativo
+          from kaizen.pessoa where fonte = 'link' and codigo = 'link:1'`), [{
+      codigo: 'link:1', nome: 'CLIENTE 1', cpf_cnpj: '91156329194820', bairro: 'CAMBOA',
+      municipio: 'Sao Jose de Ribamar', ibge: '2111201', uf: 'MA', ativo: true,
+    }])
+    // E o resumo mostra a falha com valor: a única venda válida do cliente 1, R$ 10,00 (0336cc3).
+    const resumoComFalha = (await resumoLink(banco.cliente)).map(({ chave, valor }) => `${chave}: ${valor}`)
+    assert.ok(resumoComFalha.includes('vendas_com_falha:cliente: 1 vendas válidas, R$ 10,00'))
+    assert.ok(resumoComFalha.includes('falha: pessoa 1 → link:1 (CLIENTE 1): 1 documentos, 1 vendas válidas, R$ 10,00'))
     // A migração 008, palavra por palavra: entra sem erro com a falha já ocupando a chave.
     await banco.cliente.query(textoDaResposta)
     await traduzirLink(banco.cliente)
@@ -414,6 +426,7 @@ test('uma decisão nova na de_para vale na rodada seguinte e tira a falha', asyn
       { entidade: 'produto', codigo_origem: '2396', codigo_kaizen: 'link:2396' },
     ])
     // O cadastro link:1 continua lá: o cadastro só da Link nunca se apaga (foi criado enquanto a falha durou, acima).
+    // (Por isso este teste precisa rodar depois de 'a falha vira link:...', que conta com esse cadastro ainda não existir.)
     assert.deepEqual(await linhas(`select codigo, nome from kaizen.pessoa where fonte = 'link' and codigo = 'link:1'`), [
       { codigo: 'link:1', nome: 'CLIENTE 1' },
     ])
