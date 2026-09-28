@@ -158,13 +158,14 @@ test('fornecedor liga pelo CNPJ com o código + 900000, e o FORNECEDOR PADRÃO v
 test('decisão que aponta para código que não existe no ERP novo para com ErroLink, com a linha na mensagem', async () => {
   await banco.cliente.query('begin')
   try {
-    // O cliente 1 da Link, que falha, ganha uma decisão para um código que o ERP novo não tem.
+    // A decisão da migração 008 (cliente 1 da Link → 999007) passa a apontar para um código que o ERP novo não tem.
     await banco.cliente.query(
-      `insert into kaizen.de_para (entidade, fonte, codigo_origem, codigo_kaizen) values ('pessoa', 'link', '1', '999999')`,
+      `insert into kaizen.de_para (entidade, fonte, codigo_origem, codigo_kaizen) values ('pessoa', 'link', '1', '999999')
+       on conflict (entidade, fonte, codigo_origem) do update set codigo_kaizen = excluded.codigo_kaizen`,
     )
     await assert.rejects(ligarLink(banco.cliente), (erro: unknown) => {
       assert.ok(erro instanceof ErroLink)
-      // Só a decisão errada: as 22 decisões da migração apontam para pessoas que existem.
+      // Só a decisão errada: as outras 22 decisões das migrações apontam para pessoas que existem.
       assert.equal(erro.message, 'decisão da de_para aponta para código que não existe no ERP novo: pessoa 1 → 999999')
       return true
     })

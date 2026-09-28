@@ -1,5 +1,6 @@
 import { after, before, test } from 'node:test'
 import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
 import { criarBancoKaizen, type BancoTeste } from './apoio-teste.mts'
 import { carregarCasosLink, criarLinkFalsa, lerCasosLink, type LinkFalsa } from './link-falsa.mts'
 import { traduzirLink } from './link.mts'
@@ -64,7 +65,8 @@ async function somas(negociacoes: string[]): Promise<Array<Record<string, unknow
   )
 }
 
-// As falhas que as vendas dos casos produzem: o cliente 1, os produtos 1993 e 2396 e o vendedor Sistema (usuário 1).
+// As falhas que as vendas dos casos produzem (produtos 1993 e 2396, vendedor Sistema/usuário 1) e a decisão do
+// cliente 1 (999007, resposta do dono, migração 008).
 const FALHAS_DAS_VENDAS = `
   select entidade, codigo_origem, codigo_kaizen
     from kaizen.de_para
@@ -320,11 +322,19 @@ test('vale gerado e usado, dinheiro devolvido, bonificação e resto do vale: os
 
 test('a falha vira link:<código> no documento, no cadastro fonte link e na de_para', async () => {
   await traduzirLink(banco.cliente)
-  // Nas vendas dos casos, falha o cliente de código 1 (o CNPJ dele não existe no ERP novo), na venda 1073...
+  // O cliente de código 1 (o CNPJ dele não existe no ERP novo) era a única falha de cliente das vendas dos casos; a
+  // resposta do dono (migração 008) já resolve, desde a primeira rodada: nenhum documento fica com pessoa link:.
   assert.deepEqual(await linhas(`
       select origem_id, pessoa from kaizen.documento
-       where fonte = 'link' and origem_tabela = 'negociacao' and pessoa like 'link:%'`), [{ origem_id: '1073', pessoa: 'link:1' }])
-  // ...e, só na venda cancelada 8, o vendedor Sistema (usuário 1 da Link, que não vira o funcionário 1 do ERP novo),
+       where fonte = 'link' and origem_tabela = 'negociacao' and pessoa like 'link:%'`), [])
+  // A venda 1073, a única do cliente 1, fica com o Consumidor Final do ERP novo.
+  assert.deepEqual(await linhas(`
+      select k.origem_id, k.pessoa, p.nome
+        from kaizen.documento k
+        left join kaizen.pessoa p on p.fonte = 'meuerp' and p.codigo = k.pessoa
+       where k.fonte = 'link' and k.origem_tabela = 'negociacao' and k.origem_id = '1073'`),
+    [{ origem_id: '1073', pessoa: '999007', nome: 'CONSUMIDOR FINAL' }])
+  // Só na venda cancelada 8, o vendedor Sistema (usuário 1 da Link, que não vira o funcionário 1 do ERP novo),
   // nos 8 itens, e os produtos 1993 e 2396, que o ERP novo não tem, em 3 deles.
   const item = (origem_id: string, produto: string) => ({ negociacao: '8', origem_id, produto, vendedor: 'link:1' })
   assert.deepEqual(await linhas(`
@@ -355,20 +365,17 @@ test('a falha vira link:<código> no documento, no cadastro fonte link e na de_p
       subgrupo: 'SUBGRUPO PADRÃO', marca: 'Toro', custo: '7.90', ativo: true,
     },
   ])
+  // O cliente 1 nunca falha (a decisão já vale desde a primeira rodada), então o cadastro link:1 de pessoa não existe.
   assert.deepEqual(await linhas(`
-      select codigo, nome, cpf_cnpj, bairro, municipio, ibge, uf, ativo
-        from kaizen.pessoa where fonte = 'link' and codigo = 'link:1'`), [{
-    codigo: 'link:1', nome: 'CLIENTE 1', cpf_cnpj: '91156329194820', bairro: 'CAMBOA',
-    municipio: 'Sao Jose de Ribamar', ibge: '2111201', uf: 'MA', ativo: true,
-  }])
+      select codigo from kaizen.pessoa where fonte = 'link' and codigo = 'link:1'`), [])
   assert.deepEqual(await linhas(`
       select codigo, nome, usuario, tipo, ativo from kaizen.funcionario where fonte = 'link' and codigo = 'link:1'`), [
     { codigo: 'link:1', nome: 'Sistema', usuario: null, tipo: null, ativo: true },
   ])
-  // E a de_para registra cada falha, com o código da Link e o link:<código> que ele ganhou.
+  // E a de_para registra cada falha, com o código da Link e o link:<código> que ele ganhou, e a decisão do cliente 1.
   assert.deepEqual(await linhas(FALHAS_DAS_VENDAS), [
     { entidade: 'funcionario', codigo_origem: '1', codigo_kaizen: 'link:1' },
-    { entidade: 'pessoa', codigo_origem: '1', codigo_kaizen: 'link:1' },
+    { entidade: 'pessoa', codigo_origem: '1', codigo_kaizen: '999007' },
     { entidade: 'produto', codigo_origem: '1993', codigo_kaizen: 'link:1993' },
     { entidade: 'produto', codigo_origem: '2396', codigo_kaizen: 'link:2396' },
   ])
@@ -381,14 +388,22 @@ test('uma decisão nova na de_para vale na rodada seguinte e tira a falha', asyn
       from kaizen.documento k
       left join kaizen.pessoa p on p.fonte = 'meuerp' and p.codigo = k.pessoa
      where k.fonte = 'link' and k.origem_tabela = 'negociacao' and k.origem_id = '1073'`
-  assert.deepEqual(await linhas(pessoaDa1073), [{ pessoa: 'link:1', nome: null }])
-  // Alguém decide que o cliente 1 da Link é o Consumidor Final (999007) do ERP novo. A falha já ocupa a mesma chave
-  // na de_para, e a decisão toma o lugar dela. (Na vida real, a decisão entra por migração.)
-  await banco.cliente.query(`
-    insert into kaizen.de_para (entidade, fonte, codigo_origem, codigo_kaizen)
-    values ('pessoa', 'link', '1', '999007')
-    on conflict (entidade, fonte, codigo_origem) do update set codigo_kaizen = excluded.codigo_kaizen`)
+  // Este banco já nasce com a resposta do dono (migração 008): o cliente 1 é o Consumidor Final desde a 1ª rodada.
+  assert.deepEqual(await linhas(pessoaDa1073), [{ pessoa: '999007', nome: 'CONSUMIDOR FINAL' }])
+  const textoDaResposta = readFileSync(new URL('../sql/migracoes/008_de_para_link_resposta_dono.sql', import.meta.url), 'utf8')
+  // O estado do PC antes da resposta: sem a decisão, a rodada volta a falhar.
+  await banco.cliente.query(`delete from kaizen.de_para where entidade = 'pessoa' and fonte = 'link' and codigo_origem = '1'`)
   try {
+    await traduzirLink(banco.cliente)
+    assert.deepEqual(await linhas(pessoaDa1073), [{ pessoa: 'link:1', nome: null }])
+    assert.deepEqual(await linhas(FALHAS_DAS_VENDAS), [
+      { entidade: 'funcionario', codigo_origem: '1', codigo_kaizen: 'link:1' },
+      { entidade: 'pessoa', codigo_origem: '1', codigo_kaizen: 'link:1' },
+      { entidade: 'produto', codigo_origem: '1993', codigo_kaizen: 'link:1993' },
+      { entidade: 'produto', codigo_origem: '2396', codigo_kaizen: 'link:2396' },
+    ])
+    // A migração 008, palavra por palavra: entra sem erro com a falha já ocupando a chave.
+    await banco.cliente.query(textoDaResposta)
     await traduzirLink(banco.cliente)
     assert.deepEqual(await linhas(pessoaDa1073), [{ pessoa: '999007', nome: 'CONSUMIDOR FINAL' }])
     // O cliente 1 fica só com a decisão; as outras falhas das vendas continuam.
@@ -398,12 +413,13 @@ test('uma decisão nova na de_para vale na rodada seguinte e tira a falha', asyn
       { entidade: 'produto', codigo_origem: '1993', codigo_kaizen: 'link:1993' },
       { entidade: 'produto', codigo_origem: '2396', codigo_kaizen: 'link:2396' },
     ])
-    // O cadastro link:1 continua lá: o cadastro só da Link nunca se apaga.
+    // O cadastro link:1 continua lá: o cadastro só da Link nunca se apaga (foi criado enquanto a falha durou, acima).
     assert.deepEqual(await linhas(`select codigo, nome from kaizen.pessoa where fonte = 'link' and codigo = 'link:1'`), [
       { codigo: 'link:1', nome: 'CLIENTE 1' },
     ])
   } finally {
-    await banco.cliente.query(`delete from kaizen.de_para where entidade = 'pessoa' and fonte = 'link' and codigo_origem = '1'`)
+    // Deixa a decisão como a 008 deixa, mesmo que o teste tenha falhado antes de restaurá-la.
+    await banco.cliente.query(textoDaResposta)
     await traduzirLink(banco.cliente)
   }
 })

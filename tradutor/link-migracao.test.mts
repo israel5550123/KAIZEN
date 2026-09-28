@@ -207,3 +207,37 @@ test('toda migração que grava decisão na de_para atualiza a falha que já est
     .filter((nome) => !normalizar(readFileSync(join(PASTA_MIGRACOES, nome), 'utf8')).includes(clausula))
   assert.deepEqual(semClausula, [], `sem "on conflict ... do update" na insert de kaizen.de_para: ${semClausula.join(', ')}`)
 })
+
+test('a resposta do dono (008) entra num banco em que a falha do cliente 1 já está gravada, e a leitura de hora em hora aplica as migrações sem erro', async () => {
+  // O estado do PC antes da resposta: sql/link/cadastros.sql grava as duas falhas de pessoa assim, depois de uma rodada.
+  await banco.cliente.query(`
+    insert into kaizen.de_para (entidade, fonte, codigo_origem, codigo_kaizen) values
+      ('pessoa', 'link', '1', 'link:1'),
+      ('pessoa', 'link', '900001', 'link:900001')`)
+  // A mesma chamada da leitura de hora em hora (tradutor/execucao.mts): sem pasta, ela lê o sql/migracoes do repositório,
+  // onde a 008 já existe além da 007 que este banco tem.
+  const aplicadas = await aplicarMigracoes(banco.cliente)
+  // As migrações de depois da 008, se um dia existirem, não quebram este teste.
+  assert.equal(aplicadas[0], '008_de_para_link_resposta_dono.sql')
+  assert.deepEqual(
+    (
+      await banco.cliente.query(
+        `select codigo_origem, codigo_kaizen from kaizen.de_para
+          where entidade = 'pessoa' and codigo_origem in ('1', '900001') order by codigo_origem`,
+      )
+    ).rows,
+    [
+      { codigo_origem: '1', codigo_kaizen: '999007' },
+      { codigo_origem: '900001', codigo_kaizen: 'link:900001' },
+    ],
+  )
+  assert.deepEqual(
+    (
+      await banco.cliente.query(
+        `select count(*)::int as linhas, count(*) filter (where codigo_kaizen like 'link:%')::int as falhas
+           from kaizen.de_para`,
+      )
+    ).rows,
+    [{ linhas: 24, falhas: 1 }],
+  )
+})
