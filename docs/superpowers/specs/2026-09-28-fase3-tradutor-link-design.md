@@ -146,7 +146,7 @@ Os lançamentos que não são de nenhuma família não entram (seção 4). O res
 
 `meio_par(x, 2)` arredonda a 2 casas e, no empate exato de meio centavo, vai para o centavo par: 109,725 → 109,72; 142,405 → 142,40; 90,915 → 90,92; 68,875 → 68,88; 206,625 → 206,62. É a função `kaizen.meio_par`, criada por migração.
 
-No ERP novo, o sentido do item é o movimento do documento: `S` no pedido, `E` na troca. O item vendido da Link segue isso. O orçamento da Link ficou com `N`, a partir do orçamento da simulação de 25/09; no primeiro dia de operação, o ERP novo gravou o orçamento com movimento de saída (`S`). A diferença não muda nenhum número de venda e fica para a conferência da Fase 2 ("a pré-venda reserva estoque?") e a Fase 4 (`docs/DECISOES.md`, 28/09).
+No ERP novo, o sentido do item é o movimento do documento: `S` no pedido, `E` na troca. O item vendido da Link segue isso. O orçamento da Link ficou com `N`, a partir do orçamento da simulação de 25/09; no primeiro dia de operação, o ERP novo gravou o orçamento com movimento de saída (`S`). A diferença não muda nenhum número de venda e fica para a conferência da Fase 2 ("a pré-venda reserva estoque?") e a Fase 4 (`docs/DECISOES.md`, 28/09). **Respondido em 28/09 (tarefa 13):** o `S` do orçamento e da pré-venda no ERP novo não mexe no estoque (12 orçamentos e 3 pré-vendas de 28/09, 0 linhas no histórico de estoque e 0 reserva); o orçamento da Link, com `N`, tem o mesmo efeito, e a tradução fica como está.
 
 ### 7.3 Pagamentos (`documento_pagamento`)
 
