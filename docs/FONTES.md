@@ -710,11 +710,12 @@ Extraído automaticamente do SQL de cada relatório (`relatorio.sql`) em 24/09/2
 
 O tradutor rodou no PC, lendo o ERP de verdade, só leitura, e gravando no Postgres local.
 
-- Cada consulta do tradutor rodou uma vez no ERP: a mais lenta levou 1.234 ms (limite: 30.000 ms). Nenhuma coluna esperada falta, e só existem a empresa 1 e o local de estoque 1.
+- Cada consulta do tradutor rodou uma vez no ERP. Na primeira rodada, a mais lenta levou 1.234 ms, sem a saída guardada. Na segunda, às 22h32, a mais lenta foi a conferência de colunas, com 948 ms (limite: 30.000 ms); a saída está em `docs/medicoes/ensaio-consultas-2026-09-27.txt`. Nenhuma coluna esperada falta, e só existem a empresa 1 e o local de estoque 1.
 - Documentos acima do corte com data anterior a 28/09: 44 ajustes de custo (`AC`), de 27/09, números 94 a 137. Decisão: entram como reais (docs/DECISOES.md).
-- Execução da noite: 44 documentos, 0 movimentos de estoque, 1.029 produtos, 447 pessoas, 9 funcionários. A comparação dos totais por dia deu zero diferença em 1 dia (27/09).
-- Execução da hora: ok, sem documento novo (os mesmos 44 já lidos pela noite).
+- Execução da noite: 44 documentos, 0 movimentos de estoque, 1.029 produtos, 447 pessoas, 9 funcionários. A comparação dos totais por dia deu zero diferença em 1 dia (27/09). Levou 2,2 s, com a gravação (`kaizen.execucao` do Postgres local: das 20h44min57 às 20h44min59).
+- Execução da hora: ok, sem documento novo (os mesmos 44 já lidos pela noite). Levou 24,9 s, com a gravação (das 20h45min04 às 20h45min29); o tempo de cada consulta dentro dela não foi registrado.
 - Avisos: nenhum.
+- O que o ensaio não cobriu: acima do corte, o ERP tinha só os 44 ajustes de custo, sem venda, pagamento, parcela, baixa nem movimento de estoque. O "zero diferença" provou a leitura e a gravação desses documentos e dos cadastros, não a conta das vendas; essa se prova com a operação real (seção abaixo) e os seis dias na VPS.
 
 ## Conferências da operação real (Fase 2)
 
@@ -733,3 +734,5 @@ Perguntas da seção 9 da spec da Fase 2, respondidas lendo o ERP, só leitura, 
 11. Contas a pagar reimportadas — aberto.
 12. Sangria RT — aberto.
 13. Documentos apagados — aberto.
+
+Também aberto, fora da seção 9: que código HTTP a API devolve quando uma consulta passa do limite de 30 s. Até agora só se viu o 400, com uma coluna errada. Se o estouro vier com outro código, a fatia da noite que passar de 30 s falha com a mensagem genérica de "o ERP não respondeu", sem a faixa de `oid` na mensagem.
