@@ -48,6 +48,20 @@ export async function conferirEntradaLink(cliente: Cliente): Promise<void> {
   }
   const negociacoes = await cliente.query('select count(*)::int as n from erp.negociacao')
   if (negociacoes.rows[0].n === 0) throw new ErroLink('a cópia da Link não tem nenhuma negociação: a restauração deu certo?')
+  // Uma restauração pela metade deixa tabela vazia, ou linha que aponta para quem não está na cópia; o join à esquerda
+  // gravaria a venda sem cliente ou sem vendedor, calado. O comando para antes de gravar.
+  const tabelas = [...new Set(lerColunasEsperadasLink().map((c) => c.tabela))]
+  const vazias: string[] = []
+  for (const tabela of tabelas) {
+    const tem = await cliente.query(`select exists (select 1 from erp.${tabela}) as tem`)
+    if (!tem.rows[0].tem) vazias.push(tabela)
+  }
+  if (vazias.length > 0) throw new ErroLink(`a cópia da Link tem tabelas vazias (${vazias.join(', ')}): a restauração deu certo?`)
+  const quebradas = (await cliente.query(lerSql('link/referencias.sql'))).rows.filter((linha) => linha.quantas > 0)
+  if (quebradas.length > 0) {
+    const lista = quebradas.map((linha) => `${linha.onde} sem ${linha.tabela} (${linha.quantas})`).join(', ')
+    throw new ErroLink(`a cópia da Link tem linhas que apontam para o que não está nela: ${lista}. A restauração deu certo?`)
+  }
 }
 
 // Precisa de uma transação aberta: as temporárias de trabalho (pg_temp.link_*) somem no commit.
