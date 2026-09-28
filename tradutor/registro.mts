@@ -53,18 +53,22 @@ export async function execucaoPresa(cliente: Cliente, prazoMin: number): Promise
   return r.rows.length === 0 ? null : { id: Number(r.rows[0].id) }
 }
 
-export type Anterior = { id: number; resultado: 'ok' | 'aviso' | 'falha'; telegramOk: boolean | null }
+export type Anterior = {
+  id: number; tipo: TipoExecucao; resultado: 'ok' | 'aviso' | 'falha'; telegramOk: boolean | null; resumoOk: boolean
+}
 
 export async function anteriorValida(cliente: Cliente, idAtual: number | null): Promise<Anterior | null> {
-  const r = await cliente.query<{ id: string; resultado: 'ok' | 'aviso' | 'falha'; telegram_ok: boolean | null }>(
-    `select id, resultado, telegram_ok from kaizen.execucao
+  const r = await cliente.query<{
+    id: string; tipo: TipoExecucao; resultado: 'ok' | 'aviso' | 'falha'; telegram_ok: boolean | null; resumo_ok: boolean
+  }>(
+    `select id, tipo, resultado, telegram_ok, resumo_ok from kaizen.execucao
       where resultado in ('ok', 'aviso', 'falha') and ($1::bigint is null or id <> $1::bigint)
       order by id desc limit 1`,
     [idAtual],
   )
   if (r.rows.length === 0) return null
   const l = r.rows[0]
-  return { id: Number(l.id), resultado: l.resultado, telegramOk: l.telegram_ok }
+  return { id: Number(l.id), tipo: l.tipo, resultado: l.resultado, telegramOk: l.telegram_ok, resumoOk: l.resumo_ok }
 }
 
 export async function ultimoInicioNaoManualMs(cliente: Cliente, idAtual: number | null): Promise<number | null> {

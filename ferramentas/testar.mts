@@ -17,9 +17,13 @@ const esperados = Number(readFileSync(join(raiz, 'testes-esperados.txt'), 'utf8'
 
 let rodados = 0
 let falhas = 0
+let pulados = 0
 const fluxo = run({ files: arquivos, concurrency: false })
 fluxo.on('test:pass', (dados) => {
-  if (dados.details.type !== 'suite') rodados += 1
+  if (dados.details.type === 'suite') return
+  // O teste desligado (skip) ou por fazer (todo) também chega como "passou": não rodou, e conta à parte.
+  if (dados.skip !== undefined || dados.todo !== undefined) pulados += 1
+  else rodados += 1
 })
 fluxo.on('test:fail', (dados) => {
   if (dados.details.type !== 'suite') {
@@ -33,5 +37,6 @@ await finished(relatorio)
 
 console.log(`rodou ${rodados} testes, esperados ${esperados}`)
 if (falhas > 0) console.log(`${falhas} teste(s) falharam`)
+if (pulados > 0) console.log(`${pulados} teste(s) pulados`)
 if (!Number.isInteger(esperados)) console.log('testes-esperados.txt não tem um número')
-process.exitCode = falhas === 0 && rodados === esperados ? 0 : 1
+process.exitCode = falhas === 0 && pulados === 0 && rodados === esperados ? 0 : 1

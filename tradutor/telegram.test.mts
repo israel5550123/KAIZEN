@@ -118,22 +118,29 @@ test('textoVolta e textoTeste', () => {
 })
 
 test('deveAvisarFalha: avisa uma vez por queda e de novo se a mensagem anterior não chegou', () => {
+  const anterior = (resultado: Anterior['resultado'], telegramOk: boolean | null): Anterior =>
+    ({ id: 1, tipo: 'hora', resultado, telegramOk, resumoOk: false })
   const casos: Array<[Anterior | null, boolean]> = [
     [null, true],
-    [{ id: 1, resultado: 'ok', telegramOk: null }, true],
-    [{ id: 1, resultado: 'aviso', telegramOk: true }, true],
-    [{ id: 1, resultado: 'falha', telegramOk: true }, false],
-    [{ id: 1, resultado: 'falha', telegramOk: false }, true],
-    [{ id: 1, resultado: 'falha', telegramOk: null }, true],
+    [anterior('ok', null), true],
+    [anterior('aviso', true), true],
+    [anterior('falha', true), false],
+    [anterior('falha', false), true],
+    [anterior('falha', null), true],
   ]
   for (const [anterior, esperado] of casos) {
     assert.equal(deveAvisarFalha(anterior), esperado, JSON.stringify(anterior))
   }
 })
 
-test('deveAvisarVolta: só quando esta deu certo e a anterior falhou ou faltou leitura', () => {
-  const falha: Anterior = { id: 1, resultado: 'falha', telegramOk: true }
-  const ok: Anterior = { id: 1, resultado: 'ok', telegramOk: null }
+test('deveAvisarVolta: só quando esta deu certo e a anterior falhou, faltou leitura ou a volta anterior foi recusada', () => {
+  const falha: Anterior = { id: 1, tipo: 'hora', resultado: 'falha', telegramOk: true, resumoOk: false }
+  const ok: Anterior = { id: 1, tipo: 'hora', resultado: 'ok', telegramOk: null, resumoOk: false }
+  // O Telegram recusou a volta da anterior: na hora, e na noite que mandou o resumo.
+  const voltaRecusada: Anterior = { id: 1, tipo: 'hora', resultado: 'ok', telegramOk: false, resumoOk: false }
+  const noiteComVoltaRecusada: Anterior = { id: 1, tipo: 'noite', resultado: 'aviso', telegramOk: false, resumoOk: true }
+  // Na noite sem resumo marcado, telegram_ok = não é o resumo recusado: quem repete é o resumo, não a volta.
+  const noiteComResumoRecusado: Anterior = { id: 1, tipo: 'noite', resultado: 'aviso', telegramOk: false, resumoOk: false }
   const casos: Array<[Resultado, Anterior | null, boolean, boolean]> = [
     ['ok', falha, false, true],
     ['aviso', falha, false, true],
@@ -143,6 +150,10 @@ test('deveAvisarVolta: só quando esta deu certo e a anterior falhou ou faltou l
     ['ok', null, false, false],
     ['falha', falha, true, false],
     ['pulada', falha, true, false],
+    ['ok', voltaRecusada, false, true],
+    ['aviso', noiteComVoltaRecusada, false, true],
+    ['ok', noiteComResumoRecusado, false, false],
+    ['falha', voltaRecusada, false, false],
   ]
   for (const [atual, anterior, faltaram, esperado] of casos) {
     assert.equal(deveAvisarVolta(atual, anterior, faltaram), esperado, `${atual} ${JSON.stringify(anterior)} ${faltaram}`)
@@ -243,19 +254,29 @@ test('textoResumo só com avisos já informados traz o cabeçalho e a linha dos 
   })
 })
 
-test('textoResumo passa de 4.000 caracteres: corta numa quebra de linha e avisa que há mais', () => {
+test('textoResumo passa de 4.000 caracteres: corta aviso por aviso, diz quantos ficaram de fora e só devolve as chaves que saíram', () => {
   const tipos: TipoAviso[] = [
     'codigo_sem_traducao', 'documento_apagado', 'fechamento_com_resto', 'estoque_diverge',
     'movimento_sumiu', 'total_diferente', 'execucao_faltou', 'execucao_pulada',
   ]
-  const avisos = tipos.flatMap((tipo) =>
-    [1, 2, 3, 4, 5, 6].map((n) => aviso(tipo, `${tipo}:${n}`, `aviso ${n} de ${tipo} `.padEnd(150, '.'))))
-  const { texto, chaves } = textoResumo(avisos, [], '2026-09-29')
+  // 48 avisos novos de 150 caracteres, 6 de cada tipo, e um já informado no resumo anterior.
+  const jaInformado = aviso('codigo_sem_traducao', 'codigo:tipo:AM', 'o código "AM" de tipo apareceu 1 vez(es) e não tem tradução no Kaizen')
+  const avisos = [jaInformado, ...tipos.flatMap((tipo) =>
+    [1, 2, 3, 4, 5, 6].map((n) => aviso(tipo, `${tipo}:${n}`, `aviso ${n} de ${tipo} `.padEnd(150, '.'))))]
+  const { texto, chaves } = textoResumo(avisos, ['codigo:tipo:AM'], '2026-09-29')
   assert.ok(texto !== null)
   assert.ok(texto.length <= 4000, `tem ${texto.length} caracteres`)
   assert.ok(texto.startsWith('Kaizen — resumo de 29/09:\nCódigos novos no ERP (6) — '))
-  assert.ok(texto.endsWith('\n(e mais; o detalhe está no registro da execução)'))
+  // Cabem os 4 primeiros tipos inteiros (24 avisos) e 2 dos movimentos sumidos: ficam de fora 22 dos 48.
+  assert.ok(texto.endsWith('\n- aviso 2 de movimento_sumiu '.padEnd(153, '.')
+    + '\ne mais 22 avisos (o detalhe está no registro da execução)\nContinuam 1 avisos já informados.'), texto.slice(-300))
   // nenhuma linha sai pela metade: toda linha de aviso tem os 150 caracteres
   for (const linha of texto.split('\n').filter((l) => l.startsWith('- aviso'))) assert.equal(linha.length, 152)
-  assert.equal(chaves.length, 48)
+  // As chaves cortadas não entram: no próximo resumo esses avisos, se continuarem, saem por inteiro.
+  assert.deepEqual(chaves, [
+    'codigo:tipo:AM',
+    ...tipos.slice(0, 4).flatMap((tipo) => [1, 2, 3, 4, 5, 6].map((n) => `${tipo}:${n}`)),
+    'movimento_sumiu:1', 'movimento_sumiu:2',
+  ])
+  assert.ok(!texto.includes('aviso 1 de execucao_faltou'))
 })

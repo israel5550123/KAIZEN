@@ -150,15 +150,16 @@ test('execucaoPresa acha só a linha sem fim que começou antes do prazo', async
   assert.deepEqual(await execucaoPresa(banco.cliente, 30), { id: Number(r.rows[0].id) })
 })
 
-test('anteriorValida pega a última ok, aviso ou falha, pulando as puladas e a execução atual', async () => {
+test('anteriorValida pega a última ok, aviso ou falha, pulando as puladas e a execução atual, com o tipo e o resumo', async () => {
   assert.equal(await anteriorValida(banco.cliente, null), null)
-  const falha = await linha({ resultado: 'falha', telegramOk: true })
+  const falha = await linha({ tipo: 'noite', resultado: 'falha', telegramOk: true, resumoOk: true })
   await linha({ resultado: 'pulada' })
   const atual = await registrarInicio(banco.cliente, 'hora', false)
-  assert.deepEqual(await anteriorValida(banco.cliente, atual), { id: falha, resultado: 'falha', telegramOk: true })
+  const daFalha = { id: falha, tipo: 'noite', resultado: 'falha', telegramOk: true, resumoOk: true }
+  assert.deepEqual(await anteriorValida(banco.cliente, atual), daFalha)
   await registrarFim(banco.cliente, atual, { resultado: 'aviso', avisos: [] })
-  assert.deepEqual(await anteriorValida(banco.cliente, null), { id: atual, resultado: 'aviso', telegramOk: null })
-  assert.deepEqual(await anteriorValida(banco.cliente, atual), { id: falha, resultado: 'falha', telegramOk: true })
+  assert.deepEqual(await anteriorValida(banco.cliente, null), { id: atual, tipo: 'hora', resultado: 'aviso', telegramOk: null, resumoOk: false })
+  assert.deepEqual(await anteriorValida(banco.cliente, atual), daFalha)
 })
 
 test('ultimoInicioNaoManualMs devolve o início da última não manual, de qualquer resultado, sem a atual', async () => {

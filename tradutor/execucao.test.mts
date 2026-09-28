@@ -15,6 +15,7 @@ import type { Erp } from './erp.mts'
 import { executar, motivoDe, registrarEstouro } from './execucao.mts'
 import type { Saida } from './execucao.mts'
 import { lerColunasEsperadas } from './sql-erp.mts'
+import type { Enviar } from './telegram.mts'
 import { ErroKaizen } from './tipos.mts'
 import type { MotivoFalha, TipoExecucao } from './tipos.mts'
 
@@ -63,7 +64,9 @@ async function maiorId(): Promise<number> {
   return Number(r.rows[0].id ?? 0)
 }
 
-type OpcoesRodar = { tipo?: TipoExecucao; manual?: boolean; pastaMigracoes?: string; conectarKaizen?: () => Promise<Cliente> }
+type OpcoesRodar = {
+  tipo?: TipoExecucao; manual?: boolean; pastaMigracoes?: string; conectarKaizen?: () => Promise<Cliente>; enviar?: Enviar
+}
 
 // Roda uma execução com o relógio fingido e, depois, põe no registro a hora fingida (o Postgres grava a hora de verdade).
 async function rodar(quando: number, erp: Erp = falso.erp, opcoes: OpcoesRodar = {}): Promise<Saida> {
@@ -73,7 +76,7 @@ async function rodar(quando: number, erp: Erp = falso.erp, opcoes: OpcoesRodar =
     {
       erp,
       conectarKaizen: opcoes.conectarKaizen ?? (() => conectar(banco.url)),
-      enviar,
+      enviar: opcoes.enviar ?? enviar,
       agora: () => quando,
       pastaMigracoes: opcoes.pastaMigracoes,
     },
@@ -417,6 +420,49 @@ test('falha e depois ok manda a mensagem de volta', async () => {
   assert.equal((await execucoes())[2].telegram_ok, true)
 })
 
+test('a volta que o Telegram recusou sai na leitura seguinte, uma vez só', async () => {
+  await montarLoja()
+  await rodar(horaEm(TERCA, 13))
+  await rodar(horaEm(TERCA, 14), ERP_FORA)
+  // Às 15h o ERP volta, mas o Telegram recusa o "voltou a funcionar".
+  const recusadas: string[] = []
+  const recusar = async (texto: string): Promise<boolean> => {
+    recusadas.push(texto)
+    return false
+  }
+  await rodar(horaEm(TERCA, 15), falso.erp, { enviar: recusar })
+  await rodar(horaEm(TERCA, 16))
+  await rodar(horaEm(TERCA, 17))
+
+  assert.deepEqual(recusadas, ['Kaizen: voltou a funcionar às 15h.'])
+  assert.deepEqual(enviadas, [TEXTO_ERP_FORA_14H, 'Kaizen: voltou a funcionar às 16h.'])
+  assert.deepEqual((await execucoes()).map((e) => [e.resultado, e.telegram_ok]), [
+    ['ok', null], ['falha', true], ['ok', false], ['ok', true], ['ok', null],
+  ])
+})
+
+test('a leitura manual não cobra horário faltando nem manda "voltou"; a agendada seguinte avisa as faltas uma vez só', async () => {
+  await montarLoja()
+  await banco.cliente.query(
+    `insert into kaizen.execucao (tipo, manual, inicio, fim, resultado)
+     values ('hora', false, '2026-09-29 10:00:03-03', '2026-09-29 10:01:00-03', 'ok')`,
+  )
+  // Uma leitura à mão às 14h30: ela não substitui as agendadas das 11h às 14h.
+  const manual = await rodar(horaEm(TERCA, 14) + 30 * 60_000, falso.erp, { manual: true })
+  assert.equal(manual.resultado, 'ok')
+  assert.deepEqual(manual.avisos, [])
+  assert.deepEqual(enviadas, [])
+
+  const agendada = await rodar(horaEm(TERCA, 15))
+  assert.deepEqual(agendada.avisos.map((a) => a.chave), [11, 12, 13, 14].map((h) => `faltou:2026-09-29:${h}`))
+  assert.deepEqual(enviadas, ['Kaizen: voltou a funcionar às 15h.'])
+  // No registro, cada horário que faltou aparece uma vez só: 4 avisos, todos da das 15h.
+  const faltas = await banco.cliente.query(
+    `select count(*) as n from kaizen.execucao e, jsonb_array_elements(e.avisos) a where a->>'tipo' = 'execucao_faltou'`,
+  )
+  assert.equal(faltas.rows[0].n, '4')
+})
+
 test('a execução das 14h, com a última às 10h, avisa que faltaram as de 11h, 12h e 13h', async () => {
   await montarLoja()
   await banco.cliente.query(
@@ -523,6 +569,19 @@ test('motivoDe classifica cada erro', () => {
       { tipo: 'banco_fora', detalhe: 'database "prumo" does not exist' }],
     ['banco ainda subindo', comCodigo('the database system is starting up', '57P03'),
       { tipo: 'banco_fora', detalhe: 'the database system is starting up' }],
+    // Quedas no meio da execução: o Postgres reiniciou ou a conexão caiu.
+    ['Postgres reiniciado pelo administrador', comCodigo('terminating connection due to administrator command', '57P01'),
+      { tipo: 'banco_fora', detalhe: 'terminating connection due to administrator command' }],
+    ['Postgres desligando', comCodigo('terminating connection due to crash of another server process', '57P02'),
+      { tipo: 'banco_fora', detalhe: 'terminating connection due to crash of another server process' }],
+    ['erro de conexão', comCodigo('connection exception', '08000'), { tipo: 'banco_fora', detalhe: 'connection exception' }],
+    ['conexão que não existe', comCodigo('connection does not exist', '08003'), { tipo: 'banco_fora', detalhe: 'connection does not exist' }],
+    ['conexão que falhou', comCodigo('connection failure', '08006'), { tipo: 'banco_fora', detalhe: 'connection failure' }],
+    ['conexão cortada pela rede', comCodigo('read ECONNRESET', 'ECONNRESET'), { tipo: 'banco_fora', detalhe: 'read ECONNRESET' }],
+    ['escrita numa conexão fechada', comCodigo('write EPIPE', 'EPIPE'), { tipo: 'banco_fora', detalhe: 'write EPIPE' }],
+    ['rede sem resposta', comCodigo('read ETIMEDOUT', 'ETIMEDOUT'), { tipo: 'banco_fora', detalhe: 'read ETIMEDOUT' }],
+    ['conexão encerrada pelo pg, sem código', new Error('Connection terminated unexpectedly'),
+      { tipo: 'banco_fora', detalhe: 'Connection terminated unexpectedly' }],
     ['erro de gravação no banco', comCodigo('null value in column "produto" violates not-null constraint', '23502'),
       { tipo: 'outra', detalhe: 'null value in column "produto" violates not-null constraint' }],
     ['erro qualquer', new Error('algo quebrou'), { tipo: 'outra', detalhe: 'algo quebrou' }],

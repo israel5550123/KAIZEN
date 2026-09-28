@@ -6,7 +6,6 @@ export type Enviar = (texto: string) => Promise<boolean | null>   // null = Tele
 
 // O Telegram recusa mensagem acima de 4.096 caracteres.
 const LIMITE = 4000
-const FIM_DO_RESUMO = '\n(e mais; o detalhe está no registro da execução)'
 // O resto da mensagem de falha tem menos de 300 caracteres: com o detalhe cortado aqui, ela cabe no Telegram.
 const DETALHE_MAXIMO = 3000
 
@@ -72,7 +71,11 @@ export function deveAvisarFalha(anterior: Anterior | null): boolean {
 
 export function deveAvisarVolta(resultadoAtual: Resultado, anterior: Anterior | null, faltaram: boolean): boolean {
   const atualBoa = resultadoAtual === 'ok' || resultadoAtual === 'aviso'
-  return atualBoa && (anterior?.resultado === 'falha' || faltaram)
+  // A anterior deu certo, mas o Telegram recusou o "voltou a funcionar" dela. Na noite sem volta, telegram_ok = não
+  // é o resumo recusado: aí resumo_ok fica não, e quem repete é o resumo seguinte, não a volta.
+  const voltaDevendo = anterior !== null && anterior.resultado !== 'falha' && anterior.telegramOk === false
+    && (anterior.tipo === 'hora' || anterior.resumoOk)
+  return atualBoa && (anterior?.resultado === 'falha' || faltaram || voltaDevendo)
 }
 
 export function textoResumo(avisos: Aviso[], chavesAnteriores: string[], hoje: string): { texto: string | null; chaves: string[] } {
@@ -93,21 +96,34 @@ export function textoResumo(avisos: Aviso[], chavesAnteriores: string[], hoje: s
   const novos = unicos.filter((u) => !anteriores.has(u.aviso.chave))
   const repetidos = unicos.length - novos.length
 
-  let texto = `Kaizen — resumo de ${diaMes(hoje)}:`
+  // Cada linha leva as chaves dos avisos que ela mostra; o título de um tipo não leva nenhuma.
+  const linhas: Array<{ texto: string; chaves: string[] }> = []
   for (const tipo of ORDEM_DOS_TIPOS) {
     const doTipo = novos.filter((u) => u.aviso.tipo === tipo)
     if (doTipo.length === 0) continue
-    texto += `\n${TITULOS[tipo]} (${doTipo.length}) — ${O_QUE_FAZER[tipo]}:`
+    linhas.push({ texto: `${TITULOS[tipo]} (${doTipo.length}) — ${O_QUE_FAZER[tipo]}:`, chaves: [] })
     for (const { aviso, vezes } of doTipo.slice(0, 5)) {
-      texto += `\n- ${aviso.texto}${vezes > 1 ? ` (${vezes} vezes)` : ''}`
+      linhas.push({ texto: `- ${aviso.texto}${vezes > 1 ? ` (${vezes} vezes)` : ''}`, chaves: [aviso.chave] })
     }
-    if (doTipo.length > 5) texto += `\n- e mais ${doTipo.length - 5}`
+    if (doTipo.length > 5) linhas.push({ texto: `- e mais ${doTipo.length - 5}`, chaves: doTipo.slice(5).map((u) => u.aviso.chave) })
   }
-  if (repetidos > 0) texto += `\nContinuam ${repetidos} avisos já informados.`
-  if (texto.length > LIMITE) {
-    // corta numa quebra de linha, para nenhum aviso sair pela metade
-    const quebra = texto.lastIndexOf('\n', LIMITE - FIM_DO_RESUMO.length)
-    texto = texto.slice(0, quebra) + FIM_DO_RESUMO
+  const fim = repetidos > 0 ? `\nContinuam ${repetidos} avisos já informados.` : ''
+  const cabecalho = `Kaizen — resumo de ${diaMes(hoje)}:`
+  const inteiro = cabecalho + linhas.map((l) => `\n${l.texto}`).join('') + fim
+  if (inteiro.length <= LIMITE) return { texto: inteiro, chaves: [...porChave.keys()] }
+
+  // Não cabe: entra linha por linha, sem nenhum aviso pela metade, com lugar para o "e mais N avisos" e para os já informados.
+  const corte = (n: number) => `\ne mais ${n} avisos (o detalhe está no registro da execução)`
+  const lugar = LIMITE - corte(novos.length).length - fim.length
+  // Os já informados continuam informados; dos novos, só entram as chaves das linhas que couberam.
+  const saiu = new Set(unicos.filter((u) => anteriores.has(u.aviso.chave)).map((u) => u.aviso.chave))
+  let texto = cabecalho
+  for (const linha of linhas) {
+    if (texto.length + 1 + linha.texto.length > lugar) break
+    texto += `\n${linha.texto}`
+    for (const chave of linha.chaves) saiu.add(chave)
   }
-  return { texto, chaves: [...porChave.keys()] }
+  const deFora = novos.filter((u) => !saiu.has(u.aviso.chave)).length
+  texto += corte(deFora) + fim
+  return { texto, chaves: [...porChave.keys()].filter((chave) => saiu.has(chave)) }
 }

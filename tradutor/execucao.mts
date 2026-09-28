@@ -37,10 +37,15 @@ export type Saida = { resultado: Resultado; avisos: Aviso[]; mensagem: string | 
 type Opcoes = { tipo: TipoExecucao; manual: boolean }
 
 // O que o caminho da falha precisa saber do que já aconteceu nesta execução.
-type Estado = { id: number | null; anterior: Anterior | null; avisos: Aviso[]; faltaram: boolean }
+// gravou: a carga desta execução já foi gravada (a noite ainda compara os totais depois).
+type Estado = { id: number | null; anterior: Anterior | null; avisos: Aviso[]; faltaram: boolean; gravou: boolean }
 
-// Sem conexão, senha recusada, banco inexistente, banco subindo.
-const CODIGOS_BANCO_FORA = new Set(['ECONNREFUSED', '28P01', '3D000', '57P03'])
+// Sem conexão, senha recusada, banco inexistente, banco subindo; e as quedas no meio da execução:
+// Postgres reiniciado ou desligando, erro de conexão do Postgres, conexão cortada pela rede.
+const CODIGOS_BANCO_FORA = new Set([
+  'ECONNREFUSED', '28P01', '3D000', '57P03',
+  '57P01', '57P02', '08000', '08003', '08006', 'ECONNRESET', 'EPIPE', 'ETIMEDOUT',
+])
 
 function mensagemDe(erro: unknown): string {
   if (erro instanceof Error) {
@@ -61,6 +66,8 @@ export function motivoDe(erro: unknown): MotivoFalha {
   }
   const codigo = (erro as { code?: unknown } | null)?.code
   if (typeof codigo === 'string' && CODIGOS_BANCO_FORA.has(codigo)) return { tipo: 'banco_fora', detalhe: mensagemDe(erro) }
+  // O pg avisa a conexão que caiu sem código, só pela mensagem ('Connection terminated unexpectedly').
+  if (erro instanceof Error && erro.message.startsWith('Connection terminated')) return { tipo: 'banco_fora', detalhe: erro.message }
   return { tipo: 'outra', detalhe: mensagemDe(erro) }
 }
 
@@ -147,7 +154,7 @@ export async function executar(opcoes: Opcoes, dep: Dependencias): Promise<Saida
     await enviarSemErro(dep.enviar, textoFalha(hora, motivo, null, textoProximo(agora)))
     return { resultado: 'falha', avisos: [], mensagem: motivo.detalhe, contagens: {} }
   }
-  const estado: Estado = { id: null, anterior: null, avisos: [], faltaram: false }
+  const estado: Estado = { id: null, anterior: null, avisos: [], faltaram: false, gravou: false }
   let travou = false
   try {
     const trava = await cliente.query<{ ok: boolean }>('select pg_try_advisory_lock($1) as ok', [TRAVA])
@@ -246,6 +253,7 @@ async function rodar(cliente: Cliente, opcoes: Opcoes, dep: Dependencias, estado
     avisosDaCarga.push(...estoque.sumidos.map((s) => avisoMovimentoSumiu(s.origem_id, s.produto)))
     return { cadastros, lidos, apagados: apagados.length, estoque }
   })
+  estado.gravou = true
   estado.avisos.push(...avisosDaCarga)
   estado.avisos.push(...(await codigosSemTraducao(cliente)))
   estado.avisos.push(...(await estoqueDiverge(cliente)))
@@ -278,7 +286,9 @@ async function rodar(cliente: Cliente, opcoes: Opcoes, dep: Dependencias, estado
   }
   if (noite) {
     const doResumo = await enviarResumo(cliente, dep.enviar, id, agora).catch(() => false)
-    if (doResumo !== undefined) ultimoEnvio = doResumo
+    // Com volta, telegram_ok guarda o resultado dela, para a próxima repetir a volta recusada. O resumo tem o
+    // seu próprio registro: resumo_ok só é marcado quando o Telegram aceita, e os avisos vão para o resumo seguinte.
+    if (doResumo !== undefined && ultimoEnvio === undefined) ultimoEnvio = doResumo
   }
   if (ultimoEnvio !== undefined) await marcarTelegram(cliente, id, ultimoEnvio).catch(() => undefined)
   return { resultado, avisos: estado.avisos, mensagem: null, contagens }
@@ -296,10 +306,15 @@ async function falhar(cliente: Cliente, opcoes: Opcoes, dep: Dependencias, estad
     }
   }
   let horaBoa: number | null = null
-  try {
-    horaBoa = await horaDaUltimaBoa(cliente, estado.id)
-  } catch {
-    horaBoa = null
+  if (estado.gravou) {
+    // A carga desta execução foi gravada e a falha veio depois (a comparação da noite): os dados são os desta hora.
+    horaBoa = emFortaleza(agora).hora
+  } else {
+    try {
+      horaBoa = await horaDaUltimaBoa(cliente, estado.id)
+    } catch {
+      horaBoa = null
+    }
   }
   if (estado.id !== null) {
     await registrarFim(cliente, estado.id, { resultado: 'falha', mensagem: motivo.detalhe, avisos: estado.avisos }).catch(() => undefined)

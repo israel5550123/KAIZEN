@@ -10,6 +10,7 @@ import type { Erp } from './erp.mts'
 import { executar, registrarEstouro } from './execucao.mts'
 import type { Saida } from './execucao.mts'
 import { lerColunasEsperadas } from './sql-erp.mts'
+import type { Enviar } from './telegram.mts'
 import type { TipoExecucao } from './tipos.mts'
 
 let banco: BancoTeste
@@ -56,11 +57,11 @@ async function maiorId(): Promise<number> {
 }
 
 // Roda uma execução com o relógio fingido e, depois, põe no registro a hora fingida (o Postgres grava a hora de verdade).
-async function rodar(quando: number, tipo: TipoExecucao = 'noite', erp: Erp = falso.erp): Promise<Saida> {
+async function rodar(quando: number, tipo: TipoExecucao = 'noite', erp: Erp = falso.erp, enviarFn: Enviar = enviar): Promise<Saida> {
   const antes = await maiorId()
   const saida = await executar(
     { tipo, manual: false },
-    { erp, conectarKaizen: () => conectar(banco.url), enviar, agora: () => quando },
+    { erp, conectarKaizen: () => conectar(banco.url), enviar: enviarFn, agora: () => quando },
   )
   await banco.cliente.query(
     `update kaizen.execucao
@@ -262,6 +263,61 @@ test('a noite que falha depois de registrar a sua linha ainda manda o resumo', a
   assert.equal(noite.resultado, 'falha')
   assert.equal(noite.resumo_ok, true)
   assert.deepEqual(noite.resumo_chaves, ['codigo:tipo:AM'])
+})
+
+test('a noite que gravou e depois falhou na comparação diz que os dados são os das 22h', async () => {
+  await montarLoja()
+  assert.equal((await rodar(horaEm('2026-09-29', 19), 'hora')).resultado, 'ok')
+  // Depois das 19h chega o documento 187; às 22h o ERP responde tudo, menos a consulta dos totais.
+  await falso.inserir('documento', [{
+    oid: 187, _iddocumento: 124, modelo: 'AX', status: 'E', tipomovimento: 'N', tipomovimentofinanceiro: 'N',
+    datahora: '2026-09-29 20:00:00', datahoramovimento: '2026-09-29 20:00:00', idempresa: 1,
+  }])
+  const semTotais: Erp = {
+    async consultar(sql: string) {
+      if (sql.includes('movimentos:variacao')) throw new ErroErp('rede', 'o ERP não respondeu: sem resposta em 90 s')
+      return falso.erp.consultar(sql)
+    },
+  }
+  const saida = await rodar(horaEm('2026-09-29', 22), 'noite', semTotais)
+
+  assert.equal(saida.resultado, 'falha')
+  const docs = await banco.cliente.query('select origem_id from kaizen.documento order by origem_id')
+  assert.deepEqual(docs.rows, [{ origem_id: '186' }, { origem_id: '187' }])
+  assert.deepEqual(enviadas, [
+    'Kaizen: a leitura das 22h falhou — o ERP não respondeu. Os dados do Kaizen continuam os das 22h. Nada a fazer: ele tenta de novo em 30/09 às 8h.',
+  ])
+})
+
+test('na noite, a volta recusada fica no registro mesmo com o resumo aceito, e sai na leitura seguinte', async () => {
+  await montarModeloSemTraducao()
+  const erpFora: Erp = {
+    async consultar() {
+      throw new ErroErp('rede', 'o ERP não respondeu: sem resposta em 90 s')
+    },
+  }
+  await rodar(horaEm('2026-09-29', 19), 'hora', erpFora)
+  // O Telegram aceita o resumo das 22h, mas recusa o "voltou a funcionar".
+  const recusadas: string[] = []
+  const semVolta = async (texto: string): Promise<boolean> => {
+    if (!texto.startsWith('Kaizen: voltou')) return enviar(texto)
+    recusadas.push(texto)
+    return false
+  }
+  await rodar(horaEm('2026-09-29', 22), 'noite', falso.erp, semVolta)
+  await rodar(horaEm('2026-09-30', 8), 'hora')
+
+  assert.deepEqual(recusadas, ['Kaizen: voltou a funcionar às 22h.'])
+  assert.deepEqual(enviadas, [
+    'Kaizen: a leitura das 19h falhou — o ERP não respondeu. Nada a fazer: ele tenta de novo às 22h.',
+    `Kaizen — resumo de 29/09:\nCódigos novos no ERP (1) — leve este resumo à próxima sessão com o Claude:\n- ${AVISO_AM.texto}`,
+    'Kaizen: voltou a funcionar às 8h.',
+  ])
+  assert.deepEqual((await execucoes()).map((e) => [e.tipo, e.resultado, e.resumo_ok, e.telegram_ok]), [
+    ['hora', 'falha', false, true],
+    ['noite', 'aviso', true, false],
+    ['hora', 'aviso', false, true],
+  ])
 })
 
 test('uma fatia que falha no ERP é falha com a faixa de oid na mensagem', async () => {

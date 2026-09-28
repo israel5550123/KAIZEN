@@ -1,5 +1,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
+import { createServer } from 'node:net'
+import type { AddressInfo, Socket } from 'node:net'
 import { conectar, emTransacao, garantirLocal } from './banco.mts'
 
 // Superusuário do Postgres local (docker-compose.yml).
@@ -26,14 +28,36 @@ test('garantirLocal recusa outro endereço, outra porta, porta ausente e endere�
   }
 })
 
-test('conectar fixa o fuso da sessão em America/Fortaleza, mesmo para quem não tem esse fuso', async () => {
+test('conectar fixa o fuso da sessão em America/Fortaleza e o DateStyle em ISO, YMD, mesmo para quem não os tem', async () => {
   garantirLocal(URL_LOCAL)
   const cliente = await conectar(URL_LOCAL)
   try {
     const { rows } = await cliente.query('show timezone')
     assert.equal(rows[0].TimeZone, 'America/Fortaleza')
+    // O aviso de documento apagado usa criado_em::text: a data sai AAAA-MM-DD qualquer que seja o padrão do servidor.
+    const estilo = await cliente.query('show datestyle')
+    assert.equal(estilo.rows[0].DateStyle, 'ISO, YMD')
   } finally {
     await cliente.end()
+  }
+})
+
+test('conectar desiste em 10 s de um banco que aceita a conexão e não responde', async () => {
+  // Um servidor mudo, aberto por este teste no próprio PC: aceita a conexão e nunca responde.
+  const conexoes: Socket[] = []
+  const mudo = createServer((conexao) => {
+    conexoes.push(conexao)
+  })
+  await new Promise<void>((pronto) => mudo.listen(0, '127.0.0.1', pronto))
+  const porta = (mudo.address() as AddressInfo).port
+  const inicio = Date.now()
+  try {
+    await assert.rejects(conectar(`postgres://kaizen@127.0.0.1:${porta}/kaizen`), { message: 'timeout expired' })
+    const levou = Date.now() - inicio
+    assert.ok(levou >= 9_900 && levou < 12_000, `levou ${levou} ms`)
+  } finally {
+    for (const conexao of conexoes) conexao.destroy()
+    await new Promise<void>((fechado) => mudo.close(() => fechado()))
   }
 })
 
