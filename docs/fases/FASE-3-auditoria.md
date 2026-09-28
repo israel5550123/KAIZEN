@@ -1,214 +1,342 @@
-# Fase 3 — auditoria da construção
+# Fase 3 — auditoria da fase inteira
 
-**APROVADA, só a construção.** Os três itens combinados para esta sessão têm evidência que eu mesmo produzi: spec e plano existem, as tarefas 1 a 9 estão com `complete` no ledger e a 10 está no passo 6 (esta auditoria); os testes passam, 324 de 324, a contagem do plano; a história da cópia antiga da Link está no `kaizen` do PC, ligada ao cadastro do ERP novo, sem duplicar. **A Fase 3 não está fechada:** o "pronto quando" do `OBJETIVO.md` é contra a cópia final, que é a tarefa 11 (29/09) e fica aberta de propósito.
+**APROVADA.** O "pronto quando" da Fase 3 no `OBJETIVO.md` e os itens (1) a (5) e (8) que o dono pediu para o fecho em 28/09 têm evidência que eu mesmo produzi:
 
-Auditoria de 28/09/2026, das 11h50 às 12h25 (Fortaleza), na branch `fase-3`, último commit `9835e50`. Rodei os testes e fiz só SELECT no banco `kaizen`, como o usuário `kaizen`. Não rodei o comando da Link, não escrevi no banco, não abri o `.env` e não toquei no `link_postgres`.
+- a cópia final está no `erp` do Kaizen do PC, conferida e intocada desde a restauração;
+- a história de abril a 25/09 está no esquema `kaizen`, ligada ao cadastro do ERP novo, com zero diferença dia a dia nos 141 dias com venda;
+- a venda de junho e o pedido de 28/09 saem na mesma forma;
+- os testes passam, 325 de 325.
+
+Falta uma frase errada no relatório e os passos de fecho da lista abaixo; nenhum deles muda um número gravado.
+
+Esta auditoria substitui a da construção (commit `7ed7b6f`), que deixou a tarefa 11 aberta de propósito. Foi feita em 28/09/2026, das 11h50 às 12h05 (Fortaleza), na branch `fase-3-final`, último commit `0329ccb`, ainda não mesclada em `main`.
+
+O que eu fiz:
+
+- rodei `npm run verificar`;
+- no banco `kaizen`, só SELECT, como o usuário `kaizen`;
+- no `link_postgres` (usuário `link`, banco `prumo`), só SELECT;
+- li o arquivo da cópia com `sha256sum` e `pg_restore --list`, que não se conecta a banco nenhum;
+- fiz 3 consultas só de leitura ao ERP novo, por `ferramentas/consultar-erp.mts`.
+
+Não rodei `tradutor/link.mts` nem `tradutor/principal.mts`, não abri o `.env` e não fiz commit.
 
 ## O que falta ou deve ser corrigido
 
-Nenhum destes pontos impede a mescla. Os dois primeiros devem ser feitos antes de o dono restaurar a cópia final.
+**Antes da mescla:**
 
-1. **Proteger a restauração da cópia final** (relatório, passo 1.5; spec, seção 3; plano, tarefa 10, passo 5). O `pg_restore --clean` roda sem `-n erp`. Na VPS, os esquemas `erp` e `kaizen` estão no mesmo banco `prumo` (spec da Fase 2, linha 100). Se o arquivo da VPS trouxer outro esquema além do `erp`, o `--clean` apaga e troca esse esquema no banco `kaizen` do PC. O passo 1.4 conta só `TABLE DATA erp` e não percebe esquema a mais. O roteiro da Fase 2 manda tirar o arquivo com `-n erp`, então o risco é baixo. Mesmo assim, acrescentar `-n erp` ao comando do passo 1.5 custa uma palavra.
-2. **Corrigir no relatório a frase sobre as 7 decisões.** O relatório diz: "o Consumidor Final e 6 clientes sem CPF/CNPJ, ligados pelo código e pelo nome". Conferido no banco, as 7 são:
-   - o Consumidor Final (`10000502` → `999007`, 831 documentos);
-   - o `10000199` → `484`, renumerado na migração e ligado pelo nome, não pelo código;
-   - 5 clientes com o mesmo código nos dois cadastros: 21, 214, 279, 290 e 409.
-3. **Três lacunas em `docs/DECISOES.md`.** Estão na spec, mas não no arquivo que o dono lê para decidir:
-   - **As contas a pagar abertas estão nas duas fontes.** As 94 parcelas pendentes da Link (R$ 245.864,76) são as mesmas que a migração levou ao ERP novo. Somadas sem o corte por período, a folga da Fase 4 conta essa dívida duas vezes (spec, seções 13 e 14).
-   - **O vendedor liga pelo primeiro nome.** O `OBJETIVO.md` diz "pelo nome". Com o primeiro nome, 3 vendedores ligam e 3 falham.
-   - **A regra de conta a pagar só foi medida na cópia antiga.** Na cópia antiga, toda parcela de conta é `2.x` positiva. A conferência dessa regra na cópia final ficou para a tarefa 11, em vez de um filtro no SQL. É um ruling do ledger que não foi registrado.
-4. **A forma do orçamento difere entre as duas fontes.** A diferença está registrada em `DECISOES.md` e deixada para a Fase 4. A spec (7.2) diz: "No ERP novo, o sentido do item é o movimento do documento: S no pedido, N no orçamento". O primeiro dia real desmentiu isso:
+1. **Corrigir uma frase do relatório.** Em `docs/fases/FASE-3-relatorio.md`, linha 38, está escrito "Pagamentos das vendas: 6.009". Os 6.009 são todos os pagamentos da Link. Conferido no banco:
 
-   | Fonte | Orçamentos | Movimento | Itens |
-   | --- | --- | --- | --- |
-   | ERP novo | 4 | saída | 13, sentido `S` |
-   | ERP novo, pré-venda | 2 | saída | 8, sentido `S` |
-   | Link | 4 | nenhum | 9, sentido `N` |
+   | Onde está o pagamento | Pagamentos |
+   | --- | --- |
+   | vendas válidas | 5.397 |
+   | vendas canceladas | 35 |
+   | sangrias | 420 |
+   | suprimentos | 157 |
+   | **total** | **6.009** |
 
-   A "mesma forma" do "pronto quando" é a da venda, e a venda confere (seção 3). A spec não ganhou nota sobre a premissa que caiu.
+   "Pagamentos das vendas" são 5.432. A frase seguinte está certa: em 5.270 das 5.271 vendas válidas, os pagamentos somam a venda menos a devolução.
+
+**Fecho, depois desta auditoria, como o plano manda (tarefa 11, passo 5):**
+
+2. **Linha `complete` da tarefa 11 no ledger.** Hoje ela não existe: a última linha da tarefa 11 é a do passo 5, e as tarefas 12 e 13 já têm `complete`. O ledger (`.superpowers/sdd/`) é ignorado pelo git, então a linha só existe no disco.
+3. **Mesclar e commitar.**
+   - Mesclar `fase-3-final` em `main`, com `npm run verificar` (325), e enviar ao GitHub.
+   - Commitar a memória do implementador, que está sem commit: `.claude/agent-memory/implementador/MEMORY.md` (mudado) e `project_superpowers_sdd_gitignore.md` (novo). O `docs/AUTONOMIA.md` manda a memória para o git.
+4. **Registrar uma lição em `docs/LICOES.md`: frase de composição errada, três vezes nesta fase.**
+   - "As 7 decisões", na auditoria da construção.
+   - "As outras 16", que eram 14, na revisão final.
+   - "Pagamentos das vendas", nesta auditoria.
+
+   Pelo `docs/AUTONOMIA.md`, lição repetida vira regra. A fase usou 2 das 3 mudanças de método (`20d3400` e `f51b99d`). Uma regra que se pode verificar: toda frase "X são A, B e C" do relatório aponta para a consulta que a produziu, no registro da rodada.
+
+**Do dono:**
+
+5. **Commitar a sua mudança no `OBJETIVO.md`** (a natureza de operação e o tipo do cadastro). Dois textos da branch citam "a decisão do dono de 28/09 no `OBJETIVO.md`": a entrada de `docs/DECISOES.md` sobre orçamento e pré-venda, e o `/goal` da Fase 4. Sem o commit, `main` cita uma decisão que não está em `main`.
 
 **Remover:** nada.
 
 ## 1. Testes
 
-- `npm run verificar`, rodado por mim: `tsc -p .` sem erro e saída 0.
-  - Resultado: "rodou 324 testes, esperados 324". Passaram 324; 0 falharam, 0 foram pulados, 0 ficaram por fazer. Durou 109,2 s.
-- A contagem do plano (tabela de tarefas) é 280 + 44 = 324, e `testes-esperados.txt` diz 324. Os 44 testes novos por arquivo:
+- **O comando:** `npm run verificar`, rodado por mim.
+  - `tsc -p .` terminou sem erro.
+  - Resultado: "rodou 325 testes, esperados 325". Passaram 325; falharam 0; 0 pulados, 0 por fazer, 0 cancelados.
+  - Os testes duraram 89,3 s (1 min 33 s com o `tsc`), e o comando saiu com 0.
+- **A contagem do plano:** 280 da Fase 2, mais 44 da construção, mais 1 da tarefa 12, dá 325. É o que `testes-esperados.txt` diz.
+- **Os 45 testes da Link, por arquivo:**
 
-  | Arquivo | Testes | Tarefa |
-  | --- | --- | --- |
-  | `link-migracao` | 5 | 4 da tarefa 1 e 1 da tarefa 10 |
-  | `link-falsa` | 5 | 2 |
-  | `link-ligar` | 7 | 3 |
-  | `link-vendas` | 11 | 4 |
-  | `link-caixa` | 3 | 5 |
-  | `link-contas` | 4 | 6 |
-  | `link-comando` | 7 | 7 |
-  | `link-copia` | 2 | 8 |
+  | Arquivo | Testes |
+  | --- | --- |
+  | `link-migracao` | 6 (5 da construção e 1 da tarefa 12) |
+  | `link-falsa` | 5 |
+  | `link-ligar` | 7 |
+  | `link-vendas` | 11 |
+  | `link-caixa` | 3 |
+  | `link-contas` | 4 |
+  | `link-comando` | 7 |
+  | `link-copia` | 2 |
 
-  Cada arquivo bate com o que o plano pede à sua tarefa.
-- Nenhum `.skip`, `.only` ou `todo` nos arquivos da Link.
-- **Valor de referência concreto:** os 44 testes novos comparam valores exatos.
-  - 43 usam números, códigos e mensagens dos casos reais da cópia antiga. Exemplos: a venda 1992 soma 150,00, com os itens 90,365760772 e 59,634246; a devolução da 1095 é 67,764 sem arredondar e 67,77 linha a linha; os empates 109,725 → 109,72 e 90,915 → 90,92; o fechamento 7 tem pix calculado 922,38 e informado 817,38; a conta 1396; a mensagem `código da Link sem tradução: forma Pix (8)`.
-  - 1 é estrutural: toda migração que grava na `de_para` tem a cláusula `on conflict ... do update`.
-- **Limite:** o valor de cada item é o que o próprio SQL gravou no protótipo, porque a Link não guarda valor por item. O que prova a conta são as somas contra o que a Link gravou: `valor_total_venda` e `valor_total_devolucao` em 6 negociações (1992, 392, 3613, 5061, 2492 e a devolução da 1095), e a comparação por dia em 10 dias.
-- Os 280 testes da Fase 2 foram auditados em `FASE-2-auditoria.md`. A branch não muda nenhum arquivo de código da Fase 2: `git diff main...fase-3` só cria arquivos da Link e muda `testes-esperados.txt`.
+- **Valor de referência concreto: 45 de 45.**
+  - Os 44 da construção foram conferidos na auditoria anterior.
+  - Nesta branch mudaram 5 arquivos de teste, todos da Link.
+  - O teste novo confere o `999007`, o `link:900001` e a `de_para` com 24 linhas e 1 falha.
+  - Os 4 testes ajustados conferem códigos, nomes (`CONSUMIDOR FINAL`, `CLIENTE 1`), contagens (36 pessoas, 38 linhas de resumo) e a linha "1 vendas válidas, R$ 10,00".
+  - Nenhum `.skip`, `.only` ou `todo`.
+- **Os 280 da Fase 2:** nenhum arquivo deles muda na branch (`git diff main...fase-3-final`).
+- **Limite:** alguns testes dependem da ordem dentro do arquivo, e isso está escrito nos comentários.
+  - Em `link-vendas.test.mts`, "a falha vira `link:`..." tem de rodar antes de "uma decisão nova...".
+  - O teste da 008 tem de ser o último de `link-migracao.test.mts`.
 
-## 2. "Pronto quando" da construção, item por item
+  Trocar a ordem quebra o teste, não o produto.
 
-### 2.1 Spec e plano
+## 2. O "pronto quando" do `OBJETIVO.md`
 
-- A spec `docs/superpowers/specs/2026-09-28-fase3-tradutor-link-design.md` existe e tem a seção "Alternativas consideradas", com 10 alternativas descartadas e o critério do `OBJETIVO.md`.
-- O plano `docs/superpowers/plans/2026-09-28-fase3-tradutor-link.md` existe, com 11 tarefas.
-- No ledger (`.superpowers/sdd/2026-09-28-fase3-tradutor-link/progress.md`), as tarefas 1 a 9 estão como `complete`.
-- A tarefa 10 está nos passos 6 (esta auditoria) e 7 (mescla). Os passos 1 a 5 têm commits:
-  - `9835e50`: a mesma forma;
-  - `e856fc9`: correção da revisão final, com a rodada repetida às 05h58;
-  - `daa4770`: decisões e lições;
-  - `8e480d1`: relatório.
-- A tarefa 11 está aberta, como combinado.
+> A história de abril a 25/09 está no esquema próprio, ligada ao cadastro novo, e uma venda de junho e uma de outubro têm a mesma forma.
 
-### 2.2 A história gravada no `kaizen` do PC (cópia antiga)
+### 2.1 A história no esquema próprio
 
-Todos os números abaixo saíram das minhas consultas; entre parênteses, a Link na mesma cópia.
+Está no Kaizen do PC: **6.183 documentos da Link**, de 02/04 às 19h32 a 25/09 às 17h48min23.
 
-- **A cópia:** esquema `erp` com 26 tabelas e 5.282 negociações; a última é de 25/09 às 11h51min03. O sha256 do dump em `C:\Projetos\link-copias` é `bd8e4b39…130da`, igual ao registro da rodada.
-- **Documentos da Link: 6.155.**
+| Tipo | Situação | Documentos |
+| --- | --- | --- |
+| pedido | emitido | 5.271 |
+| pedido | cancelado | 34 |
+| orçamento | emitido | 4 |
+| fechamento de caixa | emitido | 158 |
+| sangria | emitido | 420 |
+| suprimento | emitido | 157 |
+| conta a pagar | emitido | 88 |
+| nota de entrada | emitido | 51 |
 
-  | Tipo | Documentos | Na Link |
-  | --- | --- | --- |
-  | Pedido emitido | 5.244 | |
-  | Pedido cancelado | 34 | |
-  | Orçamento | 4 | 5.282 negociações, com os pedidos |
-  | Fechamento de caixa | 158 | 158 |
-  | Sangria | 419 | 419 |
-  | Suprimento | 157 | 157 |
-  | Conta a pagar | 88 | |
-  | Nota de entrada | 51 | 51 |
+- **Itens de venda:** 14.704 linhas de item vendido. São 14.606 nas vendas válidas, 89 nas canceladas e 9 nos orçamentos.
+- **Outros itens:** 54 devolvidos e 530 de nota de entrada.
+- **Pagamentos:** 6.009 (composição no item 1 da lista acima).
+- **Conferência de caixa:** 632 linhas.
+- **Contas a pagar:**
+  - 221 parcelas, R$ 625.935,51, das quais 94 pendentes (R$ 245.864,76);
+  - 127 baixas, R$ 380.070,75.
+- **O resumo do comando confere:** rodei agora `sql/link/resumo.sql`, que só lê. As 47 linhas são iguais às do resumo da rodada 2.
 
-- **Filhos:**
+**Na VPS, a história ainda não está.** Ela chega lá na Fase 4, pelo mesmo comando. Isso está na spec (13, "A VPS"), no `docs/AUTONOMIA.md` ("até a Fase 3, a VPS é do dono") e no item (3) do `/goal` da Fase 4.
 
-  | O quê | No Kaizen | Na Link |
-  | --- | --- | --- |
-  | Itens vendidos | 14.636 | 14.636 |
-  | Itens devolvidos | 54 | 54 |
-  | Itens de nota | 530 | 530 |
-  | Pagamentos | 5.980 | |
-  | Linhas de conferência | 632 | |
-  | Parcelas | 221 | |
-  | Baixas | 127 (R$ 380.070,75) | |
+### 2.2 Ligada ao cadastro novo
 
-  Os 5.980 pagamentos são 5.383 do caixa, 576 de sangria e suprimento, 18 de vale, 2 de dinheiro devolvido (−R$ 161,00) e 1 de bonificação. Das 221 parcelas, 94 estão pendentes (R$ 245.864,76).
-- **Pagamentos contra a venda:** somam venda − devolução em 5.243 das 5.244 vendas válidas. A exceção é a 100 (336,79 × 336,78), a esperada pela spec.
-- **Ligações** (códigos citados pelos documentos):
+- Nenhuma venda válida tem cliente `link:`.
+- Nenhum item de venda válida tem produto `link:`.
+- 10 itens têm vendedor `link:`. São 5 vendas, R$ 300,60, dos usuários de teste 7 e 8, que o dono mandou ignorar.
+- **Os códigos do cadastro novo existem:** conferi todo código citado pelos documentos da Link que não é `link:`, e nenhum falta no cadastro do ERP novo:
+  - 362 pessoas: 343 clientes e 19 fornecedores;
+  - 784 produtos;
+  - 3 funcionários.
+- **Vendas sem cliente:** 31 vendas válidas (R$ 2.339,00), como a Link as gravou.
 
-  | O quê | Ligados ao cadastro do ERP novo | Falhas |
-  | --- | --- | --- |
-  | Clientes | 342 | 1 |
-  | Fornecedores | 19 | 1 |
-  | Produtos | 782 | 6 |
-  | Vendedores | 3 | 3 |
+### 2.3 A mesma forma
 
-  - Todos os códigos ligados existem no cadastro `meuerp`.
-  - Nenhum item de venda válida ficou com produto `link:`.
-  - 31 vendas válidas não têm cliente (R$ 2.339,00), como a Link as gravou.
-- **`de_para` da Link:** 22 decisões e 11 falhas.
-  - Falhas de funcionário: 1, 7 e 8.
-  - Falhas de pessoa: 1 e 900001.
-  - Falhas de produto: 1993, 2396, 2758, 5218, 5239 e 5264.
-  - É a lista do relatório e da spec (seção 6).
-- **Comparação por dia:** rodei `sql/link/comparar.sql`, que só lê, sobre o que está gravado: 0 linhas com diferença. São 141 dias com venda válida no Kaizen e 141 na Link.
-- **Meses:** o vendido de cada mês é igual ao `valor_total_venda` da Link; os totais são 5.244 vendas e 732.836,76. A devolução sem arredondar difere 1 centavo da gravada pela Link em abril (1.322,12 × 1.322,11) e em setembro (663,73 × 663,72), como o relatório explica. Maio (131.543,37) e junho (140.445,77) batem com os números que o Prumo conferiu.
+Rodei `sql/kaizen/ficha-venda.sql` para dois documentos:
 
-### 2.3 Rodar duas vezes não duplica
+- o 2508: a negociação 1992 da Link, de 17/06, venda 2124 na tela da Link;
+- o 24855: o pedido 196 do ERP novo, de 28/09 às 09h07.
 
-- **Os documentos não foram gravados de novo.** Os 6.155 documentos da Link têm um único `visto_em`, 28/09 às 05h34min15, que é a primeira rodada. O cadastro só da Link (6 produtos, 2 pessoas, 3 funcionários) tem `lido_em` de 05h58min25, que é a última rodada. Houve rodadas depois da primeira, e nenhum documento foi apagado e gravado de novo.
+As duas fichas saíram iguais, byte a byte, às gravadas às 09h10 em `C:\Projetos\link-copias\ficha-2508.json` e `ficha-24855.json`.
+
+- **O que é igual nas duas:**
+  - `pedido`, `emitido`, `saida`, `recebe`;
+  - os itens de sentido `saida`, com produto e vendedor no código do cadastro novo (vendedores `1` e `999005`, com nome);
+  - as formas no mesmo vocabulário (`pix` e `dinheiro`).
+- **O que muda é o fato:** valores, produtos, datas e cliente.
+- **"Outubro" virou "28/09 em diante":** é o `/goal` do dono, e está em `docs/DECISOES.md` (28/09).
+
+## 3. O que o dono pediu para o fecho (28/09)
+
+### (1) A cópia final: conferida, restaurada, intocada
+
+| Conferência | Obtido por mim |
+| --- | --- |
+| sha256 de `C:\Users\Israel\Documents\erp-link-2026-09-28.dump` | `449ea8aa005ef7a9e76b3aa28ee596309201b3406fa6a9c6a8d061a76233c1ef`, igual ao esperado |
+| sha256 da cópia em `C:\Projetos\link-copias\` e de `/tmp/erp-final.dump` no container | o mesmo |
+| `pg_restore --list` | 26 `TABLE DATA erp`, 26 `TABLE erp`, 1 `SCHEMA erp`, 0 entradas de outro esquema |
+| Quando o arquivo foi tirado | 28/09 às 03h28min59 UTC (00h28 em Fortaleza), do banco `prumo` |
+| Negociações no `erp` e a última | 5.309, a última em 25/09 às 17h48min23 |
+| Tabelas no `erp` | 26 |
+| Turno 190 | fechado em 25/09 às 17h50min04 |
+| Parcelas de conta a pagar fora de `2.x` (a consulta do plano) | 0 |
+| O usuário `kaizen` no `erp` | sem CREATE, 0 permissões além de SELECT, SELECT nas 26 tabelas, dono de nenhuma; o dono do esquema é `postgres` |
+
+**A restauração só trocou o `erp`.** As migrações 001 a 005 do esquema `kaizen` continuam com a data de 27/09 às 20h44, e os 6.155 documentos da cópia antiga, com o `visto_em` das 05h34. O `--clean` não apagou o `kaizen`.
+
+**A trava de cópia pela metade passou:**
+
+- as 20 tabelas que o comando lê estão cheias; a única vazia do `erp` é `negociacao_parcela`, que não está na lista das 119 colunas;
+- `sql/link/referencias.sql`, rodado agora, dá 0 nas 6 ligações;
+- as duas rodadas terminaram com `link ok` (`final-rodada-1.txt` e `final-rodada-2.txt`).
+
+**Nada foi gravado no `erp` depois da restauração:**
+
+- os contadores de escrita do esquema `erp` são `ins=75236 upd=0 del=0`;
+- 75.236 é a soma exata das linhas das 26 tabelas restauradas;
+- rodei agora a impressão digital (`erp-impressao.sql`: contagem e md5 de cada tabela) e ela é idêntica à de `final-erp-depois-restauracao.txt` e à de `final-erp-no-fim.txt`.
+
+**Nada foi gravado no `link_postgres`:**
+
+- agora: `tabelas=26 ins=74920 upd=0 del=0`, e 5.282 negociações, a última em 25/09 às 11h51min03;
+- é o que dizem `final-link-postgres-antes.txt` e `-depois.txt`;
+- o servidor está no ar desde 24/09 às 20h59 UTC, sem reinício.
+
+### (2) A `de_para` com a resposta do dono
+
+- **As linhas da Link:** 23 decisões e 10 falhas.
+- **As 10 falhas são as que o dono mandou ignorar:**
+  - os funcionários 1, 7 e 8;
+  - a pessoa 900001 (FORNECEDOR PADRÃO);
+  - os produtos 1993, 2396, 2758, 5218, 5239 e 5264, todos com 0 venda válida.
+
+  Nenhuma falha nova apareceu.
+- **O cliente de R$ 60,00 ligou:**
+  - a pessoa 1 da Link aponta para o `999007`, que existe no cadastro do ERP novo (fonte `meuerp`) como `CONSUMIDOR FINAL`, sem CPF/CNPJ;
+  - as duas vendas dele têm pessoa `999007`: a 1073 (1194 na tela, 21/05, R$ 10,00) e a 1730 (1855 na tela, 09/06, R$ 50,00);
+  - nenhum documento ficou com `link:1`.
+- **A leitura de hora em hora continua funcionando:**
+  - a migração 008 entrou no banco às 11h08min36,185;
+  - a execução 6 do ERP novo começou 11 milésimos depois, terminou às 11h08min38 com resultado `aviso` e leu 155 documentos;
+  - os 6 avisos são códigos novos do ERP novo: formas 6 e 7, situação `S`, status de parcela `C`, tipos `EM` e `MN`; nenhum vem da `de_para`;
+  - o teste da 008 passa.
+- **Limite:** a prova é uma execução manual e um teste. No PC não há leitura automática.
+- **"Ignorado, se não existir":** o `999007` existe. A migração 008 não tem condição; se um dia o `999007` sumir, o comando da Link para, em vez de ignorar. Isso está registrado em `docs/DECISOES.md`, na entrada da resposta do dono.
+
+### (3) O tradutor contra a cópia final
+
+| Número | Cópia antiga | Cópia final (conferido por mim) |
+| --- | --- | --- |
+| Documentos | 6.155 | 6.183 |
+| Vendas válidas | 5.244 | 5.271 |
+| Vendas canceladas | 34 | 34 |
+| Sangrias | 419 | 420 |
+| Itens vendidos | 14.636 | 14.704 |
+| Pagamentos | 5.980 | 6.009 |
+| Turnos abertos | 3 | 2 (os turnos 3 e 4, de 13/04) |
+
+**A diferença é a tarde de 25/09.** Os 28 documentos novos têm o `visto_em` desta rodada (11h09min03):
+
+- 27 vendas, das 13h53 às 17h48, com 68 itens e R$ 4.288,09;
+- 1 sangria, às 17h31;
+- 29 pagamentos: 28 das vendas e 1 da sangria.
+
+Só a tarde cita 1 cliente e 2 produtos que a cópia antiga não citava: o cliente 211 e os produtos 2186 e 1743, e os três ligaram pela regra. O turno 190 foi atualizado no lugar (documento 6304, com o `visto_em` das 05h34). A conferência dele: dinheiro calculado 892,99 e informado 893,00; Pix 3.945,06; cartão 1.751,00. O dia 25/09 inteiro tem 52 vendas, R$ 6.258,55.
+
+**O vendido de abril a 25/09, por mês.** Consulta minha, independente da `meses.sql`: o Kaizen contra o `valor_total_venda` das vendas com caixa ativo da Link.
+
+| Mês | Vendas (Kaizen = Link) | Vendido no Kaizen | Vendido na Link | Devolução no Kaizen | Devolução gravada pela Link | Líquido |
+| --- | --- | --- | --- | --- | --- | --- |
+| abril | 489 | 58.825,56 | 58.825,56 | 1.322,12 | 1.322,11 | 57.503,44 |
+| maio | 905 | 132.684,79 | 132.684,79 | 1.141,42 | 1.141,42 | 131.543,37 |
+| junho | 961 | 140.882,93 | 140.882,93 | 437,16 | 437,16 | 140.445,77 |
+| julho | 1.072 | 145.743,81 | 145.743,81 | 352,83 | 352,83 | 145.390,98 |
+| agosto | 1.008 | 140.782,78 | 140.782,78 | 279,11 | 279,11 | 140.503,67 |
+| setembro (até 25/09) | 836 | 118.204,98 | 118.204,98 | 663,73 | 663,72 | 117.541,25 |
+| **total** | **5.271** | **737.124,85** | **737.124,85** | **4.196,36** | **4.196,35** | **732.928,49** |
+
+- É a tabela do relatório.
+- O centavo de abril e o de setembro vêm da devolução sem arredondar, e o relatório explica.
+- **Diferença dia a dia:** rodei `sql/link/comparar.sql` agora e ela devolveu 0 linhas. O Kaizen tem 141 dias com venda válida, e a Link também tem 141.
+
+**Rodar duas vezes não duplica:**
+
+- **Os documentos não foram gravados de novo.**
+  - Dos 6.183 documentos da Link, 6.155 têm o `visto_em` de 05h34min15 (a primeira rodada da cópia antiga) e 28 o de 11h09min03 (a primeira rodada da cópia final).
+  - O cadastro só da Link (6 produtos, 3 funcionários e a pessoa 900001) tem `lido_em` de 11h09min24, a segunda rodada da cópia final.
+  - Portanto, a segunda rodada passou e não gravou nenhum documento de novo.
 - **Nenhuma chave de origem repete:** 0 em documento, 0 em item e 0 em pagamento.
-- **Os arquivos das rodadas** (em `C:\Projetos\link-copias`, fora do repositório):
-  - `rodada-1` traz `novos=6155`; `rodada-2`, `3` e `4` trazem `novos=0`;
-  - o resumo da rodada 1 é igual ao da rodada 4;
-  - as fotos 1 e 2 são iguais, a 3 e a 4 são iguais, e a 2 é igual à 5.
-- **O comando não grava em `kaizen.execucao`:** não há linha entre 05h31min54 e 09h09.
-- **A leitura do ERP novo não mexeu na história da Link:** a das 09h09 não alterou nenhuma linha dela; o `visto_em` e o `lido_em` acima continuam os mesmos.
-- **Nos testes:** a idempotência tem 2 testes, um da tarefa 4 e um da tarefa 7, e os dois passam.
+- **As rodadas:**
+  - a primeira linha da rodada 1 diz `novos=28`, e a da rodada 2, `novos=0`;
+  - os dois resumos são iguais, fora a primeira linha;
+  - `final-foto-1.txt` é igual a `final-foto-2.txt`.
+- **O Kaizen não mudou desde a rodada:** `foto.sql`, rodado agora, dá o mesmo que `final-foto-2.txt`.
 
-### 2.4 A mesma forma: a venda 1992 da Link (17/06) e o pedido 196 do ERP novo (28/09, 09h07)
+### (4) Orçamento e pré-venda no estoque
 
-Rodei `sql/kaizen/ficha-venda.sql` para os documentos 2508 e 24855.
+Três consultas minhas ao ERP novo, só de leitura, por volta das 11h55. As contagens são maiores que as do relatório (10h45) porque o dia corre.
 
-- **O que é igual:**
-  - as chaves do documento, de cada item e de cada pagamento;
-  - tipo `pedido`, situação `emitido`, movimento `saida`, financeiro `recebe`;
-  - os itens de sentido `saida`, com produto e vendedor no código do cadastro novo (vendedor `1` e `999005`);
-  - as formas no mesmo vocabulário (`pix`, `dinheiro`).
-- **O que difere é o fato:** valores, produtos, datas e cliente.
-- A descrição do produto sai vazia nas duas fichas, pelo bug da Fase 2 registrado em `DECISOES.md`.
-- O resultado é igual às fichas do registro da rodada.
+| Modelo | Documentos desde a virada (todos de 28/09) | Itens | Linhas no histórico de estoque | `tipomovimento` | `flagreservaestoque` |
+| --- | --- | --- | --- | --- | --- |
+| Orçamento (`OC`) | 15 | 50 | 0 | `S` | `F` |
+| Pré-venda (`PV`) | 5 | 28 | 0 | `S` | `T` |
+| Pedido (`PA`) | 19 | 53 | 53 | `S` | `F` |
 
-## 3. Código a mais
+- **Os exemplos do relatório:**
+  - o orçamento 146 (08h44; produtos 1723 × 12, 1556 × 4 e 1765 × 4) não tem linha de estoque;
+  - a pré-venda 143 (08h37; produto 5310 × 2) também não;
+  - o pedido 196 levou o produto 5211 de 319 a 315.
+- **Reserva:** as 1.029 linhas de `mercadoria_estoque` têm `qtdsaldoreserva` e `qtdsaldoreservaoff` zerados.
+- **A resposta do relatório se sustenta:** orçamento e pré-venda não baixam nem reservam estoque.
+- **A frase para o suporte** está no relatório, numa frase só, na seção "Orçamento e pré-venda no estoque".
 
-Nenhum.
+### (5) `npm run verificar`
 
-- Cada arquivo criado ou mudado na branch está na lista de arquivos de alguma tarefa do plano:
-  - 2 migrações;
-  - 14 arquivos em `sql/link/`;
-  - `sql/kaizen/ficha-venda.sql`;
-  - `tradutor/link.mts`, `link-falsa.mts` e `link-casos.json`;
-  - 8 arquivos de teste;
-  - os documentos da fase.
-- A memória dos agentes (`.claude/agent-memory/`) é prevista em `docs/AUTONOMIA.md`.
-- Há duas linhas do resumo impresso que a spec não lista: `vendas_validas_sem_cliente` e `turnos_abertos`. As duas estão no plano, e a tarefa 11 usa `turnos_abertos`.
+Passa, com 325 de 325 (seção 1).
 
-## 4. Regras
+### (8) O relatório
 
-- **Escrita no ERP:** nenhuma. `tradutor/link.mts` só fala com o Postgres. As duas leituras do ERP novo (05h31 e 09h09) são do tradutor da Fase 2, que só lê.
-- **Esquema `erp`:**
-  - O usuário `kaizen` tem só SELECT, nas 26 tabelas; não pode criar nada no `erp` e não é dono de nenhuma tabela dele.
-  - O único toque no `erp` foi a restauração da cópia no banco local, pelo superusuário, com `pg_restore`. É a decisão 1 da spec e está em `DECISOES.md`.
-  - A fonte, o `link_postgres`, só recebeu `pg_dump`, segundo o registro. Não conferi, por ordem.
-- **Regra de negócio no tradutor:**
-  - A única conta é o valor do item: meio-par e rateio da negociação; o devolvido é `qtd × preco_liquido_unitario`. É a exceção declarada e aprovada pelo dono (spec da Fase 2, decisão 4).
-  - A "venda válida" do resumo e da comparação serve só para conferir e imprimir; não é gravada.
-  - A ligação da venda ao turno, a regra do período de cada fonte e a contagem de venda ficaram para a Fase 4.
-- **Dependências e serviços:** o `package.json` não mudou. Nenhum serviço novo, e o Telegram não é chamado.
-- **Método:** houve 1 mudança de método (`20d3400`), num commit `método:` separado, que cita a lição que apareceu pela segunda vez. Nenhum arquivo do dono foi mexido (`settings.json`, hooks, agentes, `CLAUDE.md`, `OBJETIVO.md`).
+`docs/fases/FASE-3-relatorio.md` tem:
 
-## 5. `docs/DECISOES.md`
+- **Os números finais:** conferi um por um contra as minhas consultas, e só a frase do item 1 da lista acima está errada.
+- **A lista dos meses para o dono conferir.**
+- **O `/goal` da Fase 4 pronto para colar.** O item (1) dele é `publicacao/implantar.sh` como primeira tarefa, com o que o script pode e não pode fazer, como está no `docs/AUTONOMIA.md`.
 
-- Nenhuma decisão contraria o `OBJETIVO.md` ou a spec.
-- A troca de "uma de outubro" por "28/09 em diante" é do `/goal` do dono e está registrada.
-- **As mudanças em relação à spec da Fase 2 estão registradas, cada uma com o que muda se estiver errada:**
-  - os códigos do cadastro novo nos documentos;
-  - o prefixo `link:`;
-  - a situação pelo modelo;
-  - o que não entrou (as colunas de conta e sinal, a foto do estoque, as planilhas e as bonificações).
-- **O que vai ao dono está registrado:**
-  - as 11 falhas da `de_para`;
-  - o bug da descrição da Fase 2;
-  - o orçamento com movimento de saída no ERP novo;
-  - o modelo `EM`.
-- Faltam as três entradas do item 3 da lista acima.
+**Uma observação sobre o `/goal`:** ele pede as três perguntas "para hoje e para um dia passado de cada mês desde abril". O "pronto quando" da Fase 4 diz "qualquer dia passado". Um dia por mês é a amostra da evidência; a regra tem de valer para qualquer dia.
 
-## 6. Organização
+## 4. Código a mais
 
-- **Quem não lê código entende a fase por três arquivos:**
-  - `docs/fases/FASE-3-relatorio.md`: números, o que é do dono, o passo a passo de 29/09 e o `/goal` da rodada final;
-  - `docs/fases/FASE-3-rodada-copia-antiga.md`: as duas rodadas, as fotos e as duas fichas;
+**Nenhum.** A branch muda 14 arquivos em relação a `main`:
+
+- a migração 008 (tarefa 12, uma linha de dado na `de_para`);
+- 5 arquivos de teste da Link (tarefa 12 e a correção da revisão final);
+- `testes-esperados.txt`;
+- 7 documentos: o relatório, o registro da rodada final, `DECISOES`, `LICOES`, `AUTONOMIA` (commit `método:`), a spec (nota em 7.2) e o plano (tarefas 12 e 13).
+
+`tradutor/link.mts`, `sql/link/` e `sql/erp/` não mudaram. Depois da rodada das 11h09 (código do `7b0caf0`), só mudaram testes e documentos, então a rodada não precisava repetir.
+
+## 5. Regras
+
+- **Escrita no ERP:** nenhuma.
+  - A branch não mexe em código que fala com o ERP.
+  - A leitura das 11h08 é do tradutor da Fase 2, que só lê.
+  - As minhas 3 consultas passaram pela trava `verificarSomenteLeitura`.
+- **Esquema `erp`:** a restauração foi feita pelo superusuário, com `-n erp`. A sessão restaurou, e não o dono, por ordem do `/goal` dele; isso está em `docs/DECISOES.md`. Depois disso, nenhuma escrita (seção 3, item 1). O `kaizen` só lê.
+- **Regra de negócio no tradutor:** nenhuma nova. A resposta do dono é dado (uma linha na `de_para`), não código.
+- **Dependências e serviços:** o `package.json` não mudou, nenhum serviço entrou, e o comando da Link não chama o Telegram.
+- **Método:**
+  - houve 2 commits `método:` na fase (`20d3400` e `f51b99d`), cada um citando a sua lição; o limite é 3;
+  - o `docs/AUTONOMIA.md` só mudou por eles;
+  - `OBJETIVO.md`, `CLAUDE.md`, `.claude/settings.json` e os hooks não estão em nenhum commit da branch;
+  - a mudança sem commit no `OBJETIVO.md` fica fora da branch, como deve.
+
+## 6. `docs/DECISOES.md`
+
+- **A branch acrescenta 4 entradas:**
+  - a resposta do dono à `de_para`;
+  - a restauração feita pela sessão;
+  - orçamento e pré-venda no estoque;
+  - os 6 códigos novos do ERP novo.
+
+  Nenhuma contraria o `OBJETIVO.md` ou a spec.
+- **A resposta do dono foi gravada como ele disse.** O "ignorado" ficou como a falha com código `link:`, sem marca nova, e a entrada diz o que muda se ele queria outra coisa. O cliente de R$ 60,00 foi para o `999007`.
+- **As três lacunas da auditoria da construção estão preenchidas:** as contas a pagar nas duas fontes, o vendedor pelo primeiro nome e a regra `2.x`, que deu 0 na cópia final.
+- **Para a Fase 4, sem entrada ainda.** A decisão nova do dono (as regras decidem pela natureza de operação do ERP) não diz como tratar os 6.183 documentos da Link.
+  - Eles não têm natureza de operação.
+  - O tipo, o movimento e o financeiro deles vêm da tradução pelo modelo (migração 006).
+
+  É pergunta para a spec da Fase 4, com entrada em `DECISOES.md` lá.
+
+## 7. Organização
+
+- **Quem não lê código entende a fase por quatro arquivos:**
+  - `docs/fases/FASE-3-relatorio.md`: os números, o que é do dono, a frase para o suporte e o `/goal` da Fase 4;
+  - `docs/fases/FASE-3-rodada-copia-final.md`: cada conferência da rodada, e a diferença para a cópia antiga número por número;
+  - `docs/fases/FASE-3-rodada-copia-antiga.md`: as fichas da mesma forma;
   - `docs/DECISOES.md`.
-- Os números do relatório batem com as minhas consultas. A exceção é a frase do item 2 da lista acima.
-
-## 7. A tarefa 11 (rodada contra a cópia final)
-
-**Está descrita de modo que outra sessão consegue fazê-la.** Há:
-
-- a pré-condição e a parada se a cópia antiga ainda estiver no lugar;
-- as três conferências da restauração (26 tabelas, a última venda depois das 11h51 e o turno 190 fechado), mais a consulta das parcelas fora de `2.x`, que tem de dar 0;
-- as duas rodadas com as fotos, apontando para `C:\Projetos\link-copias\foto.sql`, que existe;
-- o que deve mudar em relação à cópia antiga (`turnos_abertos` de 3 para 2; hoje os turnos abertos são o 3, o 4 e o 190);
-- a branch `fase-3-final` a partir de `main`;
-- o `/goal` pronto no relatório.
-
-**Duas ressalvas:**
-
-- a restauração do item 1 da lista acima;
-- o texto da tarefa diz que a correção de uma parada é "uma migração ou uma linha na lista de colunas". Uma diferença na comparação por dia exige mudar o SQL da Link, pelo ciclo normal que a própria tarefa cita.
+- **Os números batem com as minhas consultas**, fora a frase do item 1 da lista acima.
+- **Uma observação para o dono conferir os meses:** as 5.271 "vendas" contam 9 negociações que são só devolução, sem item vendido.
+  - São 8 em abril (108, 271, 296, 424, 425, 434, 495 e 507) e 1 em maio (696).
+  - A Link conta essas 9 como venda, e o Kaizen bate com ela.
+  - A Fase 4 vai contar só o pedido com item vendido: 481 em abril e 904 em maio.
+  - O relatório diz isso em "Limites conhecidos", mas não na tabela dos meses.

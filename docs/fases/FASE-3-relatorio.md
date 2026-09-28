@@ -1,6 +1,6 @@
 # Fase 3 — relatório
 
-**28/09/2026. A Fase 3 está pronta.** A história da Link, de abril a 25/09 (o último dia de venda), está gravada no Kaizen do PC a partir da **cópia final**, ligada ao cadastro do ERP novo e na mesma forma dos documentos do ERP novo. A comparação dia a dia com a Link deu **zero diferença nos 141 dias com venda**, e rodar o comando duas vezes não duplicou nada. A sua resposta às falhas da ligação está gravada, e a leitura de hora em hora do ERP novo continua funcionando depois dela.
+**28/09/2026. A Fase 3 está pronta** (auditoria de fase: APROVADA, `docs/fases/FASE-3-auditoria.md`). A história da Link, de abril a 25/09 (o último dia de venda), está gravada no Kaizen do PC a partir da **cópia final**, ligada ao cadastro do ERP novo e na mesma forma dos documentos do ERP novo. A comparação dia a dia com a Link deu **zero diferença nos 141 dias com venda**, e rodar o comando duas vezes não duplicou nada. A sua resposta às falhas da ligação está gravada, e a leitura de hora em hora do ERP novo continua funcionando depois dela.
 
 Os detalhes da rodada final, com cada conferência, estão em `docs/fases/FASE-3-rodada-copia-final.md`; os da rodada contra a cópia antiga, em `docs/fases/FASE-3-rodada-copia-antiga.md`.
 
@@ -35,7 +35,7 @@ Os detalhes da rodada final, com cada conferência, estão em `docs/fases/FASE-3
 | Notas de entrada | 51 |
 
 - **Itens:** 14.704 linhas de item vendido (14.606 nas vendas válidas, 89 nas canceladas e 9 nos orçamentos), 54 devolvidos e 530 de nota de entrada.
-- **Pagamentos das vendas:** 6.009. Em 5.270 das 5.271 vendas válidas, a soma dos pagamentos é a venda menos a devolução. A exceção é a negociação 100 (venda 161 na tela da Link), de 15/04: um troco de R$ 0,01 que a Link não gravou em lugar nenhum.
+- **Pagamentos:** 6.009: 5.397 das vendas válidas, 35 das canceladas, 420 das sangrias e 157 dos suprimentos. Em 5.270 das 5.271 vendas válidas, a soma dos pagamentos é a venda menos a devolução. A exceção é a negociação 100 (venda 161 na tela da Link), de 15/04: um troco de R$ 0,01 que a Link não gravou em lugar nenhum.
 - **Contas a pagar em aberto em 25/09:** 94 parcelas, R$ 245.864,76, o mesmo total das contas que a migração levou ao ERP novo.
 - **O turno 190 (25/09, das 07h55 às 17h50):** dinheiro calculado R$ 892,99 e informado R$ 893,00; Pix R$ 3.945,06; cartão R$ 1.751,00.
 
