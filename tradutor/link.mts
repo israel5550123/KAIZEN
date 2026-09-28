@@ -2,7 +2,7 @@
 // Todo o trabalho é SQL (sql/link/), numa transação só; nenhum valor passa pelo JavaScript.
 import { readFileSync } from 'node:fs'
 import type { QueryResult } from 'pg'
-import { emTransacao } from './banco.mts'
+import { conectar, emTransacao } from './banco.mts'
 import type { Cliente } from './banco.mts'
 
 export class ErroLink extends Error {}
@@ -72,6 +72,49 @@ export async function traduzirLink(cliente: Cliente): Promise<ContagensLink> {
     for (const familia of FAMILIAS) await rodar(cliente, familia)
     await rodar(cliente, 'cadastros')
     const [contagens] = await rodar(cliente, 'gravar')
+    // As duas conferências de saída, ainda dentro da transação: qualquer linha delas desfaz tudo o que foi gravado.
+    const semTraducao = await rodar(cliente, 'sem-traducao')
+    if (semTraducao.length > 0) {
+      const lista = semTraducao.map((l) => `${l.campo} ${l.codigo} (${l.quantos})`).join(', ')
+      throw new ErroLink(`código da Link sem tradução: ${lista}`)
+    }
+    const diferencas = await rodar(cliente, 'comparar')
+    if (diferencas.length > 0) {
+      const lista = diferencas
+        .map((d) => `${d.dia}: vendas ${d.vendas_kaizen} × ${d.vendas_link}, vendido ${d.vendido_kaizen} × ${d.vendido_link}, devolução ${d.devolucao_kaizen} × ${d.devolucao_link}`)
+        .join('; ')
+      throw new ErroLink(`a comparação com a Link deu diferença em ${diferencas.length} dia(s), Kaizen × Link: ${lista}`)
+    }
     return contagens as unknown as ContagensLink
   })
 }
+
+// O resumo lê o que ficou gravado, depois do commit: uma linha por número, na ordem de sql/link/resumo.sql.
+export async function resumoLink(cliente: Cliente): Promise<Array<{ chave: string; valor: string }>> {
+  const linhas = await rodar(cliente, 'resumo')
+  return linhas.map((l) => ({ chave: String(l.chave), valor: String(l.valor) }))
+}
+
+// O comando. Devolve o código de saída: 0 quando gravou e imprimiu o resumo; 1 quando falhou.
+export async function principalLink(env: Record<string, string | undefined>): Promise<number> {
+  const url = env.KAIZEN_URL
+  if (!url) {
+    console.log('link falhou: falta KAIZEN_URL')
+    return 1
+  }
+  let cliente: Cliente | undefined
+  try {
+    cliente = await conectar(url)
+    const contagens = await traduzirLink(cliente)
+    console.log(`link ok: ${Object.entries(contagens).map(([nome, n]) => `${nome}=${n}`).join(', ')}`)
+    for (const { chave, valor } of await resumoLink(cliente)) console.log(`${chave}: ${valor}`)
+    return 0
+  } catch (erro) {
+    console.log(`link falhou: ${erro instanceof Error ? erro.message : String(erro)}`)
+    return 1
+  } finally {
+    await cliente?.end().catch(() => undefined)
+  }
+}
+
+if (import.meta.main) process.exitCode = await principalLink(process.env)
