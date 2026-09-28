@@ -73,8 +73,8 @@ Os casos que a spec implica e que mais podem pegar o dono de surpresa. Cada um t
 | 7 | Conferências de saída, resumo, comando e a ficha da venda | 7 | 321 | implementador |
 | 8 | Travas contra uma cópia restaurada pela metade (achado da revisão do meio da fase) | 2 | 323 | implementador |
 | 9 | Rodada contra a cópia antiga | — | 323 | implementador |
-| 10 | Fechamento da construção | — | 323 | orquestrador |
-| 11 | Rodada contra a cópia final (29/09, sessão nova; fica aberta nesta sessão) | — | 323 | orquestrador da sessão de 29/09 |
+| 10 | Fechamento da construção (a revisão final acrescentou 1 teste) | 1 | 324 | orquestrador |
+| 11 | Rodada contra a cópia final (29/09, sessão nova; fica aberta nesta sessão) | — | 324 | orquestrador da sessão de 29/09 |
 
 Depois da tarefa 4, o orquestrador pede uma revisão da branch inteira (`docs/LICOES.md`, Fase 2: revisar no meio da fase, logo depois das tarefas que se ligam).
 
@@ -5360,7 +5360,7 @@ Rode a `ficha-venda.sql` para ele (como no passo 8 da tarefa 9) e acrescente ao 
 
 - [ ] **Passo 2: Revisão final da branch**
 
-Pacote da branch inteira (`bash .claude/skills/subagent-driven-development/scripts/review-package <plano> <merge-base> HEAD`) e um revisor final no modelo mais capaz, com o ledger (achados menores guardados e decisões). Uma rodada de correção, uma re-revisão. Se algum arquivo de `tradutor/` ou `sql/` mudar depois da tarefa 9, a rodada da tarefa 9 roda de novo (passos 6 e 7) e o registro é atualizado (`docs/LICOES.md`, Fase 2: o ensaio é o último passo).
+Pacote da branch inteira (`bash .claude/skills/subagent-driven-development/scripts/review-package <plano> <merge-base> HEAD`) e um revisor final no modelo mais capaz, com o ledger (achados menores guardados e decisões). Uma rodada de correção, uma re-revisão. (Na execução de 28/09, a revisão final pediu uma trava a mais: um teste em `tradutor/link-migracao.test.mts` que exige `on conflict (entidade, fonte, codigo_origem) do update set codigo_kaizen = excluded.codigo_kaizen` em toda migração que grava decisão na `de_para`, e a mesma cláusula na 007; a contagem passa de 323 para 324.) Se algum arquivo de `tradutor/` ou `sql/` mudar depois da tarefa 9, a rodada da tarefa 9 roda de novo (passos 6 e 7) e o registro é atualizado (`docs/LICOES.md`, Fase 2: o ensaio é o último passo).
 
 - [ ] **Passo 3: `docs/DECISOES.md`, seção "Fase 3"**
 
@@ -5390,7 +5390,7 @@ Despachar o `auditor-de-fase` (sem passar `model`), dizendo que audita a **const
 
 - [ ] **Passo 7: Mesclar e enviar**
 
-`superpowers:finishing-a-development-branch`: `git checkout main && git merge --no-ff fase-3`, `npm run verificar` em `main` (`rodou 323 testes, esperados 323`), `git push origin main`. O ledger da fase fica no disco (a tarefa 11 continua aberta nele).
+`superpowers:finishing-a-development-branch`: `git checkout main && git merge --no-ff fase-3`, `npm run verificar` em `main` (`rodou 324 testes, esperados 324`), `git push origin main`. O ledger da fase fica no disco (a tarefa 11 continua aberta nele).
 
 
 ### Tarefa 11: Rodada contra a cópia final (29/09, sessão nova; fica aberta ao fim da sessão de 28/09)
@@ -5409,6 +5409,10 @@ Despachar o `auditor-de-fase` (sem passar `model`), dizendo que audita a **const
 
 Rode: `docker exec kaizen-postgres-1 psql -U kaizen -d kaizen -At -c "select count(*), max(data) from erp.negociacao" -c "select count(*) from information_schema.tables where table_schema = 'erp'" -c "select id_caixa_fechamento, data_hora from erp.caixa_fechamento where id_caixa_fechamento = 190"`
 Saída esperada: mais de 5.282 negociações, a última depois das 11h51 de 25/09; `26`; o turno 190 com `data_hora` preenchida.
+
+Rode também (achado da revisão final: a regra "toda parcela de conta é `2.x` positiva" foi medida só na cópia antiga):
+`docker exec kaizen-postgres-1 psql -U kaizen -d kaizen -At -c "select count(*) from erp.pc_lancamento_parcela p join erp.pc_lancamento l on l.id_pc_lancamento = p.id_pc_lancamento where l.id_caixa is null and exists (select 1 from erp.pc_lancamento_parcela q where q.id_pc_lancamento = l.id_pc_lancamento and q.destino_positiva and q.pc_codigo_destino like '2.%' and q.pc_codigo_destino <> '2.1.2.03') and not (p.destino_positiva and p.pc_codigo_destino like '2.%' and p.pc_codigo_destino <> '2.1.2.03')"`
+Saída esperada: `0`. Se vier outro número, pare e escreva no relatório: as contas teriam parcelas fora de `2.x` gravadas junto.
 
 - [ ] **Passo 2: Migrações e cadastro do ERP novo**
 
