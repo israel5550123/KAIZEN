@@ -10,7 +10,7 @@ type Dados = {
   contas: { parcelas: number; total: string; trocas: number; trocas_total: string; tela: number; tela_total: string }
   fechamentos: Array<{
     codigo: string; quando: string; caixa: number | null; usuario: number | null; abertura: number | null
-    formas: Array<{ forma: string; calculado: string; informado: string; quebra: string }>; quebra: string
+    formas: Array<{ forma: string | null; codigo_forma: string; calculado: string; informado: string; quebra: string }>; quebra: string
   }>
   produtos: Array<{ produto: string; descricao: string | null; quantidade: string | null; tem_foto: boolean; lido: string | null }>
   execucoes: { primeira: string | null; linhas: Array<{ dia: string; hora: number; resultado: string | null; telegram: boolean | null }> }
@@ -102,7 +102,10 @@ export async function conferenciaDoDono(cliente: Cliente, produtos: string[], ag
   for (const f of d.fechamentos) {
     t.push(`- fechamento ${f.codigo}, ${f.quando} (caixa ${f.caixa ?? '?'}, usuário ${f.usuario ?? '?'}, abertura ${f.abertura ?? '?'}): quebra ${formatarReais(f.quebra)}`)
     for (const forma of f.formas) {
-      t.push(`  ${forma.forma}: calculado ${formatarReais(forma.calculado)}, informado ${formatarReais(forma.informado)}, quebra ${formatarReais(forma.quebra)}`)
+      // O ERP grava uma linha por código de forma (8 por fechamento, até as zeradas); o nome, quando existe,
+      // vem ao lado do código, porque mais de um código pode traduzir para o mesmo nome (2 e 6 são as duas pix).
+      const rotulo = forma.forma !== null ? `${forma.forma} (forma ${forma.codigo_forma})` : `forma ${forma.codigo_forma}`
+      t.push(`  ${rotulo}: calculado ${formatarReais(forma.calculado)}, informado ${formatarReais(forma.informado)}, quebra ${formatarReais(forma.quebra)}`)
     }
   }
 

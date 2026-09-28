@@ -132,9 +132,9 @@ test('codigosSemTraducao acha o modelo ZZ e a forma 9 com a contagem, e ignora t
   ])
 })
 
-test('codigosSemTraducao avisa os códigos deixados de fora de propósito: modelos AM e RU, financeiro E, parcela C, baixa X', async () => {
+test('codigosSemTraducao avisa os códigos deixados de fora de propósito: modelos AM e RU, financeiro E, baixa X', async () => {
   const a = await inserirDocumento('meuerp', '185', 'AM', 'E', 'N', 'E')
-  const parcela = await inserirParcela(a, '1', 'C')
+  const parcela = await inserirParcela(a, '1', 'P')
   await inserirBaixa(parcela, '1', '1', 'X')
   await inserirDocumento('meuerp', '186', 'RU', 'E', 'N', 'N')
 
@@ -142,7 +142,6 @@ test('codigosSemTraducao avisa os códigos deixados de fora de propósito: model
   assert.deepEqual(avisos.map((a) => a.chave), [
     'codigo:financeiro:E',
     'codigo:status_baixa:X',
-    'codigo:status_parcela:C',
     'codigo:tipo:AM',
     'codigo:tipo:RU',
   ])

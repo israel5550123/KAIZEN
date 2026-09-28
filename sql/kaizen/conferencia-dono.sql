@@ -14,7 +14,8 @@ fechamento as (
   cross join lateral (
     select
       coalesce(jsonb_agg(jsonb_build_object(
-        'forma', coalesce(tf.valor, c.forma),
+        'forma', tf.valor,
+        'codigo_forma', c.forma,
         'calculado', coalesce(c.calculado, 0)::text,
         'informado', coalesce(c.informado, 0)::text,
         'quebra', (coalesce(c.informado, 0) - coalesce(c.calculado, 0))::text

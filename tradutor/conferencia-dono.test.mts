@@ -162,16 +162,16 @@ test('mostra ao dono, em palavras, as vendas pela regra do 154, o a pagar, as qu
     '',
     '3. Quebra de cada fechamento de caixa (informado menos calculado, sem a forma troca). Onde conferir: tela do fechamento.',
     '- fechamento 114, 29/09 às 08h37 (caixa 1, usuário 18152, abertura 3): quebra −R$ 2,00',
-    '  dinheiro: calculado R$ 50,00, informado R$ 48,00, quebra −R$ 2,00',
-    '  pix: calculado R$ 10,00, informado R$ 10,00, quebra R$ 0,00',
+    '  dinheiro (forma 1): calculado R$ 50,00, informado R$ 48,00, quebra −R$ 2,00',
+    '  pix (forma 2): calculado R$ 10,00, informado R$ 10,00, quebra R$ 0,00',
     '- fechamento 118, 29/09 às 18h00 (caixa 1, usuário 18152, abertura 3): quebra R$ 0,00',
-    '  dinheiro: calculado R$ 45,00, informado R$ 45,00, quebra R$ 0,00',
-    '  pix: calculado R$ 0,00, informado R$ 0,00, quebra R$ 0,00',
-    '  credito: calculado R$ 0,00, informado R$ 0,00, quebra R$ 0,00',
-    '  debito: calculado R$ 0,00, informado R$ 0,00, quebra R$ 0,00',
+    '  dinheiro (forma 1): calculado R$ 45,00, informado R$ 45,00, quebra R$ 0,00',
+    '  pix (forma 2): calculado R$ 0,00, informado R$ 0,00, quebra R$ 0,00',
+    '  credito (forma 3): calculado R$ 0,00, informado R$ 0,00, quebra R$ 0,00',
+    '  debito (forma 4): calculado R$ 0,00, informado R$ 0,00, quebra R$ 0,00',
     '- fechamento 140, 30/09 às 19h10 (caixa 3, usuário 18153, abertura 1): quebra −R$ 110,50',
-    '  dinheiro: calculado R$ 310,50, informado R$ 300,00, quebra −R$ 10,50',
-    '  credito: calculado R$ 100,00, informado R$ 0,00, quebra −R$ 100,00',
+    '  dinheiro (forma 1): calculado R$ 310,50, informado R$ 300,00, quebra −R$ 10,50',
+    '  credito (forma 3): calculado R$ 100,00, informado R$ 0,00, quebra −R$ 100,00',
     '',
     '4. Saldo atual dos produtos pedidos, pela última leitura do ERP. Onde conferir: tela do produto.',
     '- produto 60 (PRODUTO 60): 3 (lido em 01/10 às 09h00)',
@@ -190,6 +190,68 @@ test('mostra ao dono, em palavras, as vendas pela regra do 154, o a pagar, as qu
     'Total: 41 esperadas, 40 feitas.',
     '',
     'Última comparação da noite (30/09): zero diferença.',
+  ].join('\n'))
+})
+
+test('a operação real de 28/09 (pedidos 209, 221, 324, conta 365 e fechamento 417): vendas, contas a pagar e a quebra trazem o código da forma', async () => {
+  // Vendas 154: os 3 pedidos, cada um com todos os itens do vendedor 999005 (docs/superpowers/plans/2026-09-28-fase2-conferencia-codigos.md).
+  const pedido209 = await documento('209', 'PA', 'E', 'S', 'R', '2026-09-28 10:19:52')
+  await item(pedido209, '1', '28.80', '999005')
+  await item(pedido209, '2', '58.00', '999005')
+  await item(pedido209, '3', '23.20', '999005')
+
+  const pedido221 = await documento('221', 'PA', 'E', 'S', 'R', '2026-09-28 10:50:16')
+  await item(pedido221, '1', '375.00', '999005')
+  await item(pedido221, '2', '18.00', '999005')
+  await item(pedido221, '3', '120.00', '999005')
+  await item(pedido221, '4', '5.00', '999005')
+
+  const pedido324 = await documento('324', 'PA', 'E', 'S', 'R', '2026-09-28 15:03:30')
+  await item(pedido324, '1', '91.20', '999005')
+  await item(pedido324, '2', '38.00', '999005')
+  await item(pedido324, '3', '34.91', '999005')
+  await item(pedido324, '4', '12.00', '999005')
+  await item(pedido324, '5', '9.50', '999005')
+
+  // Conta a pagar 365: 4 parcelas de R$ 114,90; a de status C (agora "cancelada", migração 009) fica fora.
+  const conta365 = await documento('365', 'CP', 'E', 'E', 'P', '2026-09-28 00:00:00')
+  await parcela(conta365, '1', '114.90', 'C')
+  await parcela(conta365, '2', '114.90', 'P')
+  await parcela(conta365, '3', '114.90', 'P')
+  await parcela(conta365, '4', '114.90', 'P')
+
+  // Fechamento 417: 8 linhas de forma (1 a 8), quebra de R$ 2,00 toda no dinheiro.
+  const fc417 = await documento('417', 'FC', 'E', 'N', 'N', '2026-09-28 17:55:09', [1, 18153, 3])
+  await conferencia(fc417, '1', '1', '604.80', '606.80')
+  await conferencia(fc417, '2', '2', '43.20', '43.20')
+  await conferencia(fc417, '3', '3', '0.00', '0.00')
+  await conferencia(fc417, '4', '4', '160.90', '160.90')
+  await conferencia(fc417, '5', '5', '0.00', '0.00')
+  await conferencia(fc417, '6', '6', '2535.48', '2535.48')
+  await conferencia(fc417, '7', '7', '500.00', '500.00')
+  await conferencia(fc417, '8', '8', '185.61', '185.61')
+
+  const texto = await conferenciaDoDono(banco.cliente, [], Date.parse('2026-09-28T21:00:00Z'))
+  const partes = texto.split('\n\n')
+  assert.equal(partes[1], [
+    '1. Vendas por dia desde 28/09, pela regra do relatório 154 (documento emitido, de saída, que recebe; só os itens com vendedor; dia em que o documento foi criado). Onde conferir: relatório 154.',
+    '- 28/09: 3 vendas, R$ 813,61',
+    'Total: 3 vendas, R$ 813,61',
+  ].join('\n'))
+  assert.equal(partes[2], [
+    '2. Contas a pagar pendentes, sem o crédito de troca: 3 parcelas, R$ 344,70. Onde conferir: tela de contas a pagar.',
+    'O crédito de troca pendente fica fora, porque não é conta: 0 parcelas, R$ 0,00. A tela de contas a pagar do ERP mostra os dois somados: 3 parcelas, R$ 344,70.',
+  ].join('\n'))
+  assert.equal(partes[3], [
+    '3. Quebra de cada fechamento de caixa (informado menos calculado, sem a forma troca). Onde conferir: tela do fechamento.',
+    '- fechamento 417, 28/09 às 17h55 (caixa 1, usuário 18153, abertura 3): quebra R$ 2,00',
+    '  dinheiro (forma 1): calculado R$ 604,80, informado R$ 606,80, quebra R$ 2,00',
+    '  pix (forma 2): calculado R$ 43,20, informado R$ 43,20, quebra R$ 0,00',
+    '  credito (forma 3): calculado R$ 0,00, informado R$ 0,00, quebra R$ 0,00',
+    '  debito (forma 4): calculado R$ 160,90, informado R$ 160,90, quebra R$ 0,00',
+    '  pix (forma 6): calculado R$ 2.535,48, informado R$ 2.535,48, quebra R$ 0,00',
+    '  credito (forma 7): calculado R$ 500,00, informado R$ 500,00, quebra R$ 0,00',
+    '  debito (forma 8): calculado R$ 185,61, informado R$ 185,61, quebra R$ 0,00',
   ].join('\n'))
 })
 
