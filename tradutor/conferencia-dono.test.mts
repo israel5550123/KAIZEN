@@ -58,12 +58,17 @@ async function conferencia(documentoId: string, origemId: string, forma: string,
   )
 }
 
-async function execucao(dia: string, hora: number, resultado: string, extra: { manual?: boolean; mensagem?: string; avisos?: unknown[] } = {}): Promise<void> {
+type ExtraExecucao = { manual?: boolean; mensagem?: string; avisos?: unknown[]; telegramOk?: boolean }
+
+async function execucao(dia: string, hora: number, resultado: string, extra: ExtraExecucao = {}): Promise<void> {
   const inicio = `${dia} ${String(hora).padStart(2, '0')}:00:05-03`
   await banco.cliente.query(
-    `insert into kaizen.execucao (tipo, manual, inicio, fim, resultado, mensagem, avisos)
-     values ($1, $2, $3::timestamptz, $3::timestamptz + interval '1 minute', $4, $5, $6::jsonb)`,
-    [hora === 22 ? 'noite' : 'hora', extra.manual ?? false, inicio, resultado, extra.mensagem ?? null, JSON.stringify(extra.avisos ?? [])],
+    `insert into kaizen.execucao (tipo, manual, inicio, fim, resultado, mensagem, avisos, telegram_ok)
+     values ($1, $2, $3::timestamptz, $3::timestamptz + interval '1 minute', $4, $5, $6::jsonb, $7)`,
+    [
+      hora === 22 ? 'noite' : 'hora', extra.manual ?? false, inicio, resultado, extra.mensagem ?? null,
+      JSON.stringify(extra.avisos ?? []), extra.telegramOk ?? null,
+    ],
   )
 }
 
@@ -114,6 +119,9 @@ test('mostra ao dono, em palavras, as vendas pela regra do 154, o a pagar, as qu
   const fc140 = await documento('140', 'FC', 'E', 'N', 'N', '2026-09-30 19:10:00', [3, 18153, 1])
   await conferencia(fc140, '38', '1', '310.500000', '300.000000')
   await conferencia(fc140, '39', '3', '100.00', null)
+  // Fechamento cancelado: o ERP só conta a conferência de documento emitido, e o Kaizen também não o mostra.
+  const fcCancelado = await documento('141', 'FC', 'C', 'N', 'N', '2026-09-30 19:30:00', [3, 18153, 1])
+  await conferencia(fcCancelado, '40', '1', '20.00', '0.00')
 
   // Estoque: a foto da última leitura.
   await banco.cliente.query(
@@ -125,10 +133,15 @@ test('mostra ao dono, em palavras, as vendas pela regra do 154, o a pagar, as qu
     `insert into kaizen.produto (fonte, codigo, descricao, ativo) values ('meuerp', '60', 'PRODUTO 60', true), ('meuerp', '1391', 'PRODUTO 1391', true)`,
   )
 
-  // Execuções: a primeira agendada foi às 8h de 28/09; em 29/09 a das 10h falhou e a das 15h não aconteceu.
+  // Execuções: a primeira agendada foi às 8h de 28/09; em 29/09 a das 10h falhou, com o Telegram avisando, e a das 15h
+  // não aconteceu; em 30/09 a das 12h falhou e o Telegram recusou a mensagem.
   for (const hora of HORAS) await execucao('2026-09-28', hora, 'ok')
-  for (const hora of HORAS) if (hora !== 15) await execucao('2026-09-29', hora, hora === 10 ? 'falha' : 'ok', { mensagem: hora === 10 ? 'o ERP não respondeu' : undefined })
-  for (const hora of HORAS) await execucao('2026-09-30', hora, 'ok')
+  for (const hora of HORAS) {
+    if (hora !== 15) await execucao('2026-09-29', hora, hora === 10 ? 'falha' : 'ok', hora === 10 ? { mensagem: 'o ERP não respondeu', telegramOk: true } : {})
+  }
+  for (const hora of HORAS) {
+    await execucao('2026-09-30', hora, hora === 12 ? 'falha' : 'ok', hora === 12 ? { mensagem: 'o ERP não respondeu', telegramOk: false } : {})
+  }
   await execucao('2026-09-30', 11, 'pulada')
   await execucao('2026-09-30', 23, 'ok', { manual: true })
   await execucao('2026-10-01', 8, 'ok')
@@ -145,6 +158,7 @@ test('mostra ao dono, em palavras, as vendas pela regra do 154, o a pagar, as qu
     'Total: 4 vendas, R$ 386,00',
     '',
     '2. Contas a pagar pendentes, sem o crédito de troca: 2 parcelas, R$ 1.745,50. Onde conferir: tela de contas a pagar.',
+    'O crédito de troca pendente fica fora, porque não é conta: 1 parcela, R$ 77,00. A tela de contas a pagar do ERP mostra os dois somados: 3 parcelas, R$ 1.822,50.',
     '',
     '3. Quebra de cada fechamento de caixa (informado menos calculado, sem a forma troca). Onde conferir: tela do fechamento.',
     '- fechamento 114, 29/09 às 08h37 (caixa 1, usuário 18152, abertura 3): quebra −R$ 2,00',
@@ -170,8 +184,8 @@ test('mostra ao dono, em palavras, as vendas pela regra do 154, o a pagar, as qu
     '- 26/09 (sábado): nenhuma esperada',
     '- 27/09 (domingo): nenhuma esperada',
     '- 28/09 (segunda): 13 esperadas, 13 feitas',
-    '- 29/09 (terça): 13 esperadas, 12 feitas, 1 com falha (10h); faltaram: 15h',
-    '- 30/09 (quarta): 13 esperadas, 13 feitas',
+    '- 29/09 (terça): 13 esperadas, 12 feitas, 1 com falha (10h, avisada pelo Telegram); faltaram: 15h',
+    '- 30/09 (quarta): 13 esperadas, 13 feitas, 1 com falha (12h, não avisada pelo Telegram)',
     '- 01/10 (quinta, até agora): 2 esperadas, 2 feitas',
     'Total: 41 esperadas, 40 feitas.',
     '',
@@ -189,6 +203,7 @@ test('com o Kaizen vazio, cada parte diz que não há nada, sem inventar número
     'Total: 0 vendas, R$ 0,00',
     '',
     '2. Contas a pagar pendentes, sem o crédito de troca: 0 parcelas, R$ 0,00. Onde conferir: tela de contas a pagar.',
+    'O crédito de troca pendente fica fora, porque não é conta: 0 parcelas, R$ 0,00. A tela de contas a pagar do ERP mostra os dois somados: 0 parcelas, R$ 0,00.',
     '',
     '3. Quebra de cada fechamento de caixa (informado menos calculado, sem a forma troca). Onde conferir: tela do fechamento.',
     '- nenhum fechamento desde 28/09',

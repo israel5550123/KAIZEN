@@ -7,13 +7,13 @@ import { emFortaleza, horarioEsperado, somarDias } from './janela.mts'
 
 type Dados = {
   vendas: { dias: Array<{ dia: string; vendas: number; total: string }>; vendas: number; total: string }
-  contas: { parcelas: number; total: string }
+  contas: { parcelas: number; total: string; trocas: number; trocas_total: string; tela: number; tela_total: string }
   fechamentos: Array<{
     codigo: string; quando: string; caixa: number | null; usuario: number | null; abertura: number | null
     formas: Array<{ forma: string; calculado: string; informado: string; quebra: string }>; quebra: string
   }>
   produtos: Array<{ produto: string; descricao: string | null; quantidade: string | null; tem_foto: boolean; lido: string | null }>
-  execucoes: { primeira: string | null; linhas: Array<{ dia: string; hora: number; resultado: string | null }> }
+  execucoes: { primeira: string | null; linhas: Array<{ dia: string; hora: number; resultado: string | null; telegram: boolean | null }> }
   noite: { dia: string; resultado: string; mensagem: string | null; diferencas: string[] } | null
 }
 
@@ -57,13 +57,17 @@ function textoExecucoes(execucoes: Dados['execucoes'], agoraMs: number): string[
     for (const hora of esperadas) {
       const daHora = execucoes.linhas.filter((e) => e.dia === dia && e.hora === hora)
       if (daHora.length === 0) faltaram.push(`${hora}h`)
-      else if (daHora.some((e) => e.resultado === 'falha') && !daHora.some((e) => e.resultado === 'ok' || e.resultado === 'aviso')) comFalha.push(`${hora}h`)
+      else if (daHora.some((e) => e.resultado === 'falha') && !daHora.some((e) => e.resultado === 'ok' || e.resultado === 'aviso')) {
+        // A falha do ERP só vale para o fechamento da fase se o Telegram avisou (spec 10, item 1).
+        const avisada = daHora.some((e) => e.resultado === 'falha' && e.telegram === true)
+        comFalha.push(`${hora}h, ${avisada ? 'avisada' : 'não avisada'} pelo Telegram`)
+      }
     }
     const feitas = esperadas.length - faltaram.length
     esperadasTotal += esperadas.length
     feitasTotal += feitas
     let linha = `- ${rotulo}: ${plural(esperadas.length, 'esperada', 'esperadas')}, ${plural(feitas, 'feita', 'feitas')}`
-    if (comFalha.length) linha += `, ${comFalha.length} com falha (${comFalha.join(', ')})`
+    if (comFalha.length) linha += `, ${comFalha.length} com falha (${comFalha.join('; ')})`
     if (faltaram.length) linha += `; faltaram: ${faltaram.join(', ')}`
     linhas.push(linha)
   }
@@ -91,6 +95,7 @@ export async function conferenciaDoDono(cliente: Cliente, produtos: string[], ag
   t.push(`Total: ${plural(d.vendas.vendas, 'venda', 'vendas')}, ${formatarReais(d.vendas.total)}`)
 
   t.push('', `2. Contas a pagar pendentes, sem o crédito de troca: ${plural(d.contas.parcelas, 'parcela', 'parcelas')}, ${formatarReais(d.contas.total)}. Onde conferir: tela de contas a pagar.`)
+  t.push(`O crédito de troca pendente fica fora, porque não é conta: ${plural(d.contas.trocas, 'parcela', 'parcelas')}, ${formatarReais(d.contas.trocas_total)}. A tela de contas a pagar do ERP mostra os dois somados: ${plural(d.contas.tela, 'parcela', 'parcelas')}, ${formatarReais(d.contas.tela_total)}.`)
 
   t.push('', '3. Quebra de cada fechamento de caixa (informado menos calculado, sem a forma troca). Onde conferir: tela do fechamento.')
   if (d.fechamentos.length === 0) t.push('- nenhum fechamento desde 28/09')

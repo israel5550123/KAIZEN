@@ -167,6 +167,19 @@ test('apagarSumidos apaga só o documento do ERP novo que sumiu e devolve o que 
       }],
     }),
     documento(190, 140, { modelo: 'AM', movimento: 'N', financeiro: 'N', criado_em: '2026-09-29T16:00:00' }),
+    // Sangria 97, sem itens: o valor vem dos pagamentos.
+    documento(191, 97, {
+      modelo: 'RS', movimento: 'N', financeiro: 'P', criado_em: '2026-09-29T13:00:00',
+      pagamentos: [{ oid: 3, forma: 1, valor: '5.00' }],
+    }),
+    // Conta a pagar 141, sem itens e sem pagamentos: o valor vem das parcelas (R$ 700,00 + R$ 500,00).
+    documento(192, 141, {
+      modelo: 'CP', movimento: 'N', financeiro: 'P', criado_em: '2026-04-15T00:00:00', fechado_em: null,
+      parcelas: [
+        { oid: 2, lancado_em: '2026-04-15T00:00:00', vencimento: '2026-10-15T00:00:00', valor: '700.00', status: 'P', descricao: null, baixas: [] },
+        { oid: 3, lancado_em: '2026-04-15T00:00:00', vencimento: '2026-11-15T00:00:00', valor: '500.00', status: 'P', descricao: null, baixas: [] },
+      ],
+    }),
   ])
   await banco.cliente.query(
     `insert into kaizen.documento (fonte, origem_tabela, origem_id, codigo, modelo, criado_em)
@@ -189,6 +202,8 @@ test('apagarSumidos apaga só o documento do ERP novo que sumiu e devolve o que 
     { origem_id: '188', codigo: '98', tipo: 'fechamento_caixa', criado_em: '2026-09-29 18:00:00', valor: '0.00', vendedores: null },
     { origem_id: '189', codigo: '63', tipo: 'troca', criado_em: '2026-09-29 15:30:00', valor: '18.00', vendedores: '777' },
     { origem_id: '190', codigo: '140', tipo: null, criado_em: '2026-09-29 16:00:00', valor: '0.00', vendedores: null },
+    { origem_id: '191', codigo: '97', tipo: 'sangria', criado_em: '2026-09-29 13:00:00', valor: '5.00', vendedores: null },
+    { origem_id: '192', codigo: '141', tipo: 'conta_pagar', criado_em: '2026-04-15 00:00:00', valor: '1200.00', vendedores: null },
   ])
   assert.deepEqual(await linhas('select fonte, origem_id from kaizen.documento order by fonte, origem_id'), [
     { fonte: 'link', origem_id: '185' },

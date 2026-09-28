@@ -20,9 +20,12 @@ resumo as (
     a.codigo,
     t.valor as tipo,
     a.criado_em::text as criado_em,
-    (select round(coalesce(sum(i.valor_liquido), 0), 2)::text
-       from kaizen.documento_item i
-      where i.documento_id = a.id) as valor,
+    -- a soma dos itens; sem itens, a dos pagamentos (sangria, suprimento); sem pagamentos, a das parcelas (conta a pagar)
+    round(coalesce(
+      (select sum(i.valor_liquido) from kaizen.documento_item i where i.documento_id = a.id),
+      (select sum(p.valor) from kaizen.documento_pagamento p where p.documento_id = a.id),
+      (select sum(pa.valor) from kaizen.parcela pa where pa.documento_id = a.id),
+      0), 2)::text as valor,
     (select string_agg(distinct coalesce(f.nome, i.vendedor), ', ' order by coalesce(f.nome, i.vendedor))
        from kaizen.documento_item i
        left join kaizen.funcionario f on f.fonte = 'meuerp' and f.codigo = i.vendedor
