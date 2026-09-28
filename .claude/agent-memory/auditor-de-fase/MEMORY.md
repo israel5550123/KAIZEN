@@ -1,0 +1,1 @@
+- [Pontos cegos das fases](pontos-cegos-das-fases.md) — o que revisões deixaram passar (restauração do dono, premissas do ERP novo, DECISOES incompleto) e prova de idempotência só com SELECT

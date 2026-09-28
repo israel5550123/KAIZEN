@@ -1,0 +1,3408 @@
+{
+  "caixa": [
+    {
+      "data_hora": "2026-04-11 19:07:58.647319",
+      "id_caixa": "8",
+      "id_negociacao": "8",
+      "inativo": "true"
+    },
+    {
+      "data_hora": "2026-04-15 11:18:33.08256",
+      "id_caixa": "97",
+      "id_negociacao": "100",
+      "inativo": "false"
+    },
+    {
+      "data_hora": "2026-04-15 12:30:10.807639",
+      "id_caixa": "105",
+      "id_negociacao": "108",
+      "inativo": "false"
+    },
+    {
+      "data_hora": "2026-04-24 15:49:11.539239",
+      "id_caixa": "355",
+      "id_negociacao": "358",
+      "inativo": "false"
+    },
+    {
+      "data_hora": "2026-04-27 10:57:43.420119",
+      "id_caixa": "389",
+      "id_negociacao": "392",
+      "inativo": "false"
+    },
+    {
+      "data_hora": "2026-04-28 10:36:43.127361",
+      "id_caixa": "424",
+      "id_negociacao": "427",
+      "inativo": "false"
+    },
+    {
+      "data_hora": "2026-04-28 11:38:17.268329",
+      "id_caixa": "431",
+      "id_negociacao": "434",
+      "inativo": "false"
+    },
+    {
+      "data_hora": "2026-04-28 11:44:12.678192",
+      "id_caixa": "432",
+      "id_negociacao": "435",
+      "inativo": "false"
+    },
+    {
+      "data_hora": "2026-05-04 10:02:50.053264",
+      "id_caixa": "553",
+      "id_negociacao": "556",
+      "inativo": "false"
+    },
+    {
+      "data_hora": "2026-05-21 09:25:24.006747",
+      "id_caixa": "1070",
+      "id_negociacao": "1073",
+      "inativo": "false"
+    },
+    {
+      "data_hora": "2026-05-21 15:04:03.765457",
+      "id_caixa": "1092",
+      "id_negociacao": "1095",
+      "inativo": "false"
+    },
+    {
+      "data_hora": "2026-06-17 13:58:21.050114",
+      "id_caixa": "1988",
+      "id_negociacao": "1992",
+      "inativo": "false"
+    },
+    {
+      "data_hora": "2026-07-03 10:50:00.3349",
+      "id_caixa": "2488",
+      "id_negociacao": "2492",
+      "inativo": "false"
+    },
+    {
+      "data_hora": "2026-08-05 14:27:05.353948",
+      "id_caixa": "3609",
+      "id_negociacao": "3613",
+      "inativo": "false"
+    },
+    {
+      "data_hora": "2026-09-17 15:13:36.588804",
+      "id_caixa": "5057",
+      "id_negociacao": "5061",
+      "inativo": "false"
+    }
+  ],
+  "caixa_fechamento": [
+    {
+      "boleto": "0.00",
+      "boleto_informado": null,
+      "cartao": "0.00",
+      "cartao_informado": null,
+      "cheque": "0.00",
+      "cheque_informado": null,
+      "data_hora": "2026-04-11 19:28:54.133281",
+      "data_hora_abertura": "2026-04-11 18:53:16.892942",
+      "dinheiro": "0.00",
+      "dinheiro_informado": null,
+      "id_caixa_fechamento": "1",
+      "id_usuario": "1",
+      "nota_promissoria": "0.00",
+      "nota_promissoria_informado": null,
+      "pix": "0.00",
+      "pix_informado": null
+    },
+    {
+      "boleto": "0.00",
+      "boleto_informado": null,
+      "cartao": "0.00",
+      "cartao_informado": null,
+      "cheque": "0.00",
+      "cheque_informado": null,
+      "data_hora": null,
+      "data_hora_abertura": "2026-04-13 08:10:56.864944",
+      "dinheiro": "0.00",
+      "dinheiro_informado": null,
+      "id_caixa_fechamento": "3",
+      "id_usuario": "5",
+      "nota_promissoria": "0.00",
+      "nota_promissoria_informado": null,
+      "pix": "0.00",
+      "pix_informado": null
+    },
+    {
+      "boleto": "0.00",
+      "boleto_informado": "0.00",
+      "cartao": "503.15",
+      "cartao_informado": "503.15",
+      "cheque": "0.00",
+      "cheque_informado": "0.00",
+      "data_hora": "2026-04-13 17:59:58.613109",
+      "data_hora_abertura": "2026-04-13 13:42:21.195448",
+      "dinheiro": "206.50",
+      "dinheiro_informado": "206.50",
+      "id_caixa_fechamento": "7",
+      "id_usuario": "6",
+      "nota_promissoria": "0.00",
+      "nota_promissoria_informado": "0.00",
+      "pix": "922.38",
+      "pix_informado": "817.38"
+    }
+  ],
+  "caixa_parcela": [
+    {
+      "credito_ou_debito_cartao": null,
+      "forma_pagamento": "Dinheiro",
+      "id_caixa": "8",
+      "id_caixa_parcela": "2",
+      "valor": "600.00"
+    },
+    {
+      "credito_ou_debito_cartao": null,
+      "forma_pagamento": "Pix",
+      "id_caixa": "97",
+      "id_caixa_parcela": "90",
+      "valor": "336.78"
+    },
+    {
+      "credito_ou_debito_cartao": null,
+      "forma_pagamento": "Dinheiro",
+      "id_caixa": "97",
+      "id_caixa_parcela": "91",
+      "valor": "0.01"
+    },
+    {
+      "credito_ou_debito_cartao": "false",
+      "forma_pagamento": "Cartao",
+      "id_caixa": "389",
+      "id_caixa_parcela": "383",
+      "valor": "129.72"
+    },
+    {
+      "credito_ou_debito_cartao": "false",
+      "forma_pagamento": "Cartao",
+      "id_caixa": "553",
+      "id_caixa_parcela": "542",
+      "valor": "60.00"
+    },
+    {
+      "credito_ou_debito_cartao": null,
+      "forma_pagamento": "Pix",
+      "id_caixa": "553",
+      "id_caixa_parcela": "543",
+      "valor": "11.00"
+    },
+    {
+      "credito_ou_debito_cartao": null,
+      "forma_pagamento": "Pix",
+      "id_caixa": "1070",
+      "id_caixa_parcela": "1069",
+      "valor": "5.00"
+    },
+    {
+      "credito_ou_debito_cartao": null,
+      "forma_pagamento": "Pix",
+      "id_caixa": "1070",
+      "id_caixa_parcela": "1070",
+      "valor": "5.00"
+    },
+    {
+      "credito_ou_debito_cartao": null,
+      "forma_pagamento": "Pix",
+      "id_caixa": "1988",
+      "id_caixa_parcela": "2010",
+      "valor": "150.00"
+    },
+    {
+      "credito_ou_debito_cartao": null,
+      "forma_pagamento": "Pix",
+      "id_caixa": "2488",
+      "id_caixa_parcela": "2517",
+      "valor": "100.00"
+    },
+    {
+      "credito_ou_debito_cartao": null,
+      "forma_pagamento": "Pix",
+      "id_caixa": "3609",
+      "id_caixa_parcela": "3671",
+      "valor": "507.00"
+    },
+    {
+      "credito_ou_debito_cartao": null,
+      "forma_pagamento": "Pix",
+      "id_caixa": "5057",
+      "id_caixa_parcela": "5150",
+      "valor": "230.00"
+    }
+  ],
+  "cidade": [
+    {
+      "cod_cidade": "2107506",
+      "descricao": "Paco do Lumiar",
+      "id_cidade": "1260",
+      "sigla_estado": "MA"
+    },
+    {
+      "cod_cidade": "2111201",
+      "descricao": "Sao Jose de Ribamar",
+      "id_cidade": "1314",
+      "sigla_estado": "MA"
+    },
+    {
+      "cod_cidade": "2111300",
+      "descricao": "Sao Luis",
+      "id_cidade": "1316",
+      "sigla_estado": "MA"
+    },
+    {
+      "cod_cidade": "4125506",
+      "descricao": "Sao Jose dos Pinhais",
+      "id_cidade": "3536",
+      "sigla_estado": "PR"
+    },
+    {
+      "cod_cidade": "4320008",
+      "descricao": "Sapucaia do Sul",
+      "id_cidade": "4326",
+      "sigla_estado": "RS"
+    },
+    {
+      "cod_cidade": "3515004",
+      "descricao": "Embu",
+      "id_cidade": "4937",
+      "sigla_estado": "SP"
+    }
+  ],
+  "cliente": [
+    {
+      "bairro": "Cidade Olímpica",
+      "cliente_codigo": "170",
+      "cnpj": "22623048524826",
+      "cpf": null,
+      "id_cidade": "1316",
+      "id_cliente": "3",
+      "inativo": "false",
+      "nome": "CLIENTE 170"
+    },
+    {
+      "bairro": "Pontal da Ilha",
+      "cliente_codigo": "373",
+      "cnpj": "98221712918820",
+      "cpf": null,
+      "id_cidade": "1316",
+      "id_cliente": "37",
+      "inativo": "false",
+      "nome": "CLIENTE 373"
+    },
+    {
+      "bairro": "CAMBOA",
+      "cliente_codigo": "1",
+      "cnpj": "91156329194820",
+      "cpf": null,
+      "id_cidade": "1314",
+      "id_cliente": "53",
+      "inativo": "false",
+      "nome": "CLIENTE 1"
+    },
+    {
+      "bairro": "Jardim São Cristóvão",
+      "cliente_codigo": "281",
+      "cnpj": null,
+      "cpf": "22544365832",
+      "id_cidade": "1316",
+      "id_cliente": "883",
+      "inativo": "false",
+      "nome": "CLIENTE 281"
+    },
+    {
+      "bairro": "Cidade Olímpica",
+      "cliente_codigo": "288",
+      "cnpj": null,
+      "cpf": "05150425373",
+      "id_cidade": "1316",
+      "id_cliente": "891",
+      "inativo": "false",
+      "nome": "CLIENTE 288"
+    },
+    {
+      "bairro": "Parque dos Nobres",
+      "cliente_codigo": "167",
+      "cnpj": null,
+      "cpf": "23329502821",
+      "id_cidade": "1316",
+      "id_cliente": "896",
+      "inativo": "false",
+      "nome": "CLIENTE 167"
+    },
+    {
+      "bairro": "Vila Cafeteira",
+      "cliente_codigo": "303",
+      "cnpj": null,
+      "cpf": "48542145325",
+      "id_cidade": "1260",
+      "id_cliente": "899",
+      "inativo": "false",
+      "nome": "CLIENTE 303"
+    },
+    {
+      "bairro": "Cidade Olímpica",
+      "cliente_codigo": "313",
+      "cnpj": null,
+      "cpf": "45143201292",
+      "id_cidade": "1316",
+      "id_cliente": "928",
+      "inativo": "false",
+      "nome": "CLIENTE 313"
+    },
+    {
+      "bairro": "Anil",
+      "cliente_codigo": "188",
+      "cnpj": null,
+      "cpf": "44203481502",
+      "id_cidade": "1316",
+      "id_cliente": "1050",
+      "inativo": "false",
+      "nome": "CLIENTE 188"
+    },
+    {
+      "bairro": "Jardim São Cristóvão",
+      "cliente_codigo": "65",
+      "cnpj": null,
+      "cpf": "54090830660",
+      "id_cidade": "1316",
+      "id_cliente": "1096",
+      "inativo": "false",
+      "nome": "CLIENTE 65"
+    },
+    {
+      "bairro": "Cidade Olímpica",
+      "cliente_codigo": "10000045",
+      "cnpj": null,
+      "cpf": "55631550691",
+      "id_cidade": "1316",
+      "id_cliente": "1183",
+      "inativo": "false",
+      "nome": "CLIENTE 10000045"
+    },
+    {
+      "bairro": "Conjunto Maiobão",
+      "cliente_codigo": "10000502",
+      "cnpj": null,
+      "cpf": "18943884060",
+      "id_cidade": "1260",
+      "id_cliente": "1229",
+      "inativo": "false",
+      "nome": "Consumidor Final"
+    }
+  ],
+  "compra": [
+    {
+      "id_compra": "5",
+      "id_fornecedor": "739",
+      "id_nota_entrada": "2"
+    },
+    {
+      "id_compra": "12",
+      "id_fornecedor": "741",
+      "id_nota_entrada": "15"
+    },
+    {
+      "id_compra": "50",
+      "id_fornecedor": "746",
+      "id_nota_entrada": "58"
+    }
+  ],
+  "compra_item": [
+    {
+      "entrada_concluida": "true",
+      "id_compra": "12",
+      "id_compra_item": "106",
+      "id_produto": "9888",
+      "qtd": "40"
+    },
+    {
+      "entrada_concluida": null,
+      "id_compra": "50",
+      "id_compra_item": "521",
+      "id_produto": "10016",
+      "qtd": "5"
+    }
+  ],
+  "fornecedor": [
+    {
+      "bairro": null,
+      "cpf_cnpj": null,
+      "fornecedor_codigo": "1",
+      "id_cidade": null,
+      "id_fornecedor": "1",
+      "inativo": "false",
+      "razao_social": "FORNECEDOR PADRÃO"
+    },
+    {
+      "bairro": "Colonial",
+      "cpf_cnpj": "94591585385418",
+      "fornecedor_codigo": "7",
+      "id_cidade": "4326",
+      "id_fornecedor": "739",
+      "inativo": "false",
+      "razao_social": "FORNECEDOR 7 LTDA"
+    },
+    {
+      "bairro": "CAMPO LARGO DA ROSEIRA ",
+      "cpf_cnpj": "06103528073941",
+      "fornecedor_codigo": "9",
+      "id_cidade": "3536",
+      "id_fornecedor": "741",
+      "inativo": "false",
+      "razao_social": "FORNECEDOR 9 LTDA"
+    },
+    {
+      "bairro": "Água Morna",
+      "cpf_cnpj": "54005420510715",
+      "fornecedor_codigo": "14",
+      "id_cidade": "4937",
+      "id_fornecedor": "746",
+      "inativo": "false",
+      "razao_social": "FORNECEDOR 14 LTDA"
+    }
+  ],
+  "marca": [
+    {
+      "descricao": "Farben",
+      "id_marca": "1115"
+    },
+    {
+      "descricao": "HD Ferragens",
+      "id_marca": "1117"
+    },
+    {
+      "descricao": "Killing",
+      "id_marca": "1119"
+    },
+    {
+      "descricao": "Makita",
+      "id_marca": "1120"
+    },
+    {
+      "descricao": "Metalnox",
+      "id_marca": "1121"
+    },
+    {
+      "descricao": "Proadec",
+      "id_marca": "1122"
+    },
+    {
+      "descricao": "Renna",
+      "id_marca": "1123"
+    },
+    {
+      "descricao": "Toro",
+      "id_marca": "1124"
+    },
+    {
+      "descricao": "Tegus",
+      "id_marca": "1125"
+    },
+    {
+      "descricao": "Multimarcas",
+      "id_marca": "1126"
+    },
+    {
+      "descricao": "Tekbond",
+      "id_marca": "1129"
+    }
+  ],
+  "negociacao": [
+    {
+      "acrescimo_percentual": "0.0000",
+      "data": "2026-04-11 19:07:18.453891",
+      "desconto_percentual": "0.00000",
+      "id_cliente": null,
+      "id_negociacao": "8",
+      "id_usuario": "1",
+      "orcamento_codigo": null,
+      "tipo": "A",
+      "valor_total_devolucao": "0.00",
+      "valor_total_venda": "508.08",
+      "venda": "true",
+      "venda_codigo": "2"
+    },
+    {
+      "acrescimo_percentual": "0.0000",
+      "data": "2026-04-15 11:18:32.777027",
+      "desconto_percentual": "4.99859",
+      "id_cliente": "1050",
+      "id_negociacao": "100",
+      "id_usuario": "5",
+      "orcamento_codigo": null,
+      "tipo": "T",
+      "valor_total_devolucao": "0.00",
+      "valor_total_venda": "336.78",
+      "venda": "true",
+      "venda_codigo": "161"
+    },
+    {
+      "acrescimo_percentual": "0.0000",
+      "data": "2026-04-15 12:29:00.918586",
+      "desconto_percentual": "0.00000",
+      "id_cliente": null,
+      "id_negociacao": "108",
+      "id_usuario": "6",
+      "orcamento_codigo": null,
+      "tipo": "A",
+      "valor_total_devolucao": "97.00",
+      "valor_total_venda": "0.00",
+      "venda": "true",
+      "venda_codigo": "169"
+    },
+    {
+      "acrescimo_percentual": "0.0000",
+      "data": "2026-04-24 15:46:22.667859",
+      "desconto_percentual": "0.00000",
+      "id_cliente": "896",
+      "id_negociacao": "358",
+      "id_usuario": "6",
+      "orcamento_codigo": null,
+      "tipo": "A",
+      "valor_total_devolucao": "0.00",
+      "valor_total_venda": "60.00",
+      "venda": "true",
+      "venda_codigo": "458"
+    },
+    {
+      "acrescimo_percentual": "0.0000",
+      "data": "2026-04-27 10:55:38.853803",
+      "desconto_percentual": "0.00000",
+      "id_cliente": "1183",
+      "id_negociacao": "392",
+      "id_usuario": "6",
+      "orcamento_codigo": null,
+      "tipo": "A",
+      "valor_total_devolucao": "0.00",
+      "valor_total_venda": "129.72",
+      "venda": "true",
+      "venda_codigo": "494"
+    },
+    {
+      "acrescimo_percentual": "0.0000",
+      "data": "2026-04-28 10:35:32.298901",
+      "desconto_percentual": "0.00000",
+      "id_cliente": "928",
+      "id_negociacao": "427",
+      "id_usuario": "6",
+      "orcamento_codigo": null,
+      "tipo": "A",
+      "valor_total_devolucao": "0.00",
+      "valor_total_venda": "51.30",
+      "venda": "true",
+      "venda_codigo": "529"
+    },
+    {
+      "acrescimo_percentual": "0.0000",
+      "data": "2026-04-28 11:36:55.247575",
+      "desconto_percentual": "0.00000",
+      "id_cliente": "1096",
+      "id_negociacao": "434",
+      "id_usuario": "6",
+      "orcamento_codigo": null,
+      "tipo": "A",
+      "valor_total_devolucao": "742.90",
+      "valor_total_venda": "0.00",
+      "venda": "true",
+      "venda_codigo": "536"
+    },
+    {
+      "acrescimo_percentual": "0.0000",
+      "data": "2026-04-28 11:38:02.126856",
+      "desconto_percentual": "5.00000",
+      "id_cliente": "1096",
+      "id_negociacao": "435",
+      "id_usuario": "6",
+      "orcamento_codigo": null,
+      "tipo": "A",
+      "valor_total_devolucao": "0.00",
+      "valor_total_venda": "742.90",
+      "venda": "true",
+      "venda_codigo": "537"
+    },
+    {
+      "acrescimo_percentual": "0.0000",
+      "data": "2026-05-04 09:59:12.140546",
+      "desconto_percentual": "2.73970",
+      "id_cliente": "3",
+      "id_negociacao": "556",
+      "id_usuario": "6",
+      "orcamento_codigo": null,
+      "tipo": "A",
+      "valor_total_devolucao": "0.00",
+      "valor_total_venda": "71.00",
+      "venda": "true",
+      "venda_codigo": "660"
+    },
+    {
+      "acrescimo_percentual": "0.0000",
+      "data": "2026-05-21 09:25:23.620813",
+      "desconto_percentual": "0.00000",
+      "id_cliente": "53",
+      "id_negociacao": "1073",
+      "id_usuario": "9",
+      "orcamento_codigo": null,
+      "tipo": "T",
+      "valor_total_devolucao": "0.00",
+      "valor_total_venda": "10.00",
+      "venda": "true",
+      "venda_codigo": "1194"
+    },
+    {
+      "acrescimo_percentual": "0.0000",
+      "data": "2026-05-21 14:56:02.172769",
+      "desconto_percentual": "0.00000",
+      "id_cliente": "891",
+      "id_negociacao": "1095",
+      "id_usuario": "6",
+      "orcamento_codigo": null,
+      "tipo": "A",
+      "valor_total_devolucao": "67.77",
+      "valor_total_venda": "46.80",
+      "venda": "true",
+      "venda_codigo": "1216"
+    },
+    {
+      "acrescimo_percentual": "0.0000",
+      "data": "2026-06-10 15:16:04.450986",
+      "desconto_percentual": "12.00000",
+      "id_cliente": "1229",
+      "id_negociacao": "1771",
+      "id_usuario": "6",
+      "orcamento_codigo": "5",
+      "tipo": "P",
+      "valor_total_devolucao": "0.00",
+      "valor_total_venda": "8580.00",
+      "venda": "false",
+      "venda_codigo": null
+    },
+    {
+      "acrescimo_percentual": "0.0000",
+      "data": "2026-06-17 13:58:20.706517",
+      "desconto_percentual": "0.60959",
+      "id_cliente": "899",
+      "id_negociacao": "1992",
+      "id_usuario": "6",
+      "orcamento_codigo": null,
+      "tipo": "T",
+      "valor_total_devolucao": "0.00",
+      "valor_total_venda": "150.00",
+      "venda": "true",
+      "venda_codigo": "2124"
+    },
+    {
+      "acrescimo_percentual": "3.5197",
+      "data": "2026-07-03 10:48:29.269515",
+      "desconto_percentual": "0.00000",
+      "id_cliente": "883",
+      "id_negociacao": "2492",
+      "id_usuario": "5",
+      "orcamento_codigo": null,
+      "tipo": "A",
+      "valor_total_devolucao": "0.00",
+      "valor_total_venda": "100.00",
+      "venda": "true",
+      "venda_codigo": "2637"
+    },
+    {
+      "acrescimo_percentual": "0.0000",
+      "data": "2026-08-05 14:27:04.86658",
+      "desconto_percentual": "4.77979",
+      "id_cliente": "1050",
+      "id_negociacao": "3613",
+      "id_usuario": "5",
+      "orcamento_codigo": null,
+      "tipo": "T",
+      "valor_total_devolucao": "0.00",
+      "valor_total_venda": "507.00",
+      "venda": "true",
+      "venda_codigo": "3766"
+    },
+    {
+      "acrescimo_percentual": "0.0000",
+      "data": "2026-09-17 15:13:36.523018",
+      "desconto_percentual": "2.79773",
+      "id_cliente": "37",
+      "id_negociacao": "5061",
+      "id_usuario": "6",
+      "orcamento_codigo": null,
+      "tipo": "T",
+      "valor_total_devolucao": "0.00",
+      "valor_total_venda": "230.00",
+      "venda": "true",
+      "venda_codigo": "5219"
+    }
+  ],
+  "negociacao_item_devolvido": [
+    {
+      "id_negociacao": "108",
+      "id_negociacao_item_devolvido": "5",
+      "id_produto": "9855",
+      "preco_liquido_unitario": "13.3878",
+      "qtd": "6"
+    },
+    {
+      "id_negociacao": "108",
+      "id_negociacao_item_devolvido": "6",
+      "id_produto": "9536",
+      "preco_liquido_unitario": "16.6734",
+      "qtd": "1"
+    },
+    {
+      "id_negociacao": "434",
+      "id_negociacao_item_devolvido": "11",
+      "id_produto": "9704",
+      "preco_liquido_unitario": "19.9500",
+      "qtd": "2"
+    },
+    {
+      "id_negociacao": "434",
+      "id_negociacao_item_devolvido": "12",
+      "id_produto": "8942",
+      "preco_liquido_unitario": "33.2500",
+      "qtd": "5"
+    },
+    {
+      "id_negociacao": "434",
+      "id_negociacao_item_devolvido": "13",
+      "id_produto": "9862",
+      "preco_liquido_unitario": "11.4000",
+      "qtd": "5"
+    },
+    {
+      "id_negociacao": "434",
+      "id_negociacao_item_devolvido": "14",
+      "id_produto": "9547",
+      "preco_liquido_unitario": "95.0000",
+      "qtd": "4"
+    },
+    {
+      "id_negociacao": "434",
+      "id_negociacao_item_devolvido": "15",
+      "id_produto": "9775",
+      "preco_liquido_unitario": "19.9500",
+      "qtd": "3"
+    },
+    {
+      "id_negociacao": "434",
+      "id_negociacao_item_devolvido": "16",
+      "id_produto": "9704",
+      "preco_liquido_unitario": "19.9500",
+      "qtd": "2"
+    },
+    {
+      "id_negociacao": "1095",
+      "id_negociacao_item_devolvido": "27",
+      "id_produto": "9147",
+      "preco_liquido_unitario": "1.6941",
+      "qtd": "26"
+    },
+    {
+      "id_negociacao": "1095",
+      "id_negociacao_item_devolvido": "28",
+      "id_produto": "9148",
+      "preco_liquido_unitario": "1.6941",
+      "qtd": "14"
+    }
+  ],
+  "negociacao_item_vendido": [
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "8",
+      "id_negociacao_item_vendido": "9",
+      "id_produto": "9687",
+      "preco_bruto_unitario": "2.50",
+      "qtd": "1",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "8",
+      "id_negociacao_item_vendido": "10",
+      "id_produto": "9687",
+      "preco_bruto_unitario": "2.50",
+      "qtd": "1",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "8",
+      "id_negociacao_item_vendido": "11",
+      "id_produto": "8911",
+      "preco_bruto_unitario": "2.50",
+      "qtd": "1",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "8",
+      "id_negociacao_item_vendido": "12",
+      "id_produto": "9499",
+      "preco_bruto_unitario": "66.04",
+      "qtd": "1",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "8",
+      "id_negociacao_item_vendido": "13",
+      "id_produto": "9499",
+      "preco_bruto_unitario": "66.04",
+      "qtd": "1",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "8",
+      "id_negociacao_item_vendido": "14",
+      "id_produto": "9717",
+      "preco_bruto_unitario": "90.00",
+      "qtd": "1",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "8",
+      "id_negociacao_item_vendido": "15",
+      "id_produto": "9511",
+      "preco_bruto_unitario": "262.50",
+      "qtd": "1",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "8",
+      "id_negociacao_item_vendido": "16",
+      "id_produto": "9055",
+      "preco_bruto_unitario": "16.00",
+      "qtd": "1",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "100",
+      "id_negociacao_item_vendido": "205",
+      "id_produto": "9536",
+      "preco_bruto_unitario": "17.00",
+      "qtd": "10",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "100",
+      "id_negociacao_item_vendido": "206",
+      "id_produto": "9728",
+      "preco_bruto_unitario": "13.65",
+      "qtd": "10",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "100",
+      "id_negociacao_item_vendido": "207",
+      "id_produto": "9889",
+      "preco_bruto_unitario": "48.00",
+      "qtd": "1",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "358",
+      "id_negociacao_item_vendido": "896",
+      "id_produto": "8930",
+      "preco_bruto_unitario": "0.08",
+      "qtd": "100",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "358",
+      "id_negociacao_item_vendido": "897",
+      "id_produto": "8934",
+      "preco_bruto_unitario": "12.00",
+      "qtd": "1",
+      "valor_acrescimo_padrao": "1.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "358",
+      "id_negociacao_item_vendido": "898",
+      "id_produto": "8832",
+      "preco_bruto_unitario": "6.30",
+      "qtd": "6",
+      "valor_acrescimo_padrao": "0.20"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "392",
+      "id_negociacao_item_vendido": "985",
+      "id_produto": "9102",
+      "preco_bruto_unitario": "10.00",
+      "qtd": "2",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "5.00000",
+      "id_negociacao": "392",
+      "id_negociacao_item_vendido": "986",
+      "id_produto": "9833",
+      "preco_bruto_unitario": "57.75",
+      "qtd": "2",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "5.00000",
+      "id_negociacao": "427",
+      "id_negociacao_item_vendido": "1069",
+      "id_produto": "9147",
+      "preco_bruto_unitario": "1.80",
+      "qtd": "30",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "435",
+      "id_negociacao_item_vendido": "1090",
+      "id_produto": "9547",
+      "preco_bruto_unitario": "100.00",
+      "qtd": "4",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "435",
+      "id_negociacao_item_vendido": "1091",
+      "id_produto": "9862",
+      "preco_bruto_unitario": "12.00",
+      "qtd": "5",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "435",
+      "id_negociacao_item_vendido": "1092",
+      "id_produto": "8942",
+      "preco_bruto_unitario": "35.00",
+      "qtd": "5",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "435",
+      "id_negociacao_item_vendido": "1093",
+      "id_produto": "9704",
+      "preco_bruto_unitario": "21.00",
+      "qtd": "5",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "435",
+      "id_negociacao_item_vendido": "1094",
+      "id_produto": "9775",
+      "preco_bruto_unitario": "21.00",
+      "qtd": "2",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "556",
+      "id_negociacao_item_vendido": "1419",
+      "id_produto": "9535",
+      "preco_bruto_unitario": "15.00",
+      "qtd": "4",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "556",
+      "id_negociacao_item_vendido": "1420",
+      "id_produto": "9186",
+      "preco_bruto_unitario": "13.00",
+      "qtd": "1",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "1073",
+      "id_negociacao_item_vendido": "2934",
+      "id_produto": "8927",
+      "preco_bruto_unitario": "0.10",
+      "qtd": "100",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "1095",
+      "id_negociacao_item_vendido": "2993",
+      "id_produto": "8810",
+      "preco_bruto_unitario": "2.70",
+      "qtd": "14",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "1095",
+      "id_negociacao_item_vendido": "2994",
+      "id_produto": "8927",
+      "preco_bruto_unitario": "0.10",
+      "qtd": "90",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "1771",
+      "id_negociacao_item_vendido": "4808",
+      "id_produto": "9682",
+      "preco_bruto_unitario": "65.00",
+      "qtd": "150",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "5.00000",
+      "id_negociacao": "1992",
+      "id_negociacao_item_vendido": "5395",
+      "id_produto": "8709",
+      "preco_bruto_unitario": "95.70",
+      "qtd": "1",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "1992",
+      "id_negociacao_item_vendido": "5396",
+      "id_produto": "9549",
+      "preco_bruto_unitario": "60.00",
+      "qtd": "1",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "2492",
+      "id_negociacao_item_vendido": "6769",
+      "id_produto": "8927",
+      "preco_bruto_unitario": "0.08",
+      "qtd": "100",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "2492",
+      "id_negociacao_item_vendido": "6770",
+      "id_produto": "8810",
+      "preco_bruto_unitario": "2.70",
+      "qtd": "10",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "2492",
+      "id_negociacao_item_vendido": "6771",
+      "id_produto": "8814",
+      "preco_bruto_unitario": "2.50",
+      "qtd": "6",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "2492",
+      "id_negociacao_item_vendido": "6772",
+      "id_produto": "9157",
+      "preco_bruto_unitario": "7.30",
+      "qtd": "2",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "2492",
+      "id_negociacao_item_vendido": "6773",
+      "id_produto": "9671",
+      "preco_bruto_unitario": "20.00",
+      "qtd": "1",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "2492",
+      "id_negociacao_item_vendido": "6774",
+      "id_produto": "9692",
+      "preco_bruto_unitario": "12.00",
+      "qtd": "1",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "3613",
+      "id_negociacao_item_vendido": "9941",
+      "id_produto": "9528",
+      "preco_bruto_unitario": "20.00",
+      "qtd": "5",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "3613",
+      "id_negociacao_item_vendido": "9942",
+      "id_produto": "9526",
+      "preco_bruto_unitario": "24.00",
+      "qtd": "2",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "3613",
+      "id_negociacao_item_vendido": "9943",
+      "id_produto": "9527",
+      "preco_bruto_unitario": "35.00",
+      "qtd": "2",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "3613",
+      "id_negociacao_item_vendido": "9944",
+      "id_produto": "9152",
+      "preco_bruto_unitario": "2.70",
+      "qtd": "30",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "3613",
+      "id_negociacao_item_vendido": "9945",
+      "id_produto": "9151",
+      "preco_bruto_unitario": "2.70",
+      "qtd": "20",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "5.00000",
+      "id_negociacao": "3613",
+      "id_negociacao_item_vendido": "9946",
+      "id_produto": "9955",
+      "preco_bruto_unitario": "13.00",
+      "qtd": "3",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "5.00000",
+      "id_negociacao": "3613",
+      "id_negociacao_item_vendido": "9947",
+      "id_produto": "9536",
+      "preco_bruto_unitario": "14.99",
+      "qtd": "10",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "5.00000",
+      "id_negociacao": "5061",
+      "id_negociacao_item_vendido": "13997",
+      "id_produto": "9535",
+      "preco_bruto_unitario": "14.50",
+      "qtd": "15",
+      "valor_acrescimo_padrao": "0.00"
+    },
+    {
+      "desconto_percentual": "0.00000",
+      "id_negociacao": "5061",
+      "id_negociacao_item_vendido": "13998",
+      "id_produto": "9856",
+      "preco_bruto_unitario": "15.00",
+      "qtd": "2",
+      "valor_acrescimo_padrao": "0.00"
+    }
+  ],
+  "nota_entrada": [
+    {
+      "data_hora_insert": "2026-05-20 15:38:20.752567",
+      "id_fornecedor": "741",
+      "id_nota_entrada": "15",
+      "modelo": "55"
+    },
+    {
+      "data_hora_insert": "2026-09-22 10:09:56.114565",
+      "id_fornecedor": "746",
+      "id_nota_entrada": "58",
+      "modelo": "55"
+    }
+  ],
+  "pc_lancamento": [
+    {
+      "data_emissao": "2026-04-13 08:33:04.221284",
+      "id_caixa": null,
+      "id_pc_lancamento": "12",
+      "obs": "Suprimento",
+      "orientacao": "true",
+      "valor": "171.50"
+    },
+    {
+      "data_emissao": "2026-04-13 10:06:59.277768",
+      "id_caixa": null,
+      "id_pc_lancamento": "31",
+      "obs": "Sangria",
+      "orientacao": "false",
+      "valor": "6.00"
+    },
+    {
+      "data_emissao": "2026-04-13 16:37:51.594194",
+      "id_caixa": null,
+      "id_pc_lancamento": "91",
+      "obs": "Sangria",
+      "orientacao": "true",
+      "valor": "50.00"
+    },
+    {
+      "data_emissao": "2026-04-15 11:18:33.08256",
+      "id_caixa": "97",
+      "id_pc_lancamento": "242",
+      "obs": "Venda - Caixa. Lançamento automático.",
+      "orientacao": "true",
+      "valor": "354.50"
+    },
+    {
+      "data_emissao": "2026-04-15 12:30:10.807639",
+      "id_caixa": "105",
+      "id_pc_lancamento": "260",
+      "obs": "Venda - Caixa. Lançamento automático.",
+      "orientacao": "false",
+      "valor": "97.00"
+    },
+    {
+      "data_emissao": "2026-04-24 15:32:10.842375",
+      "id_caixa": null,
+      "id_pc_lancamento": "790",
+      "obs": null,
+      "orientacao": "false",
+      "valor": "60.00"
+    },
+    {
+      "data_emissao": "2026-04-24 15:49:11.539239",
+      "id_caixa": "355",
+      "id_pc_lancamento": "791",
+      "obs": "Venda - Caixa. Lançamento automático.",
+      "orientacao": "false",
+      "valor": "60.00"
+    },
+    {
+      "data_emissao": "2026-04-27 10:57:43.420119",
+      "id_caixa": "389",
+      "id_pc_lancamento": "869",
+      "obs": "Venda - Caixa. Lançamento automático.",
+      "orientacao": "true",
+      "valor": "135.50"
+    },
+    {
+      "data_emissao": "2026-04-28 10:36:43.127361",
+      "id_caixa": "424",
+      "id_pc_lancamento": "939",
+      "obs": "Venda - Caixa. Lançamento automático.",
+      "orientacao": "true",
+      "valor": "54.00"
+    },
+    {
+      "data_emissao": "2026-04-28 11:38:17.268329",
+      "id_caixa": "431",
+      "id_pc_lancamento": "953",
+      "obs": "Venda - Caixa. Lançamento automático.",
+      "orientacao": "false",
+      "valor": "742.90"
+    },
+    {
+      "data_emissao": "2026-04-28 11:44:12.678192",
+      "id_caixa": "432",
+      "id_pc_lancamento": "956",
+      "obs": "Venda - Caixa. Lançamento automático.",
+      "orientacao": "true",
+      "valor": "782.00"
+    },
+    {
+      "data_emissao": "2026-05-04 10:02:50.053264",
+      "id_caixa": "553",
+      "id_pc_lancamento": "1214",
+      "obs": "Venda - Caixa. Lançamento automático.",
+      "orientacao": "true",
+      "valor": "73.00"
+    },
+    {
+      "data_emissao": "2026-05-06 21:12:21.765427",
+      "id_caixa": null,
+      "id_pc_lancamento": "1396",
+      "obs": null,
+      "orientacao": "false",
+      "valor": "10031.64"
+    },
+    {
+      "data_emissao": "2026-05-21 09:25:24.006747",
+      "id_caixa": "1070",
+      "id_pc_lancamento": "2350",
+      "obs": "Venda - Caixa. Lançamento automático.",
+      "orientacao": "true",
+      "valor": "10.00"
+    },
+    {
+      "data_emissao": "2026-05-21 15:04:03.765457",
+      "id_caixa": "1092",
+      "id_pc_lancamento": "2395",
+      "obs": "Venda - Caixa. Lançamento automático.",
+      "orientacao": "false",
+      "valor": "67.77"
+    },
+    {
+      "data_emissao": "2026-05-26 16:00:47.177085",
+      "id_caixa": null,
+      "id_pc_lancamento": "2740",
+      "obs": null,
+      "orientacao": "false",
+      "valor": "3343.88"
+    },
+    {
+      "data_emissao": "2026-05-26 16:07:40.37758",
+      "id_caixa": null,
+      "id_pc_lancamento": "2747",
+      "obs": null,
+      "orientacao": "false",
+      "valor": "3343.88"
+    },
+    {
+      "data_emissao": "2026-06-17 13:58:21.050114",
+      "id_caixa": "1988",
+      "id_pc_lancamento": "4336",
+      "obs": "Venda - Caixa. Lançamento automático.",
+      "orientacao": "true",
+      "valor": "155.70"
+    },
+    {
+      "data_emissao": "2026-07-03 10:50:00.3349",
+      "id_caixa": "2488",
+      "id_pc_lancamento": "5417",
+      "obs": "Venda - Caixa. Lançamento automático.",
+      "orientacao": "true",
+      "valor": "96.60"
+    },
+    {
+      "data_emissao": "2026-08-05 14:27:05.353948",
+      "id_caixa": "3609",
+      "id_pc_lancamento": "7843",
+      "obs": "Venda - Caixa. Lançamento automático.",
+      "orientacao": "true",
+      "valor": "541.90"
+    },
+    {
+      "data_emissao": "2026-08-12 17:02:13.699394",
+      "id_caixa": null,
+      "id_pc_lancamento": "8396",
+      "obs": null,
+      "orientacao": "false",
+      "valor": "500.00"
+    },
+    {
+      "data_emissao": "2026-08-31 19:35:54.508425",
+      "id_caixa": null,
+      "id_pc_lancamento": "9768",
+      "obs": null,
+      "orientacao": "false",
+      "valor": "100.00"
+    },
+    {
+      "data_emissao": "2026-09-17 15:13:36.588804",
+      "id_caixa": "5057",
+      "id_pc_lancamento": "10914",
+      "obs": "Venda - Caixa. Lançamento automático.",
+      "orientacao": "true",
+      "valor": "247.50"
+    },
+    {
+      "data_emissao": "2026-09-22 17:48:41.443998",
+      "id_caixa": null,
+      "id_pc_lancamento": "11284",
+      "obs": null,
+      "orientacao": "false",
+      "valor": "100.00"
+    }
+  ],
+  "pc_lancamento_fonte": [
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "12",
+      "id_pc_lancamento_fonte": "12",
+      "id_pc_lancamento_parcela": null,
+      "id_ped_entrada": null,
+      "origem_positiva": "false",
+      "pc_codigo_origem": "1.1.1.09",
+      "valor": "171.50"
+    },
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "31",
+      "id_pc_lancamento_fonte": "31",
+      "id_pc_lancamento_parcela": null,
+      "id_ped_entrada": null,
+      "origem_positiva": "true",
+      "pc_codigo_origem": "4.2.6.02",
+      "valor": "6.00"
+    },
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "91",
+      "id_pc_lancamento_fonte": "91",
+      "id_pc_lancamento_parcela": null,
+      "id_ped_entrada": null,
+      "origem_positiva": "false",
+      "pc_codigo_origem": "1.1.1.01",
+      "valor": "50.00"
+    },
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "242",
+      "id_pc_lancamento_fonte": "242",
+      "id_pc_lancamento_parcela": null,
+      "id_ped_entrada": null,
+      "origem_positiva": "true",
+      "pc_codigo_origem": "3.1.1.01",
+      "valor": "354.50"
+    },
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "260",
+      "id_pc_lancamento_fonte": "260",
+      "id_pc_lancamento_parcela": null,
+      "id_ped_entrada": null,
+      "origem_positiva": "true",
+      "pc_codigo_origem": "3.2.1.01",
+      "valor": "97.00"
+    },
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "790",
+      "id_pc_lancamento_fonte": "790",
+      "id_pc_lancamento_parcela": null,
+      "id_ped_entrada": null,
+      "origem_positiva": "true",
+      "pc_codigo_origem": "3.1.1.04",
+      "valor": "60.00"
+    },
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "791",
+      "id_pc_lancamento_fonte": "791",
+      "id_pc_lancamento_parcela": "814",
+      "id_ped_entrada": null,
+      "origem_positiva": "false",
+      "pc_codigo_origem": "2.1.2.03",
+      "valor": "60.00"
+    },
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "869",
+      "id_pc_lancamento_fonte": "869",
+      "id_pc_lancamento_parcela": null,
+      "id_ped_entrada": null,
+      "origem_positiva": "true",
+      "pc_codigo_origem": "3.1.1.01",
+      "valor": "135.50"
+    },
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "939",
+      "id_pc_lancamento_fonte": "939",
+      "id_pc_lancamento_parcela": null,
+      "id_ped_entrada": null,
+      "origem_positiva": "true",
+      "pc_codigo_origem": "3.1.1.01",
+      "valor": "54.00"
+    },
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "953",
+      "id_pc_lancamento_fonte": "953",
+      "id_pc_lancamento_parcela": null,
+      "id_ped_entrada": null,
+      "origem_positiva": "true",
+      "pc_codigo_origem": "3.2.1.01",
+      "valor": "742.90"
+    },
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "956",
+      "id_pc_lancamento_fonte": "956",
+      "id_pc_lancamento_parcela": null,
+      "id_ped_entrada": null,
+      "origem_positiva": "true",
+      "pc_codigo_origem": "3.1.1.01",
+      "valor": "782.00"
+    },
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "1214",
+      "id_pc_lancamento_fonte": "1214",
+      "id_pc_lancamento_parcela": null,
+      "id_ped_entrada": null,
+      "origem_positiva": "true",
+      "pc_codigo_origem": "3.1.1.01",
+      "valor": "73.00"
+    },
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "1396",
+      "id_pc_lancamento_fonte": "1396",
+      "id_pc_lancamento_parcela": null,
+      "id_ped_entrada": "5",
+      "origem_positiva": "true",
+      "pc_codigo_origem": "1.1.6.01",
+      "valor": "10031.64"
+    },
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "2350",
+      "id_pc_lancamento_fonte": "2350",
+      "id_pc_lancamento_parcela": null,
+      "id_ped_entrada": null,
+      "origem_positiva": "true",
+      "pc_codigo_origem": "3.1.1.01",
+      "valor": "10.00"
+    },
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "2395",
+      "id_pc_lancamento_fonte": "2395",
+      "id_pc_lancamento_parcela": null,
+      "id_ped_entrada": null,
+      "origem_positiva": "true",
+      "pc_codigo_origem": "3.2.1.01",
+      "valor": "67.77"
+    },
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "2740",
+      "id_pc_lancamento_fonte": "2740",
+      "id_pc_lancamento_parcela": "1432",
+      "id_ped_entrada": null,
+      "origem_positiva": "false",
+      "pc_codigo_origem": "2.1.2.02",
+      "valor": "3343.88"
+    },
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "2747",
+      "id_pc_lancamento_fonte": "2747",
+      "id_pc_lancamento_parcela": "1433",
+      "id_ped_entrada": null,
+      "origem_positiva": "false",
+      "pc_codigo_origem": "2.1.2.02",
+      "valor": "3343.88"
+    },
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "4336",
+      "id_pc_lancamento_fonte": "4336",
+      "id_pc_lancamento_parcela": null,
+      "id_ped_entrada": null,
+      "origem_positiva": "true",
+      "pc_codigo_origem": "3.1.1.01",
+      "valor": "155.70"
+    },
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "5417",
+      "id_pc_lancamento_fonte": "5417",
+      "id_pc_lancamento_parcela": null,
+      "id_ped_entrada": null,
+      "origem_positiva": "true",
+      "pc_codigo_origem": "3.1.1.01",
+      "valor": "96.60"
+    },
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "7843",
+      "id_pc_lancamento_fonte": "7843",
+      "id_pc_lancamento_parcela": null,
+      "id_ped_entrada": null,
+      "origem_positiva": "true",
+      "pc_codigo_origem": "3.1.1.01",
+      "valor": "541.90"
+    },
+    {
+      "id_fornecedor": "1",
+      "id_pc_lancamento": "8396",
+      "id_pc_lancamento_fonte": "8400",
+      "id_pc_lancamento_parcela": null,
+      "id_ped_entrada": null,
+      "origem_positiva": "true",
+      "pc_codigo_origem": "4.2.2.06",
+      "valor": "500.00"
+    },
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "9768",
+      "id_pc_lancamento_fonte": "9772",
+      "id_pc_lancamento_parcela": "8574",
+      "id_ped_entrada": null,
+      "origem_positiva": "false",
+      "pc_codigo_origem": "2.1.3.07",
+      "valor": "100.00"
+    },
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "10914",
+      "id_pc_lancamento_fonte": "10918",
+      "id_pc_lancamento_parcela": null,
+      "id_ped_entrada": null,
+      "origem_positiva": "true",
+      "pc_codigo_origem": "3.1.1.01",
+      "valor": "247.50"
+    },
+    {
+      "id_fornecedor": null,
+      "id_pc_lancamento": "11284",
+      "id_pc_lancamento_fonte": "11288",
+      "id_pc_lancamento_parcela": "8575",
+      "id_ped_entrada": null,
+      "origem_positiva": "false",
+      "pc_codigo_origem": "2.1.3.07",
+      "valor": "100.00"
+    }
+  ],
+  "pc_lancamento_parcela": [
+    {
+      "data_vencimento": null,
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "12",
+      "id_pc_lancamento_parcela": "13",
+      "liquidada": "true",
+      "pc_codigo_destino": "1.1.1.01",
+      "valor": "171.50"
+    },
+    {
+      "data_vencimento": null,
+      "destino_positiva": "false",
+      "documento": null,
+      "id_pc_lancamento": "31",
+      "id_pc_lancamento_parcela": "32",
+      "liquidada": "true",
+      "pc_codigo_destino": "1.1.1.01",
+      "valor": "6.00"
+    },
+    {
+      "data_vencimento": null,
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "91",
+      "id_pc_lancamento_parcela": "93",
+      "liquidada": "true",
+      "pc_codigo_destino": "1.1.1.09",
+      "valor": "50.00"
+    },
+    {
+      "data_vencimento": null,
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "242",
+      "id_pc_lancamento_parcela": "257",
+      "liquidada": "true",
+      "pc_codigo_destino": "1.1.1.12",
+      "valor": "336.78"
+    },
+    {
+      "data_vencimento": null,
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "242",
+      "id_pc_lancamento_parcela": "258",
+      "liquidada": "true",
+      "pc_codigo_destino": "1.1.1.01",
+      "valor": "0.01"
+    },
+    {
+      "data_vencimento": null,
+      "destino_positiva": "false",
+      "documento": null,
+      "id_pc_lancamento": "260",
+      "id_pc_lancamento_parcela": "278",
+      "liquidada": "true",
+      "pc_codigo_destino": "1.1.1.01",
+      "valor": "97.00"
+    },
+    {
+      "data_vencimento": null,
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "790",
+      "id_pc_lancamento_parcela": "814",
+      "liquidada": "true",
+      "pc_codigo_destino": "2.1.2.03",
+      "valor": "60.00"
+    },
+    {
+      "data_vencimento": null,
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "869",
+      "id_pc_lancamento_parcela": "893",
+      "liquidada": "true",
+      "pc_codigo_destino": "1.1.1.13.02",
+      "valor": "129.72"
+    },
+    {
+      "data_vencimento": "0001-01-01",
+      "destino_positiva": "false",
+      "documento": null,
+      "id_pc_lancamento": "939",
+      "id_pc_lancamento_parcela": "966",
+      "liquidada": "true",
+      "pc_codigo_destino": "2.1.2.03",
+      "valor": "51.45"
+    },
+    {
+      "data_vencimento": "2026-04-28",
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "939",
+      "id_pc_lancamento_parcela": "967",
+      "liquidada": "false",
+      "pc_codigo_destino": "2.1.2.03",
+      "valor": "0.15"
+    },
+    {
+      "data_vencimento": null,
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "953",
+      "id_pc_lancamento_parcela": "981",
+      "liquidada": "true",
+      "pc_codigo_destino": "2.1.2.03",
+      "valor": "742.90"
+    },
+    {
+      "data_vencimento": "0001-01-01",
+      "destino_positiva": "false",
+      "documento": null,
+      "id_pc_lancamento": "956",
+      "id_pc_lancamento_parcela": "984",
+      "liquidada": "true",
+      "pc_codigo_destino": "2.1.2.03",
+      "valor": "742.90"
+    },
+    {
+      "data_vencimento": null,
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "1214",
+      "id_pc_lancamento_parcela": "1245",
+      "liquidada": "true",
+      "pc_codigo_destino": "1.1.1.13.02",
+      "valor": "60.00"
+    },
+    {
+      "data_vencimento": null,
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "1214",
+      "id_pc_lancamento_parcela": "1246",
+      "liquidada": "true",
+      "pc_codigo_destino": "1.1.1.12",
+      "valor": "11.00"
+    },
+    {
+      "data_vencimento": "2026-05-15",
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "1396",
+      "id_pc_lancamento_parcela": "1432",
+      "liquidada": "true",
+      "pc_codigo_destino": "2.1.2.02",
+      "valor": "3343.88"
+    },
+    {
+      "data_vencimento": "2026-05-22",
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "1396",
+      "id_pc_lancamento_parcela": "1433",
+      "liquidada": "true",
+      "pc_codigo_destino": "2.1.2.02",
+      "valor": "3343.88"
+    },
+    {
+      "data_vencimento": "2026-05-29",
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "1396",
+      "id_pc_lancamento_parcela": "1434",
+      "liquidada": "false",
+      "pc_codigo_destino": "2.1.2.02",
+      "valor": "3343.88"
+    },
+    {
+      "data_vencimento": null,
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "2350",
+      "id_pc_lancamento_parcela": "2411",
+      "liquidada": "true",
+      "pc_codigo_destino": "1.1.1.12",
+      "valor": "5.00"
+    },
+    {
+      "data_vencimento": null,
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "2350",
+      "id_pc_lancamento_parcela": "2412",
+      "liquidada": "true",
+      "pc_codigo_destino": "1.1.1.12",
+      "valor": "5.00"
+    },
+    {
+      "data_vencimento": null,
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "2395",
+      "id_pc_lancamento_parcela": "2457",
+      "liquidada": "true",
+      "pc_codigo_destino": "2.1.2.03",
+      "valor": "20.97"
+    },
+    {
+      "data_vencimento": null,
+      "destino_positiva": "false",
+      "documento": null,
+      "id_pc_lancamento": "2740",
+      "id_pc_lancamento_parcela": "2812",
+      "liquidada": "true",
+      "pc_codigo_destino": "1.1.1.02.01",
+      "valor": "3343.88"
+    },
+    {
+      "data_vencimento": null,
+      "destino_positiva": "false",
+      "documento": null,
+      "id_pc_lancamento": "2747",
+      "id_pc_lancamento_parcela": "2819",
+      "liquidada": "true",
+      "pc_codigo_destino": "1.1.1.02.01",
+      "valor": "3343.88"
+    },
+    {
+      "data_vencimento": null,
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "4336",
+      "id_pc_lancamento_parcela": "4432",
+      "liquidada": "true",
+      "pc_codigo_destino": "1.1.1.12",
+      "valor": "150.00"
+    },
+    {
+      "data_vencimento": null,
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "5417",
+      "id_pc_lancamento_parcela": "5526",
+      "liquidada": "true",
+      "pc_codigo_destino": "1.1.1.12",
+      "valor": "100.00"
+    },
+    {
+      "data_vencimento": null,
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "7843",
+      "id_pc_lancamento_parcela": "8016",
+      "liquidada": "true",
+      "pc_codigo_destino": "1.1.1.12",
+      "valor": "507.00"
+    },
+    {
+      "data_vencimento": "2026-08-20",
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "8396",
+      "id_pc_lancamento_parcela": "8574",
+      "liquidada": "true",
+      "pc_codigo_destino": "2.1.3.07",
+      "valor": "100.00"
+    },
+    {
+      "data_vencimento": "2026-09-20",
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "8396",
+      "id_pc_lancamento_parcela": "8575",
+      "liquidada": "true",
+      "pc_codigo_destino": "2.1.3.07",
+      "valor": "100.00"
+    },
+    {
+      "data_vencimento": "2026-10-20",
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "8396",
+      "id_pc_lancamento_parcela": "8576",
+      "liquidada": "false",
+      "pc_codigo_destino": "2.1.3.07",
+      "valor": "100.00"
+    },
+    {
+      "data_vencimento": "2026-11-20",
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "8396",
+      "id_pc_lancamento_parcela": "8577",
+      "liquidada": "false",
+      "pc_codigo_destino": "2.1.3.07",
+      "valor": "100.00"
+    },
+    {
+      "data_vencimento": "2026-12-20",
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "8396",
+      "id_pc_lancamento_parcela": "8578",
+      "liquidada": "false",
+      "pc_codigo_destino": "2.1.3.07",
+      "valor": "100.00"
+    },
+    {
+      "data_vencimento": null,
+      "destino_positiva": "false",
+      "documento": null,
+      "id_pc_lancamento": "9768",
+      "id_pc_lancamento_parcela": "9985",
+      "liquidada": "true",
+      "pc_codigo_destino": "1.1.1.02.01",
+      "valor": "100.00"
+    },
+    {
+      "data_vencimento": null,
+      "destino_positiva": "true",
+      "documento": null,
+      "id_pc_lancamento": "10914",
+      "id_pc_lancamento_parcela": "11155",
+      "liquidada": "true",
+      "pc_codigo_destino": "1.1.1.12",
+      "valor": "230.00"
+    },
+    {
+      "data_vencimento": null,
+      "destino_positiva": "false",
+      "documento": null,
+      "id_pc_lancamento": "11284",
+      "id_pc_lancamento_parcela": "11540",
+      "liquidada": "true",
+      "pc_codigo_destino": "1.1.1.02.01",
+      "valor": "100.00"
+    }
+  ],
+  "prod_grupo": [
+    {
+      "descricao": "Solventes e Vernizes",
+      "id_prod_grupo": "1368"
+    },
+    {
+      "descricao": "GRUPO PADRÃO",
+      "id_prod_grupo": "1369"
+    },
+    {
+      "descricao": "Corrediças",
+      "id_prod_grupo": "1370"
+    },
+    {
+      "descricao": "Dobradiças",
+      "id_prod_grupo": "1371"
+    },
+    {
+      "descricao": "Acessórios",
+      "id_prod_grupo": "1372"
+    },
+    {
+      "descricao": "Parafusos",
+      "id_prod_grupo": "1373"
+    },
+    {
+      "descricao": "Colas",
+      "id_prod_grupo": "1376"
+    },
+    {
+      "descricao": "Ferramentas",
+      "id_prod_grupo": "1377"
+    },
+    {
+      "descricao": "Fitas de Borda e Tapa Furos",
+      "id_prod_grupo": "1378"
+    },
+    {
+      "descricao": "Fechaduras",
+      "id_prod_grupo": "1379"
+    },
+    {
+      "descricao": "Pistão",
+      "id_prod_grupo": "1385"
+    }
+  ],
+  "prod_subgrupo": [
+    {
+      "descricao": "SUBGRUPO PADRÃO",
+      "id_prod_grupo": "1368",
+      "id_prod_subgrupo": "1368"
+    },
+    {
+      "descricao": "SUBGRUPO PADRÃO",
+      "id_prod_grupo": "1369",
+      "id_prod_subgrupo": "1369"
+    },
+    {
+      "descricao": "SUBGRUPO PADRÃO",
+      "id_prod_grupo": "1370",
+      "id_prod_subgrupo": "1370"
+    },
+    {
+      "descricao": "SUBGRUPO PADRÃO",
+      "id_prod_grupo": "1371",
+      "id_prod_subgrupo": "1371"
+    },
+    {
+      "descricao": "SUBGRUPO PADRÃO",
+      "id_prod_grupo": "1372",
+      "id_prod_subgrupo": "1372"
+    },
+    {
+      "descricao": "SUBGRUPO PADRÃO",
+      "id_prod_grupo": "1373",
+      "id_prod_subgrupo": "1373"
+    },
+    {
+      "descricao": "SUBGRUPO PADRÃO",
+      "id_prod_grupo": "1376",
+      "id_prod_subgrupo": "1376"
+    },
+    {
+      "descricao": "SUBGRUPO PADRÃO",
+      "id_prod_grupo": "1377",
+      "id_prod_subgrupo": "1377"
+    },
+    {
+      "descricao": "SUBGRUPO PADRÃO",
+      "id_prod_grupo": "1378",
+      "id_prod_subgrupo": "1378"
+    },
+    {
+      "descricao": "SUBGRUPO PADRÃO",
+      "id_prod_grupo": "1379",
+      "id_prod_subgrupo": "1379"
+    },
+    {
+      "descricao": "SUBGRUPO PADRÃO",
+      "id_prod_grupo": "1385",
+      "id_prod_subgrupo": "1385"
+    }
+  ],
+  "produto": [
+    {
+      "descricao": "Solvente para Limpeza 1540 5L Farben",
+      "id_marca": null,
+      "id_prod_subgrupo": "1369",
+      "id_produto": "8709",
+      "inativo": "false",
+      "preco_custo": "64.36",
+      "produto_codigo": "1369"
+    },
+    {
+      "descricao": "Dobradiça Calço Fixo Pop C/ Pistão Curva Renna",
+      "id_marca": "1123",
+      "id_prod_subgrupo": "1371",
+      "id_produto": "8810",
+      "inativo": "false",
+      "preco_custo": "1.35",
+      "produto_codigo": "1718"
+    },
+    {
+      "descricao": "Dobradiça Calço Fixo Pop C/ Pistão Reta Renna",
+      "id_marca": "1123",
+      "id_prod_subgrupo": "1371",
+      "id_produto": "8814",
+      "inativo": "false",
+      "preco_custo": "1.19",
+      "produto_codigo": "1722"
+    },
+    {
+      "descricao": "Pistão 60N Força Normal Cinza RENNA",
+      "id_marca": null,
+      "id_prod_subgrupo": "1385",
+      "id_produto": "8832",
+      "inativo": "false",
+      "preco_custo": "2.87",
+      "produto_codigo": "1755"
+    },
+    {
+      "descricao": "Acabamento P/espelho Cabeça Chata Preto Toro",
+      "id_marca": "1124",
+      "id_prod_subgrupo": "1372",
+      "id_produto": "8911",
+      "inativo": "false",
+      "preco_custo": "0.00",
+      "produto_codigo": "1994"
+    },
+    {
+      "descricao": "Bucha 8mm C/ Anel",
+      "id_marca": "1126",
+      "id_prod_subgrupo": "1372",
+      "id_produto": "8927",
+      "inativo": "false",
+      "preco_custo": "0.02",
+      "produto_codigo": "2020"
+    },
+    {
+      "descricao": "Bucha S/ Anel 8mm",
+      "id_marca": "1126",
+      "id_prod_subgrupo": "1372",
+      "id_produto": "8930",
+      "inativo": "false",
+      "preco_custo": "0.02",
+      "produto_codigo": "2023"
+    },
+    {
+      "descricao": "Kit Cantoneira C/ Capa Branco 10 Und Toro",
+      "id_marca": "1124",
+      "id_prod_subgrupo": "1372",
+      "id_produto": "8934",
+      "inativo": "false",
+      "preco_custo": "7.60",
+      "produto_codigo": "2123"
+    },
+    {
+      "descricao": "Fita de Borda Pvc Branco Tx 65mm X 20m Tegus",
+      "id_marca": "1125",
+      "id_prod_subgrupo": "1378",
+      "id_produto": "8942",
+      "inativo": "false",
+      "preco_custo": "19.34",
+      "produto_codigo": "2144"
+    },
+    {
+      "descricao": "Batente Silicone 10mm Cartela C/ 50 Toro",
+      "id_marca": "1124",
+      "id_prod_subgrupo": "1372",
+      "id_produto": "9055",
+      "inativo": "false",
+      "preco_custo": "7.90",
+      "produto_codigo": "2396"
+    },
+    {
+      "descricao": "Tapa Furos Branco 3 por 10",
+      "id_marca": null,
+      "id_prod_subgrupo": "1378",
+      "id_produto": "9102",
+      "inativo": "false",
+      "preco_custo": "5.00",
+      "produto_codigo": "2547"
+    },
+    {
+      "descricao": "Dobradiça Slide On Comum Reta HD Ferragens",
+      "id_marca": "1117",
+      "id_prod_subgrupo": "1371",
+      "id_produto": "9147",
+      "inativo": "false",
+      "preco_custo": "0.81",
+      "produto_codigo": "2701"
+    },
+    {
+      "descricao": "Dobradiça Slide On Comum Curva HD Ferragens",
+      "id_marca": "1117",
+      "id_prod_subgrupo": "1371",
+      "id_produto": "9148",
+      "inativo": "false",
+      "preco_custo": "0.81",
+      "produto_codigo": "2702"
+    },
+    {
+      "descricao": "Dobradiça Calço Fixo C/ Pistão Reta HD Ferragens",
+      "id_marca": "1117",
+      "id_prod_subgrupo": "1371",
+      "id_produto": "9151",
+      "inativo": "false",
+      "preco_custo": "1.23",
+      "produto_codigo": "2705"
+    },
+    {
+      "descricao": "Dobradiça Calço Fixo C/ Pistão Curva HD Ferragens",
+      "id_marca": "1117",
+      "id_prod_subgrupo": "1371",
+      "id_produto": "9152",
+      "inativo": "false",
+      "preco_custo": "1.23",
+      "produto_codigo": "2706"
+    },
+    {
+      "descricao": "Fechadura 22mm C/ Batente HD Ferragens",
+      "id_marca": "1117",
+      "id_prod_subgrupo": "1379",
+      "id_produto": "9157",
+      "inativo": "false",
+      "preco_custo": "0.00",
+      "produto_codigo": "2711"
+    },
+    {
+      "descricao": "Kit Cantoneira C/ Capa Marrom 10 Und Toro",
+      "id_marca": "1124",
+      "id_prod_subgrupo": "1372",
+      "id_produto": "9186",
+      "inativo": "false",
+      "preco_custo": "7.10",
+      "produto_codigo": "2775"
+    },
+    {
+      "descricao": "Adaptador de Soquete 1/2pol Sq-50mm E-03436 Makita",
+      "id_marca": "1120",
+      "id_prod_subgrupo": "1377",
+      "id_produto": "9499",
+      "inativo": "false",
+      "preco_custo": "33.02",
+      "produto_codigo": "1440"
+    },
+    {
+      "descricao": "Aspirador de Po a Bateria 12v Max Cl100dz Makita",
+      "id_marca": "1120",
+      "id_prod_subgrupo": "1377",
+      "id_produto": "9511",
+      "inativo": "false",
+      "preco_custo": "131.25",
+      "produto_codigo": "1442"
+    },
+    {
+      "descricao": "Parafuso Chipboard 4,0x16 CX 1000 Metalnox",
+      "id_marca": "1121",
+      "id_prod_subgrupo": "1373",
+      "id_produto": "9526",
+      "inativo": "false",
+      "preco_custo": "17.03",
+      "produto_codigo": "1583"
+    },
+    {
+      "descricao": "Parafuso Chipboard 4,0x25 CX 1000 Metalnox",
+      "id_marca": "1121",
+      "id_prod_subgrupo": "1373",
+      "id_produto": "9527",
+      "inativo": "false",
+      "preco_custo": "19.81",
+      "produto_codigo": "1584"
+    },
+    {
+      "descricao": "Parafuso Chipboard 4,0x45 CX 300 Metalnox",
+      "id_marca": "1121",
+      "id_prod_subgrupo": "1373",
+      "id_produto": "9528",
+      "inativo": "false",
+      "preco_custo": "12.62",
+      "produto_codigo": "1585"
+    },
+    {
+      "descricao": "Corrediça Telescópica Larga H45 40cm HD Ferragens",
+      "id_marca": "1117",
+      "id_prod_subgrupo": "1370",
+      "id_produto": "9535",
+      "inativo": "false",
+      "preco_custo": "9.76",
+      "produto_codigo": "3185"
+    },
+    {
+      "descricao": "Corrediça Telescópica Larga H45 45cm HD Ferragens",
+      "id_marca": "1117",
+      "id_prod_subgrupo": "1370",
+      "id_produto": "9536",
+      "inativo": "false",
+      "preco_custo": "10.84",
+      "produto_codigo": "3186"
+    },
+    {
+      "descricao": "Cola de Contato 2,8 Kg Kisafix",
+      "id_marca": "1119",
+      "id_prod_subgrupo": "1376",
+      "id_produto": "9547",
+      "inativo": "false",
+      "preco_custo": "73.24",
+      "produto_codigo": "1437"
+    },
+    {
+      "descricao": "Cola PUR 500 g Kisafix",
+      "id_marca": "1119",
+      "id_prod_subgrupo": "1376",
+      "id_produto": "9549",
+      "inativo": "false",
+      "preco_custo": "42.26",
+      "produto_codigo": "1438"
+    },
+    {
+      "descricao": "Cola Instantânea 100g Tekbond",
+      "id_marca": "1129",
+      "id_prod_subgrupo": "1376",
+      "id_produto": "9671",
+      "inativo": "false",
+      "preco_custo": "9.64",
+      "produto_codigo": "2443"
+    },
+    {
+      "descricao": "Cola Hotmelt Branca 2,5Kg Tekbond",
+      "id_marca": "1129",
+      "id_prod_subgrupo": "1376",
+      "id_produto": "9682",
+      "inativo": "false",
+      "preco_custo": "45.06",
+      "produto_codigo": "2805"
+    },
+    {
+      "descricao": "Acabamento P/espelho Cabeça Chata Branco Toro",
+      "id_marca": "1124",
+      "id_prod_subgrupo": "1372",
+      "id_produto": "9687",
+      "inativo": "false",
+      "preco_custo": "0.00",
+      "produto_codigo": "1993"
+    },
+    {
+      "descricao": "Suporte Prateleira Preto Pacote C/ 100 Toro",
+      "id_marca": "1124",
+      "id_prod_subgrupo": "1372",
+      "id_produto": "9692",
+      "inativo": "false",
+      "preco_custo": "8.80",
+      "produto_codigo": "2019"
+    },
+    {
+      "descricao": "Cantoneira Niquelada Leve 2 Furos 13x13 Pacote C/ 100 Toro",
+      "id_marca": "1124",
+      "id_prod_subgrupo": "1372",
+      "id_produto": "9704",
+      "inativo": "false",
+      "preco_custo": "13.98",
+      "produto_codigo": "2400"
+    },
+    {
+      "descricao": "Aguarras 5 L Farben",
+      "id_marca": "1115",
+      "id_prod_subgrupo": "1368",
+      "id_produto": "9717",
+      "inativo": "false",
+      "preco_custo": "64.23",
+      "produto_codigo": "1366"
+    },
+    {
+      "descricao": "Corrediça Telescópica Light 45cm Renna",
+      "id_marca": "1123",
+      "id_prod_subgrupo": "1370",
+      "id_produto": "9728",
+      "inativo": "false",
+      "preco_custo": "7.82",
+      "produto_codigo": "2379"
+    },
+    {
+      "descricao": "Parafuso Chipboard 4,0x45 CX 300 RENNA",
+      "id_marca": "1123",
+      "id_prod_subgrupo": "1373",
+      "id_produto": "9775",
+      "inativo": "false",
+      "preco_custo": "15.69",
+      "produto_codigo": "1741"
+    },
+    {
+      "descricao": "Corrediça Oculta Soft Close Extr. Total 40cm P/ MDF 15mm Metalnox",
+      "id_marca": "1121",
+      "id_prod_subgrupo": "1370",
+      "id_produto": "9833",
+      "inativo": "false",
+      "preco_custo": "31.00",
+      "produto_codigo": "2771"
+    },
+    {
+      "descricao": "Corrediça Telescópica Larga H45 35cm Metalnox",
+      "id_marca": "1121",
+      "id_prod_subgrupo": "1370",
+      "id_produto": "9855",
+      "inativo": "false",
+      "preco_custo": "7.57",
+      "produto_codigo": "1555"
+    },
+    {
+      "descricao": "Corrediça Telescópica Larga H45 45cm Metalnox",
+      "id_marca": "1121",
+      "id_prod_subgrupo": "1370",
+      "id_produto": "9856",
+      "inativo": "false",
+      "preco_custo": "9.59",
+      "produto_codigo": "1557"
+    },
+    {
+      "descricao": "Fita de Borda Pvc Branco Tx 22mm X 20m Tegus",
+      "id_marca": "1125",
+      "id_prod_subgrupo": "1378",
+      "id_produto": "9862",
+      "inativo": "false",
+      "preco_custo": "6.54",
+      "produto_codigo": "2140"
+    },
+    {
+      "descricao": "Fita de Borda PVC Branco TX 22mm x 300m Proadec",
+      "id_marca": "1122",
+      "id_prod_subgrupo": "1378",
+      "id_produto": "9888",
+      "inativo": "false",
+      "preco_custo": "88.24",
+      "produto_codigo": "2889"
+    },
+    {
+      "descricao": "Fita de Borda PVC Branco TX 35mm x 50m Proadec",
+      "id_marca": "1122",
+      "id_prod_subgrupo": "1378",
+      "id_produto": "9889",
+      "inativo": "false",
+      "preco_custo": "28.81",
+      "produto_codigo": "2893"
+    },
+    {
+      "descricao": "Corrediça Telescópica Larga H45 35cm HD Ferragens",
+      "id_marca": "1117",
+      "id_prod_subgrupo": "1370",
+      "id_produto": "9955",
+      "inativo": "false",
+      "preco_custo": "8.54",
+      "produto_codigo": "5203"
+    },
+    {
+      "descricao": "Cola PUR 500g Tekbond",
+      "id_marca": "1129",
+      "id_prod_subgrupo": "1376",
+      "id_produto": "10016",
+      "inativo": "false",
+      "preco_custo": "34.25",
+      "produto_codigo": "5262"
+    }
+  ],
+  "usuario": [
+    {
+      "id_usuario": "1",
+      "inativo": "false",
+      "nome": "Sistema"
+    },
+    {
+      "id_usuario": "5",
+      "inativo": "false",
+      "nome": "Débora"
+    },
+    {
+      "id_usuario": "6",
+      "inativo": "false",
+      "nome": "Caio"
+    },
+    {
+      "id_usuario": "9",
+      "inativo": "false",
+      "nome": "Neide"
+    }
+  ],
+  "kaizen.produto": [
+    {
+      "fonte": "meuerp",
+      "codigo": "1366",
+      "descricao": "",
+      "grupo": "SOLVENTES E VERNIZES",
+      "secao": "QUÍMICOS",
+      "subgrupo": "SOLVENTES E LIMPADORES",
+      "marca": "FARBEN",
+      "custo": "54.230000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "1369",
+      "descricao": "",
+      "grupo": "SOLVENTES E VERNIZES",
+      "secao": "QUÍMICOS",
+      "subgrupo": "SOLVENTES E LIMPADORES",
+      "marca": "FARBEN",
+      "custo": "64.360000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "1437",
+      "descricao": "",
+      "grupo": "COLAS",
+      "secao": "QUÍMICOS",
+      "subgrupo": "CONTATO",
+      "marca": "KILLING",
+      "custo": "71.240000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "1438",
+      "descricao": "",
+      "grupo": "COLAS",
+      "secao": "QUÍMICOS",
+      "subgrupo": "PUR",
+      "marca": "KILLING",
+      "custo": "42.260000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "1440",
+      "descricao": "",
+      "grupo": "FERRAMENTAS",
+      "secao": "FERRAMENTAS",
+      "subgrupo": "ACESSÓRIOS PARA FERRAMENTAS",
+      "marca": "MAKITA",
+      "custo": "33.020000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "1442",
+      "descricao": "",
+      "grupo": "FERRAMENTAS",
+      "secao": "FERRAMENTAS",
+      "subgrupo": "ELÉTRICAS",
+      "marca": "MAKITA",
+      "custo": "131.250000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "1555",
+      "descricao": "",
+      "grupo": "CORREDIÇAS",
+      "secao": "FERRAGENS",
+      "subgrupo": "TELESCÓPICA",
+      "marca": "METALNOX",
+      "custo": "7.570000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "1557",
+      "descricao": "",
+      "grupo": "CORREDIÇAS",
+      "secao": "FERRAGENS",
+      "subgrupo": "TELESCÓPICA",
+      "marca": "METALNOX",
+      "custo": "8.590000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "1583",
+      "descricao": "",
+      "grupo": "PARAFUSOS",
+      "secao": "FERRAGENS",
+      "subgrupo": "CHIPBOARD",
+      "marca": "METALNOX",
+      "custo": "17.030000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "1584",
+      "descricao": "",
+      "grupo": "PARAFUSOS",
+      "secao": "FERRAGENS",
+      "subgrupo": "CHIPBOARD",
+      "marca": "METALNOX",
+      "custo": "19.810000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "1585",
+      "descricao": "",
+      "grupo": "PARAFUSOS",
+      "secao": "FERRAGENS",
+      "subgrupo": "CHIPBOARD",
+      "marca": "METALNOX",
+      "custo": "12.620000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "1718",
+      "descricao": "",
+      "grupo": "DOBRADIÇAS",
+      "secao": "FERRAGENS",
+      "subgrupo": "CALÇO FIXO",
+      "marca": "RENNA",
+      "custo": "1.350000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "1722",
+      "descricao": "",
+      "grupo": "DOBRADIÇAS",
+      "secao": "FERRAGENS",
+      "subgrupo": "CALÇO FIXO",
+      "marca": "RENNA",
+      "custo": "1.190000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "1741",
+      "descricao": "",
+      "grupo": "PARAFUSOS",
+      "secao": "FERRAGENS",
+      "subgrupo": "CHIPBOARD",
+      "marca": "RENNA",
+      "custo": "15.690000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "1755",
+      "descricao": "",
+      "grupo": "PISTÕES",
+      "secao": "FERRAGENS",
+      "subgrupo": "FORÇA NORMAL",
+      "marca": "RENNA",
+      "custo": "2.870000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "1994",
+      "descricao": "",
+      "grupo": "ACESSÓRIOS",
+      "secao": "FERRAGENS",
+      "subgrupo": "ACABAMENTOS",
+      "marca": "TORO",
+      "custo": "0.000000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "2019",
+      "descricao": "",
+      "grupo": "ACESSÓRIOS",
+      "secao": "FERRAGENS",
+      "subgrupo": "SUPORTES E CANTONEIRAS",
+      "marca": "TORO",
+      "custo": "8.800000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "2020",
+      "descricao": "",
+      "grupo": "ACESSÓRIOS",
+      "secao": "FERRAGENS",
+      "subgrupo": "FIXAÇÃO",
+      "marca": "MULTIMARCAS",
+      "custo": "0.020000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "2023",
+      "descricao": "",
+      "grupo": "ACESSÓRIOS",
+      "secao": "FERRAGENS",
+      "subgrupo": "FIXAÇÃO",
+      "marca": "MULTIMARCAS",
+      "custo": "0.020000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "2123",
+      "descricao": "",
+      "grupo": "ACESSÓRIOS",
+      "secao": "FERRAGENS",
+      "subgrupo": "SUPORTES E CANTONEIRAS",
+      "marca": "TORO",
+      "custo": "7.600000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "2140",
+      "descricao": "",
+      "grupo": "FITAS DE BORDA E TAPA FUROS",
+      "secao": "ACABAMENTO",
+      "subgrupo": "FITA DE BORDA",
+      "marca": "TEGUS",
+      "custo": "6.540000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "2144",
+      "descricao": "",
+      "grupo": "FITAS DE BORDA E TAPA FUROS",
+      "secao": "ACABAMENTO",
+      "subgrupo": "FITA DE BORDA",
+      "marca": "TEGUS",
+      "custo": "19.340000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "2379",
+      "descricao": "",
+      "grupo": "CORREDIÇAS",
+      "secao": "FERRAGENS",
+      "subgrupo": "TELESCÓPICA",
+      "marca": "RENNA",
+      "custo": "7.820000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "2400",
+      "descricao": "",
+      "grupo": "ACESSÓRIOS",
+      "secao": "FERRAGENS",
+      "subgrupo": "SUPORTES E CANTONEIRAS",
+      "marca": "TORO",
+      "custo": "13.980000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "2443",
+      "descricao": "",
+      "grupo": "COLAS",
+      "secao": "QUÍMICOS",
+      "subgrupo": "INSTANTÂNEA",
+      "marca": "TEKBOND",
+      "custo": "9.640000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "2547",
+      "descricao": "",
+      "grupo": "FITAS DE BORDA E TAPA FUROS",
+      "secao": "ACABAMENTO",
+      "subgrupo": "TAPA-FURO",
+      "marca": null,
+      "custo": "5.000000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "2701",
+      "descricao": "",
+      "grupo": "DOBRADIÇAS",
+      "secao": "FERRAGENS",
+      "subgrupo": "SLIDE ON",
+      "marca": "HD FERRAGENS",
+      "custo": "0.810000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "2702",
+      "descricao": "",
+      "grupo": "DOBRADIÇAS",
+      "secao": "FERRAGENS",
+      "subgrupo": "SLIDE ON",
+      "marca": "HD FERRAGENS",
+      "custo": "0.810000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "2705",
+      "descricao": "",
+      "grupo": "DOBRADIÇAS",
+      "secao": "FERRAGENS",
+      "subgrupo": "CALÇO FIXO",
+      "marca": "HD FERRAGENS",
+      "custo": "1.230000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "2706",
+      "descricao": "",
+      "grupo": "DOBRADIÇAS",
+      "secao": "FERRAGENS",
+      "subgrupo": "CALÇO FIXO",
+      "marca": "HD FERRAGENS",
+      "custo": "1.230000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "2711",
+      "descricao": "",
+      "grupo": "FECHADURAS",
+      "secao": "FERRAGENS",
+      "subgrupo": "COM BATENTE",
+      "marca": "HD FERRAGENS",
+      "custo": "0.000000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "2771",
+      "descricao": "",
+      "grupo": "CORREDIÇAS",
+      "secao": "FERRAGENS",
+      "subgrupo": "OCULTA",
+      "marca": "METALNOX",
+      "custo": "31.000000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "2775",
+      "descricao": "",
+      "grupo": "ACESSÓRIOS",
+      "secao": "FERRAGENS",
+      "subgrupo": "SUPORTES E CANTONEIRAS",
+      "marca": "TORO",
+      "custo": "7.100000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "2805",
+      "descricao": "",
+      "grupo": "COLAS",
+      "secao": "QUÍMICOS",
+      "subgrupo": "HOTMELT",
+      "marca": "TEKBOND",
+      "custo": "45.060000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "2889",
+      "descricao": "",
+      "grupo": "FITAS DE BORDA E TAPA FUROS",
+      "secao": "ACABAMENTO",
+      "subgrupo": "FITA DE BORDA",
+      "marca": "PROADEC",
+      "custo": "88.240000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "2893",
+      "descricao": "",
+      "grupo": "FITAS DE BORDA E TAPA FUROS",
+      "secao": "ACABAMENTO",
+      "subgrupo": "FITA DE BORDA",
+      "marca": "PROADEC",
+      "custo": "28.810000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "3185",
+      "descricao": "",
+      "grupo": "CORREDIÇAS",
+      "secao": "FERRAGENS",
+      "subgrupo": "TELESCÓPICA",
+      "marca": "HD FERRAGENS",
+      "custo": "8.260000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "3186",
+      "descricao": "",
+      "grupo": "CORREDIÇAS",
+      "secao": "FERRAGENS",
+      "subgrupo": "TELESCÓPICA",
+      "marca": "HD FERRAGENS",
+      "custo": "10.840000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "5203",
+      "descricao": "",
+      "grupo": "CORREDIÇAS",
+      "secao": "FERRAGENS",
+      "subgrupo": "TELESCÓPICA",
+      "marca": "HD FERRAGENS",
+      "custo": "7.540000",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "5262",
+      "descricao": "",
+      "grupo": "COLAS",
+      "secao": "QUÍMICOS",
+      "subgrupo": "PUR",
+      "marca": "TEKBOND",
+      "custo": "34.250000",
+      "ativo": "true"
+    }
+  ],
+  "kaizen.pessoa": [
+    {
+      "fonte": "meuerp",
+      "codigo": "21",
+      "nome": "CLIENTE 21",
+      "cpf_cnpj": "",
+      "bairro": "CIDADE OLÍMPICA",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "65",
+      "nome": "CLIENTE 65",
+      "cpf_cnpj": "54090830660",
+      "bairro": "JARDIM SÃO CRISTÓVÃO",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "75",
+      "nome": "CLIENTE 75",
+      "cpf_cnpj": "",
+      "bairro": "NAO INFORMADO",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "84",
+      "nome": "CLIENTE 84",
+      "cpf_cnpj": "",
+      "bairro": "RESIDENCIAL SANTA FILOMENA",
+      "municipio": "PACO DO LUMIAR",
+      "ibge": "2107506",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "142",
+      "nome": "CLIENTE 142",
+      "cpf_cnpj": "",
+      "bairro": "NAO INFORMADO",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "145",
+      "nome": "CLIENTE 145",
+      "cpf_cnpj": "",
+      "bairro": "NAO INFORMADO",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "167",
+      "nome": "CLIENTE 167",
+      "cpf_cnpj": "23329502821",
+      "bairro": "PARQUE DOS NOBRES",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "170",
+      "nome": "CLIENTE 170",
+      "cpf_cnpj": "22623048524826",
+      "bairro": "CIDADE OLÍMPICA",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "172",
+      "nome": "CLIENTE 172",
+      "cpf_cnpj": "",
+      "bairro": "NAO INFORMADO",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "188",
+      "nome": "CLIENTE 188",
+      "cpf_cnpj": "44203481502",
+      "bairro": "ANIL",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "212",
+      "nome": "CLIENTE 212",
+      "cpf_cnpj": "",
+      "bairro": "NAO INFORMADO",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "213",
+      "nome": "CLIENTE 213",
+      "cpf_cnpj": "",
+      "bairro": "NAO INFORMADO",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "214",
+      "nome": "CLIENTE 214",
+      "cpf_cnpj": "",
+      "bairro": "VILA SARNEY MARACANÃ",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "216",
+      "nome": "CLIENTE 216",
+      "cpf_cnpj": "",
+      "bairro": "BALCAO",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "236",
+      "nome": "CLIENTE 236",
+      "cpf_cnpj": "",
+      "bairro": "NAO INFORMADO",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "250",
+      "nome": "CLIENTE 250",
+      "cpf_cnpj": "",
+      "bairro": "NAO INFORMADO",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "274",
+      "nome": "CLIENTE 274",
+      "cpf_cnpj": "",
+      "bairro": "NAO INFORMADO",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "276",
+      "nome": "CLIENTE 276",
+      "cpf_cnpj": "",
+      "bairro": "NAO INFORMADO",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "279",
+      "nome": "CLIENTE 279",
+      "cpf_cnpj": "",
+      "bairro": "NAO INFORMADO",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "281",
+      "nome": "CLIENTE 281",
+      "cpf_cnpj": "22544365832",
+      "bairro": "JARDIM SÃO CRISTÓVÃO",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "288",
+      "nome": "CLIENTE 288",
+      "cpf_cnpj": "05150425373",
+      "bairro": "CIDADE OLÍMPICA",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "290",
+      "nome": "CLIENTE 290",
+      "cpf_cnpj": "",
+      "bairro": "NAO INFORMADO",
+      "municipio": "SAO JOSE DE RIBAMAR",
+      "ibge": "2111201",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "298",
+      "nome": "CLIENTE 298",
+      "cpf_cnpj": "",
+      "bairro": "NAO INFORMADO",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "303",
+      "nome": "CLIENTE 303",
+      "cpf_cnpj": "48542145325",
+      "bairro": "VILA CAFETEIRA",
+      "municipio": "PACO DO LUMIAR",
+      "ibge": "2107506",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "313",
+      "nome": "CLIENTE 313",
+      "cpf_cnpj": "45143201292",
+      "bairro": "CIDADE OLÍMPICA",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "361",
+      "nome": "CLIENTE 361",
+      "cpf_cnpj": "",
+      "bairro": "NAO INFORMADO",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "373",
+      "nome": "CLIENTE 373",
+      "cpf_cnpj": "98221712918820",
+      "bairro": "PONTAL DA ILHA",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "384",
+      "nome": "CLIENTE 384",
+      "cpf_cnpj": "",
+      "bairro": "NAO INFORMADO",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "409",
+      "nome": "CLIENTE 409",
+      "cpf_cnpj": "",
+      "bairro": "NAO INFORMADO",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "451",
+      "nome": "CLIENTE 10000045",
+      "cpf_cnpj": "55631550691",
+      "bairro": "CIDADE OLÍMPICA",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "484",
+      "nome": "CLIENTE 10000199",
+      "cpf_cnpj": "",
+      "bairro": "ALCIONE",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "900007",
+      "nome": "FORNECEDOR 7 LTDA",
+      "cpf_cnpj": "94591585385418",
+      "bairro": "COLONIAL",
+      "municipio": "SAPUCAIA DO SUL",
+      "ibge": "4320008",
+      "uf": "RS",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "900009",
+      "nome": "FORNECEDOR 9 LTDA",
+      "cpf_cnpj": "06103528073941",
+      "bairro": "CAMPO LARGO DA ROSEIRA",
+      "municipio": "SAO JOSE DOS PINHAIS",
+      "ibge": "4125506",
+      "uf": "PR",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "900014",
+      "nome": "FORNECEDOR 14 LTDA",
+      "cpf_cnpj": "54005420510715",
+      "bairro": "ÁGUA MORNA",
+      "municipio": "EMBU",
+      "ibge": "3515004",
+      "uf": "SP",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "999007",
+      "nome": "CONSUMIDOR FINAL",
+      "cpf_cnpj": null,
+      "bairro": "CIDADE OLIMPICA",
+      "municipio": "SAO LUIS",
+      "ibge": "2111300",
+      "uf": "MA",
+      "ativo": "true"
+    }
+  ],
+  "kaizen.funcionario": [
+    {
+      "fonte": "meuerp",
+      "codigo": "1",
+      "nome": "Caio Mendes Rocha",
+      "usuario": "18152",
+      "tipo": "V",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "2",
+      "nome": "EMPRESA DOIS LTDA",
+      "usuario": null,
+      "tipo": null,
+      "ativo": "false"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "3",
+      "nome": "ANTONIO PEREIRA NETO",
+      "usuario": null,
+      "tipo": null,
+      "ativo": "false"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "4",
+      "nome": "BENEDITO SOUZA LIMA",
+      "usuario": null,
+      "tipo": null,
+      "ativo": "false"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "999004",
+      "nome": "Otavio Carvalho Nunes",
+      "usuario": "0",
+      "tipo": "N",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "999005",
+      "nome": "Debora Fonseca Lima",
+      "usuario": "18153",
+      "tipo": "V",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "999006",
+      "nome": "Neide Alves Pereira",
+      "usuario": "18154",
+      "tipo": "N",
+      "ativo": "true"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "999007",
+      "nome": "CONSUMIDOR FINAL",
+      "usuario": null,
+      "tipo": null,
+      "ativo": "false"
+    },
+    {
+      "fonte": "meuerp",
+      "codigo": "999008",
+      "nome": "ADQUIRENTE DE CARTOES S.A.",
+      "usuario": null,
+      "tipo": null,
+      "ativo": "false"
+    }
+  ]
+}
