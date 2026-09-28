@@ -119,7 +119,10 @@ test('os documentos reais de 28/09 avisam exatamente os 7 códigos sem traduçã
     { tipo: 'codigo_sem_traducao', chave: 'codigo:tipo:MN', texto: 'o código "MN" de tipo apareceu 2 vez(es) e não tem tradução no Kaizen' },
   ])
 
-  assert.deepEqual(await aplicarMigracoes(banco.cliente), ['009_traducao_operacao_real.sql'])
+  // Só a 009 vai para a pasta, não o resto do repositório: uma 010 futura não pode fazer este teste de conteúdo
+  // (o que a 009 resolve) depender do que vier depois dela (tradutor/link-migracao.test.mts, tradutor/migracoes.test.mts).
+  copyFileSync(join(PASTA_MIGRACOES, '009_traducao_operacao_real.sql'), join(pasta, '009_traducao_operacao_real.sql'))
+  assert.deepEqual(await aplicarMigracoes(banco.cliente, pasta), ['009_traducao_operacao_real.sql'])
   assert.deepEqual(await codigosSemTraducao(banco.cliente), [])
 })
 
