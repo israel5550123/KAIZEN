@@ -715,3 +715,21 @@ O tradutor rodou no PC, lendo o ERP de verdade, só leitura, e gravando no Postg
 - Execução da noite: 44 documentos, 0 movimentos de estoque, 1.029 produtos, 447 pessoas, 9 funcionários. A comparação dos totais por dia deu zero diferença em 1 dia (27/09).
 - Execução da hora: ok, sem documento novo (os mesmos 44 já lidos pela noite).
 - Avisos: nenhum.
+
+## Conferências da operação real (Fase 2)
+
+Perguntas da seção 9 da spec da Fase 2, respondidas lendo o ERP, só leitura, a partir de 28/09/2026. Item aberto é o que ainda não aconteceu na loja.
+
+1. Primeira NFC-e e primeira NF-e — aberto.
+2. Orçamento fechado em outro dia — aberto.
+3. Venda e turno — aberto.
+4. Cartão de crédito no fechamento — aberto.
+5. Vendedor gravado, com o dono — aberto.
+6. Vendedor no item da troca — aberto.
+7. Cancelamentos — aberto.
+8. Pré-venda reserva estoque — aberto.
+9. Números da operação — aberto.
+10. Números dos restos de teste — aberto.
+11. Contas a pagar reimportadas — aberto.
+12. Sangria RT — aberto.
+13. Documentos apagados — aberto.
