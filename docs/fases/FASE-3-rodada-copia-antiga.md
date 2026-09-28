@@ -1,6 +1,6 @@
 # Fase 3 — rodada contra a cópia antiga da Link
 
-**28/09/2026, 08h35 (Fortaleza). Commit `116ab14`** (Link: o comando para antes de gravar uma cópia restaurada pela metade).
+**28/09/2026, por volta das 05h35 (Fortaleza). Commit `116ab14`** (Link: o comando para antes de gravar uma cópia restaurada pela metade).
 
 A cópia veio do container `link_postgres`, esquema `erp`, banco `prumo` (`pg_dump -n erp -Fc`). A última venda da cópia é de 25/09 às 11h51 (`max(data)` de `erp.negociacao` = `2026-09-25 11:51:03`). O dump ficou em `C:\Projetos\link-copias\erp-antiga-2026-09-28.dump`, fora do repositório.
 
