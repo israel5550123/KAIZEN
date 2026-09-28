@@ -15,7 +15,7 @@ A cópia final chegou ao PC em 28/09, às 10h30, em `C:\Users\Israel\Documents\e
 
 ## 2. A restauração, pelo passo a passo do relatório
 
-Passos 3 a 7 do relatório, no Postgres do Kaizen do PC (`kaizen-postgres-1`, banco `kaizen`): `docker cp`, `pg_restore -U postgres -d kaizen -n erp --clean --if-exists --no-owner --no-acl` (saída 0, sem aviso), `grant usage` e `grant select` ao usuário `kaizen` (`GRANT` duas vezes).
+Passos 3 a 7 do passo a passo do relatório (na versão do commit `0336cc3`; este fecho reescreveu o relatório), no Postgres do Kaizen do PC (`kaizen-postgres-1`, banco `kaizen`): `docker cp`, `pg_restore -U postgres -d kaizen -n erp --clean --if-exists --no-owner --no-acl` (saída 0, sem aviso), `grant usage` e `grant select` ao usuário `kaizen` (`GRANT` duas vezes).
 
 | Conferência (tarefa 11, passo 1) | Esperado | Obtido |
 | --- | --- | --- |
@@ -40,7 +40,7 @@ Passos 3 a 7 do relatório, no Postgres do Kaizen do PC (`kaizen-postgres-1`, ba
 | `pc_lancamento_parcela` | 11.616 | 11.671 | +55 |
 | `caixa_fechamento` | 158 | 158 | 0 (o 190 passou de aberto a fechado) |
 | `cliente`, `produto`, `pc_itens` | 417, 1.409, 228 | iguais | 0 (só campos atualizados) |
-| as outras 16 | — | iguais | 0, conteúdo idêntico |
+| as outras 14 | — | iguais | 0, conteúdo idêntico |
 
 ## 3. A resposta do dono à `de_para`, e a leitura de hora em hora depois dela
 
@@ -54,7 +54,9 @@ migrações: 007_de_para_link.sql, 008_de_para_link_resposta_dono.sql
 depois: pessoa 1 → 999007, pessoa 900001 → link:900001
 ```
 
-A leitura das 11h08 terminou com saída 0 e resultado `aviso`. Os 6 avisos são códigos novos da operação real de 28/09 no ERP novo (formas 6 e 7, situação `S`, status de parcela `C`, tipos `EM` e `MN`), assunto da conferência da Fase 2; nenhum vem da `de_para`. O teste "a resposta do dono (008) entra num banco em que a falha do cliente 1 já está gravada, e a leitura de hora em hora aplica as migrações sem erro" (`tradutor/link-migracao.test.mts`) prova o mesmo em banco de teste.
+(A linha "migrações" mostra as duas últimas do banco: a 007 entrou às 05h31 de 28/09, na construção; a 008, às 11h08.) A leitura das 11h08 terminou com saída 0 e resultado `aviso`. Os 6 avisos são códigos novos da operação real de 28/09 no ERP novo (formas 6 e 7, situação `S`, status de parcela `C`, tipos `EM` e `MN`), assunto da conferência da Fase 2; nenhum vem da `de_para`. O teste "a resposta do dono (008) entra num banco em que a falha do cliente 1 já está gravada, e a leitura de hora em hora aplica as migrações sem erro" (`tradutor/link-migracao.test.mts`) prova o mesmo em banco de teste.
+
+O cadastro `link:1` (3D MOVEIS, fonte `link`), gravado pela rodada da cópia antiga, continua no Kaizen do PC sem nenhum documento, porque o cadastro só da Link nunca se apaga. No Kaizen da VPS, que vai rodar a Link já com a 008, ele não vai existir: na comparação PC × VPS da Fase 4, 1 pessoa a menos, nenhum documento diferente.
 
 ## 4. As duas rodadas
 
@@ -119,7 +121,7 @@ falha: produto 5264 → link:5264 (BOMBA PERIFERICA 1/2CV 220V): 1 documentos, 0
 dias_comparados: 141
 ```
 
-As 10 linhas `falha` são as 10 que o dono mandou ignorar; nenhuma falha nova apareceu na cópia final.
+As 10 linhas `falha` são as 10 que o dono mandou ignorar; nenhuma falha nova apareceu na cópia final. Os `itens_vendidos` são todas as linhas de item vendido da Link: 14.606 nas vendas válidas, 89 nas 34 canceladas e 9 nos 4 orçamentos. Os números de negociação (1073, 1730, 100) são os internos da Link; na tela da Link, as vendas são 1194, 1855 e 161.
 
 ## 5. Rodar duas vezes não duplica
 
@@ -144,7 +146,7 @@ A foto do Kaizen inteiro (a mesma consulta da rodada antiga, `C:\Projetos\link-c
 
 O `diff` entre as duas fotos não achou nenhuma diferença, e o `diff` entre os dois resumos (sem a primeira linha, que muda só em `novos`) também não. **Rodar duas vezes não duplica: as fotos da primeira e da segunda rodada são iguais.** A foto inclui os documentos do ERP novo (155 lidos até 11h08), por isso passa dos 6.183 da Link.
 
-E os documentos que a cópia antiga já tinha não foram regravados: dos 6.183 documentos da Link, 6.155 continuam com o `visto_em` da primeira rodada da cópia antiga (28/09, 05h34) e 28 têm o desta rodada (11h09).
+E os documentos que a cópia antiga já tinha não foram apagados e gravados de novo: dos 6.183 documentos da Link, 6.155 continuam com o `visto_em` da primeira rodada da cópia antiga (28/09, 05h34) e 28 têm o desta rodada (11h09). O fechamento do turno 190 é um dos 6.155: foi atualizado no lugar (ganhou a hora de fechamento e os valores da conferência), com o mesmo `id` e o mesmo `visto_em`.
 
 ## 6. O que mudou em relação à rodada da cópia antiga, número por número
 

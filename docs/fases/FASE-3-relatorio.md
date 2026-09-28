@@ -34,8 +34,8 @@ Os detalhes da rodada final, com cada conferência, estão em `docs/fases/FASE-3
 | Contas a pagar | 88, com 221 parcelas (R$ 625.935,51) e 127 pagamentos (R$ 380.070,75) |
 | Notas de entrada | 51 |
 
-- **Itens:** 14.704 vendidos, 54 devolvidos e 530 de nota de entrada.
-- **Pagamentos das vendas:** 6.009. Em 5.270 das 5.271 vendas válidas, a soma dos pagamentos é a venda menos a devolução. A exceção é a venda 100, de 15/04: um troco de R$ 0,01 que a Link não gravou em lugar nenhum.
+- **Itens:** 14.704 linhas de item vendido (14.606 nas vendas válidas, 89 nas canceladas e 9 nos orçamentos), 54 devolvidos e 530 de nota de entrada.
+- **Pagamentos das vendas:** 6.009. Em 5.270 das 5.271 vendas válidas, a soma dos pagamentos é a venda menos a devolução. A exceção é a negociação 100 (venda 161 na tela da Link), de 15/04: um troco de R$ 0,01 que a Link não gravou em lugar nenhum.
 - **Contas a pagar em aberto em 25/09:** 94 parcelas, R$ 245.864,76, o mesmo total das contas que a migração levou ao ERP novo.
 - **O turno 190 (25/09, das 07h55 às 17h50):** dinheiro calculado R$ 892,99 e informado R$ 893,00; Pix R$ 3.945,06; cartão R$ 1.751,00.
 
@@ -81,7 +81,7 @@ Só o que os documentos citam:
 
 Gravada em `docs/DECISOES.md` e pela migração 008:
 
-- **O cliente de R$ 60,00** (cliente 1 da Link, 3D MOVEIS, 2 vendas) agora é o **Consumidor Final 999007** do ERP novo, que existe.
+- **O cliente de R$ 60,00** (cliente 1 da Link, 3D MOVEIS, 2 vendas: a 1194 e a 1855 na tela da Link) agora é o **Consumidor Final 999007** do ERP novo, que existe.
 - **Os 3 usuários de teste** (Sistema, Israel e Luis Henrique), **o FORNECEDOR PADRÃO** e **os 6 produtos sem venda válida** ficam ignorados: continuam com o código da Link. O resumo do comando ainda chama essas 10 de "falha"; qualquer falha fora delas seria nova, e na cópia final não apareceu nenhuma.
 - **A leitura de hora em hora do ERP novo continua funcionando:** ela aplica as migrações antes de ler; às 11h08 aplicou a 008 no banco do PC, onde a falha do cliente 1 já estava gravada, e terminou normalmente (155 documentos do ERP novo lidos). Um teste novo prova o mesmo em banco de teste.
 
@@ -95,7 +95,7 @@ Gravada em `docs/DECISOES.md` e pela migração 008:
 
 ## A mesma forma: uma venda de junho e uma de 28/09
 
-A venda de junho 1992 da Link (R$ 150,00 no Pix, dois itens, vendedor Igor) e o pedido 196 do ERP novo (28/09, 09h07, R$ 46,00 em dinheiro, vendedora Daniele) saem **na mesma forma** pela mesma consulta: os dois são "pedido", "emitido", de saída, que recebe; os itens de saída levam o código do produto e do vendedor do cadastro novo, com o nome; e as formas de pagamento saem no mesmo vocabulário ("pix", "dinheiro"). O que muda entre os dois é só o fato. As duas fichas estão em `docs/fases/FASE-3-rodada-copia-antiga.md`, seção "A mesma forma".
+A venda de junho 1992 da Link (negociação interna 1992, venda 2124 na tela da Link; R$ 150,00 no Pix, dois itens, vendedor Igor) e o pedido 196 do ERP novo (28/09, 09h07, R$ 46,00 em dinheiro, vendedora Daniele) saem **na mesma forma** pela mesma consulta: os dois são "pedido", "emitido", de saída, que recebe; os itens de saída levam o código do produto e do vendedor do cadastro novo, com o nome; e as formas de pagamento saem no mesmo vocabulário ("pix", "dinheiro"). O que muda entre os dois é só o fato. As duas fichas estão em `docs/fases/FASE-3-rodada-copia-antiga.md`, seção "A mesma forma".
 
 ## Testes
 
@@ -114,7 +114,7 @@ A venda de junho 1992 da Link (R$ 150,00 no Pix, dois itens, vendedor Igor) e o 
 2. **Levar a frase ao suporte do ERP** (seção "Orçamento e pré-venda no estoque").
 3. **Um bug da Fase 2 que apareceu aqui:** os produtos do ERP novo estão no Kaizen com a descrição vazia. A consulta da Fase 2 lê a descrição de uma tabela em que ela está vazia; a certa é outra. Não muda nenhum número; a correção é uma tarefa pequena da conferência da Fase 2.
 4. **Códigos novos no ERP novo:** a operação de 28/09 trouxe 6 códigos que o Kaizen ainda não traduz (formas 6 e 7, situação `S`, status de parcela `C`, tipos `EM` e `MN`). O tradutor avisou e seguiu. Quem fizer a conferência da Fase 2 decide o que é cada um (`docs/DECISOES.md`, 28/09).
-5. **Antes da Fase 4:** fechar a Fase 2 na VPS (os seis dias de operação) e, com o sync do Prumo parado, dar ao usuário `kaizen` a leitura do esquema `erp` no Postgres da VPS, com os mesmos dois `grant` do passo 6 do PC (`grant usage on schema erp to kaizen` e `grant select on all tables in schema erp to kaizen`). A Fase 4 leva a história da Link ao Kaizen da VPS com o mesmo comando.
+5. **Antes da Fase 4:** fechar a Fase 2 na VPS (os seis dias de operação) e, com o sync do Prumo parado, dar ao usuário `kaizen` a leitura do esquema `erp` no Postgres da VPS, com os mesmos dois `grant` usados no PC (`grant usage on schema erp to kaizen` e `grant select on all tables in schema erp to kaizen`). A Fase 4 leva a história da Link ao Kaizen da VPS com o mesmo comando.
 
 ## Limites conhecidos
 
@@ -132,5 +132,5 @@ Estão em `docs/DECISOES.md`, seção "Fase 3", cada uma com o porquê e o que m
 A Fase 4 (indicadores e rotina) começa depois de a Fase 2 fechar na VPS e de você dar a leitura do `erp` ao `kaizen` na VPS (item 5 acima). A primeira tarefa dela é o script `publicacao/implantar.sh`, a única porta do agente para a VPS (`docs/AUTONOMIA.md`, seção "Acesso à VPS"). O `/goal`, para colar numa sessão nova:
 
 ```text
-/goal A Fase 4 do OBJETIVO.md está fechada, seguindo docs/AUTONOMIA.md: (1) a primeira tarefa do plano é o script publicacao/implantar.sh, como manda a seção "Acesso à VPS" do AUTONOMIA.md (ele só envia os arquivos da stack kaizen, roda docker stack deploy da stack kaizen, lê o log dos serviços dela e roda as migrações do esquema kaizen; nada da stack prumo, do esquema erp, de volumes ou de segredos); com o script aprovado pelo revisor, a regra única Bash(bash publicacao/implantar.sh*) e a equivalente PowerShell(...) entram no allow do .claude/settings.json, e a mudança vai para docs/DECISOES.md; (2) existe spec em docs/superpowers/specs/ e plano em docs/superpowers/plans/ para a fase, e todas as tarefas do plano têm linha "complete" no ledger; (3) a história da Link está no Kaizen da VPS com os números do PC (6.183 documentos da Link, 5.271 vendas válidas, R$ 737.124,85 vendidos de abril a 25/09) e zero diferença na comparação por dia; (4) os testes passam (comando e contagem no transcript) e a contagem bate com a esperada no plano (a Fase 3 fechou com 325); (5) cada item do "pronto quando" da fase tem evidência mostrada no transcript: as três perguntas (vendas, compras, financeiro) calculadas na VPS para hoje e para um dia passado de cada mês desde abril, e o aviso ao dono quando a rotina falha; (6) o subagente auditor-de-fase escreveu docs/fases/FASE-4-auditoria.md com veredito APROVADA; (7) a branch fase-4 foi mesclada em main e enviada ao GitHub; (8) docs/fases/FASE-4-relatorio.md existe, em português, com os números e o /goal da Fase 5a. Ou pare após 200 turnos e escreva em docs/fases/FASE-4-relatorio.md o que ficou pronto e o que falta.
+/goal A Fase 4 do OBJETIVO.md está fechada, seguindo docs/AUTONOMIA.md e a decisão do dono de 28/09 no OBJETIVO.md (o comportamento de cada tipo de documento vem da natureza de operação do ERP, não de uma lista no código): (1) a primeira tarefa do plano é o script publicacao/implantar.sh, como manda a seção "Acesso à VPS" do AUTONOMIA.md (ele só envia os arquivos da stack kaizen, roda docker stack deploy da stack kaizen, lê o log dos serviços dela e roda as migrações do esquema kaizen; nada da stack prumo, do esquema erp, de volumes ou de segredos); com o script aprovado pelo revisor, a regra única Bash(bash publicacao/implantar.sh*) e a equivalente PowerShell(...) entram no allow do .claude/settings.json, e a mudança vai para docs/DECISOES.md; (2) existe spec em docs/superpowers/specs/ e plano em docs/superpowers/plans/ para a fase, e todas as tarefas do plano têm linha "complete" no ledger; (3) a história da Link está no Kaizen da VPS com os números do PC (6.183 documentos da Link, 5.271 vendas válidas, R$ 737.124,85 vendidos de abril a 25/09) e zero diferença na comparação por dia; (4) os testes passam (comando e contagem no transcript) e a contagem bate com a esperada no plano (a Fase 3 fechou com 325); (5) cada item do "pronto quando" da fase tem evidência mostrada no transcript: as três perguntas (vendas, compras, financeiro) calculadas na VPS para hoje e para um dia passado de cada mês desde abril, e o aviso ao dono quando a rotina falha; (6) o subagente auditor-de-fase escreveu docs/fases/FASE-4-auditoria.md com veredito APROVADA; (7) a branch fase-4 foi mesclada em main e enviada ao GitHub; (8) docs/fases/FASE-4-relatorio.md existe, em português, com os números e o /goal da Fase 5a. Ou pare após 200 turnos e escreva em docs/fases/FASE-4-relatorio.md o que ficou pronto e o que falta.
 ```
