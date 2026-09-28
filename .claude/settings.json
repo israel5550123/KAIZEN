@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "defaultMode": "auto",
+    "deny": [
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(docker stack rm*)",
+      "Bash(docker volume rm*)",
+      "Bash(docker system prune*)",
+      "Bash(ssh *)",
+      "Bash(scp *)",
+      "Bash(docker secret *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "AskUserQuestion",
+        "hooks": [ { "type": "command", "command": "node .claude/hooks/sem-perguntas.js" } ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [ { "type": "command", "command": "node .claude/hooks/guarda-bash.js" } ]
+      }
+    ]
+  }
+}
