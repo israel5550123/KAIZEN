@@ -1,4 +1,4 @@
-// Trava mecânica: nega comandos destrutivos ou que escrevem no ERP, seja quem for que os peça.
+// Trava mecânica (ferramentas Bash e PowerShell): nega comandos destrutivos ou que escrevem no ERP, seja quem for que os peça.
 let dados = "";
 process.stdin.on("data", (c) => (dados += c));
 process.stdin.on("end", () => {
@@ -12,6 +12,10 @@ process.stdin.on("end", () => {
     [/git\s+push\b.*(--force|\s-f\b)/i, "force push"],
     [/git\s+reset\s+--hard/i, "descarta trabalho commitado"],
     [/rm\s+-rf\s+("?\/|~|\.\.|\$HOME|[A-Z]:)/i, "rm -rf fora do projeto"],
+    [/(^|[\s;&|(])(ssh|scp)(\.exe)?\s/i, "ssh/scp solto (a VPS só pelo script publicacao/implantar.sh)"],
+    [/docker\s+secret\b/i, "segredo do Docker (o dono cria à mão)"],
+    [/Remove-Item[\s\S]*-Recurse[\s\S]*("?\\|[A-Z]:|\$HOME|~|\.\.)/i, "apagar pasta fora do projeto"],
+    [/meuerponline[\s\S]*-Method\s*['"]?(POST|PUT|PATCH|DELETE)|-Method\s*['"]?(POST|PUT|PATCH|DELETE)[\s\S]*meuerponline/i, "escrita no ERP (o Kaizen só lê)"],
     [/meuerponline[\s\S]*-X\s*['"]?(POST|PUT|PATCH|DELETE)|-X\s*['"]?(POST|PUT|PATCH|DELETE)[\s\S]*meuerponline/i, "escrita no ERP (o Kaizen só lê)"],
   ];
   for (const [re, motivo] of regras) {

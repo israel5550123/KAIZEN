@@ -40,7 +40,7 @@ O agente usa a VPS, mas só por uma porta: o script `publicacao/implantar.sh`, v
 
 - **Até a Fase 3**, a VPS é do dono: a Fase 3 lê a cópia da Link e não precisa implantar nada.
 - **No início da Fase 4**, antes da primeira tarefa, o orquestrador escreve `publicacao/implantar.sh` como tarefa do plano, com revisão normal. O script só pode: enviar os arquivos da stack `kaizen`, rodar `docker stack deploy` da stack `kaizen`, ler o log dos serviços da stack `kaizen` e rodar as migrações do esquema `kaizen`. Nada da stack `prumo`, do esquema `erp`, de volumes ou de segredos. Os segredos o dono cria à mão.
-- Com o script aprovado pelo revisor, o orquestrador acrescenta ao `allow` do `.claude/settings.json` **uma única regra**, `Bash(bash publicacao/implantar.sh*)`, e registra em `docs/DECISOES.md`. É a única exceção à regra de não mexer no `settings.json`, e vale só uma vez.
+- Com o script aprovado pelo revisor, o orquestrador acrescenta ao `allow` do `.claude/settings.json` **uma única regra**, `Bash(bash publicacao/implantar.sh*)`, e a forma equivalente `PowerShell(...)` se o script for chamado pelo PowerShell, e registra em `docs/DECISOES.md`. É a única exceção à regra de não mexer no `settings.json`, e vale só uma vez.
 - Qualquer mudança posterior no script é tarefa com revisão, e o revisor reprova se ela sair da stack `kaizen`.
 - A partir daí, as fases que implantam (4, 5b, 6, 7) fecham sozinhas, sem esperar o dono.
 

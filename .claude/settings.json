@@ -9,18 +9,36 @@
       "Bash(docker system prune*)",
       "Bash(ssh *)",
       "Bash(scp *)",
-      "Bash(docker secret *)"
+      "Bash(docker secret *)",
+      "PowerShell(git push --force*)",
+      "PowerShell(git push -f*)",
+      "PowerShell(docker stack rm*)",
+      "PowerShell(docker volume rm*)",
+      "PowerShell(docker system prune*)",
+      "PowerShell(ssh *)",
+      "PowerShell(scp *)",
+      "PowerShell(docker secret *)"
     ]
   },
   "hooks": {
     "PreToolUse": [
       {
         "matcher": "AskUserQuestion",
-        "hooks": [ { "type": "command", "command": "node .claude/hooks/sem-perguntas.js" } ]
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/sem-perguntas.js"
+          }
+        ]
       },
       {
-        "matcher": "Bash",
-        "hooks": [ { "type": "command", "command": "node .claude/hooks/guarda-bash.js" } ]
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/guarda-bash.js"
+          }
+        ]
       }
     ]
   }
