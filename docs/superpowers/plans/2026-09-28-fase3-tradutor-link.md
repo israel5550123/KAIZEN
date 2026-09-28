@@ -74,7 +74,9 @@ Os casos que a spec implica e que mais podem pegar o dono de surpresa. Cada um t
 | 8 | Travas contra uma cópia restaurada pela metade (achado da revisão do meio da fase) | 2 | 323 | implementador |
 | 9 | Rodada contra a cópia antiga | — | 323 | implementador |
 | 10 | Fechamento da construção (a revisão final acrescentou 1 teste) | 1 | 324 | orquestrador |
-| 11 | Rodada contra a cópia final (29/09, sessão nova; fica aberta nesta sessão) | — | 324 | orquestrador da sessão de 29/09 |
+| 11 | Rodada contra a cópia final (29/09, sessão nova; fica aberta nesta sessão) | — | 325 | orquestrador da sessão de 29/09 |
+| 12 | A resposta do dono às falhas da `de_para` (migração 008); feita antes do passo 2 da tarefa 11 | 1 | 325 | implementador |
+| 13 | O orçamento e a pré-venda baixam estoque no ERP novo? (consulta só de leitura) | — | 325 | orquestrador |
 
 Depois da tarefa 4, o orquestrador pede uma revisão da branch inteira (`docs/LICOES.md`, Fase 2: revisar no meio da fase, logo depois das tarefas que se ligam).
 
@@ -5430,4 +5432,49 @@ Compare o resumo desta rodada com o da tarefa 9 (`docs/fases/FASE-3-rodada-copia
 - [ ] **Passo 5: Registro, relatório e fechamento**
 
 Escreva `docs/fases/FASE-3-rodada-copia-final.md` como o registro da tarefa 9, atualize a seção "Rodada final" do relatório da fase com os números e a frase "a Fase 3 está pronta", commit, mescle `fase-3-final` em `main` com `npm run verificar` passando e `git push origin main`. Marque esta tarefa `complete` no ledger.
+
+**Como rodou em 28/09 (emenda do orquestrador):** o `/goal` do dono de 28/09, às 10h30, mandou esta sessão restaurar a cópia final (o arquivo chegou antes do previsto, em `C:\Users\Israel\Documents\erp-link-2026-09-28.dump`), responder a `de_para` (tarefa 12, antes do passo 2) e responder se o orçamento e a pré-venda baixam estoque (tarefa 13). A restauração seguiu o passo a passo do relatório (sha256 conferido, 26 tabelas, `-n erp`). A contagem de testes passa a 325 pela tarefa 12.
+
+
+### Tarefa 12: A resposta do dono às falhas da `de_para` (migração 008)
+
+**O que esta tarefa entrega, em resultado:** a resposta do dono (`/goal` de 28/09) gravada por migração: o cliente 1 da Link (3D MOVEIS, 2 vendas válidas, R$ 60,00, CNPJ que o ERP novo não tem) passa a ser o Consumidor Final `999007` do ERP novo, que existe no cadastro (conferido em 28/09: `kaizen.pessoa`, fonte `meuerp`, código `999007`, nome `CONSUMIDOR FINAL`). As outras 10 falhas ficam como estão, por decisão do dono ("ignoradas"): os 3 usuários de teste (funcionário 1 Sistema, 7 e 8), o fornecedor padrão (pessoa `900001`) e os 6 produtos sem venda válida (1993, 2396, 2758, 5218, 5239 e 5264) continuam com o código `link:` e não mudam nada no código nem na `de_para`. E a prova de que a leitura de hora em hora do ERP novo continua funcionando depois da resposta: ela aplica as migrações antes de ler (`aplicarMigracoes`, chamada por `tradutor/execucao.mts`), e a 008 entra sem erro num banco em que a falha do cliente 1 já ocupa a chave.
+
+**Arquivos:**
+- Criar: `sql/migracoes/008_de_para_link_resposta_dono.sql`
+- Modificar: `tradutor/link-migracao.test.mts` (o teste novo), `testes-esperados.txt` (325), e os testes da Link que usam o cliente 1 como exemplo de falha: `tradutor/link-vendas.test.mts`, `tradutor/link-comando.test.mts`, `tradutor/link-contas.test.mts`, `tradutor/link-ligar.test.mts`
+- Não mexer: `sql/link/`, `tradutor/link.mts` e qualquer outro código. A resposta é só dado (uma linha na `de_para`), não regra.
+
+**A migração, exatamente:**
+
+```sql
+-- Resposta do dono (28/09/2026) às falhas da de_para da Link (docs/DECISOES.md, Fase 3): o cliente 1 da Link
+-- (3D MOVEIS, 2 vendas, R$ 60,00) é o Consumidor Final 999007 do ERP novo. As outras falhas ficam com o código link:.
+-- Depois da primeira rodada da Link a falha já ocupa a chave: por isso o on conflict.
+insert into kaizen.de_para (entidade, fonte, codigo_origem, codigo_kaizen) values
+  ('pessoa', 'link', '1', '999007')
+on conflict (entidade, fonte, codigo_origem) do update set codigo_kaizen = excluded.codigo_kaizen;
+```
+
+**O teste novo (324 → 325),** no fim de `tradutor/link-migracao.test.mts`: "a resposta do dono (008) entra num banco em que a falha do cliente 1 já está gravada, e a leitura de hora em hora aplica as migrações sem erro". O banco do arquivo tem as migrações até a 007. O teste grava na `de_para` as duas falhas de pessoa como `sql/link/cadastros.sql` grava depois de uma rodada (`('pessoa', 'link', '1', 'link:1')` e `('pessoa', 'link', '900001', 'link:900001')`), chama `aplicarMigracoes(banco.cliente)` com a pasta do repositório (a mesma chamada da leitura de hora em hora) e confere: a lista devolvida começa por `008_de_para_link_resposta_dono.sql` (as migrações depois da 008, se um dia existirem, não quebram o teste); a pessoa 1 passa a `999007`; a 900001 continua `link:900001`; a `de_para` fica com 23 decisões (as 22 da 007 e a 008) e 1 falha. Se este teste rodar antes de outro do mesmo arquivo que conta as 22 decisões, ele precisa ser o último do arquivo (ou usar um banco próprio).
+
+**Os testes que usam o cliente 1 como exemplo de falha** (todos criam o banco com todas as migrações, então a 008 muda o ponto de partida deles). Nenhum perde o que prova; os valores esperados mudam para o novo estado, sempre concretos:
+- A venda 1073 dos casos (a única do cliente 1) passa a ter a pessoa `999007`, com o nome `CONSUMIDOR FINAL`.
+- Nos casos, a `de_para` passa de 22 decisões e 5 falhas para 23 decisões e 4 falhas (funcionário 1, produtos 1993 e 2396, pessoa 900001); o total continua 27. O cadastro fonte `link` deixa de ganhar a pessoa `link:1`.
+- O teste "uma decisão nova na de_para vale na rodada seguinte e tira a falha" (`link-vendas.test.mts`) passa a provar a própria 008: apaga a decisão do cliente 1 (o estado do PC antes da resposta), roda o comando (a 1073 fica `link:1` e a falha está na `de_para`), roda o texto do arquivo `sql/migracoes/008_de_para_link_resposta_dono.sql` sobre esse banco (sem erro, com a falha ocupando a chave), roda o comando de novo (a 1073 fica `999007`, `CONSUMIDOR FINAL`, e a falha sai) e, no `finally`, deixa a decisão como a 008 deixa.
+- O teste que monta uma decisão para código inexistente (`link-ligar.test.mts`, pessoa 1 → 999999) não pode mais fazer `insert` simples na chave da pessoa 1: ou usa `on conflict ... do update`, ou outro código de origem que falha nos casos.
+- A falha de pessoa continua coberta por teste pelo fornecedor 900001, que continua falhando.
+
+- [ ] **Passo 1:** escrever o teste novo e ver falhar (sem a migração, a lista devolvida é vazia).
+- [ ] **Passo 2:** criar a migração e ver o teste passar.
+- [ ] **Passo 3:** rodar `npm run verificar`, ver quais testes da Link quebraram pela mudança do ponto de partida, e ajustar cada um como acima, com valores concretos.
+- [ ] **Passo 4:** `testes-esperados.txt` = `325`; `npm run verificar` termina com `rodou 325 testes, esperados 325`.
+- [ ] **Passo 5:** commit com os caminhos da tarefa (nunca `git add -A`), mensagem pelo resultado: "Fase 3: o cliente de R$ 60,00 da Link passa a ser o Consumidor Final do ERP novo (resposta do dono)".
+
+
+### Tarefa 13: O orçamento e a pré-venda baixam estoque no ERP novo? (orquestrador)
+
+**O que esta tarefa entrega, em resultado:** a resposta, com números do ERP novo de 28/09, em uma frase em português que o dono possa levar ao suporte do ERP, na seção "Orçamento e pré-venda no estoque" de `docs/fases/FASE-3-relatorio.md`, e uma entrada em `docs/DECISOES.md` que fecha (ou mantém aberta, com o porquê) a entrada de 28/09 sobre o movimento do orçamento.
+
+**Como:** só leitura, pelo `ferramentas/consultar-erp.mts` (SELECT no `consulta/sql`), sobre os documentos `OC` (orçamento), `PV` (pré-venda) e `PA` (pedido, para comparar) de 28/09: quantos são, quantas linhas de `mercadoria_estoque_historico` apontam para cada um (`_iddocumento`), e um exemplo de hoje com o saldo antes e depois; mais a reserva (`mercadoria_estoque.qtdsaldoreserva`) dos produtos desses documentos. Nenhum código muda; nada escreve no ERP.
 

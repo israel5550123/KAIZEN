@@ -79,6 +79,10 @@ Toda decisão que o dono *poderia* querer tomar vai para `docs/DECISOES.md`, uma
 
 **Revisão da branch no meio da fase.** Todo plano tem, logo depois das tarefas que se ligam (a leitura e a gravação, por exemplo), uma revisão da branch inteira até ali, despachada pelo orquestrador antes da tarefa seguinte; ela não substitui a revisão final. Nas Fases 2 e 3, a revisão de cada tarefa aprovou quase tudo de primeira, e só a revisão da branch inteira achou os problemas importantes (`docs/LICOES.md`).
 
+**Assinatura dos commits.** O plano não escreve nome de modelo na linha `Co-Authored-By`: cada agente assina com a atribuição que o sistema lhe dá, que é a do modelo que de fato escreveu. Na Fase 3, o nome fixo no plano virou achado do revisor duas vezes (`docs/LICOES.md`).
+
+**Números do relatório.** Antes de despachar o auditor, o orquestrador despacha um verificador independente que refaz, a partir do banco, cada número do relatório da fase; número que ele não reproduz é corrigido antes da auditoria. Todo número composto é escrito com as partes que o somam ("6.009: 5.397 das vendas válidas, 35 das canceladas..."). Na Fase 3, uma composição errada escapou três vezes (`docs/LICOES.md`).
+
 ### Modelo de `/goal` para uma fase
 
 ```

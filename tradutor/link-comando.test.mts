@@ -146,7 +146,8 @@ test('todos os casos juntos: duas rodadas deixam o mesmo conteúdo em todas as t
   })
   assert.deepEqual(segunda, primeira)
   // Igual e cheio: os 26 documentos com os filhos, o cadastro com o que só existe na Link, a de_para com as
-  // 22 decisões e as 5 falhas. E nenhuma linha em execucao: o comando da Link não mexe no estado do ERP novo.
+  // 23 decisões (a resposta do dono, migração 008, inclui o cliente 1) e as 4 falhas. E nenhuma linha em execucao: o
+  // comando da Link não mexe no estado do ERP novo.
   assert.deepEqual(
     Object.fromEntries(
       ['documento', 'documento_item', 'documento_pagamento', 'conferencia_caixa', 'parcela', 'baixa', 'produto', 'pessoa', 'funcionario', 'de_para', 'execucao']
@@ -154,7 +155,7 @@ test('todos os casos juntos: duas rodadas deixam o mesmo conteúdo em todas as t
     ),
     {
       documento: 26, documento_item: 57, documento_pagamento: 22, conferencia_caixa: 12, parcela: 8, baixa: 4,
-      produto: 42, pessoa: 37, funcionario: 10, de_para: 27, execucao: 0,
+      produto: 42, pessoa: 36, funcionario: 10, de_para: 27, execucao: 0,
     },
   )
 })
@@ -189,14 +190,13 @@ test('resumoLink lista os documentos por família, as ligações e as falhas dos
     { chave: 'razao_fora', valor: '(sem obs) (orientação false): 5, R$ 6.947,76' },
     { chave: 'razao_fora', valor: 'Venda - Caixa. Lançamento automático. (orientação false): 4, R$ 967,67' },
     { chave: 'razao_fora', valor: 'Venda - Caixa. Lançamento automático. (orientação true): 10, R$ 2.450,70' },
-    { chave: 'ligacoes:cliente', valor: 'regra 10, decisão 1, falha 1' },
+    { chave: 'ligacoes:cliente', valor: 'regra 10, decisão 1, falha 0' },
     { chave: 'ligacoes:fornecedor', valor: 'regra 3, decisão 0, falha 1' },
     { chave: 'ligacoes:produto', valor: 'regra 40, decisão 0, falha 2' },
     { chave: 'ligacoes:vendedor', valor: 'regra 3, decisão 0, falha 1' },
-    { chave: 'vendas_com_falha:cliente', valor: '1 vendas válidas, R$ 10,00' },
+    { chave: 'vendas_com_falha:cliente', valor: '0 vendas válidas, R$ 0,00' },
     { chave: 'vendas_com_falha:vendedor', valor: '0 vendas válidas, R$ 0,00' },
     { chave: 'falha', valor: 'funcionario 1 → link:1 (Sistema): 1 documentos, 0 vendas válidas, R$ 0,00' },
-    { chave: 'falha', valor: 'pessoa 1 → link:1 (CLIENTE 1): 1 documentos, 1 vendas válidas, R$ 10,00' },
     { chave: 'falha', valor: 'pessoa 900001 → link:900001 (FORNECEDOR PADRÃO): 1 documentos, 0 vendas válidas, R$ 0,00' },
     { chave: 'falha', valor: 'produto 1993 → link:1993 (Acabamento P/espelho Cabeça Chata Branco Toro): 1 documentos, 0 vendas válidas, R$ 0,00' },
     { chave: 'falha', valor: 'produto 2396 → link:2396 (Batente Silicone 10mm Cartela C/ 50 Toro): 1 documentos, 0 vendas válidas, R$ 0,00' },
@@ -214,13 +214,13 @@ test('o comando imprime link ok e o resumo e sai com 0; sem KAIZEN_URL, sai com 
   garantirLocal(banco.url)
   assert.equal(await principalLink({ KAIZEN_URL: banco.url }), 0)
   const resumo = (await resumoLink(banco.cliente)).map(({ chave, valor }) => `${chave}: ${valor}`)
-  assert.equal(resumo.length, 39)
+  assert.equal(resumo.length, 38)
   assert.deepEqual(impressos, [
     'link ok: documentos=26, novos=0, itens=57, pagamentos=22, conferencias=12, parcelas=8, baixas=4',
     ...resumo,
   ])
   assert.equal(impressos[1], 'documentos: 26')
-  assert.equal(impressos[39], 'dias_comparados: 10')
+  assert.equal(impressos[38], 'dias_comparados: 10')
 
   impressos.length = 0
   assert.equal(await principalLink({}), 1)

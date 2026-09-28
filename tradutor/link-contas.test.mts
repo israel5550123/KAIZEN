@@ -142,8 +142,8 @@ test('conta 8396: o FORNECEDOR PADRÃO vira link:900001, no documento, no cadast
     ),
     [{ codigo: 'link:900001', nome: 'FORNECEDOR PADRÃO', cpf_cnpj: null, bairro: null, municipio: null, ibge: null, uf: null, ativo: true }],
   )
-  // Na de_para, as falhas de pessoa são o cliente 1 e o FORNECEDOR PADRÃO: os fornecedores 7, 9 e 14, das contas e das
-  // notas, ligaram pelo CNPJ.
+  // Na de_para, a única falha de pessoa é o FORNECEDOR PADRÃO: os fornecedores 7, 9 e 14, das contas e das notas,
+  // ligaram pelo CNPJ; o cliente 1 virou decisão pela resposta do dono (migração 008).
   assert.deepEqual(
     await linhas(
       `select entidade, codigo_origem, codigo_kaizen from kaizen.de_para
@@ -151,7 +151,6 @@ test('conta 8396: o FORNECEDOR PADRÃO vira link:900001, no documento, no cadast
         order by codigo_origem collate "C"`,
     ),
     [
-      { entidade: 'pessoa', codigo_origem: '1', codigo_kaizen: 'link:1' },
       { entidade: 'pessoa', codigo_origem: '900001', codigo_kaizen: 'link:900001' },
     ],
   )
