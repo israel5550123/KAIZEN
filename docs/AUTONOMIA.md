@@ -77,6 +77,8 @@ Toda decisão que o dono *poderia* querer tomar vai para `docs/DECISOES.md`, uma
 6. O relatório da fase termina com o texto do `/goal` da fase seguinte, montado a partir do "pronto quando" dela em `OBJETIVO.md`, pronto para o dono colar numa sessão nova.
 7. Quando uma fase depende de dado que ainda não existe (ex.: operação real do ERP), ela fecha com o dado disponível e ganha depois um `/goal` de conferência, em sessão nova, que compara o esquema próprio com a fonte e corrige o que divergir. Conferência não reabre a fase; corrige e registra.
 
+**Revisão da branch no meio da fase.** Todo plano tem, logo depois das tarefas que se ligam (a leitura e a gravação, por exemplo), uma revisão da branch inteira até ali, despachada pelo orquestrador antes da tarefa seguinte; ela não substitui a revisão final. Nas Fases 2 e 3, a revisão de cada tarefa aprovou quase tudo de primeira, e só a revisão da branch inteira achou os problemas importantes (`docs/LICOES.md`).
+
 ### Modelo de `/goal` para uma fase
 
 ```
