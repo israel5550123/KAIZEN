@@ -1,0 +1,33 @@
+# Stack kaizen: só o tradutor, ligado à rede da stack prumo para alcançar o Postgres (postgres:5432).
+# Publicar sempre com: KAIZEN_SHA=<commit> docker stack deploy -c publicacao/stack.yml --resolve-image never kaizen
+version: "3.8"
+
+services:
+  tradutor:
+    image: kaizen-tradutor:${KAIZEN_SHA:?defina KAIZEN_SHA}
+    environment:
+      TZ: America/Fortaleza
+    secrets:
+      - source: kaizen_env
+        target: kaizen_env
+    networks:
+      - prumo_default
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 10s
+
+networks:
+  prumo_default:
+    external: true
+
+secrets:
+  kaizen_env:
+    external: true
+    name: ${KAIZEN_SEGREDO:-kaizen_env_v1}

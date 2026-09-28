@@ -705,3 +705,35 @@ Extraído automaticamente do SQL de cada relatório (`relatorio.sql`) em 24/09/2
 | 170 | VENDAS POR PRODUTO AGRUPADO POR USUÁRIO | qualquer | E | não exige | — | |
 | 171 | VENDAS POR SEÇÃO COM DETALHE DE PRODUTOS | PV, PA, 65, 55, 57, OC, OS / escolhido na tela | E | não exige | itens | |
 | 172 | VENDAS POR TABELA DE PREÇO | 65, 55, PV, PA, OC | E | não exige | itens | |
+
+## Ensaio da Fase 2 (27/09/2026)
+
+O tradutor rodou no PC, lendo o ERP de verdade, só leitura, e gravando no Postgres local.
+
+- Cada consulta do tradutor rodou uma vez no ERP. Na primeira rodada, a mais lenta levou 1.234 ms, sem a saída guardada. Na segunda, às 22h32, a mais lenta foi a conferência de colunas, com 948 ms (limite: 30.000 ms); a saída está em `docs/medicoes/ensaio-consultas-2026-09-27.txt`. Nenhuma coluna esperada falta, e só existem a empresa 1 e o local de estoque 1.
+- Documentos acima do corte com data anterior a 28/09: 44 ajustes de custo (`AC`), de 27/09, números 94 a 137. Decisão: entram como reais (docs/DECISOES.md).
+- Execução da noite: 44 documentos, 0 movimentos de estoque, 1.029 produtos, 447 pessoas, 9 funcionários. A comparação dos totais por dia deu zero diferença em 1 dia (27/09). Levou 2,2 s, com a gravação (`kaizen.execucao` do Postgres local: das 20h44min57 às 20h44min59).
+- Execução da hora: ok, sem documento novo (os mesmos 44 já lidos pela noite). Levou 24,9 s, com a gravação (das 20h45min04 às 20h45min29); o tempo de cada consulta dentro dela não foi registrado.
+- Avisos: nenhum.
+- As correções da revisão final (5 commits, das 22h06 às 22h33, 10 arquivos que rodam em produção) vieram depois dessas duas execuções. Com o código final (commit 5879f28), a execução da noite rodou de novo às 23h01: ok, 44 documentos, 1.029 produtos, 447 pessoas, 9 funcionários, 653 ligações de fornecedor, em 2,7 s, sem aviso nenhum e com zero diferença na comparação.
+- O que o ensaio não cobriu: acima do corte, o ERP tinha só os 44 ajustes de custo, sem venda, pagamento, parcela, baixa nem movimento de estoque. O "zero diferença" provou a leitura e a gravação desses documentos e dos cadastros, não a conta das vendas; essa se prova com a operação real (seção abaixo) e os seis dias na VPS.
+
+## Conferências da operação real (Fase 2)
+
+Perguntas da seção 9 da spec da Fase 2, respondidas lendo o ERP, só leitura, a partir de 28/09/2026. Item aberto é o que ainda não aconteceu na loja.
+
+1. Primeira NFC-e e primeira NF-e — aberto.
+2. Orçamento fechado em outro dia — aberto.
+3. Venda e turno — aberto.
+4. Cartão de crédito no fechamento — aberto.
+5. Vendedor gravado, com o dono — aberto.
+6. Vendedor no item da troca — aberto.
+7. Cancelamentos — aberto.
+8. Pré-venda reserva estoque — aberto.
+9. Números da operação — aberto.
+10. Números dos restos de teste — aberto.
+11. Contas a pagar reimportadas — aberto.
+12. Sangria RT — aberto.
+13. Documentos apagados — aberto.
+
+Também aberto, fora da seção 9: que código HTTP a API devolve quando uma consulta passa do limite de 30 s. Até agora só se viu o 400, com uma coluna errada. Se o estouro vier com outro código, a fatia da noite que passar de 30 s falha com a mensagem genérica de "o ERP não respondeu", sem a faixa de `oid` na mensagem.

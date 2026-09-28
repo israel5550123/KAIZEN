@@ -14440,7 +14440,7 @@ Em português, para o dono, por números, preenchido com os valores reais (nada 
 
 ## O que falta, e é seu
 
-1. Implantar na VPS pelo roteiro `publicacao/README.md`, passos 0 a 8, entre hh:10 e hh:50. O passo 1 (parar o sync do Prumo e guardar a cópia da Link fora da VPS) é o mais urgente, se ainda não foi feito.
+1. Implantar na VPS pelo roteiro `publicacao/README.md`, passos 0 a 8, entre hh:10 e hh:50. O passo 1 (parar o sync do Prumo e guardar a cópia da Link fora da VPS) é o mais urgente, se ainda não foi feito. No começo do passo 6, antes de publicar, pedir ao Claude a lista dos documentos acima do corte com data anterior a 28/09 (`node --env-file=.env ferramentas/ensaio.mts antes-da-virada`, que só lê o ERP) e só seguir com o OK dele: as contas a pagar (`CP`) e os 44 ajustes de custo (`AC`) de 27/09 já estão decididos, e qualquer outro documento é seu para decidir. Se a decisão for excluir, a migração que muda o corte entra antes da primeira execução na VPS (spec 5.4 e seção 3, item 9).
 2. Depois, por seis dias de operação seguidos, toda manhã, rodar o passo 13 do roteiro (comando `conferencia`) e olhar a parte 5: todas as leituras esperadas feitas (uma falha do ERP só vale se o Telegram avisou) e "zero diferença" na comparação da noite. Seis dias assim fecham o "pronto quando" da fase na VPS.
 3. Conferir as partes 1 a 4 do mesmo comando com os relatórios do ERP (relatório 154, contas a pagar, fechamentos, produtos). Divergência volta como bug.
 4. Pendências suas registradas em `docs/DECISOES.md`: <lista>.

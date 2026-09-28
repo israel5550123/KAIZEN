@@ -1,0 +1,6 @@
+#!/bin/sh
+# Antes de cada commit: tipos e todos os testes. Os testes precisam do Postgres local no ar (docker compose up -d --wait).
+npm run verificar || {
+  echo "commit recusado: npm run verificar falhou. O Postgres local está no ar? Rode: docker compose up -d --wait" >&2
+  exit 1
+}

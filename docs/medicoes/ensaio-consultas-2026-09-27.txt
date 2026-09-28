@@ -1,0 +1,12 @@
+# Saída de: node --env-file=.env ferramentas/ensaio.mts consultas
+# Rodado no PC em 27/09/2026, às 22h32 (Fortaleza), só lendo o ERP; cada consulta do tradutor uma vez. Limite do ERP: 30.000 ms por consulta.
+
+colunas que faltam: 948 ms, 0 itens []
+empresa e local diferentes de 1: 186 ms, 0 itens []
+vivos: 153 ms, 220 caracteres, 44 itens
+documentos da hora: 193 ms, 20574 caracteres, 44 itens
+documentos, primeira fatia: 155 ms, 20574 caracteres, 44 itens
+estoque completo: 183 ms, 48932 caracteres, chaves movimentos, foto
+cadastros: 325 ms, 304123 caracteres, chaves produtos, pessoas, funcionarios, fornecedores
+antes da virada: 163 ms, 187 caracteres, 1 itens
+totais do ERP: 180 ms, 633 caracteres, 9 itens
