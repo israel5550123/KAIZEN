@@ -65,11 +65,20 @@ test('roteiro do dono: os 15 passos na ordem, a publicação sempre com --resolv
   for (const linha of publicacoes) {
     assert.match(linha, /docker stack deploy -c publicacao\/stack\.yml --resolve-image never kaizen$/, linha)
   }
-  assert.ok(!/^docker stack rm/m.test(roteiro), 'nenhum comando do roteiro remove uma stack')
+  // Só as linhas dos blocos de comando: o texto das regras cita, para proibir, o comando que remove a stack prumo.
+  const comandos = [...roteiro.matchAll(/^```[a-z]*\n([\s\S]*?)^```$/gm)].flatMap((m) => m[1].split('\n'))
+  assert.ok(comandos.length >= 60, `só ${comandos.length} linhas de comando: os blocos não foram lidos`)
+  // Em qualquer posição da linha, com sudo ou recuo: nada remove stack, serviço, volume ou rede, nem limpa o sistema.
+  const remove = /docker\s+(?:(?:stack|service|volume|network)\s+(?:rm|remove|down)\b|(?:system|volume)\s+prune\b)/
+  for (const linha of comandos) assert.ok(!remove.test(linha), `comando que remove o que não é só do Kaizen: ${linha}`)
+  // O único prune de contêiner é o dos contêineres parados do tradutor (passo 9).
+  const limpezas = comandos.filter((l) => /docker\s+container\s+prune/.test(l))
+  assert.equal(limpezas.length, 1)
+  assert.equal(limpezas[0], 'docker container prune -f --filter label=com.docker.swarm.service.name=kaizen_tradutor')
   assert.ok(roteiro.includes('docker service scale prumo_sync=0'))
   assert.ok(roteiro.includes('psql -U prumo -d prumo -v ON_ERROR_STOP=1 -v senha="$SENHA" < sql/criar-usuario-e-esquema.sql'))
   assert.ok(roteiro.includes('docker secret create kaizen_env_v1 -'))
   assert.ok(roteiro.includes('tradutor/principal.mts teste-telegram'))
-  assert.ok(roteiro.includes('tradutor/principal.mts hora --manual'))
+  assert.ok(roteiro.includes('tradutor/principal.mts noite --manual'))
   assert.ok(roteiro.includes('tradutor/principal.mts conferencia'))
 })

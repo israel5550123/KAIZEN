@@ -9,7 +9,7 @@ Este roteiro é para o dono, na VPS, como `root`. Quem implementa o Kaizen não 
 - **Nunca** rode `docker stack rm prumo`. A stack `prumo` carrega o banco do Kaizen. Para parar o Prumo, só o passo 1 (`prumo_sync=0`). Se a stack `prumo` for reimplantada algum dia, é sempre com `PRUMO_SYNC_REPLICAS=0`.
 - Nenhuma senha ou token vai para arquivo nem para o repositório. Onde o roteiro pede um token, ele é digitado (ou colado) sem aparecer na tela e sem ficar no histórico.
 
-Primeira implantação: passos 0 a 8, nessa ordem. Depois: o 9 para atualizar, o 10 para voltar atrás, o 11 para trocar o segredo, o 12 para ver o log, o 13 para a conferência do dono e o 14 quando o Claude pedir uma consulta ao banco.
+Primeira implantação: passos 0 a 8, nessa ordem. O passo 1 é para hoje, 27/09, antes das 8h de segunda (28/09), mesmo que o resto fique para depois; se já foi feito, pule-o. O passo 6 começa pedindo ao Claude a lista dos documentos antes da virada. Depois: o 9 para atualizar, o 10 para voltar atrás, o 11 para trocar o segredo, o 12 para ver o log, o 13 para a conferência do dono e o 14 quando o Claude pedir uma consulta ao banco.
 
 ## 0. Anotar o espaço em disco
 
@@ -21,6 +21,8 @@ Saída esperada: uma tabela com os discos. Anote a linha que termina em `/` (tam
 
 ## 1. Parar o sync do Prumo e guardar a cópia da Link fora da VPS
 
+**Para hoje, 27/09, antes das 8h de segunda (28/09), mesmo que o resto fique para depois. Se já fez, pule este passo.**
+
 Parar o sync (ele recria o esquema `erp` a cada hora; parado, a cópia final da Link fica como está):
 
 ```bash
@@ -30,25 +32,27 @@ docker service ls
 
 Saída esperada: na linha `prumo_sync`, a coluna de réplicas mostra `0/0`.
 
-Tirar a cópia do esquema `erp` (a história da Link, de abril a 25/09) e conferir que as 26 tabelas estão nela:
+Tirar a cópia do esquema `erp` (a história da Link, de abril a 25/09) e conferir que as 26 tabelas estão nela. O nome do arquivo leva a data, para que refazer este passo em outro dia nunca apague uma cópia anterior:
 
 ```bash
 PG=$(docker ps -q -f name=prumo_postgres)
-docker exec $PG pg_dump -U prumo -d prumo -Fc -n erp > /root/erp-link.dump
-ls -lh /root/erp-link.dump
-docker exec -i $PG pg_restore --list < /root/erp-link.dump | grep -c 'TABLE DATA erp '
+ARQ=/root/erp-link-$(date +%F).dump
+docker exec $PG pg_dump -U prumo -d prumo -Fc -n erp > $ARQ
+ls -l $ARQ
+sha256sum $ARQ
+docker exec -i $PG pg_restore --list < $ARQ | grep -c 'TABLE DATA erp '
 ```
 
-Saída esperada: o arquivo com alguns megabytes, e o último comando imprime `26`.
+Saída esperada: o `ls -l` mostra o arquivo `/root/erp-link-AAAA-MM-DD.dump`, com a data, e alguns milhões de bytes; o `sha256sum` mostra um código de 64 letras e números seguido do nome do arquivo (anote o código e o nome); o último comando imprime `26`.
 
-Copiar o arquivo para o PC. Este comando roda **no PC**, no PowerShell (troque `<endereço da VPS>` pelo endereço que você usa no `ssh`):
+Copiar o arquivo para o PC. Estes comandos rodam **no PC**, no PowerShell (troque `<endereço da VPS>` pelo endereço que você usa no `ssh`, e `<nome>` pelo nome do arquivo que o `ls -l` mostrou, por exemplo `erp-link-2026-09-27.dump`):
 
 ```powershell
-scp root@<endereço da VPS>:/root/erp-link.dump "$HOME\Documents\erp-link.dump"
-Get-Item "$HOME\Documents\erp-link.dump" | Select-Object Length
+scp root@<endereço da VPS>:/root/<nome> "$HOME\Documents\<nome>"
+Get-FileHash "$HOME\Documents\<nome>" -Algorithm SHA256
 ```
 
-Saída esperada: o tamanho em bytes igual ao que o `ls -l /root/erp-link.dump` mostra na VPS. Esse arquivo é a única reserva da história da Link: guarde-o também fora do PC.
+Saída esperada: o `Hash` igual ao código que o `sha256sum` mostrou na VPS (o PowerShell escreve as letras em maiúsculas; o código é o mesmo). Esse arquivo é a única reserva da história da Link: guarde-o também fora do PC.
 
 ## 2. Criar a chave de implantação no GitHub
 
@@ -143,15 +147,17 @@ Saída esperada: um código comprido (o id do segredo) e, na lista, a linha `kai
 
 ## 6. Construir a imagem e publicar a stack `kaizen`
 
+**Antes de publicar, peça ao Claude a lista antes da virada e só siga com o OK dele.** Na sessão, ele roda no PC `node --env-file=.env ferramentas/ensaio.mts antes-da-virada`, que só lê o ERP e lista os documentos acima do corte com data anterior a 28/09. As contas a pagar (`CP`) e os 44 ajustes de custo (`AC`) de 27/09 já estão decididos; qualquer outro documento volta para você decidir. Se a decisão for excluir algum, a migração que muda o corte entra antes da primeira execução na VPS, e o Claude diz quando seguir.
+
 ```bash
 cd /opt/kaizen
 SHA=$(git rev-parse --short HEAD)
-docker build -f publicacao/Dockerfile -t kaizen-tradutor:$SHA .
+docker build -f publicacao/Dockerfile -t kaizen-tradutor:$SHA . &&
 KAIZEN_SHA=$SHA docker stack deploy -c publicacao/stack.yml --resolve-image never kaizen
 docker service ls --filter name=kaizen_tradutor
 ```
 
-Saída esperada: o `docker build` termina sem erro; o `deploy` diz `Creating service kaizen_tradutor`; na lista, `kaizen_tradutor` com `1/1` e a imagem `kaizen-tradutor:<o SHA>`. Se aparecer `network "prumo_default" is declared as external, but could not be found`, pare e cole a saída na sessão com o Claude.
+Saída esperada: o `docker build` termina sem erro; o `deploy` diz `Creating service kaizen_tradutor`; na lista, `kaizen_tradutor` com `1/1` e a imagem `kaizen-tradutor:<o SHA>`. Se o `docker build` falhar, o `deploy` não roda: pare e cole a saída na sessão com o Claude. Se aparecer `network "prumo_default" is declared as external, but could not be found`, pare e cole a saída na sessão com o Claude.
 
 Conferir o relógio de dentro do serviço:
 
@@ -173,12 +179,14 @@ Saída esperada: `teste-telegram: o Telegram aceitou a mensagem`, e no seu Teleg
 
 ## 8. Rodar uma leitura à mão e ver o registro
 
+A leitura à mão é a da noite: ela lê todos os documentos desde a virada, em fatias, e compara os totais de cada dia com o ERP, o que importa quando a implantação acontece dias ou semanas depois de 28/09. Ela não substitui a leitura agendada, que continua na hora cheia seguinte, e não deve ser feita entre 22h e 22h50, quando roda a da noite.
+
 ```bash
 C=$(docker ps -q -f name=kaizen_tradutor)
-docker exec $C sh -c 'cd /kaizen && node --env-file=/run/secrets/kaizen_env tradutor/principal.mts hora --manual'
+docker exec $C sh -c 'cd /kaizen && node --env-file=/run/secrets/kaizen_env tradutor/principal.mts noite --manual'
 ```
 
-Saída esperada: uma linha que começa com `hora ok:` ou `hora aviso:`, seguida das contagens (documentos lidos, movimentos, produtos...). A primeira leitura carrega tudo desde a virada e pode levar alguns minutos.
+Saída esperada: uma linha que começa com `noite ok:` ou `noite aviso:`, seguida das contagens (documentos lidos, movimentos, produtos...). A primeira leitura carrega tudo desde a virada e pode levar alguns minutos. Com `noite aviso:`, o resumo dos avisos chega pelo Telegram; cole a linha e o resumo na sessão com o Claude.
 
 Ver o registro das leituras:
 
@@ -198,23 +206,24 @@ cd /opt/kaizen
 ANTERIOR=$(docker service inspect kaizen_tradutor --format '{{.Spec.TaskTemplate.ContainerSpec.Image}}')
 SEGREDO=$(docker service inspect kaizen_tradutor --format '{{range .Spec.TaskTemplate.ContainerSpec.Secrets}}{{.SecretName}}{{end}}')
 echo "$ANTERIOR $SEGREDO"
-git pull
-SHA=$(git rev-parse --short HEAD)
-docker build -f publicacao/Dockerfile -t kaizen-tradutor:$SHA .
+git pull &&
+SHA=$(git rev-parse --short HEAD) &&
+docker build -f publicacao/Dockerfile -t kaizen-tradutor:$SHA . &&
 KAIZEN_SHA=$SHA KAIZEN_SEGREDO=$SEGREDO docker stack deploy -c publicacao/stack.yml --resolve-image never kaizen
 docker service ls --filter name=kaizen_tradutor
 ```
 
-Saída esperada: o `echo` mostra a imagem em uso (anote: é a versão para voltar atrás) e o segredo em uso; o serviço volta a `1/1` com a imagem nova.
+Saída esperada: o `echo` mostra a imagem em uso (anote: é a versão para voltar atrás) e o segredo em uso; o serviço volta a `1/1` com a imagem nova. Se o `git pull` ou o `docker build` falhar, nada é publicado e o serviço continua na versão anterior: pare e cole a saída na sessão com o Claude.
 
-Apagar as imagens antigas do tradutor, guardando só a nova e a anterior:
+Apagar as imagens antigas do tradutor, guardando só a nova e a anterior. O Swarm guarda os contêineres parados das versões antigas, e eles prendem as imagens; o primeiro comando apaga só esses contêineres parados do tradutor:
 
 ```bash
+docker container prune -f --filter label=com.docker.swarm.service.name=kaizen_tradutor
 docker images kaizen-tradutor --format '{{.Repository}}:{{.Tag}}' | grep -v -x -e "kaizen-tradutor:$SHA" -e "$ANTERIOR" | xargs -r docker rmi
 docker images kaizen-tradutor
 ```
 
-Saída esperada: sobram duas linhas, a nova e a anterior. Depois, rode o passo 8 para conferir a versão nova.
+Saída esperada: o primeiro comando lista os contêineres apagados (ou nenhum) e termina com `Total reclaimed space`; o segundo mostra `Untagged:` e `Deleted:` das imagens antigas (na primeira atualização, nada); no fim sobram duas linhas, a nova e a anterior. Depois, rode o passo 8 para conferir a versão nova.
 
 ## 10. Voltar atrás
 
@@ -232,27 +241,44 @@ Saída esperada: o serviço em `1/1` com a imagem anterior. Rode o passo 8. Se a
 
 ## 11. Trocar o segredo
 
-Quando um token mudar (o do ERP ou o do Telegram), crie um segredo novo com as quatro linhas e publique com ele. A senha do banco é a do Gerenciador de Senhas ("Kaizen — banco, usuário kaizen"). Para a segunda troca, use `kaizen_env_v3` no lugar de `kaizen_env_v2`, e assim por diante.
+Quando um token mudar (o do ERP ou o do Telegram), crie um segredo novo com as quatro linhas e publique com ele. A senha do banco é a do Gerenciador de Senhas ("Kaizen — banco, usuário kaizen"). Rode este passo inteiro no mesmo terminal: as variáveis `ANTIGO`, `NOVO` e `ATUAL` são usadas até o último comando.
+
+O segredo em uso, o nome do novo e a imagem em uso:
+
+```bash
+cd /opt/kaizen
+ANTIGO=$(docker service inspect kaizen_tradutor --format '{{range .Spec.TaskTemplate.ContainerSpec.Secrets}}{{.SecretName}}{{end}}')
+NOVO=kaizen_env_v$(( ${ANTIGO#kaizen_env_v} + 1 ))
+ATUAL=$(docker service inspect kaizen_tradutor --format '{{.Spec.TaskTemplate.ContainerSpec.Image}}')
+echo "$ANTIGO -> $NOVO, imagem $ATUAL"
+```
+
+Saída esperada: na primeira troca, `kaizen_env_v1 -> kaizen_env_v2, imagem kaizen-tradutor:<o SHA>`; na segunda, `kaizen_env_v2 -> kaizen_env_v3`, e assim por diante.
 
 ```bash
 read -rs -p 'Senha do banco (usuário kaizen): ' SENHA; echo
 read -rs -p 'Token do ERP: ' MEUERP_TOKEN; echo
 read -rs -p 'Token do robô do Telegram: ' TELEGRAM_TOKEN; echo
 read -r -p 'Número do chat: ' TELEGRAM_CHAT
-printf 'MEUERP_TOKEN=%s\nKAIZEN_URL=postgres://kaizen:%s@postgres:5432/prumo\nTELEGRAM_TOKEN=%s\nTELEGRAM_CHAT=%s\n' "$MEUERP_TOKEN" "$SENHA" "$TELEGRAM_TOKEN" "$TELEGRAM_CHAT" | docker secret create kaizen_env_v2 -
+printf 'MEUERP_TOKEN=%s\nKAIZEN_URL=postgres://kaizen:%s@postgres:5432/prumo\nTELEGRAM_TOKEN=%s\nTELEGRAM_CHAT=%s\n' "$MEUERP_TOKEN" "$SENHA" "$TELEGRAM_TOKEN" "$TELEGRAM_CHAT" | docker secret create $NOVO -
 unset MEUERP_TOKEN TELEGRAM_TOKEN TELEGRAM_CHAT SENHA
-cd /opt/kaizen
-ATUAL=$(docker service inspect kaizen_tradutor --format '{{.Spec.TaskTemplate.ContainerSpec.Image}}')
-KAIZEN_SHA=${ATUAL#kaizen-tradutor:} KAIZEN_SEGREDO=kaizen_env_v2 docker stack deploy -c publicacao/stack.yml --resolve-image never kaizen
+KAIZEN_SHA=${ATUAL#kaizen-tradutor:} KAIZEN_SEGREDO=$NOVO docker stack deploy -c publicacao/stack.yml --resolve-image never kaizen
 ```
 
-Rode os passos 7 e 8 (mensagem de teste e leitura manual). Com os dois certos, apague o segredo antigo:
+Rode os passos 7 e 8 (mensagem de teste e leitura manual), no mesmo terminal. **Se um dos dois falhar** (por exemplo, com a senha do banco digitada errado, a leitura diz que o banco do Kaizen não respondeu), volte ao segredo anterior, apague o novo e refaça este passo desde o começo:
 
 ```bash
-docker secret rm kaizen_env_v1
+KAIZEN_SHA=${ATUAL#kaizen-tradutor:} KAIZEN_SEGREDO=$ANTIGO docker stack deploy -c publicacao/stack.yml --resolve-image never kaizen
+docker secret rm $NOVO
 ```
 
-Saída esperada: `kaizen_env_v1`. Se o token do ERP mudou, troque também a linha `MEUERP_TOKEN` do arquivo `.env` do PC.
+Com os dois certos, apague o segredo antigo:
+
+```bash
+docker secret rm $ANTIGO
+```
+
+Saída esperada: o nome do segredo antigo (na primeira troca, `kaizen_env_v1`). Se o token do ERP mudou, troque também a linha `MEUERP_TOKEN` do arquivo `.env` do PC.
 
 ## 12. Ver o log do serviço
 
@@ -274,10 +300,10 @@ docker exec $C sh -c 'cd /kaizen && node --env-file=/run/secrets/kaizen_env trad
 A saída tem cinco partes, e cada uma diz onde conferir no ERP:
 
 1. **Vendas por dia desde 28/09**, pela regra do relatório 154 (documento emitido, de saída, que recebe; só os itens com vendedor; pelo dia em que o documento foi criado): confira, dia a dia, no **relatório 154**.
-2. **Contas a pagar pendentes**, número de parcelas e total, sem o crédito de troca: confira na **tela de contas a pagar**.
+2. **Contas a pagar pendentes**, número de parcelas e total, sem o crédito de troca: confira na **tela de contas a pagar**. A linha de baixo mostra o crédito de troca pendente e a soma dos dois, que é o número que a tela do ERP mostra.
 3. **Quebra de cada fechamento de caixa** (informado menos calculado, por forma, sem a forma troca): confira na **tela do fechamento**.
 4. **Saldo atual de cada produto pedido**, da última leitura: confira na **tela do produto**.
-5. **Execuções esperadas e feitas nos últimos 7 dias**, e o resultado da **última comparação da noite**: na fase de fechamento, ela precisa dizer "zero diferença".
+5. **Execuções esperadas e feitas nos últimos 7 dias**, com cada falha dizendo se o Telegram avisou, e o resultado da **última comparação da noite**: na fase de fechamento, ela precisa dizer "zero diferença", e toda falha precisa estar "avisada pelo Telegram".
 
 Cole a saída na sessão com o Claude quando ele pedir.
 
@@ -287,9 +313,9 @@ O Claude manda a consulta pronta (só leitura). Cole-a entre as duas linhas `SQL
 
 ```bash
 PG=$(docker ps -q -f name=prumo_postgres)
-docker exec -i $PG psql -U prumo -d prumo <<'SQL'
+docker exec -i -e PGOPTIONS='-c default_transaction_read_only=on' $PG psql -U prumo -d prumo -v ON_ERROR_STOP=1 <<'SQL'
 select count(*) from kaizen.documento;
 SQL
 ```
 
-Saída esperada: a tabela com a resposta. Cole-a na sessão com o Claude.
+Saída esperada: a tabela com a resposta. Cole-a na sessão com o Claude. A sessão é só de leitura: um comando que tente mudar alguma coisa para com `cannot execute ... in a read-only transaction`, e nada muda no banco.
