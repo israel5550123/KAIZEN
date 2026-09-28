@@ -61,7 +61,7 @@ export async function ligarLink(cliente: Cliente): Promise<void> {
 }
 
 // As famílias de documento; o cadastro só da Link vem depois de todas, porque junta o que elas citam.
-const FAMILIAS = ['vendas', 'caixa']
+const FAMILIAS = ['vendas', 'caixa', 'contas', 'notas']
 
 export type ContagensLink = { documentos: string; novos: string; itens: string; pagamentos: string; conferencias: string; parcelas: string; baixas: string }
 
