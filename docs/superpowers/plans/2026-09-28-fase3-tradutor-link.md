@@ -54,7 +54,7 @@ Valem para toda tarefa, mesmo quando ela não as repete.
 
 Os casos que a spec implica e que mais podem pegar o dono de surpresa. Cada um tem um teste na tarefa dona do código:
 
-1. **Restauração pela metade da cópia final** (uma tabela de itens vazia, uma venda que não fecha). A comparação por dia roda antes do commit e desfaz tudo, com o dia na mensagem. Teste da tarefa 7: "valor_total_venda que não fecha com os itens para o comando com o dia e os dois números, e nada é gravado".
+1. **Restauração pela metade da cópia final** (uma tabela vazia, uma venda que aponta para cliente que não está na cópia, uma venda que não fecha). O comando para antes de gravar, com a tabela ou o dia na mensagem. Testes da tarefa 8: "uma tabela vazia na cópia para o comando antes de gravar, com a tabela na mensagem" e "uma venda que aponta para cliente que não está na cópia para o comando antes de gravar"; da tarefa 7: "valor_total_venda que não fecha com os itens para o comando com o dia e os dois números, e nada é gravado".
 2. **Código novo na cópia final** (uma forma ou um tipo que a cópia antiga não tinha). O comando para e diz o campo e o código. Teste da tarefa 7: "código da Link sem tradução para o comando com o campo e o código, e nada é gravado".
 3. **A cópia final com uma coluna a menos.** O comando para antes de abrir a transação, com a coluna na mensagem. Teste da tarefa 2: "conferirColunasLink não acusa nada com a lista inteira e acusa a coluna que falta".
 4. **O dono responde uma falha da `de_para`** e a decisão entra por migração. A rodada seguinte usa a decisão e tira a falha. Teste da tarefa 4: "uma decisão nova na de_para vale na rodada seguinte e tira a falha".
@@ -71,9 +71,10 @@ Os casos que a spec implica e que mais podem pegar o dono de surpresa. Cada um t
 | 5 | Caixa: fechamentos, sangrias e suprimentos | 3 | 310 | implementador |
 | 6 | Contas a pagar e notas de entrada | 4 | 314 | implementador |
 | 7 | Conferências de saída, resumo, comando e a ficha da venda | 7 | 321 | implementador |
-| 8 | Rodada contra a cópia antiga | — | 321 | implementador |
-| 9 | Fechamento da construção | — | 321 | orquestrador |
-| 10 | Rodada contra a cópia final (29/09, sessão nova; fica aberta nesta sessão) | — | 321 | orquestrador da sessão de 29/09 |
+| 8 | Travas contra uma cópia restaurada pela metade (achado da revisão do meio da fase) | 2 | 323 | implementador |
+| 9 | Rodada contra a cópia antiga | — | 323 | implementador |
+| 10 | Fechamento da construção | — | 323 | orquestrador |
+| 11 | Rodada contra a cópia final (29/09, sessão nova; fica aberta nesta sessão) | — | 323 | orquestrador da sessão de 29/09 |
 
 Depois da tarefa 4, o orquestrador pede uma revisão da branch inteira (`docs/LICOES.md`, Fase 2: revisar no meio da fase, logo depois das tarefas que se ligam).
 
@@ -3259,7 +3260,7 @@ Saída esperada: o hook roda `npm run verificar` e termina com `rodou 310 testes
 
 ### Tarefa 6: Contas a pagar e notas de entrada
 
-**O que esta tarefa entrega, em resultado:** as contas a pagar e as notas de entrada da Link entram no Kaizen na forma do ERP novo. Cada conta vira um documento `conta_pagar`, emitido, sem movimento, que paga, com o fornecedor do cadastro novo, as parcelas (dia do lançamento, vencimento, valor, baixada ou pendente) e as baixas (o dia em que outro lançamento pagou a parcela, o valor e o banco de onde o dinheiro saiu). Cada nota de entrada vira um documento `nota_entrada`, emitido, de entrada, sem financeiro, com o fornecedor ligado e os itens da compra na unidade do estoque: sentido de entrada quando a entrada foi concluída, nenhum quando não foi. Nos casos da cópia antiga: a conta 1396 (R$ 10.031,64 em três parcelas de R$ 3.343,88) fica com o FORNECEDOR 7, que vem pela compra 5 e não pela fonte; duas parcelas foram baixadas em 26/05, pelo banco, e a de 29/05 está pendente. A conta 8396 (cinco parcelas de R$ 100,00, duas baixadas) é do FORNECEDOR PADRÃO, que não tem CNPJ: ele vira `link:900001` no documento, no cadastro do Kaizen e na `de_para`. A bonificação 790 (R$ 60,00, conta 2.1.2.03) não vira conta: é crédito dado ao cliente, e o uso dela continua como pagamento da venda 358, na forma troca. A nota 15 tem 40 unidades de entrada; a 58, cuja entrada não foi concluída, 5 unidades que não mexem no estoque. Na cópia antiga inteira, o protótipo deste mesmo SQL deu 88 contas, 221 parcelas (R$ 625.935,51), das quais 94 pendentes (R$ 245.864,76, o total que a migração levou ao ERP novo), 127 baixas (R$ 380.070,75) e 51 notas com 530 itens; a tarefa 8 confere. São 4 testes novos.
+**O que esta tarefa entrega, em resultado:** as contas a pagar e as notas de entrada da Link entram no Kaizen na forma do ERP novo. Cada conta vira um documento `conta_pagar`, emitido, sem movimento, que paga, com o fornecedor do cadastro novo, as parcelas (dia do lançamento, vencimento, valor, baixada ou pendente) e as baixas (o dia em que outro lançamento pagou a parcela, o valor e o banco de onde o dinheiro saiu). Cada nota de entrada vira um documento `nota_entrada`, emitido, de entrada, sem financeiro, com o fornecedor ligado e os itens da compra na unidade do estoque: sentido de entrada quando a entrada foi concluída, nenhum quando não foi. Nos casos da cópia antiga: a conta 1396 (R$ 10.031,64 em três parcelas de R$ 3.343,88) fica com o FORNECEDOR 7, que vem pela compra 5 e não pela fonte; duas parcelas foram baixadas em 26/05, pelo banco, e a de 29/05 está pendente. A conta 8396 (cinco parcelas de R$ 100,00, duas baixadas) é do FORNECEDOR PADRÃO, que não tem CNPJ: ele vira `link:900001` no documento, no cadastro do Kaizen e na `de_para`. A bonificação 790 (R$ 60,00, conta 2.1.2.03) não vira conta: é crédito dado ao cliente, e o uso dela continua como pagamento da venda 358, na forma troca. A nota 15 tem 40 unidades de entrada; a 58, cuja entrada não foi concluída, 5 unidades que não mexem no estoque. Na cópia antiga inteira, o protótipo deste mesmo SQL deu 88 contas, 221 parcelas (R$ 625.935,51), das quais 94 pendentes (R$ 245.864,76, o total que a migração levou ao ERP novo), 127 baixas (R$ 380.070,75) e 51 notas com 530 itens; a tarefa 9 confere. São 4 testes novos.
 
 **Arquivos:**
 - Criar: `sql/link/contas.sql` (do protótipo, sem mudar nada)
@@ -3928,10 +3929,10 @@ Saída esperada: o hook roda `npm run verificar` e termina com `rodou 314 testes
   // imprime 'link ok: documentos=…, novos=…, itens=…, pagamentos=…, conferencias=…, parcelas=…, baixas=…' e uma linha
   // 'chave: valor' por linha do resumo; ou 'link falhou: <motivo>' (sem KAIZEN_URL: 'link falhou: falta KAIZEN_URL')
   ```
-  e o comando `node --env-file=.env tradutor/link.mts` (lê só `KAIZEN_URL`). Os arquivos SQL: `sem-traducao.sql` devolve `(campo, codigo, quantos)` dos códigos crus da Link sem linha em `kaizen.traducao` (vazio quando está tudo traduzido); `comparar.sql` devolve `(dia, vendas_kaizen, vendas_link, vendido_kaizen, vendido_link, devolucao_kaizen, devolucao_link)` só dos dias diferentes (vazio quando tudo bate); `resumo.sql` devolve `(ordem, chave, valor)`, uma linha por número; `ficha-venda.sql` é um comando só, com `$1` (o `kaizen.documento.id`), sem `;` no fim, e devolve uma linha com `ficha` (jsonb: `documento` com `fonte`, `codigo`, `tipo`, `situacao`, `movimento`, `financeiro`, `criado_em`, `fechado_em`, `pessoa` e `pessoa_nome`; `itens` com `sentido`, `produto`, `descricao`, `quantidade`, `valor_liquido`, `vendedor` e `vendedor_nome`; `pagamentos` com `forma` e `valor`; todo valor em texto). A tarefa 8 usa o comando e a ficha contra a cópia antiga.
+  e o comando `node --env-file=.env tradutor/link.mts` (lê só `KAIZEN_URL`). Os arquivos SQL: `sem-traducao.sql` devolve `(campo, codigo, quantos)` dos códigos crus da Link sem linha em `kaizen.traducao` (vazio quando está tudo traduzido); `comparar.sql` devolve `(dia, vendas_kaizen, vendas_link, vendido_kaizen, vendido_link, devolucao_kaizen, devolucao_link)` só dos dias diferentes (vazio quando tudo bate); `resumo.sql` devolve `(ordem, chave, valor)`, uma linha por número; `ficha-venda.sql` é um comando só, com `$1` (o `kaizen.documento.id`), sem `;` no fim, e devolve uma linha com `ficha` (jsonb: `documento` com `fonte`, `codigo`, `tipo`, `situacao`, `movimento`, `financeiro`, `criado_em`, `fechado_em`, `pessoa` e `pessoa_nome`; `itens` com `sentido`, `produto`, `descricao`, `quantidade`, `valor_liquido`, `vendedor` e `vendedor_nome`; `pagamentos` com `forma` e `valor`; todo valor em texto). A tarefa 9 usa o comando e a ficha contra a cópia antiga.
 - `testes-esperados.txt` passa de `314` para `321`.
 
-**Antes de começar:** rode tudo a partir de `C:\Projetos\KAIZEN`, no Git Bash, na branch `fase-3`, com as tarefas 1 a 6 já commitadas (`cat testes-esperados.txt` mostra `314`) e o Postgres local no ar (`docker compose up -d --wait`). Os quatro arquivos SQL são os do protótipo, que rodou contra a cópia antiga inteira (6.155 documentos, 141 dias comparados sem diferença, duas rodadas iguais): copie cada bloco inteiro, sem mudar nem uma letra, em LF (o passo 7 confere pelo sha256). O `.gitattributes` já manda o `*.sql` em LF. Os valores esperados dos testes foram conferidos rodando esses arquivos sobre a Link falsa dos casos. Os testes 2 a 7 chamam `traduzirLink` no começo, que roda duas vezes sem duplicar, então a ordem deles não importa. Quatro testes mudam alguma coisa e desfazem no `finally`: o 1 apaga a tradução da forma `Pix` da Link e a devolve; o 3 muda o `valor_total_venda` da 1992 na Link falsa (pela `LinkFalsa.executar`, dentro do banco de teste) e o devolve a 150.00, e depois apaga todas as negociações da Link falsa e as insere de novo a partir dos casos (`LinkFalsa.inserir` com `lerCasosLink().negociacao`); o 6 apaga de novo a tradução da forma `Pix` e a devolve; o 7 grava o produto 2962 e o pedido 87 do ERP novo no Kaizen do teste e os apaga. Nesta tarefa o comando não roda contra o banco `kaizen` de verdade (é a tarefa 8): só roda sem `KAIZEN_URL`, para ver a saída 1. Não abra nem imprima o `.env`. Commits no Git Bash.
+**Antes de começar:** rode tudo a partir de `C:\Projetos\KAIZEN`, no Git Bash, na branch `fase-3`, com as tarefas 1 a 6 já commitadas (`cat testes-esperados.txt` mostra `314`) e o Postgres local no ar (`docker compose up -d --wait`). Os quatro arquivos SQL são os do protótipo, que rodou contra a cópia antiga inteira (6.155 documentos, 141 dias comparados sem diferença, duas rodadas iguais): copie cada bloco inteiro, sem mudar nem uma letra, em LF (o passo 7 confere pelo sha256). O `.gitattributes` já manda o `*.sql` em LF. Os valores esperados dos testes foram conferidos rodando esses arquivos sobre a Link falsa dos casos. Os testes 2 a 7 chamam `traduzirLink` no começo, que roda duas vezes sem duplicar, então a ordem deles não importa. Quatro testes mudam alguma coisa e desfazem no `finally`: o 1 apaga a tradução da forma `Pix` da Link e a devolve; o 3 muda o `valor_total_venda` da 1992 na Link falsa (pela `LinkFalsa.executar`, dentro do banco de teste) e o devolve a 150.00, e depois apaga todas as negociações da Link falsa e as insere de novo a partir dos casos (`LinkFalsa.inserir` com `lerCasosLink().negociacao`); o 6 apaga de novo a tradução da forma `Pix` e a devolve; o 7 grava o produto 2962 e o pedido 87 do ERP novo no Kaizen do teste e os apaga. Nesta tarefa o comando não roda contra o banco `kaizen` de verdade (é a tarefa 9): só roda sem `KAIZEN_URL`, para ver a saída 1. Não abra nem imprima o `.env`. Commits no Git Bash.
 
 - [ ] **Passo 1: Escrever o teste do comando**
 
@@ -4958,7 +4959,199 @@ EOF
 Saída esperada: o `git add` pode avisar `LF will be replaced by CRLF` para `testes-esperados.txt` (é só aviso); o hook roda `npm run verificar` e termina com `rodou 321 testes, esperados 321`; o commit sai.
 
 
-### Tarefa 8: Rodada contra a cópia antiga
+### Tarefa 8: Travas contra uma cópia restaurada pela metade
+
+**O que esta tarefa entrega, em resultado:** o comando da Link para, antes de gravar qualquer coisa, quando a cópia foi restaurada pela metade: uma das 20 tabelas que ele lê está vazia, ou uma venda, um fechamento, uma conta, uma nota ou uma compra aponta para cliente, vendedor ou fornecedor que não está na cópia. Sem isso, o `join` à esquerda gravaria a venda sem cliente ou sem vendedor, e a família de uma tabela vazia sumiria do Kaizen, sem aviso, e a comparação por dia não pegaria (achado da revisão do meio da fase; spec, decisão 10: "uma restauração pela metade ... trocaria a história boa por uma incompleta"). Na cópia antiga e nos casos, nenhuma das 20 tabelas está vazia e nenhuma referência está quebrada (medido em 28/09).
+
+**Arquivos:**
+- Criar: `sql/link/referencias.sql`, `tradutor/link-copia.test.mts`
+- Modificar: `tradutor/link.mts` (só a função `conferirEntradaLink`), `testes-esperados.txt` (de `321` para `323`)
+
+**Interfaces:**
+- Consome: `conferirEntradaLink`, `lerColunasEsperadasLink`, `lerSql` e `ErroLink` de `tradutor/link.mts` (tarefa 2); `traduzirLink` (tarefa 7); `criarLinkFalsa`, `carregarCasosLink` e `lerCasosLink` de `tradutor/link-falsa.mts` (tarefa 2).
+- Produz: `conferirEntradaLink` com duas conferências a mais, depois da conferência das negociações (a ordem das mensagens antigas não muda): tabelas vazias e referências quebradas.
+- `testes-esperados.txt` passa de `321` para `323`.
+
+**Antes de começar:** rode tudo no Git Bash, a partir de `C:\Projetos\KAIZEN`, com o Postgres local no ar. As colunas que `referencias.sql` lê já estão em `sql/link/colunas-esperadas.txt` (são as que `vendas.sql`, `caixa.sql`, `contas.sql` e `notas.sql` já leem); confira no passo 3. As duas conferências novas vêm **depois** da conferência de "nenhuma negociação", para que os testes das tarefas 2 e 7 que esvaziam `erp.negociacao` continuem recebendo a mesma mensagem.
+
+- [ ] **Passo 1: Escrever o teste**
+
+Crie `tradutor/link-copia.test.mts`:
+
+```ts
+import { after, before, test } from 'node:test'
+import assert from 'node:assert/strict'
+import { criarBancoKaizen, type BancoTeste } from './apoio-teste.mts'
+import { carregarCasosLink, criarLinkFalsa, lerCasosLink, type LinkFalsa } from './link-falsa.mts'
+import { ErroLink, traduzirLink } from './link.mts'
+
+// Uma cópia restaurada pela metade: tabela vazia, ou venda que aponta para cliente que não está na cópia.
+// O comando para antes de gravar; cada teste devolve a Link falsa como era.
+let banco: BancoTeste
+let falsa: LinkFalsa
+before(async () => {
+  banco = await criarBancoKaizen()
+  falsa = await criarLinkFalsa(banco)
+  await carregarCasosLink(falsa, banco.cliente)
+  await traduzirLink(banco.cliente)
+})
+after(async () => {
+  await falsa.fechar()
+  await banco.fechar()
+})
+
+async function documentosDaLink(): Promise<number> {
+  const r = await banco.cliente.query(`select count(*)::int as n from kaizen.documento where fonte = 'link'`)
+  return r.rows[0].n
+}
+
+function erroLink(mensagem: string) {
+  return (erro: unknown) => erro instanceof ErroLink && erro.message === mensagem
+}
+
+test('uma tabela vazia na cópia para o comando antes de gravar, com a tabela na mensagem', async () => {
+  assert.equal(await documentosDaLink(), 26)
+  try {
+    await falsa.executar('delete from erp.caixa_parcela')
+    await assert.rejects(
+      traduzirLink(banco.cliente),
+      erroLink('a cópia da Link tem tabelas vazias (caixa_parcela): a restauração deu certo?'),
+    )
+    assert.equal(await documentosDaLink(), 26)
+  } finally {
+    await falsa.inserir('caixa_parcela', lerCasosLink().caixa_parcela)
+  }
+  await traduzirLink(banco.cliente)
+})
+
+test('uma venda que aponta para cliente que não está na cópia para o comando antes de gravar', async () => {
+  const cliente899 = lerCasosLink().cliente.filter((c) => c.id_cliente === '899')
+  assert.equal(cliente899.length, 1)
+  try {
+    await falsa.executar(`delete from erp.cliente where id_cliente = 899`)
+    await assert.rejects(
+      traduzirLink(banco.cliente),
+      erroLink('a cópia da Link tem linhas que apontam para o que não está nela: negociacao.id_cliente sem cliente (1). A restauração deu certo?'),
+    )
+    assert.equal(await documentosDaLink(), 26)
+  } finally {
+    await falsa.inserir('cliente', cliente899)
+  }
+  await traduzirLink(banco.cliente)
+})
+```
+
+A venda de junho 1992 é a única dos casos do cliente 899 (conferido em `tradutor/link-casos.json`).
+
+- [ ] **Passo 2: Rodar o teste e ver falhar**
+
+Rode: `node --test tradutor/link-copia.test.mts`
+Saída esperada: falha, com `ℹ tests 2`, `ℹ fail 2`: nos dois, a rejeição esperada não acontece (`Missing expected rejection`), porque `traduzirLink` grava sem reclamar.
+
+- [ ] **Passo 3: Escrever `sql/link/referencias.sql` e conferir as colunas**
+
+Crie `sql/link/referencias.sql` (um comando só, sem parâmetro e sem `;` no fim):
+
+```sql
+select 'negociacao.id_cliente' as onde, 'cliente' as tabela, count(*)::int as quantas
+from erp.negociacao n
+where n.id_cliente is not null and not exists (select 1 from erp.cliente c where c.id_cliente = n.id_cliente)
+union all
+select 'negociacao.id_usuario', 'usuario', count(*)::int
+from erp.negociacao n
+where n.id_usuario is not null and not exists (select 1 from erp.usuario u where u.id_usuario = n.id_usuario)
+union all
+select 'caixa_fechamento.id_usuario', 'usuario', count(*)::int
+from erp.caixa_fechamento f
+where f.id_usuario is not null and not exists (select 1 from erp.usuario u where u.id_usuario = f.id_usuario)
+union all
+select 'pc_lancamento_fonte.id_fornecedor', 'fornecedor', count(*)::int
+from erp.pc_lancamento_fonte f
+where f.id_fornecedor is not null and not exists (select 1 from erp.fornecedor o where o.id_fornecedor = f.id_fornecedor)
+union all
+select 'nota_entrada.id_fornecedor', 'fornecedor', count(*)::int
+from erp.nota_entrada n
+where n.id_fornecedor is not null and not exists (select 1 from erp.fornecedor o where o.id_fornecedor = n.id_fornecedor)
+union all
+select 'compra.id_fornecedor', 'fornecedor', count(*)::int
+from erp.compra c
+where c.id_fornecedor is not null and not exists (select 1 from erp.fornecedor o where o.id_fornecedor = c.id_fornecedor)
+```
+
+Rode, para conferir que as 10 colunas lidas estão na lista:
+```bash
+for c in "negociacao id_cliente" "negociacao id_usuario" "cliente id_cliente" "usuario id_usuario" "caixa_fechamento id_usuario" "pc_lancamento_fonte id_fornecedor" "fornecedor id_fornecedor" "nota_entrada id_fornecedor" "compra id_fornecedor"; do grep -c "^$c " sql/link/colunas-esperadas.txt; done
+```
+Saída esperada: nove linhas `1`.
+
+- [ ] **Passo 4: As duas conferências em `conferirEntradaLink`**
+
+Em `tradutor/link.mts`, na função `conferirEntradaLink`, depois da linha que lança `'a cópia da Link não tem nenhuma negociação: a restauração deu certo?'` e antes do fecho da função, acrescente:
+
+```ts
+  // Uma restauração pela metade deixa tabela vazia, ou linha que aponta para quem não está na cópia; o join à esquerda
+  // gravaria a venda sem cliente ou sem vendedor, calado. O comando para antes de gravar.
+  const tabelas = [...new Set(lerColunasEsperadasLink().map((c) => c.tabela))]
+  const vazias: string[] = []
+  for (const tabela of tabelas) {
+    const tem = await cliente.query(`select exists (select 1 from erp.${tabela}) as tem`)
+    if (!tem.rows[0].tem) vazias.push(tabela)
+  }
+  if (vazias.length > 0) throw new ErroLink(`a cópia da Link tem tabelas vazias (${vazias.join(', ')}): a restauração deu certo?`)
+  const quebradas = (await cliente.query(lerSql('link/referencias.sql'))).rows.filter((linha) => linha.quantas > 0)
+  if (quebradas.length > 0) {
+    const lista = quebradas.map((linha) => `${linha.onde} sem ${linha.tabela} (${linha.quantas})`).join(', ')
+    throw new ErroLink(`a cópia da Link tem linhas que apontam para o que não está nela: ${lista}. A restauração deu certo?`)
+  }
+```
+
+Os nomes das tabelas vêm do arquivo do repositório (`sql/link/colunas-esperadas.txt`), não de fora; `count(*)::int` chega como `number`.
+
+- [ ] **Passo 5: Rodar o teste e ver passar**
+
+Rode: `node --test tradutor/link-copia.test.mts`
+Saída esperada: passa, com `ℹ pass 2`, `ℹ fail 0` e:
+```
+✔ uma tabela vazia na cópia para o comando antes de gravar, com a tabela na mensagem
+✔ uma venda que aponta para cliente que não está na cópia para o comando antes de gravar
+```
+
+Rode também: `node --test tradutor/link-falsa.test.mts tradutor/link-comando.test.mts`
+Saída esperada: `ℹ fail 0` (as mensagens antigas das conferências de entrada não mudaram).
+
+- [ ] **Passo 6: Atualizar `testes-esperados.txt` (N = 2)**
+
+Esta tarefa acrescentou 2 `test(` (em `tradutor/link-copia.test.mts`). 321 + 2 = 323. O arquivo fica com uma única linha:
+
+```text
+323
+```
+
+- [ ] **Passo 7: Rodar a verificação completa**
+
+Rode: `npm run verificar`
+Saída esperada: `tsc -p .` sem nenhuma linha de erro; última linha `rodou 323 testes, esperados 323`.
+
+- [ ] **Passo 8: Commit**
+
+```bash
+git add sql/link/referencias.sql tradutor/link.mts tradutor/link-copia.test.mts testes-esperados.txt
+git commit -F - <<'EOF'
+Link: o comando para antes de gravar uma cópia restaurada pela metade
+
+Se uma das 20 tabelas que o tradutor lê da cópia da Link estiver vazia,
+ou se uma venda, um fechamento, uma conta, uma nota ou uma compra apontar
+para cliente, vendedor ou fornecedor que não está na cópia, o comando para
+e diz o quê, sem gravar nada. Antes, a venda entraria sem cliente ou sem
+vendedor, calada, e a comparação por dia não pegaria. Na cópia antiga e
+nos casos de teste, nada disso acontece. Testes: rodou 323, esperados 323.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+EOF
+```
+Saída esperada: o hook roda `npm run verificar` e termina com `rodou 323 testes, esperados 323`; o commit sai.
+
+### Tarefa 9: Rodada contra a cópia antiga
 
 **O que esta tarefa entrega, em resultado:** a história da Link, da cópia antiga do PC (até 25/09 às 11h51), gravada no banco `kaizen` do Postgres local, pelo comando da tarefa 7, duas vezes, com o mesmo conteúdo nas duas. O registro da rodada fica em `docs/fases/FASE-3-rodada-copia-antiga.md`, com os números que o dono lê no relatório: documentos por família, vendas, itens, ligações, falhas da `de_para`, a comparação por dia sem diferença e a ficha de uma venda de junho.
 
@@ -4970,14 +5163,14 @@ Saída esperada: o `git add` pode avisar `LF will be replaced by CRLF` para `tes
 **Interfaces:**
 - Consome: o comando `node --env-file=.env tradutor/link.mts` (tarefa 7), `sql/kaizen/ficha-venda.sql` (tarefa 7), o comando da Fase 2 `node --env-file=.env tradutor/principal.mts hora --manual`, que aplica as migrações que faltam (a 006 e a 007) e relê o cadastro do ERP novo, só lendo o ERP.
 - Produz: o banco `kaizen` do PC com o esquema `erp` (cópia antiga) e a história da Link no `kaizen`; o registro da rodada.
-- `testes-esperados.txt` continua `321`.
+- `testes-esperados.txt` continua `323`.
 
 **Antes de começar:** rode tudo no Git Bash, a partir de `C:\Projetos\KAIZEN`, com o Postgres local no ar (`docker compose up -d --wait`) e o container `link_postgres` no ar (`docker ps` mostra os dois). Use `export MSYS_NO_PATHCONV=1` antes dos comandos `docker` com caminho `/tmp`, senão o Git Bash troca o caminho. No `link_postgres` só se roda `pg_dump`. Nunca abra nem imprima o `.env`. Nenhum comando desta tarefa tem `drop` ou `truncate`: a restauração usa `pg_restore --clean --if-exists`, que troca o esquema `erp` do banco `kaizen` do PC (a cópia local, não a Link).
 
 - [ ] **Passo 1: Conferir o ponto de partida**
 
 Rode: `git status --short && git log --oneline -1 && npm run verificar 2>&1 | tail -1`
-Saída esperada: nada no `git status`; o último commit é o da tarefa 7; `rodou 321 testes, esperados 321`.
+Saída esperada: nada no `git status`; o último commit é o da tarefa 8; `rodou 323 testes, esperados 323`.
 
 - [ ] **Passo 2: Aplicar as migrações e reler o cadastro do ERP novo**
 
@@ -5119,7 +5312,7 @@ Crie `docs/fases/FASE-3-rodada-copia-antiga.md`, em português, com:
 - a primeira linha das duas rodadas e o resumo inteiro da primeira, num bloco de código;
 - as duas fotos iguais (a `foto-2.txt` num bloco) e a frase "rodar duas vezes não duplica: as fotos da primeira e da segunda rodada são iguais";
 - a ficha da venda 1992, num bloco;
-- uma seção "O que falta da cópia final", com uma linha: a tarde de 25/09 e o fechamento do turno 190, que chegam com a cópia final em 29/09 (tarefa 10).
+- uma seção "O que falta da cópia final", com uma linha: a tarde de 25/09 e o fechamento do turno 190, que chegam com a cópia final em 29/09 (tarefa 11).
 
 Não copie para o registro nomes de pessoas físicas; o resumo traz nomes de empresa e de produto, que podem ficar.
 
@@ -5136,15 +5329,15 @@ pagamentos. Todos os produtos das vendas ligam ao cadastro novo; falham
 6 produtos sem venda, 1 cliente (R$ 60,00), o fornecedor padrão e os 3
 usuários de teste, que ficam na de_para. A comparação por dia com a Link
 deu zero diferença em 141 dias, e as duas rodadas deixaram o mesmo
-conteúdo. Testes: rodou 321, esperados 321.
+conteúdo. Testes: rodou 323, esperados 323.
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
 EOF
 ```
-Saída esperada: o hook roda `npm run verificar` e termina com `rodou 321 testes, esperados 321`; o commit sai.
+Saída esperada: o hook roda `npm run verificar` e termina com `rodou 323 testes, esperados 323`; o commit sai.
 
 
-### Tarefa 9: Fechamento da construção (orquestrador)
+### Tarefa 10: Fechamento da construção (orquestrador)
 
 **O que esta tarefa entrega, em resultado:** a construção da Fase 3 fechada nesta sessão: a mesma forma provada com uma venda do ERP novo de 28/09 em diante, a revisão final da branch, as decisões e lições registradas, o relatório do dono com o passo a passo da cópia final e o `/goal` da rodada final, a auditoria de fase e a branch `fase-3` mesclada em `main` e enviada ao GitHub. Quem faz é o orquestrador, não o implementador.
 
@@ -5153,7 +5346,7 @@ Saída esperada: o hook roda `npm run verificar` e termina com `rodou 321 testes
 - Criar: `docs/fases/FASE-3-relatorio.md`
 - Criado pelo auditor: `docs/fases/FASE-3-auditoria.md`
 
-**Antes de começar:** as tarefas 1 a 8 com linha `complete` no ledger.
+**Antes de começar:** as tarefas 1 a 9 com linha `complete` no ledger.
 
 - [ ] **Passo 1: A mesma forma, com uma venda do ERP novo de 28/09 em diante**
 
@@ -5163,11 +5356,11 @@ Depois que a loja vender (a partir das 8h de 28/09), rode `node --env-file=.env 
 docker exec kaizen-postgres-1 psql -U kaizen -d kaizen -At -c "select id, codigo, criado_em from kaizen.documento_negocio where fonte = 'meuerp' and tipo = 'pedido' and situacao = 'emitido' and criado_em >= '2026-09-28' order by criado_em limit 3"
 ```
 
-Rode a `ficha-venda.sql` para ele (como no passo 8 da tarefa 8) e acrescente ao registro da rodada a seção "A mesma forma": as duas fichas lado a lado (a 1992 da Link e a do ERP novo) e uma frase dizendo o que é igual (as chaves, o tipo, a situação, o movimento, o financeiro, o vendedor com nome, as formas no mesmo vocabulário) e o que difere por ser outro fato (valores, produtos, datas; e a descrição vazia do produto no ERP novo, que é o bug da Fase 2 registrado na spec, seção 13). Commit do registro.
+Rode a `ficha-venda.sql` para ele (como no passo 8 da tarefa 9) e acrescente ao registro da rodada a seção "A mesma forma": as duas fichas lado a lado (a 1992 da Link e a do ERP novo) e uma frase dizendo o que é igual (as chaves, o tipo, a situação, o movimento, o financeiro, o vendedor com nome, as formas no mesmo vocabulário) e o que difere por ser outro fato (valores, produtos, datas; e a descrição vazia do produto no ERP novo, que é o bug da Fase 2 registrado na spec, seção 13). Commit do registro.
 
 - [ ] **Passo 2: Revisão final da branch**
 
-Pacote da branch inteira (`bash .claude/skills/subagent-driven-development/scripts/review-package <plano> <merge-base> HEAD`) e um revisor final no modelo mais capaz, com o ledger (achados menores guardados e decisões). Uma rodada de correção, uma re-revisão. Se algum arquivo de `tradutor/` ou `sql/` mudar depois da tarefa 8, a rodada da tarefa 8 roda de novo (passos 6 e 7) e o registro é atualizado (`docs/LICOES.md`, Fase 2: o ensaio é o último passo).
+Pacote da branch inteira (`bash .claude/skills/subagent-driven-development/scripts/review-package <plano> <merge-base> HEAD`) e um revisor final no modelo mais capaz, com o ledger (achados menores guardados e decisões). Uma rodada de correção, uma re-revisão. Se algum arquivo de `tradutor/` ou `sql/` mudar depois da tarefa 9, a rodada da tarefa 9 roda de novo (passos 6 e 7) e o registro é atualizado (`docs/LICOES.md`, Fase 2: o ensaio é o último passo).
 
 - [ ] **Passo 3: `docs/DECISOES.md`, seção "Fase 3"**
 
@@ -5189,26 +5382,26 @@ O que deu errado nesta fase e que regra evitaria, com evidência. Mudança de m�
 6. `docker exec kaizen-postgres-1 psql -U postgres -d kaizen -c "grant usage on schema erp to kaizen" -c "grant select on all tables in schema erp to kaizen"`
 7. `docker exec kaizen-postgres-1 psql -U kaizen -d kaizen -c "select count(*), max(data) from erp.negociacao"` → mais de 5.282 negociações, a última depois de 25/09 às 11h51.
 
-E, no fim, o `/goal` curto da rodada final (tarefa 10), pronto para colar numa sessão nova.
+E, no fim, o `/goal` curto da rodada final (tarefa 11), pronto para colar numa sessão nova.
 
 - [ ] **Passo 6: Auditoria de fase**
 
-Despachar o `auditor-de-fase` (sem passar `model`), dizendo que audita a **construção** da Fase 3, que a rodada contra a cópia final (tarefa 10) fica aberta de propósito, pelo `/goal` do dono, e que ele escreve `docs/fases/FASE-3-auditoria.md` com o veredito. Se reprovar, corrigir pelo ciclo normal (implementador e revisor) e despachar de novo; na segunda reprovação do mesmo item sem ideia nova, parar (`docs/AUTONOMIA.md`, paradas).
+Despachar o `auditor-de-fase` (sem passar `model`), dizendo que audita a **construção** da Fase 3, que a rodada contra a cópia final (tarefa 11) fica aberta de propósito, pelo `/goal` do dono, e que ele escreve `docs/fases/FASE-3-auditoria.md` com o veredito. Se reprovar, corrigir pelo ciclo normal (implementador e revisor) e despachar de novo; na segunda reprovação do mesmo item sem ideia nova, parar (`docs/AUTONOMIA.md`, paradas).
 
 - [ ] **Passo 7: Mesclar e enviar**
 
-`superpowers:finishing-a-development-branch`: `git checkout main && git merge --no-ff fase-3`, `npm run verificar` em `main` (`rodou 321 testes, esperados 321`), `git push origin main`. O ledger da fase fica no disco (a tarefa 10 continua aberta nele).
+`superpowers:finishing-a-development-branch`: `git checkout main && git merge --no-ff fase-3`, `npm run verificar` em `main` (`rodou 323 testes, esperados 323`), `git push origin main`. O ledger da fase fica no disco (a tarefa 11 continua aberta nele).
 
 
-### Tarefa 10: Rodada contra a cópia final (29/09, sessão nova; fica aberta ao fim da sessão de 28/09)
+### Tarefa 11: Rodada contra a cópia final (29/09, sessão nova; fica aberta ao fim da sessão de 28/09)
 
-**O que esta tarefa entrega, em resultado:** a história da Link no Kaizen do PC passa a ser a da cópia final (até o fim de 25/09, com o fechamento do turno 190), com os mesmos números conferidos da tarefa 8 e a diferença para a cópia antiga explicada. Com ela, o "pronto quando" da Fase 3 no `OBJETIVO.md` fica cumprido no PC.
+**O que esta tarefa entrega, em resultado:** a história da Link no Kaizen do PC passa a ser a da cópia final (até o fim de 25/09, com o fechamento do turno 190), com os mesmos números conferidos da tarefa 9 e a diferença para a cópia antiga explicada. Com ela, o "pronto quando" da Fase 3 no `OBJETIVO.md` fica cumprido no PC.
 
 **Arquivos:**
 - Criar: `docs/fases/FASE-3-rodada-copia-final.md`
 - Modificar: `docs/fases/FASE-3-relatorio.md` (seção "Rodada final"), `docs/DECISOES.md` (se a rodada pedir decisão)
 
-**Pré-condição:** o dono já restaurou a cópia final no banco `kaizen` do Postgres do PC, pelo passo a passo do relatório (tarefa 9, passo 5), com o sha256 conferido. Se a consulta do passo 1 mostrar a cópia antiga (5.282 negociações, a última às 11h51 de 25/09), a restauração não foi feita: escreva isso no relatório e pare.
+**Pré-condição:** o dono já restaurou a cópia final no banco `kaizen` do Postgres do PC, pelo passo a passo do relatório (tarefa 10, passo 5), com o sha256 conferido. Se a consulta do passo 1 mostrar a cópia antiga (5.282 negociações, a última às 11h51 de 25/09), a restauração não foi feita: escreva isso no relatório e pare.
 
 **Antes de começar:** sessão nova, na branch `fase-3-final` criada a partir de `main`. Nenhum código muda. Se o comando parar (coluna faltando, código sem tradução, diferença na comparação), a correção é uma migração ou uma linha na lista de colunas, com teste, pelo ciclo normal (implementador e revisor), e a rodada recomeça.
 
@@ -5224,13 +5417,13 @@ Saída esperada: `hora ok` ou `hora aviso`, código 0.
 
 - [ ] **Passo 3: Duas rodadas e as fotos**
 
-Os passos 5 a 7 da tarefa 8, com os arquivos `/c/Projetos/link-copias/foto.sql` e as saídas em `/c/Projetos/link-copias/final-*.txt`. Saída esperada: `link ok` nas duas; na segunda, `novos=0`; `fotos iguais`; `resumos iguais`; `dias_comparados` maior ou igual a 141, sem diferença.
+Os passos 5 a 7 da tarefa 9, com os arquivos `/c/Projetos/link-copias/foto.sql` e as saídas em `/c/Projetos/link-copias/final-*.txt`. Saída esperada: `link ok` nas duas; na segunda, `novos=0`; `fotos iguais`; `resumos iguais`; `dias_comparados` maior ou igual a 141, sem diferença.
 
 - [ ] **Passo 4: A diferença para a cópia antiga**
 
-Compare o resumo desta rodada com o da tarefa 8 (`docs/fases/FASE-3-rodada-copia-antiga.md`) e explique cada número que mudou. O esperado: mais vendas e itens de 25/09 (a tarde), mais pagamentos, o turno 190 fechado (`turnos_abertos` de 3 para 2), talvez sangrias do fim do dia; as ligações e as falhas da `de_para` iguais, salvo cliente novo de 25/09.
+Compare o resumo desta rodada com o da tarefa 9 (`docs/fases/FASE-3-rodada-copia-antiga.md`) e explique cada número que mudou. O esperado: mais vendas e itens de 25/09 (a tarde), mais pagamentos, o turno 190 fechado (`turnos_abertos` de 3 para 2), talvez sangrias do fim do dia; as ligações e as falhas da `de_para` iguais, salvo cliente novo de 25/09.
 
 - [ ] **Passo 5: Registro, relatório e fechamento**
 
-Escreva `docs/fases/FASE-3-rodada-copia-final.md` como o registro da tarefa 8, atualize a seção "Rodada final" do relatório da fase com os números e a frase "a Fase 3 está pronta", commit, mescle `fase-3-final` em `main` com `npm run verificar` passando e `git push origin main`. Marque esta tarefa `complete` no ledger.
+Escreva `docs/fases/FASE-3-rodada-copia-final.md` como o registro da tarefa 9, atualize a seção "Rodada final" do relatório da fase com os números e a frase "a Fase 3 está pronta", commit, mescle `fase-3-final` em `main` com `npm run verificar` passando e `git push origin main`. Marque esta tarefa `complete` no ledger.
 
