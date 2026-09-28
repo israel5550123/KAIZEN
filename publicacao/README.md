@@ -302,7 +302,7 @@ A saída tem cinco partes, e cada uma diz onde conferir no ERP:
 
 1. **Vendas por dia desde 28/09**, pela regra do relatório 154 (documento emitido, de saída, que recebe; só os itens com vendedor; pelo dia em que o documento foi criado): confira, dia a dia, no **relatório 154**.
 2. **Contas a pagar pendentes**, número de parcelas e total, sem o crédito de troca: confira na **tela de contas a pagar**. A linha de baixo mostra o crédito de troca pendente e a soma dos dois, que é o número que a tela do ERP mostra.
-3. **Quebra de cada fechamento de caixa** (informado menos calculado, por forma, sem a forma troca): confira na **tela do fechamento**.
+3. **Quebra de cada fechamento de caixa** (informado menos calculado, por forma, sem a forma troca): confira na **tela do fechamento**. Cada linha traz o número da forma, que a tela do ERP não mostra; a ordem é a mesma. Em 28/09: forma 1 é o dinheiro; 2, 3 e 4 são Pix, crédito e débito integrados ("Int. Pixei"); 6, 7 e 8 são Pix, crédito e débito manuais; a 5, troca, fica fora.
 4. **Saldo atual de cada produto pedido**, da última leitura: confira na **tela do produto**.
 5. **Execuções esperadas e feitas nos últimos 7 dias**, com cada falha dizendo se o Telegram avisou, e o resultado da **última comparação da noite**: na fase de fechamento, ela precisa dizer "zero diferença", e toda falha precisa estar "avisada pelo Telegram".
 
