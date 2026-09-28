@@ -55,7 +55,7 @@
 | Vendedores (pelo primeiro nome) | 3 (Igor, Daniele, Erleide) | 0 | 3 |
 
 - Todos os produtos das vendas válidas ligaram.
-- As 7 "decisões" são o Consumidor Final e 6 clientes sem CPF/CNPJ nos dois cadastros, ligados pelo código e pelo nome (registradas em `docs/DECISOES.md`).
+- As 7 "decisões" são o Consumidor Final (ligado ao 999007), o cliente 10000199 (ligado ao 484, que a migração renumerou; mesmo nome, sem CPF/CNPJ nos dois lados) e 5 clientes sem CPF/CNPJ nos dois cadastros, com o mesmo código e o mesmo nome (21, 214, 279, 290 e 409); todas registradas em `docs/DECISOES.md`.
 - 31 vendas válidas da Link não têm cliente nenhum (R$ 2.339,00), como a Link as gravou.
 
 **Rodar duas vezes:** a segunda rodada não gravou nenhum documento novo, e a foto de todas as tabelas do Kaizen ficou idêntica à da primeira. Depois das últimas correções do código, rodei de novo duas vezes: a mesma foto.
@@ -91,8 +91,8 @@ Uma diferença que o pedido real mostrou, fora das vendas: no ERP novo, o orçam
 4. Confira que as 26 tabelas estão no arquivo:
    `docker exec kaizen-postgres-1 pg_restore --list /tmp/erp-final.dump | Select-String "TABLE DATA erp" | Measure-Object`
    Tem de mostrar `Count : 26`.
-5. Restaure no lugar da cópia antiga (troca só a cópia da Link dentro do Postgres do Kaizen; o `link_postgres` não é tocado):
-   `docker exec kaizen-postgres-1 pg_restore -U postgres -d kaizen --clean --if-exists --no-owner --no-acl /tmp/erp-final.dump`
+5. Restaure no lugar da cópia antiga (o `-n erp` troca só a cópia da Link dentro do Postgres do Kaizen, mesmo que o arquivo traga outro esquema; o `link_postgres` não é tocado; comando testado em 28/09 com a cópia antiga):
+   `docker exec kaizen-postgres-1 pg_restore -U postgres -d kaizen -n erp --clean --if-exists --no-owner --no-acl /tmp/erp-final.dump`
    Pode aparecer aviso sobre dono ou permissão; não é erro.
 6. Dê ao Kaizen a leitura da cópia:
    `docker exec kaizen-postgres-1 psql -U postgres -d kaizen -c "grant usage on schema erp to kaizen" -c "grant select on all tables in schema erp to kaizen"`

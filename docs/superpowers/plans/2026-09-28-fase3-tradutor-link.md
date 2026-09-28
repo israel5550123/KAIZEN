@@ -5378,7 +5378,7 @@ O que deu errado nesta fase e que regra evitaria, com evidência. Mudança de m�
 2. `Get-FileHash C:\Projetos\link-copias\erp-link-2026-09-28.dump -Algorithm SHA256` → `449EA8AA005EF7A9E76B3AA28EE596309201B3406FA6A9C6A8D061A76233C1EF`. Se for outro, parar.
 3. `docker cp C:\Projetos\link-copias\erp-link-2026-09-28.dump kaizen-postgres-1:/tmp/erp-final.dump`
 4. `docker exec kaizen-postgres-1 pg_restore --list /tmp/erp-final.dump | Select-String "TABLE DATA erp" | Measure-Object` → `Count : 26`.
-5. `docker exec kaizen-postgres-1 pg_restore -U postgres -d kaizen --clean --if-exists --no-owner --no-acl /tmp/erp-final.dump`
+5. `docker exec kaizen-postgres-1 pg_restore -U postgres -d kaizen -n erp --clean --if-exists --no-owner --no-acl /tmp/erp-final.dump` (o `-n erp` troca só o esquema `erp`, mesmo que o arquivo traga outro; achado da auditoria)
 6. `docker exec kaizen-postgres-1 psql -U postgres -d kaizen -c "grant usage on schema erp to kaizen" -c "grant select on all tables in schema erp to kaizen"`
 7. `docker exec kaizen-postgres-1 psql -U kaizen -d kaizen -c "select count(*), max(data) from erp.negociacao"` → mais de 5.282 negociações, a última depois de 25/09 às 11h51.
 
