@@ -1,12 +1,20 @@
 // Tradutor da Link: lê a cópia da Link (esquema erp, no mesmo banco do Kaizen) e grava a história no esquema kaizen.
 // Todo o trabalho é SQL (sql/link/), numa transação só; nenhum valor passa pelo JavaScript.
 import { readFileSync } from 'node:fs'
+import type { QueryResult } from 'pg'
 import type { Cliente } from './banco.mts'
 
 export class ErroLink extends Error {}
 
 function lerSql(caminho: string): string {
   return readFileSync(new URL(`../sql/${caminho}`, import.meta.url), 'utf8')
+}
+
+// Os arquivos de sql/link têm vários comandos; o pg devolve um resultado por comando, e o que importa é o do último.
+async function rodar(cliente: Cliente, nome: string): Promise<Array<Record<string, string | null>>> {
+  const resultado = (await cliente.query(lerSql(`link/${nome}.sql`))) as unknown as QueryResult | QueryResult[]
+  const ultimo = Array.isArray(resultado) ? resultado[resultado.length - 1] : resultado
+  return ultimo.rows
 }
 
 export type ColunaLink = { tabela: string; coluna: string; tipo: string }
@@ -39,4 +47,14 @@ export async function conferirEntradaLink(cliente: Cliente): Promise<void> {
   }
   const negociacoes = await cliente.query('select count(*)::int as n from erp.negociacao')
   if (negociacoes.rows[0].n === 0) throw new ErroLink('a cópia da Link não tem nenhuma negociação: a restauração deu certo?')
+}
+
+// Precisa de uma transação aberta: as temporárias de trabalho (pg_temp.link_*) somem no commit.
+export async function ligarLink(cliente: Cliente): Promise<void> {
+  await rodar(cliente, 'preparar')
+  const invalidas = await rodar(cliente, 'ligar')
+  if (invalidas.length > 0) {
+    const lista = invalidas.map((l) => `${l.entidade} ${l.codigo_origem} → ${l.codigo_kaizen}`).join(', ')
+    throw new ErroLink(`decisão da de_para aponta para código que não existe no ERP novo: ${lista}`)
+  }
 }
