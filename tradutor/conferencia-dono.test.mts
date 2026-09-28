@@ -119,6 +119,8 @@ test('mostra ao dono, em palavras, as vendas pela regra do 154, o a pagar, as qu
   const fc140 = await documento('140', 'FC', 'E', 'N', 'N', '2026-09-30 19:10:00', [3, 18153, 1])
   await conferencia(fc140, '38', '1', '310.500000', '300.000000')
   await conferencia(fc140, '39', '3', '100.00', null)
+  // Forma 9 não tem tradução: a linha usa o rótulo "forma 9", sem nome, e não muda a quebra (1,00 − 1,00 = 0).
+  await conferencia(fc140, '41', '9', '1.00', '1.00')
   // Fechamento cancelado: o ERP só conta a conferência de documento emitido, e o Kaizen também não o mostra.
   const fcCancelado = await documento('141', 'FC', 'C', 'N', 'N', '2026-09-30 19:30:00', [3, 18153, 1])
   await conferencia(fcCancelado, '40', '1', '20.00', '0.00')
@@ -172,6 +174,7 @@ test('mostra ao dono, em palavras, as vendas pela regra do 154, o a pagar, as qu
     '- fechamento 140, 30/09 às 19h10 (caixa 3, usuário 18153, abertura 1): quebra −R$ 110,50',
     '  dinheiro (forma 1): calculado R$ 310,50, informado R$ 300,00, quebra −R$ 10,50',
     '  credito (forma 3): calculado R$ 100,00, informado R$ 0,00, quebra −R$ 100,00',
+    '  forma 9: calculado R$ 1,00, informado R$ 1,00, quebra R$ 0,00',
     '',
     '4. Saldo atual dos produtos pedidos, pela última leitura do ERP. Onde conferir: tela do produto.',
     '- produto 60 (PRODUTO 60): 3 (lido em 01/10 às 09h00)',
