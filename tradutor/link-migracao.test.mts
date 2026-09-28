@@ -1,6 +1,6 @@
 import { after, before, test } from 'node:test'
 import assert from 'node:assert/strict'
-import { copyFileSync, mkdtempSync, readdirSync, rmSync } from 'node:fs'
+import { copyFileSync, mkdtempSync, readdirSync, readFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { criarBancoKaizen } from './apoio-teste.mts'
@@ -193,4 +193,17 @@ test('a de_para tem as 22 decisões da Link, todas de pessoa', async () => {
     ['10000199', '484'], // renumerado na migração para o ERP novo
     ['10000502', '999007'], // o Consumidor Final
   ])
+})
+
+test('toda migração que grava decisão na de_para atualiza a falha que já estiver lá (on conflict ... do update)', () => {
+  // Depois da primeira rodada da Link, a falha já ocupa a chave (entidade, fonte, codigo_origem) de kaizen.de_para
+  // (sql/link/cadastros.sql grava as falhas como 'link:...'). Uma decisão nova precisa atualizar essa linha, não
+  // tentar inseri-la de novo. Este teste lê a pasta sql/migracoes inteira, não só as migrações até esta tarefa.
+  const normalizar = (texto: string) => texto.replace(/\s+/g, ' ').toLowerCase()
+  const clausula = 'on conflict (entidade, fonte, codigo_origem) do update set codigo_kaizen = excluded.codigo_kaizen'
+  const semClausula = readdirSync(PASTA_MIGRACOES)
+    .filter((nome) => nome.endsWith('.sql'))
+    .filter((nome) => normalizar(readFileSync(join(PASTA_MIGRACOES, nome), 'utf8')).includes('insert into kaizen.de_para'))
+    .filter((nome) => !normalizar(readFileSync(join(PASTA_MIGRACOES, nome), 'utf8')).includes(clausula))
+  assert.deepEqual(semClausula, [], `sem "on conflict ... do update" na insert de kaizen.de_para: ${semClausula.join(', ')}`)
 })

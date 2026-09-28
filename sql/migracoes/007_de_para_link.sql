@@ -1,6 +1,7 @@
 -- Decisões de ligação dos clientes da Link (spec da Fase 3, seção 6): valem antes da regra do CPF/CNPJ.
 -- 10000502 é o Consumidor Final; 10000199 foi renumerado para 484 na migração;
 -- os outros 20 estão sem CPF/CNPJ nos dois cadastros, com o mesmo código e o mesmo nome.
+-- Depois da primeira rodada da Link a falha já ocupa a chave; toda decisão nova segue este modelo (on conflict).
 insert into kaizen.de_para (entidade, fonte, codigo_origem, codigo_kaizen) values
   ('pessoa', 'link', '10000502', '999007'),
   ('pessoa', 'link', '10000199', '484'),
@@ -23,4 +24,5 @@ insert into kaizen.de_para (entidade, fonte, codigo_origem, codigo_kaizen) value
   ('pessoa', 'link', '298', '298'),
   ('pessoa', 'link', '361', '361'),
   ('pessoa', 'link', '384', '384'),
-  ('pessoa', 'link', '409', '409');
+  ('pessoa', 'link', '409', '409')
+on conflict (entidade, fonte, codigo_origem) do update set codigo_kaizen = excluded.codigo_kaizen;
