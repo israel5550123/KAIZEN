@@ -120,3 +120,29 @@ Bate com o esperado: tipo `pedido`, situação `emitido`, movimento `saida`, fin
 ## O que falta da cópia final
 
 A tarde de 25/09 e o fechamento do turno 190 chegam com a cópia final em 29/09 (tarefa 11).
+
+## Reconferida com o código final
+
+Depois das correções da revisão final (commit `e856fc9`), o comando rodou mais duas vezes contra a mesma cópia, às 05h58 de 28/09 (Fortaleza): `link ok: documentos=6155, novos=0, itens=15220, pagamentos=5980, conferencias=632, parcelas=221, baixas=127` nas duas, a mesma foto (`foto-5.txt` igual à `foto-2.txt` acima) e o mesmo resumo.
+
+## A mesma forma: a venda de junho da Link e um pedido do ERP novo de 28/09
+
+Às 09h09 de 28/09 (Fortaleza), o tradutor do ERP novo (`node --env-file=.env tradutor/principal.mts hora --manual`, só leitura) trouxe o primeiro pedido do dia: o pedido 196, das 09h07. A mesma consulta (`sql/kaizen/ficha-venda.sql`) dá as duas fichas (nomes de pessoa física trocados por "[nome]"):
+
+Venda 1992 da Link (17/06):
+```json
+{"documento": {"fonte": "link", "codigo": "2124", "tipo": "pedido", "situacao": "emitido", "movimento": "saida", "financeiro": "recebe", "criado_em": "2026-06-17T13:58:20.706517", "fechado_em": "2026-06-17T13:58:21.050114", "pessoa": "303", "pessoa_nome": "[nome]"},
+ "itens": [{"sentido": "saida", "produto": "1369", "descricao": "", "quantidade": "1", "valor_liquido": "90.365760772", "vendedor": "1", "vendedor_nome": "[nome]"},
+           {"sentido": "saida", "produto": "1438", "descricao": "", "quantidade": "1", "valor_liquido": "59.634246", "vendedor": "1", "vendedor_nome": "[nome]"}],
+ "pagamentos": [{"forma": "pix", "valor": "150.00"}]}
+```
+
+Pedido 196 do ERP novo (28/09):
+```json
+{"documento": {"fonte": "meuerp", "codigo": "196", "tipo": "pedido", "situacao": "emitido", "movimento": "saida", "financeiro": "recebe", "criado_em": "2026-09-28T09:07:47.728191", "fechado_em": "2026-09-28T09:07:47.728191", "pessoa": "999007", "pessoa_nome": "[nome]"},
+ "itens": [{"sentido": "saida", "produto": "5211", "descricao": "", "quantidade": "4.000", "valor_liquido": "46.000000", "vendedor": "999005", "vendedor_nome": "[nome]"}],
+ "pagamentos": [{"forma": "dinheiro", "valor": "46.00"}]}
+```
+
+**O que é igual:** as chaves do documento, de cada item e de cada pagamento (conferido por programa); o tipo `pedido`, a situação `emitido`, o movimento `saida` e o financeiro `recebe`; os itens de sentido `saida`, com o vendedor e o produto no código do cadastro do ERP novo (o `1` da venda de junho é o mesmo funcionário `1` do ERP novo; o `999005` do pedido de hoje também é do cadastro novo) e o nome vindo do cadastro; as formas no mesmo vocabulário (`pix`, `dinheiro`). **O que difere é o fato:** os valores, os produtos, as datas, o cliente (o pedido de hoje é do Consumidor Final 999007). A descrição do produto sai vazia nas duas fichas porque as duas usam o cadastro do ERP novo, que está com a descrição vazia: é o bug da Fase 2 registrado na spec (seção 13).
+

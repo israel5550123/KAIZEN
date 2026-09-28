@@ -62,7 +62,9 @@
 
 ## A mesma forma: uma venda de junho e uma de 28/09
 
-(completado com a venda do ERP novo assim que a loja fechar o primeiro pedido; ver `docs/fases/FASE-3-rodada-copia-antiga.md`, seção "A mesma forma")
+Às 09h09 de hoje, o tradutor do ERP novo trouxe o primeiro pedido do dia (o pedido 196, das 09h07, R$ 46,00 em dinheiro, 4 unidades do produto 5211, vendedora Daniele). A mesma consulta do Kaizen mostra a venda de junho 1992 da Link (R$ 150,00 no Pix, dois itens, vendedor Igor) e esse pedido **na mesma forma**: os dois são "pedido", "emitido", de saída, que recebe; os itens de saída levam o código do produto e do vendedor do cadastro novo, com o nome; e as formas de pagamento saem no mesmo vocabulário ("pix", "dinheiro"). O que muda entre os dois é só o fato: valor, produto, data e cliente. As duas fichas, lado a lado, estão em `docs/fases/FASE-3-rodada-copia-antiga.md`, seção "A mesma forma".
+
+Uma diferença que o pedido real mostrou, fora das vendas: no ERP novo, o orçamento e a pré-venda saem com movimento de saída; na Link, o orçamento ficou sem movimento (4 orçamentos, de abril e junho). Nenhum número de venda muda, porque orçamento não recebe; está em `docs/DECISOES.md` para a Fase 4 decidir junto com a conferência "a pré-venda reserva estoque?" da Fase 2.
 
 ## Testes
 
