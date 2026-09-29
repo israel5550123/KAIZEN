@@ -181,8 +181,8 @@ Comandos novos em `tradutor/principal.mts` que o script usa:
 
 | Chave | O quê |
 | --- | --- |
-| `dia` | `vendido`, `devolucoes`, `realizado`, `vendas`, `ticket_medio`, `itens_por_venda` do dia |
-| `mes` | os mesmos do mês até o dia, e mais: `meta` (da loja; vazia sem meta), `percentual_meta` (realizado ÷ meta), `dias_uteis` (do mês), `dias_uteis_decorridos` (do dia 1 até o dia, inclusive), `ritmo` e `projecao` |
+| `dia` | `vendido`, `devolucoes`, `realizado`, `vendas`, `ticket_medio`, `itens_por_venda` do dia, e `sem_vendedor` (`itens` e `valor` dos itens sem vendedor, que ficam fora do vendido e das devoluções, como exceção, `docs/LOJA.md`) |
+| `mes` | os mesmos do mês até o dia (`sem_vendedor` incluso), e mais: `meta` (da loja; vazia sem meta), `percentual_meta` (realizado ÷ meta), `dias_uteis` (do mês), `dias_uteis_decorridos` (do dia 1 até o dia, inclusive), `ritmo` e `projecao` |
 | `vendedores` | um por funcionário com `tipo = 'V'`, em ordem de código: `codigo`, `nome`, `realizado_dia`, `realizado_mes`, `vendas_mes`, `meta`, `ritmo`, `clientes_atendidos` (pessoas distintas nas vendas dele no mês, sem o Consumidor Final) e `mix` (realizado do mês por grupo de produto, do maior para o menor) |
 | `outros` | `realizado_dia`, `realizado_mes` e `vendas_mes` de quem não é do tipo vendedor |
 | `por_hora` | do mês até o dia, por hora da venda: `hora`, `vendas`, `realizado` |
@@ -209,7 +209,7 @@ Período: os 90 dias que terminam no dia calculado.
 | `custo_zero` | códigos dos produtos ativos do ERP novo com custo vazio ou zero (cadastro atual) |
 | `estoque_negativo` | códigos com estoque menor que zero no dia |
 
-- **Curva ABC** (`docs/LOJA.md`): entram os produtos com líquido maior que zero (vendido − devolvido, pelos itens de `venda_item`), do maior para o menor. O acumulado é somado produto a produto, numa ordem sem empate: líquido decrescente e depois código crescente. É A enquanto o acumulado, contando o próprio produto, não passa de 80%; B até 95%; C o resto. Por quantidade, vale o mesmo com a quantidade líquida, na ordem: quantidade decrescente, líquido decrescente e código crescente. Produto com líquido zero ou negativo fica fora da curva.
+- **Curva ABC** (`docs/LOJA.md`): por valor, entram os produtos com líquido maior que zero (vendido − devolvido, pelos itens de `venda_item`), do maior para o menor. O acumulado é somado produto a produto, numa ordem sem empate: líquido decrescente e depois código crescente, em ordem de texto (há códigos que não são número, como `link:…`). É A enquanto o acumulado, contando o próprio produto, não passa de 80%; B até 95%; C o resto. Por quantidade, entram os produtos com quantidade líquida maior que zero, na ordem: quantidade decrescente, líquido decrescente e código crescente, em ordem de texto.
 - **Estoque médio**: média do estoque no fim de cada dia do período, a partir de 26/09/2026. **Giro**: quantidade líquida do período ÷ estoque médio; vazio se o estoque médio é zero ou desconhecido. **Cobertura**: estoque do dia ÷ (quantidade líquida ÷ 90), em dias; vazia sem venda; 0 com estoque zero ou negativo.
 - **Encalhe**: estoque do dia maior que zero, nenhum item vendido no período, e o produto não é novo.
 - **Produto novo**: a primeira entrada de compra dele na história do Kaizen (item de entrada em documento de papel `compra`) é de menos de 60 dias antes do dia, e antes dela ele não teve item vendido. Se essa entrada é de 26/09/2026 em diante, o estoque dele no fim do dia anterior a ela também era zero ou menos. Ajuste de custo, ajuste de estoque, orçamento, pré-venda, inventário e a foto da virada não contam como entrada. Produto sem entrada de compra não é novo. Exemplos em 28/09/2026: o produto 1708 (164 unidades na virada, sem venda desde abril, que só aparece no ajuste de custo 115) está em encalhe; o 5336 (entrada na nota da Link de 26/08, 57 na virada, sem venda) é novo e não está em encalhe.

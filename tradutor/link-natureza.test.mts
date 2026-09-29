@@ -71,6 +71,29 @@ test('os documentos gravados sem natureza (a história da Fase 3) ganham a natur
   assert.deepEqual(await naturezas(), depoisDaPrimeira)
 })
 
+test('o orçamento que nasceu com o código sem versão (natureza_id vazio) ganha a versão quando ela aparece', async () => {
+  await traduzirLink(banco.cliente)
+  // Tira a versão do orçamento sem tirar o código: como se o documento tivesse sido lido antes de ela existir.
+  await banco.cliente.query(`update kaizen.documento set natureza_id = null where fonte = 'link' and natureza = 'orcamento'`)
+  await banco.cliente.query(`delete from kaizen.natureza where fonte = 'link' and codigo = 'orcamento'`)
+  await traduzirLink(banco.cliente)
+  const semVersao = await banco.cliente.query(
+    `select natureza_id from kaizen.documento where fonte = 'link' and natureza = 'orcamento'`,
+  )
+  assert.deepEqual(semVersao.rows, [{ natureza_id: null }])
+
+  // A versão do orçamento aparece: a rodada seguinte grava a versão nova no único documento (o orçamento).
+  const nova = await banco.cliente.query<{ id: string }>(`
+    insert into kaizen.natureza (fonte, codigo, descricao, categoria, estoque, reserva, financeiro, troca)
+    values ('link', 'orcamento', 'ORÇAMENTO DA LINK', 'V', false, false, false, false)
+    returning id`)
+  await traduzirLink(banco.cliente)
+  const comVersao = await banco.cliente.query(
+    `select natureza_id from kaizen.documento where fonte = 'link' and natureza = 'orcamento'`,
+  )
+  assert.deepEqual(comVersao.rows, [{ natureza_id: nova.rows[0].id }])
+})
+
 // Último teste do arquivo: deixa no banco a versão nova da natureza pedido.
 test('regravar não troca a versão: com uma versão nova da natureza pedido, os 15 pedidos continuam com a da migração', async () => {
   await traduzirLink(banco.cliente)

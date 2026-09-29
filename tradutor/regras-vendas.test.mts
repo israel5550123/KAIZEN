@@ -136,7 +136,7 @@ test('dia sem venda num mês com venda: o dia sai com 0 vendas e ticket e itens 
   ])
   await venda('2026-06-03 16:40:00', '484', [{ produto: '60', valor: '29.90', vendedor: '1' }])
   const { dia, mes } = await responder(c, 'vendas', '2026-06-04')
-  assert.deepEqual(dia, { vendido: 0, devolucoes: 0, realizado: 0, vendas: 0, ticket_medio: null, itens_por_venda: null })
+  assert.deepEqual(dia, { vendido: 0, devolucoes: 0, realizado: 0, vendas: 0, ticket_medio: null, itens_por_venda: null, sem_vendedor: { itens: 0, valor: 0 } })
   // 229,90 ÷ 2 vendas = 114,95; (2 produtos + 1 produto) ÷ 2 vendas = 1,5.
   assert.deepEqual(
     {
@@ -150,10 +150,11 @@ test('dia sem venda num mês com venda: o dia sai com 0 vendas e ticket e itens 
 test('dia sem venda num mês ainda sem venda (05/04/2026): zeros, e ticket, itens, meta e ritmo vazios, sem erro', () => isolado(async () => {
   // Abril de 2026: 30 dias − 4 domingos = 26 dias úteis; de 01 a 05, 4 (quarta a sábado). Sem venda, a projeção é 0.
   assert.deepEqual(await responder(c, 'vendas', '2026-04-05'), {
-    dia: { vendido: 0, devolucoes: 0, realizado: 0, vendas: 0, ticket_medio: null, itens_por_venda: null },
+    dia: { vendido: 0, devolucoes: 0, realizado: 0, vendas: 0, ticket_medio: null, itens_por_venda: null, sem_vendedor: { itens: 0, valor: 0 } },
     mes: {
       vendido: 0, devolucoes: 0, realizado: 0, vendas: 0, ticket_medio: null, itens_por_venda: null,
       meta: null, percentual_meta: null, dias_uteis: 26, dias_uteis_decorridos: 4, ritmo: null, projecao: 0,
+      sem_vendedor: { itens: 0, valor: 0 },
     },
     vendedores: [
       {
@@ -203,7 +204,23 @@ test('a venda com itens de dois vendedores conta uma vez nas vendas do mês e do
   assert.equal(mes.vendas, 3)
   assert.deepEqual([vendedores[0].vendas_mes, vendedores[1].vendas_mes, outros.vendas_mes], [2, 2, 1])
   // No dia: 2 vendas, 185,00; a das 16h45 tem dois itens do mesmo produto (1436): 1 produto. (2 + 1) ÷ 2 = 1,5.
-  assert.deepEqual(dia, { vendido: 185, devolucoes: 0, realizado: 185, vendas: 2, ticket_medio: 92.5, itens_por_venda: 1.5 })
+  assert.deepEqual(dia, { vendido: 185, devolucoes: 0, realizado: 185, vendas: 2, ticket_medio: 92.5, itens_por_venda: 1.5, sem_vendedor: { itens: 0, valor: 0 } })
+}))
+
+test('o item sem vendedor fica fora do vendido (docs/LOJA.md) e é sinalizado em sem_vendedor; sem item assim, sai zerado', () => isolado(async () => {
+  const id = await inserirDocumento(c, { modelo: 'PA', natureza: '530', naturezaId: natureza530, pessoa: '484', criadoEm: '2026-06-02 10:00:00' })
+  await inserirItem(c, id, { produto: '60', sentido: 'S', quantidade: '1', valor: '100.00', vendedor: '1' })
+  await inserirItem(c, id, { produto: '1436', sentido: 'S', quantidade: '1', valor: '30.00' }) // sem vendedor
+  await venda('2026-06-03 10:00:00', '484', [{ produto: '60', valor: '10.00', vendedor: '1' }])
+
+  const dois = await responder(c, 'vendas', '2026-06-02')
+  assert.equal(dois.dia.vendido, 100) // o item de 30,00 sem vendedor fica fora
+  assert.deepEqual(dois.dia.sem_vendedor, { itens: 1, valor: 30 })
+
+  const tres = await responder(c, 'vendas', '2026-06-03')
+  assert.deepEqual(tres.dia.sem_vendedor, { itens: 0, valor: 0 })
+  // O mês até 03/06 acumula o item sem vendedor do dia 02.
+  assert.deepEqual(tres.mes.sem_vendedor, { itens: 1, valor: 30 })
 }))
 
 test('clientes atendidos sem o Consumidor Final (999007), e o mix do mês por grupo do produto, do maior para o menor', () => isolado(async () => {
@@ -248,7 +265,7 @@ test('por hora e por dia da semana: do mês até o dia, com as vendas e o realiz
 test('a troca do ERP novo (natureza 900) entra nas devoluções do dia dela e do vendedor, e não é venda', () => isolado(async () => {
   await montarJunho()
   const { dia, mes, vendedores } = await responder(c, 'vendas', '2026-06-10')
-  assert.deepEqual(dia, { vendido: 0, devolucoes: 29.9, realizado: -29.9, vendas: 0, ticket_medio: null, itens_por_venda: null })
+  assert.deepEqual(dia, { vendido: 0, devolucoes: 29.9, realizado: -29.9, vendas: 0, ticket_medio: null, itens_por_venda: null, sem_vendedor: { itens: 0, valor: 0 } })
   // No mês até 10/06: a venda de 02/06 (200,00) menos a troca: 170,10 numa venda só.
   assert.deepEqual(
     { vendido: mes.vendido, devolucoes: mes.devolucoes, realizado: mes.realizado, vendas: mes.vendas, ticket_medio: mes.ticket_medio },
@@ -262,7 +279,7 @@ test('a troca do ERP novo (natureza 900) entra nas devoluções do dia dela e do
     { produto: '1436', valor: '45.00', vendedor: '999005', sentido: 'S' },
   ])
   const onze = await responder(c, 'vendas', '2026-06-11')
-  assert.deepEqual(onze.dia, { vendido: 45, devolucoes: 29.9, realizado: 15.1, vendas: 0, ticket_medio: null, itens_por_venda: null })
+  assert.deepEqual(onze.dia, { vendido: 45, devolucoes: 29.9, realizado: 15.1, vendas: 0, ticket_medio: null, itens_por_venda: null, sem_vendedor: { itens: 0, valor: 0 } })
 }))
 
 test('feriado fica fora dos dias úteis, no ritmo e na projeção (07/09 e 26/09 de 2026 são feriados da migração)', () => isolado(async () => {
@@ -285,7 +302,7 @@ test('feriado fica fora dos dias úteis, no ritmo e na projeção (07/09 e 26/09
 test('Link falsa: em 17/06/2026, o dia da venda 1992, o vendido é R$ 150,00; o orçamento 1771 de junho não conta', async () => {
   const { dia, mes } = await responder(bancoLink.cliente, 'vendas', '2026-06-17')
   // Os itens da 1992 somam 150,000006772 (rateio do desconto sem arredondar): o total sai arredondado, 150,00.
-  assert.deepEqual(dia, { vendido: 150, devolucoes: 0, realizado: 150, vendas: 1, ticket_medio: 150, itens_por_venda: 2 })
+  assert.deepEqual(dia, { vendido: 150, devolucoes: 0, realizado: 150, vendas: 1, ticket_medio: 150, itens_por_venda: 2, sem_vendedor: { itens: 0, valor: 0 } })
   // Junho até 17/06 na Link falsa: a 1992 e o orçamento 1771 (10/06, R$ 8.580,00), que não é venda.
   assert.deepEqual({ vendido: mes.vendido, vendas: mes.vendas }, { vendido: 150, vendas: 1 })
 })
@@ -294,7 +311,7 @@ test('Link falsa: a negociação 434, só de devolução (R$ 742,90 em 28/04), e
   const { dia, mes } = await responder(bancoLink.cliente, 'vendas', '2026-04-28')
   // 28/04: a 427 vende 51,30; a 434 só devolve 742,90; a 435 vende 742,90. Vendas: 427 e 435.
   // Ticket 51,30 ÷ 2 = 25,65; produtos: 1 (427) + 5 (435) = 6, 6 ÷ 2 = 3.
-  assert.deepEqual(dia, { vendido: 794.2, devolucoes: 742.9, realizado: 51.3, vendas: 2, ticket_medio: 25.65, itens_por_venda: 3 })
+  assert.deepEqual(dia, { vendido: 794.2, devolucoes: 742.9, realizado: 51.3, vendas: 2, ticket_medio: 25.65, itens_por_venda: 3, sem_vendedor: { itens: 0, valor: 0 } })
   // Abril até 28/04: 7 negociações com item; a 108 (15/04, 97,0002 devolvidos) e a 434 são só de devolução: 5 vendas.
   // Devoluções: 97,0002 + 742,90 = 839,9002, que sai 839,90.
   assert.deepEqual({ vendas: mes.vendas, devolucoes: mes.devolucoes }, { vendas: 5, devolucoes: 839.9 })

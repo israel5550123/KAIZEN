@@ -8,12 +8,18 @@ with dia as (
     date_trunc('month', $1::date::timestamp)::date as inicio_mes,
     case when $1::date <= date '2026-09-25' then 'link' else 'meuerp' end as fonte
 ),
+-- kaizen.documento_papel é uma visão cara (junta documento com várias traduções); lida uma vez só aqui (como
+-- sql/regras/vendas.sql:12 já faz) e usada no lugar dela abaixo, em vez de o Postgres refazer a junção a cada CTE
+-- que precisa dela — a `saida`, por exemplo, refazia a junção para cada baixa do mês.
+papel as materialized (
+  select * from kaizen.documento_papel
+),
 -- Parcela em aberto no fim do dia: de conta a pagar ou compra, lançada até o dia, não cancelada, e com o valor
 -- menos as baixas válidas até o dia maior que zero. O valor dela é o que falta pagar.
 aberta as (
   select pa.vencimento, pa.valor - coalesce(bx.pago, 0) as valor
   from dia
-  join kaizen.documento_papel dp on dp.fonte = dia.fonte and dp.papel in ('conta_pagar', 'compra')
+  join papel dp on dp.fonte = dia.fonte and dp.papel in ('conta_pagar', 'compra')
   join kaizen.parcela pa on pa.documento_id = dp.id
   left join kaizen.traducao tp on tp.fonte = dp.fonte and tp.campo = 'status_parcela' and tp.codigo = pa.status
   cross join lateral (
@@ -47,7 +53,7 @@ saldo as (
 -- Pagamentos dos documentos do caixa, cada documento pela fonte do dia dele, com a forma traduzida.
 pagamento as (
   select dp.dia, dp.papel, tf.valor as forma, pg.valor
-  from kaizen.documento_papel dp
+  from papel dp
   join kaizen.documento_pagamento pg on pg.documento_id = dp.id
   left join kaizen.traducao tf on tf.fonte = dp.fonte and tf.campo = 'forma' and tf.codigo = pg.forma
   where dp.papel in ('venda', 'troca', 'suprimento', 'suprimento_adicional', 'sangria')
@@ -67,7 +73,7 @@ entrada as (
 -- mais o dinheiro devolvido nas trocas, no dia da troca.
 saida as (
   select b.pago_em as dia, b.valor
-  from kaizen.documento_papel dp
+  from papel dp
   join kaizen.parcela pa on pa.documento_id = dp.id
   join kaizen.baixa b on b.parcela_id = pa.id
   join kaizen.traducao tb on tb.fonte = dp.fonte and tb.campo = 'status_baixa' and tb.codigo = b.status
@@ -114,7 +120,7 @@ recebivel as (
 fechamento as (
   select d.id, d.fonte, d.codigo, coalesce(d.fechado_em, d.criado_em) as momento
   from dia
-  join kaizen.documento_papel dp on dp.fonte = dia.fonte and dp.dia = dia.d and dp.papel = 'fechamento_caixa'
+  join papel dp on dp.fonte = dia.fonte and dp.dia = dia.d and dp.papel = 'fechamento_caixa'
   join kaizen.documento d on d.id = dp.id
 ),
 -- Gaveta do dia, só o dinheiro: o das vendas (com o troco e o dinheiro devolvido da Link, que já vêm negativos),

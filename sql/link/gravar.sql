@@ -1,7 +1,8 @@
 -- O documento é atualizado no lugar pela chave (fonte, origem_tabela, origem_id): id e visto_em não mudam.
 -- Movimento, financeiro e turno de caixa ficam vazios; vêm da tradução pelo modelo.
 -- A natureza vem da tradução natureza_pelo_modelo (só pedido, orçamento e nota de entrada têm; caixa e contas ficam
--- sem), com a última versão dela em kaizen.natureza. Regravado com a mesma natureza, o documento guarda a versão que tinha.
+-- sem), com a última versão dela em kaizen.natureza. Regravado com a mesma natureza, o documento guarda a versão que
+-- tinha; se ainda não tinha versão (o código apareceu antes dela existir), ganha a versão de agora.
 insert into kaizen.documento as k (
   fonte, origem_tabela, origem_id, codigo, modelo, status, movimento, financeiro,
   criado_em, fechado_em, pessoa, turno_caixa, turno_usuario, turno_numero, natureza, natureza_id
@@ -26,7 +27,8 @@ on conflict (fonte, origem_tabela, origem_id) do update set
   turno_usuario = excluded.turno_usuario,
   turno_numero = excluded.turno_numero,
   natureza = excluded.natureza,
-  natureza_id = case when k.natureza is not distinct from excluded.natureza then k.natureza_id else excluded.natureza_id end;
+  -- o documento que nasceu com o código ainda sem versão (natureza_id vazio) ganha a versão quando ela aparece
+  natureza_id = case when k.natureza is not distinct from excluded.natureza and k.natureza_id is not null then k.natureza_id else excluded.natureza_id end;
 
 -- documento da Link que não voltou na leitura sai, com os filhos
 delete from kaizen.documento k

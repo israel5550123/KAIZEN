@@ -24,6 +24,23 @@ item as (
 item_mes as (
   select i.* from item i, periodo pr where i.dia >= pr.inicio
 ),
+-- Os itens sem vendedor (docs/LOJA.md: "fica fora, como no 154, e o Kaizen o sinaliza como exceção"): saída e entrada
+-- dos documentos de papel venda ou troca, a mesma regra de kaizen.venda_item (migração 012), só sem o filtro de
+-- vendedor. Lido direto de documento_item + documento_papel, sem mexer na 012.
+sem_vendedor_item as (
+  select p.dia, i.valor_liquido as valor
+  from kaizen.documento_papel p
+  join kaizen.documento_item i on i.documento_id = p.id
+  join kaizen.traducao s on s.fonte = p.fonte and s.campo = 'sentido' and s.codigo = i.sentido
+  where p.papel in ('venda', 'troca') and i.vendedor is null and s.valor in ('saida', 'entrada')
+),
+sem_vendedor_total as (
+  select t.nome, count(sv.valor) as itens, coalesce(sum(sv.valor), 0) as valor
+  from (values ('dia'), ('mes')) t (nome)
+  cross join periodo pr
+  left join sem_vendedor_item sv on (t.nome = 'dia' and sv.dia = pr.dia) or (t.nome = 'mes' and sv.dia between pr.inicio and pr.dia)
+  group by t.nome
+),
 -- O dia e o mês até o dia, com as mesmas contas.
 total as (
   select t.nome,
@@ -44,9 +61,11 @@ resumo as (
     'realizado', round(coalesce(t.realizado, 0), 2),
     'vendas', t.vendas,
     'ticket_medio', round(t.realizado / nullif(t.vendas, 0), 2),
-    'itens_por_venda', round(t.produtos::numeric / nullif(t.vendas, 0), 4)
+    'itens_por_venda', round(t.produtos::numeric / nullif(t.vendas, 0), 4),
+    'sem_vendedor', jsonb_build_object('itens', sv.itens, 'valor', round(sv.valor, 2))
   ) as conteudo
   from total t
+  join sem_vendedor_total sv on sv.nome = t.nome
 ),
 -- Dia útil: segunda a sábado, menos os feriados cadastrados.
 calendario as (

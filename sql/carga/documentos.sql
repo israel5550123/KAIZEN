@@ -36,9 +36,10 @@ on conflict (fonte, origem_tabela, origem_id) do update set
   turno_usuario = excluded.turno_usuario,
   turno_numero = excluded.turno_numero,
   natureza = excluded.natureza,
-  -- a versão da natureza é a da primeira gravação com aquele código: regravar com o mesmo código não troca
+  -- a versão da natureza é a da primeira gravação com aquele código: regravar com o mesmo código não troca; mas o
+  -- documento que nasceu com o código ainda sem versão (natureza_id vazio) ganha a versão quando ela aparece
   natureza_id = case
-    when documento.natureza is not distinct from excluded.natureza then documento.natureza_id
+    when documento.natureza is not distinct from excluded.natureza and documento.natureza_id is not null then documento.natureza_id
     else excluded.natureza_id
   end;
 

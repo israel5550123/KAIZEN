@@ -203,7 +203,7 @@ test('natureza que sumiu do ERP fica como está, e a natureza nova ganha versão
   ])
 })
 
-test('documento: guarda a versão da primeira gravação; regravar com o mesmo código não troca; código novo pega a última do novo', async () => {
+test('documento: guarda a versão da primeira gravação; regravar com o mesmo código não troca; código sem versão ganha a versão quando ela aparece', async () => {
   await falso.inserir('natureza_operacao', NATUREZAS)
   await falso.inserir('config_entrada_saida', TROCA_900)
   await falso.inserir('documento', [
@@ -231,6 +231,18 @@ test('documento: guarda a versão da primeira gravação; regravar com o mesmo c
     { origem_id: '186', modelo: 'PA', natureza: '530', natureza_id: 6 },
     { origem_id: '187', modelo: 'AX', natureza: null, natureza_id: null },
     { origem_id: '188', modelo: 'PA', natureza: '777', natureza_id: null },
+  ])
+
+  // O código 777 aparece no ERP (natureza nova, versão 7): na leitura seguinte, o documento 188 ganha a versão dela.
+  await falso.inserir('natureza_operacao', [
+    { _idempresa: 1, _idnatureza: 777, descricao: 'NATUREZA NOVA', tipocategoria: 'V', flagmovimentarestoque: 'F', flagreservaestoque: 'F', flagmovimentarfinanceiro: 'F' },
+  ])
+  await lerEGravar()
+  assert.deepEqual(await documentosNoKaizen(), [
+    { origem_id: '185', modelo: 'PA', natureza: '530', natureza_id: 4 },
+    { origem_id: '186', modelo: 'PA', natureza: '530', natureza_id: 6 },
+    { origem_id: '187', modelo: 'AX', natureza: null, natureza_id: null },
+    { origem_id: '188', modelo: 'PA', natureza: '777', natureza_id: 7 },
   ])
 })
 

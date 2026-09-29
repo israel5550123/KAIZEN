@@ -120,7 +120,7 @@ async function montarCurvas(): Promise<void> {
   await documento('vendaLink', '2026-08-26', [['1370', 'E', '1', '15.00']])
 }
 
-test('curva ABC por valor: 1436 e 60 empatam no líquido e atravessam o corte de 80%; o de menor código fica A, o outro B', async () => {
+test('curva ABC por valor: 1436 e 60 empatam no líquido e atravessam o corte de 80%; o de código menor em ordem de texto (1436 antes de 60) fica A, o outro B', async () => {
   await montarCurvas()
   const r = await compras('2026-08-31')
   // Total da curva 1.000,000, na ordem líquido decrescente e código crescente (como texto: '1436' antes de '60'):
