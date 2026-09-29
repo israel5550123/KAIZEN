@@ -1,13 +1,17 @@
 -- O documento é atualizado no lugar pela chave (fonte, origem_tabela, origem_id): id e visto_em não mudam.
 -- Movimento, financeiro e turno de caixa ficam vazios; vêm da tradução pelo modelo.
-insert into kaizen.documento (
+-- A natureza vem da tradução natureza_pelo_modelo (só pedido, orçamento e nota de entrada têm; caixa e contas ficam
+-- sem), com a última versão dela em kaizen.natureza. Regravado com a mesma natureza, o documento guarda a versão que tinha.
+insert into kaizen.documento as k (
   fonte, origem_tabela, origem_id, codigo, modelo, status, movimento, financeiro,
-  criado_em, fechado_em, pessoa, turno_caixa, turno_usuario, turno_numero
+  criado_em, fechado_em, pessoa, turno_caixa, turno_usuario, turno_numero, natureza, natureza_id
 )
 select
   'link', d.origem_tabela, d.origem_id, d.codigo, d.modelo, d.status, null, null,
-  d.criado_em, d.fechado_em, d.pessoa, null, d.turno_usuario, null
+  d.criado_em, d.fechado_em, d.pessoa, null, d.turno_usuario, null,
+  tn.valor, (select max(n.id) from kaizen.natureza n where n.fonte = 'link' and n.codigo = tn.valor)
 from pg_temp.link_doc d
+left join kaizen.traducao tn on tn.fonte = 'link' and tn.campo = 'natureza_pelo_modelo' and tn.codigo = d.modelo
 order by d.criado_em, d.origem_tabela, d.origem_id
 on conflict (fonte, origem_tabela, origem_id) do update set
   codigo = excluded.codigo,
@@ -20,7 +24,9 @@ on conflict (fonte, origem_tabela, origem_id) do update set
   pessoa = excluded.pessoa,
   turno_caixa = excluded.turno_caixa,
   turno_usuario = excluded.turno_usuario,
-  turno_numero = excluded.turno_numero;
+  turno_numero = excluded.turno_numero,
+  natureza = excluded.natureza,
+  natureza_id = case when k.natureza is not distinct from excluded.natureza then k.natureza_id else excluded.natureza_id end;
 
 -- documento da Link que não voltou na leitura sai, com os filhos
 delete from kaizen.documento k
