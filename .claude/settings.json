@@ -21,7 +21,11 @@
       "PowerShell(docker system prune*)",
       "PowerShell(ssh *)",
       "PowerShell(scp *)",
-      "PowerShell(docker secret *)"
+      "PowerShell(docker secret *)",
+      "Edit(**/publicacao/implantar.sh)",
+      "Edit(**/.claude/settings.json)",
+      "Edit(**/.claude/settings.local.json)",
+      "Edit(**/.claude/hooks/**)"
     ]
   },
   "hooks": {
