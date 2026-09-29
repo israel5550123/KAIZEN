@@ -2,3 +2,4 @@
 - [docker cp e MSYS_NO_PATHCONV](project_docker_cp_msys_no_pathconv.md) — destino no host precisa de caminho Windows (C:/...), não /c/..., quando a variável está ligada; vale para a tarefa 11
 - [date com TZ=Fortaleza não converte no Git Bash](project_date_tz_fortaleza_git_bash.md) — devolve UTC com rótulo errado; use git log --format=%ai ou mtime (-0300), não `date`
 - [.superpowers/sdd/ é gitignored](project_superpowers_sdd_gitignore.md) — briefs e task-N-report.md nunca entram em commit; edite-os normalmente, não tente git add
+- [guarda-bash recusa "ssh"/"scp" soltos até em prosa](project_guarda_bash_ssh_scp_solto.md) — mensagem de commit com "ssh falso" é bloqueada; escreva "ssh-falso"

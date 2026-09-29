@@ -190,7 +190,7 @@ Comandos novos em `tradutor/principal.mts` que o script usa:
 
 - **Ritmo** (loja e vendedor): (realizado do mês ÷ meta) ÷ (dias úteis decorridos ÷ dias úteis do mês). Sai vazio sem meta ou sem dia útil decorrido. Exemplo: em 15/06/2026, sem feriado no mês, com meta de R$ 1.000,00, realizado do mês de R$ 384,60 e 13 de 26 dias úteis decorridos (segunda a sábado), o ritmo é 0,7692.
 - **Projeção**: o realizado do mês até a véspera mais, para cada dia útil do dia até o fim do mês, a média do realizado dos últimos 8 dias úteis com o mesmo dia da semana. Esses 8 dias são anteriores ao dia calculado e a partir do primeiro dia com venda na história. Sem nenhum dia assim, a média é 0.
-- A soma de `vendedores[].realizado_mes` com `outros.realizado_mes` é o `mes.realizado`. Uma venda com itens de dois vendedores conta uma vez em `mes.vendas` e uma vez para cada vendedor.
+- A soma de `vendedores[].realizado_mes` com `outros.realizado_mes` é o `mes.realizado`, a menos do arredondamento de cada parte: cada uma é arredondada por si, e a soma pode diferir do total em até 1 centavo por parte (em 25/09/2026, 65.895,87 + 51.114,40 + 530,99 = 117.541,26, contra 117.541,25 no mês). Calcular "outros" por diferença fecharia a conta, mas poderia mostrar "outros: −R$ 0,01" num dia sem venda de outros. Uma venda com itens de dois vendedores conta uma vez em `mes.vendas` e uma vez para cada vendedor.
 
 ### 8.3 Compras e estoque (`sql/regras/compras.sql`)
 
@@ -201,7 +201,7 @@ Período: os 90 dias que terminam no dia calculado.
 | `periodo` | `de`, `ate` |
 | `estoque_conhecido` | o dia é 26/09/2026 ou depois |
 | `abc_valor`, `abc_quantidade` | para A, B e C: `produtos` e `liquido` (ou `quantidade`) |
-| `compras_por_classe` | produtos distintos com item de entrada (sentido `entrada`) em documento de papel `compra` no período: `A`, `B`, `C` (pela curva por valor) e `sem_venda` |
+| `compras_por_classe` | produtos distintos com item de entrada (sentido `entrada`) em documento de papel `compra` no período: `A`, `B`, `C` (pela curva por valor) e `sem_venda` (comprado sem classe na curva por valor: sem item vendido no período, ou com líquido zero ou negativo, como o vendido e devolvido inteiro); A + B + C + `sem_venda` = os produtos comprados |
 | `encalhe` | `produtos` e `valor` (estoque × custo atual) |
 | `ruptura` | `produtos` |
 | `produtos` | cada produto com venda no período ou estoque diferente de zero: `codigo`, `descricao`, `classe_valor`, `classe_quantidade`, `liquido`, `quantidade`, `estoque`, `estoque_medio`, `giro`, `cobertura_dias`, `encalhe`, `ruptura` |
