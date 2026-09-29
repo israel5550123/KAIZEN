@@ -239,13 +239,13 @@ A contagem esperada em `testes-esperados.txt` ao fim de cada tarefa (329 no iní
 | 4 | 12 | 355 |
 | 5 | 3 | 358 |
 | 6 | 9 | 367 |
-| 7 | 12 | 379 |
-| 8 | 11 | 390 |
-| 9 | 16 | 406 |
-| 10 | 12 | 418 |
-| 11 | 0 | 418 |
-| 12 | 0 | 418 |
-| 13 | 0 | 418 |
+| 7 | 13 | 380 |
+| 8 | 11 | 391 |
+| 9 | 16 | 407 |
+| 10 | 12 | 419 |
+| 11 | 0 | 419 |
+| 12 | 0 | 419 |
+| 13 | 0 | 419 |
 
 ## Revisão da branch no meio da fase
 
@@ -3789,13 +3789,13 @@ Saída esperada: passa, com `ℹ tests 12`, `ℹ pass 12`, `ℹ fail 0` e:
 Esta tarefa acrescenta 12 testes, todos em `tradutor/regras-vendas.test.mts`. O arquivo fica com uma única linha:
 
 ```text
-379
+380
 ```
 
 - [ ] **Passo 8: Rodar a verificação completa**
 
 Rode: `npm run verificar`
-Saída esperada: passa; `tsc -p .` sem nenhuma linha de erro; nenhum `✖`; última linha `rodou 379 testes, esperados 379`.
+Saída esperada: passa; `tsc -p .` sem nenhuma linha de erro; nenhum `✖`; última linha `rodou 380 testes, esperados 380`.
 
 - [ ] **Passo 9: Commit**
 
@@ -3817,10 +3817,10 @@ de 26 dias úteis, o ritmo é 0,7692. A troca e a venda só de devolução
 contam nas devoluções e não como venda; feriado não é dia útil; o dia
 sem venda sai com zeros e ticket vazio, sem erro. Na Link falsa, o dia
 da venda 1992 tem R$ 150,00 vendidos.
-Testes: rodou 379, esperados 379.
+Testes: rodou 380, esperados 380.
 EOF
 ```
-Saída esperada: o `git add` pode avisar `LF will be replaced by CRLF` para `testes-esperados.txt` (é só aviso); o hook roda `npm run verificar` e termina com `rodou 379 testes, esperados 379`; o commit sai.
+Saída esperada: o `git add` pode avisar `LF will be replaced by CRLF` para `testes-esperados.txt` (é só aviso); o hook roda `npm run verificar` e termina com `rodou 380 testes, esperados 380`; o commit sai.
 
 DECISÃO:
 - **Dia sem venda: somas e contagens saem 0; o que divide sai vazio.** A spec diz que o dia sem venda num mês com venda sai com "`vendas` 0 e ticket vazio", e que o mês ainda sem venda sai com "tudo vazio". Li "tudo vazio" como o que depende de divisor (ticket, itens por venda, percentual, ritmo) e as listas (`por_hora`, `por_dia_da_semana`, `mix`), com vendido, devoluções, realizado e vendas em 0, como no dia sem venda; a projeção sem história é 0 (spec: "sem nenhum dia assim, a média é 0"). Meta e ritmo ficam vazios por falta de meta, não por falta de venda.
@@ -4594,13 +4594,13 @@ Se um teste falhar, confira primeiro se o arquivo foi copiado inteiro (`grep -c 
 Esta tarefa acrescenta 11 testes, todos em `tradutor/regras-compras.test.mts`. O arquivo fica com uma única linha:
 
 ```text
-390
+391
 ```
 
 - [ ] **Passo 6: Rodar a verificação completa**
 
 Rode: `npm run verificar`
-Saída esperada: passa; `tsc -p .` sem nenhuma linha de erro; nenhum `✖`; última linha `rodou 390 testes, esperados 390`.
+Saída esperada: passa; `tsc -p .` sem nenhuma linha de erro; nenhum `✖`; última linha `rodou 391 testes, esperados 391`.
 
 - [ ] **Passo 7: Commit**
 
@@ -4626,10 +4626,10 @@ Antes disso, o que depende do estoque sai vazio.
 O produto novo (primeira compra há menos de 60 dias) não é encalhe: o
 5336, comprado em 26/08, fica fora; o 1708, que só aparece num ajuste
 de custo, entra. Um dia sem venda e sem estoque responde sem erro.
-Testes: rodou 390, esperados 390.
+Testes: rodou 391, esperados 391.
 EOF
 ```
-Saída esperada: o `git add` pode avisar `LF will be replaced by CRLF` para `testes-esperados.txt` (é só aviso); o hook roda `npm run verificar` e termina com `rodou 390 testes, esperados 390`; o commit sai.
+Saída esperada: o `git add` pode avisar `LF will be replaced by CRLF` para `testes-esperados.txt` (é só aviso); o hook roda `npm run verificar` e termina com `rodou 391 testes, esperados 391`; o commit sai.
 
 DECISÃO:
 - **Cada curva entra pela sua medida.** A spec diz que, por quantidade, "vale o mesmo com a quantidade líquida", e termina com "produto com líquido zero ou negativo fica fora da curva". Li o "líquido" da última frase como a medida de cada curva: na curva por valor entram os produtos com líquido maior que zero; na por quantidade, os com quantidade líquida maior que zero. Um brinde (valor 0, quantidade 2) entra só na curva por quantidade. Nos testes, o 1368 (líquido 0, quantidade 0) e o 1370 (−15,00, −1) ficam fora das duas.
@@ -5388,13 +5388,13 @@ Saída esperada: passa, com `ℹ tests 16`, `ℹ pass 16`, `ℹ fail 0` e:
 Esta tarefa acrescenta 16 testes, todos em `tradutor/regras-financeiro.test.mts`. O arquivo fica com uma única linha:
 
 ```text
-406
+407
 ```
 
 - [ ] **Passo 6: Rodar a verificação completa**
 
 Rode: `npm run verificar`
-Saída esperada: passa; `tsc -p .` sem nenhuma linha de erro; nenhum `✖`; última linha `rodou 406 testes, esperados 406`.
+Saída esperada: passa; `tsc -p .` sem nenhuma linha de erro; nenhum `✖`; última linha `rodou 407 testes, esperados 407`.
 
 - [ ] **Passo 7: Commit**
 
@@ -5418,10 +5418,10 @@ porque a mesma dívida está nas duas; as entradas e as saídas usam a
 fonte de cada dia, e setembro soma as duas. O cartão entra no dia
 seguinte ao da venda; os pagamentos das contas a pagar não são
 entrada; a troca devolvida em dinheiro é saída e sai da gaveta.
-Testes: rodou 406, esperados 406.
+Testes: rodou 407, esperados 407.
 EOF
 ```
-Saída esperada: o `git add` pode avisar `LF will be replaced by CRLF` para `testes-esperados.txt` (é só aviso); o hook roda `npm run verificar` e termina com `rodou 406 testes, esperados 406`; o commit sai.
+Saída esperada: o `git add` pode avisar `LF will be replaced by CRLF` para `testes-esperados.txt` (é só aviso); o hook roda `npm run verificar` e termina com `rodou 407 testes, esperados 407`; o commit sai.
 
 DECISÃO:
 - **"Até 7 dias" e "até 30 dias" contam do próprio dia em diante, e a de 30 contém a de 7; vencida é a que venceu antes do dia.** A spec define a folga como "saldo − (vencidas + as que vencem até dia+7 / dia+30)": para a soma não contar a mesma parcela duas vezes, as vencidas ficam fora das faixas, e a parcela que vence no próprio dia, ainda em aberto no fim dele, entra na faixa (ainda não venceu).
@@ -6280,13 +6280,13 @@ Expected: PASS, `ℹ fail 0`. Nenhum teste de `tradutor/execucao-noite.test.mts`
 Esta tarefa acrescenta 12 testes: 8 em `tradutor/indicadores.test.mts`, 3 em `tradutor/execucao-indicadores.test.mts` e 1 em `tradutor/telegram.test.mts`. Os 2 testes mudados no Passo 9 já existiam. O arquivo fica com uma única linha:
 
 ```text
-418
+419
 ```
 
 - [ ] **Passo 11: Rodar a verificação completa**
 
 Run: `npm run verificar`
-Expected: PASS; `tsc -p .` sem nenhuma linha de erro; nenhum `✖`; última linha `rodou 418 testes, esperados 418`. Leva mais que antes desta tarefa: as leituras da noite dos testes da Fase 2 passam a calcular 182 dias cada (medido com regras mínimas no PC: de uns 2 minutos para 4,5 a 6 minutos).
+Expected: PASS; `tsc -p .` sem nenhuma linha de erro; nenhum `✖`; última linha `rodou 419 testes, esperados 419`. Leva mais que antes desta tarefa: as leituras da noite dos testes da Fase 2 passam a calcular 182 dias cada (medido com regras mínimas no PC: de uns 2 minutos para 4,5 a 6 minutos).
 
 - [ ] **Passo 12: Commit**
 
@@ -6310,12 +6310,12 @@ O comando "indicadores <dia>…" calcula os dias pedidos e imprime, por
 dia, o realizado e a meta, a curva e as compras, o a pagar e a quebra
 do caixa. Dia antes de 01/04/2026 ou depois de hoje é recusado, sem
 calcular nada. O comando não entra no registro nem manda Telegram.
-12 testes novos; rodou 418, esperados 418.
+12 testes novos; rodou 419, esperados 419.
 EOF
 ```
 
 Acrescente no fim da mensagem, depois de uma linha em branco, a linha de atribuição que o sistema lhe dá (o plano não fixa nome de modelo).
-Expected: o hook roda `npm run verificar` e termina com `rodou 418 testes, esperados 418`; o commit sai.
+Expected: o hook roda `npm run verificar` e termina com `rodou 419 testes, esperados 419`; o commit sai.
 
 ---
 
