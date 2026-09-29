@@ -306,3 +306,90 @@ contagem desde 28/09/2026: ok 3, aviso 9, falha 0, pulada 0, sem resultado 0 (to
 ```
 
 Desde o início da fase (28/09, 19h28): as execuções 5 a 12. Nenhuma `falha` e nenhuma `pulada`; `ok` até a leitura das 08h de 29/09; `aviso` a partir das 09h, só pelos dois códigos novos do ERP (passo 2), que não vêm do código da Fase 4. A execução 12 (a noite manual deste registro) mandou o resumo dos avisos ao Telegram (`telegram sim`).
+
+## 3. A versão final
+
+**SHA publicado: `18564fc`** (o `git rev-parse --short main` depois da mescla da `fase-4`, por avanço direto, e do envio ao GitHub às 14h20). Imagem anterior: `kaizen-tradutor:14287fa`. Entre as duas, só mudaram documentos e memórias dos agentes; `tradutor/`, `sql/`, `publicacao/` e o `Dockerfile` são os mesmos (passo 1), e a imagem saiu toda do cache.
+
+Terça, 29/09/2026. Horas em Fortaleza (`date` sem `TZ` no Git Bash do PC). Feito pelo orquestrador (ledger da fase, tarefa 13).
+
+### Passo 1 — nenhuma migração publicada foi editada (14h20)
+
+Comandos: `git diff --name-status --diff-filter=M 14287fa main -- sql/migracoes` e `git diff --name-status 14287fa main -- sql tradutor publicacao Dockerfile crontab`
+
+```
+(nenhuma linha nos dois)
+```
+
+### Passo 2 — publicar `main` (14h20)
+
+Comando: `bash publicacao/implantar.sh publicar` (sem ramo: `main`), das 14h20min25s às 14h20min52s.
+
+```
+From kaizen-github:israel5550123/KAIZEN
+   5070970..18564fc  main       -> origin/main
+Switched to branch 'main'
+Your branch is behind 'origin/main' by 30 commits, and can be fast-forwarded.
+Updating ecf9280..18564fc
+Fast-forward
+(…)
+#13 naming to docker.io/library/kaizen-tradutor:18564fc done
+Updating service kaizen_tradutor (id: xcvewu57o6t8jw6dni3uxwoi3)
+publicar: esperando o serviço em 1/1 com kaizen-tradutor:18564fc (até 120 s)
+migrar: nenhuma migração pendente
+publicar: kaizen-tradutor:18564fc no ar (antes: kaizen-tradutor:14287fa)
+ID             NAME              MODE         REPLICAS   IMAGE                     PORTS
+xcvewu57o6t8   kaizen_tradutor   replicated   1/1        kaizen-tradutor:18564fc
+```
+
+O `/opt/kaizen` saiu do ramo `fase-4` e voltou para `main` (`Switched to branch 'main'`; o `main` local da VPS estava parado em `ecf9280`, a versão da Fase 2, e avançou direto para `18564fc`). O `git pull` do roteiro do dono (passo 9 do `publicacao/README.md`) volta a puxar `main`.
+
+### Passo 3 — a leitura seguinte (15h11)
+
+A primeira leitura agendada com a imagem de `main` é a das 15h de 29/09. O contêiner novo começou às 14h20min49s (`crond … started` às 17:20:49 UTC), e a leitura das 15h (18:00 UTC) rodou nele.
+
+Comando (15h11): `bash publicacao/implantar.sh log 2`
+
+```
+ID             NAME              MODE         REPLICAS   IMAGE                     PORTS
+xcvewu57o6t8   kaizen_tradutor   replicated   1/1        kaizen-tradutor:18564fc
+2026-09-29T17:00:16.972068629Z kaizen_tradutor.1.ibxppgyzka2e@manager1    | hora aviso: documentos_lidos=269, documentos_novos=0, apagados=0, movimentos=200, foto=1029, produtos=1029, pessoas=451, funcionarios=9, fornecedores=662, avisos=2, respostas=3
+2026-09-29T18:00:12.050292615Z kaizen_tradutor.1.uou4cp14x01g@manager1    | hora aviso: documentos_lidos=271, documentos_novos=2, apagados=0, movimentos=203, foto=1029, produtos=1029, pessoas=451, funcionarios=9, fornecedores=662, avisos=2, respostas=3
+2026-09-29T17:00:00.911180263Z kaizen_tradutor.1.ibxppgyzka2e@manager1    | crond: USER root pid 136 cmd cd /kaizen && node --env-file=/run/secrets/kaizen_env tradutor/principal.mts hora
+2026-09-29T17:20:49.564339461Z kaizen_tradutor.1.uou4cp14x01g@manager1    | crond: crond (busybox 1.37.0) started, log level 8
+2026-09-29T18:00:00.609006527Z kaizen_tradutor.1.uou4cp14x01g@manager1    | crond: USER root pid  23 cmd cd /kaizen && node --env-file=/run/secrets/kaizen_env tradutor/principal.mts hora
+```
+
+(17h UTC = 14h, com a imagem `14287fa`, contêiner `ibxppgyzka2e`; 18h UTC = 15h, com a `18564fc`, contêiner `uou4cp14x01g`.)
+
+Comando (15h11): `bash publicacao/implantar.sh rodar execucoes 2026-09-28`
+
+```
+id | tipo | manual | início (Fortaleza) | resultado | avisos | telegram | mensagem
+1 | noite | manual | 28/09 17:24 | aviso | 7 | sim | —
+2 | hora | agendada | 28/09 18:00 | aviso | 7 | — | —
+3 | hora | agendada | 28/09 19:00 | aviso | 7 | — | —
+4 | noite | manual | 28/09 19:22 | ok | 0 | sim | —
+5 | noite | agendada | 28/09 22:00 | ok | 0 | — | —
+6 | hora | agendada | 29/09 08:00 | ok | 0 | — | —
+7 | hora | agendada | 29/09 09:00 | aviso | 1 | — | —
+8 | hora | agendada | 29/09 10:00 | aviso | 1 | — | —
+9 | hora | agendada | 29/09 11:00 | aviso | 2 | — | —
+10 | hora | agendada | 29/09 12:00 | aviso | 2 | — | —
+11 | hora | agendada | 29/09 13:00 | aviso | 2 | — | —
+12 | noite | manual | 29/09 13:11 | aviso | 2 | sim | —
+13 | hora | agendada | 29/09 14:00 | aviso | 2 | — | —
+14 | hora | agendada | 29/09 15:00 | aviso | 2 | — | —
+contagem desde 28/09/2026: ok 3, aviso 11, falha 0, pulada 0, sem resultado 0 (total 14)
+```
+
+Desde o início da fase (28/09, 19h28) são as execuções 5 a 14: 9 leituras agendadas (5, 6, 7 a 11, 13 e 14) e a noite manual 12. **Nenhuma `falha` e nenhuma `pulada`.** `ok` até a leitura das 08h de 29/09; `aviso` desde as 09h. A execução 14 é a primeira com a imagem de `main`: `aviso`, 2 avisos, `respostas=3`.
+
+**Os dois avisos são os dois códigos novos do ERP, e só eles.** A tabela da VPS não mostra o texto do aviso; a mesma leitura, rodada no banco do PC às 15h12 com o código de `main` e contra o mesmo ERP (`node --env-file=.env tradutor/principal.mts hora --manual`: `hora aviso: … avisos=2, respostas=3`), gravou em `kaizen.execucao.avisos`:
+
+```
+{"tipo":"codigo_sem_traducao","chave":"codigo:forma:9","texto":"o código \"9\" de forma apareceu 2 vez(es) e não tem tradução no Kaizen"}
+{"tipo":"codigo_sem_traducao","chave":"codigo:tipo:AE","texto":"o código \"AE\" de tipo apareceu 2 vez(es) e não tem tradução no Kaizen"}
+```
+
+São a forma 9 (boleto) e o tipo `AE` (ajuste de custo) de 29/09, cuja tradução é a migração 014, pendente do dono (`docs/DECISOES.md`, 29/09). Com ela publicada, as leituras voltam a `ok` na hora cheia seguinte.
