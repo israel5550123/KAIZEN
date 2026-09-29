@@ -1,15 +1,17 @@
 import { conectar } from './banco.mts'
+import { listarExecucoes, migrarAgora } from './comandos-vps.mts'
 import { rodarConferencia } from './conferencia-dono.mts'
 import { lerConfig } from './config.mts'
 import { PRAZO_MIN } from './constantes.mts'
 import { criarErp } from './erp.mts'
 import { executar, registrarEstouro } from './execucao.mts'
 import type { Dependencias, Saida } from './execucao.mts'
+import { emFortaleza, somarDias } from './janela.mts'
 import { criarEnvioTelegram, textoTeste } from './telegram.mts'
 import { ErroKaizen } from './tipos.mts'
 import type { TipoExecucao } from './tipos.mts'
 
-const USO = 'uso: node tradutor/principal.mts hora|noite [--manual] | teste-telegram | conferencia [produto ...]'
+const USO = 'uso: node tradutor/principal.mts hora|noite [--manual] | teste-telegram | conferencia [produto ...] | migrar | execucoes [AAAA-MM-DD]'
 
 export async function comPrazo<T>(fazer: () => Promise<T>, prazoMs: number, aoEstourar: () => Promise<void>): Promise<T> {
   return new Promise<T>((resolver, rejeitar) => {
@@ -61,6 +63,27 @@ export async function principal(argumentos: string[], env: Record<string, string
     const config = lerConfig(env)
     console.log(await rodarConferencia(config.kaizenUrl, resto, Date.now()))
     return 0
+  }
+  if (comando === 'migrar' && resto.length === 0) {
+    const cliente = await conectar(lerConfig(env).kaizenUrl)
+    try {
+      const saida = await migrarAgora(cliente)
+      console.log(saida.texto)
+      return saida.codigo
+    } finally {
+      await cliente.end().catch(() => undefined)
+    }
+  }
+  if (comando === 'execucoes' && (resto.length === 0 || (resto.length === 1 && /^\d{4}-\d{2}-\d{2}$/.test(resto[0])))) {
+    // Sem dia: desde 7 dias atrás, em Fortaleza.
+    const desde = resto[0] ?? somarDias(emFortaleza(Date.now()).data, -7)
+    const cliente = await conectar(lerConfig(env).kaizenUrl)
+    try {
+      for (const linha of await listarExecucoes(cliente, desde)) console.log(linha)
+      return 0
+    } finally {
+      await cliente.end().catch(() => undefined)
+    }
   }
   const manual = resto.length === 1 && resto[0] === '--manual'
   if ((comando !== 'hora' && comando !== 'noite') || (resto.length > 0 && !manual)) {
