@@ -136,8 +136,8 @@ test('a conta a pagar reimportada, com data antes de 28/09 e acima do corte, ent
   ])
 })
 
-test('parcelas e baixas de uma venda (financeiro R) não entram na comparação', async () => {
-  // Venda no cartão de crédito depois da mudança de 26/09: o ERP grava uma conta a receber, que o Kaizen não copia.
+test('parcelas e baixas de uma venda (financeiro R) entram nos dois lados da comparação', async () => {
+  // Venda no cartão de crédito depois da mudança de 26/09: o ERP grava uma conta a receber, que o Kaizen agora copia.
   await falso.inserir('documento', [
     { oid: 187, _iddocumento: 124, modelo: 'PA', status: 'E', tipomovimento: 'S', tipomovimentofinanceiro: 'R', datahora: '2026-09-29 11:30:00', datahoramovimento: '2026-09-29 11:31:00', idempresa: 1 },
   ])
@@ -154,9 +154,14 @@ test('parcelas e baixas de uma venda (financeiro R) não entram na comparação'
   await copiarDoErp()
 
   const parcelasNoKaizen = await banco.cliente.query('select count(*) as n from kaizen.parcela')
-  assert.equal(parcelasNoKaizen.rows[0].n, '0')
+  assert.equal(parcelasNoKaizen.rows[0].n, '1')
   const doDia = (await totaisDoErp(1_000_000, 1_000_000)).filter((t) => t.medida.startsWith('parcelas:') || t.medida.startsWith('baixas:'))
-  assert.deepEqual(doDia.map((t) => t.valor), ['0', '0', '0', '0'])
+  assert.deepEqual(doDia, [
+    { dia: '2026-09-29', medida: 'baixas:quantidade', valor: '1' },
+    { dia: '2026-09-29', medida: 'baixas:valor', valor: '59.50' },
+    { dia: '2026-09-29', medida: 'parcelas:quantidade', valor: '1' },
+    { dia: '2026-09-29', medida: 'parcelas:valor', valor: '59.50' },
+  ])
   assert.deepEqual(await comparar(), [])
 })
 

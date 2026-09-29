@@ -63,15 +63,15 @@ select
   (i->>'quantidade')::numeric, (i->>'valor_liquido')::numeric, nullif(i->>'vendedor', '0')
 from pg_temp.doc_alvo a, jsonb_array_elements(a.j->'itens') i;
 
-insert into kaizen.documento_pagamento (documento_id, origem_tabela, origem_id, forma, valor)
-select a.documento_id, 'documento_pagamento', p->>'oid', p->>'forma', (p->>'valor')::numeric
+insert into kaizen.documento_pagamento (documento_id, origem_tabela, origem_id, forma, valor, sequencia)
+select a.documento_id, 'documento_pagamento', p->>'oid', p->>'forma', (p->>'valor')::numeric, (p->>'sequencia')::integer
 from pg_temp.doc_alvo a, jsonb_array_elements(a.j->'pagamentos') p;
 
-insert into kaizen.parcela (documento_id, origem_tabela, origem_id, lancado_em, vencimento, valor, status, descricao)
+insert into kaizen.parcela (documento_id, origem_tabela, origem_id, lancado_em, vencimento, valor, status, descricao, sequencia)
 select
   a.documento_id, 'documento_parcela', p->>'oid',
   left(p->>'lancado_em', 10)::date, left(p->>'vencimento', 10)::date,
-  (p->>'valor')::numeric, p->>'status', p->>'descricao'
+  (p->>'valor')::numeric, p->>'status', p->>'descricao', (p->>'sequencia')::integer
 from pg_temp.doc_alvo a, jsonb_array_elements(a.j->'parcelas') p;
 
 insert into kaizen.baixa (parcela_id, origem_tabela, origem_id, pago_em, valor, forma, status)

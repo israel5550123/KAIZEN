@@ -19,11 +19,11 @@ beforeEach(async () => {
   await banco.cliente.query('delete from kaizen.estoque_movimento')
 })
 
-async function inserirDocumento(fonte: 'meuerp' | 'link', origemId: string): Promise<string> {
+async function inserirDocumento(fonte: 'meuerp' | 'link', origemId: string, financeiro: string = 'P'): Promise<string> {
   const r = await banco.cliente.query<{ id: string }>(
-    `insert into kaizen.documento (fonte, origem_tabela, origem_id, codigo, modelo, criado_em)
-     values ($1, 'documento', $2, '1', 'CP', '2026-09-28 10:00:00') returning id`,
-    [fonte, origemId],
+    `insert into kaizen.documento (fonte, origem_tabela, origem_id, codigo, modelo, financeiro, criado_em)
+     values ($1, 'documento', $2, '1', 'CP', $3, '2026-09-28 10:00:00') returning id`,
+    [fonte, origemId, financeiro],
   )
   return r.rows[0].id
 }
@@ -99,6 +99,9 @@ test('oidsComParcelaAberta pega status diferente de B e vazio, só do ERP novo, 
   await inserirDocumento('meuerp', '188')
   const daLink = await inserirDocumento('link', '190')
   await inserirParcela(daLink, '7', 'P')
+  // Venda no crédito (financeiro R): a parcela a receber pendente não entra na releitura da hora, só na da noite.
+  const vendaNoCredito = await inserirDocumento('meuerp', '999', 'R')
+  await inserirParcela(vendaNoCredito, '8', 'P')
   assert.deepEqual(await oidsComParcelaAberta(banco.cliente), [185, 187, 1000])
 })
 

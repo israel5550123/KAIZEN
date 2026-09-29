@@ -25,7 +25,7 @@ pa as (
 pc as (
   select dc.dia, count(*) as quantidade, sum(q.valor) as valor
   from dc join kaizen.parcela q on q.documento_id = dc.id
-  where dc.financeiro = 'P'
+  where dc.financeiro in ('P', 'R')
   group by dc.dia
 ),
 bx as (
@@ -33,7 +33,7 @@ bx as (
   from dc
   join kaizen.parcela q on q.documento_id = dc.id
   join kaizen.baixa b on b.parcela_id = q.id
-  where dc.financeiro = 'P'
+  where dc.financeiro in ('P', 'R')
   group by dc.dia
 ),
 cf as (

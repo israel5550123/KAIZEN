@@ -32,11 +32,12 @@ export async function maiorOid(cliente: Cliente, tabela: 'documento' | 'estoque_
 }
 
 export async function oidsComParcelaAberta(cliente: Cliente): Promise<number[]> {
+  // A parcela a receber (venda no crédito, boleto) entra pela leitura das 22h, que relê tudo.
   const r = await cliente.query<{ oid: string }>(
     `select distinct d.origem_id::bigint as oid
        from kaizen.documento d
        join kaizen.parcela p on p.documento_id = d.id
-      where d.fonte = 'meuerp' and p.status is distinct from 'B'
+      where d.fonte = 'meuerp' and d.financeiro = 'P' and p.status is distinct from 'B'
       order by 1`,
   )
   return r.rows.map((l) => Number(l.oid))

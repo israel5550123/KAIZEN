@@ -177,7 +177,7 @@ test('pedido 116: o troco fica como R$ 50,00 e −R$ 5,00 em dinheiro, e a noite
   await rodarSemAviso('noite', '2026-09-30T01:00:00Z')
 })
 
-test('pedido 87: dinheiro, Pix e crédito na mesma venda; a parcela e a baixa a receber não entram nem geram diferença', async () => {
+test('pedido 87: dinheiro, Pix e crédito na mesma venda; as parcelas a receber entram com a sequência, e a noite dá zero diferença', async () => {
   await pedidoTresFormas(falso)
   await rodarSemAviso('hora', '2026-09-29T17:00:00Z')
   assert.deepEqual(await documento('87'), {
@@ -193,8 +193,16 @@ test('pedido 87: dinheiro, Pix e crédito na mesma venda; a parcela e a baixa a 
     { origem_id: '4', forma: '2', valor: '40.00' },
     { origem_id: '5', forma: '3', valor: '30.00' },
   ])
-  assert.deepEqual(await linhas('select (select count(*) from kaizen.parcela) as parcelas, (select count(*) from kaizen.baixa) as baixas'), [
-    { parcelas: '0', baixas: '0' },
+  assert.deepEqual(await linhas(
+    `select pg.origem_id, pg.sequencia, pa.origem_id as parcela, pa.status, pa.valor,
+            (select count(*) from kaizen.baixa b where b.parcela_id = pa.id) as baixas
+       from kaizen.documento_pagamento pg
+       join kaizen.documento d on d.id = pg.documento_id and d.codigo = '87'
+       left join kaizen.parcela pa on pa.documento_id = pg.documento_id and pa.sequencia = pg.sequencia
+      order by pg.sequencia`), [
+    { origem_id: '3', sequencia: 1, parcela: null, status: null, valor: null, baixas: '0' },
+    { origem_id: '4', sequencia: 2, parcela: '2', status: 'B', valor: '40.00', baixas: '1' },
+    { origem_id: '5', sequencia: 3, parcela: '1', status: 'P', valor: '30.00', baixas: '0' },
   ])
   await rodarSemAviso('noite', '2026-09-30T01:00:00Z')
 })
@@ -512,7 +520,7 @@ test('todos os casos juntos: duas leituras da hora e a da noite deixam o mesmo c
   assert.deepEqual(
     Object.fromEntries(Object.entries(primeira).map(([tabela, l]) => [tabela, l.length])),
     {
-      documento: 15, documento_item: 11, documento_pagamento: 10, parcela: 4, baixa: 2, conferencia_caixa: 7,
+      documento: 15, documento_item: 11, documento_pagamento: 10, parcela: 6, baixa: 3, conferencia_caixa: 7,
       estoque_movimento: 9, estoque_atual: 9, produto: 12, produto_fornecedor: 0, pessoa: 4, funcionario: 2,
     },
   )

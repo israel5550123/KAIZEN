@@ -23,7 +23,7 @@ pc as (
   select dq.dia as dia, count(*) as quantidade, sum(q.valparcela) as valor
   from dc dq
   join documento_parcela q on q._iddocumento = dq.iddoc and q.oid > {{corte_parcela}}
-  where dq.financeiro = 'P'
+  where dq.financeiro in ('P', 'R')
   group by dq.dia
 ),
 bx as (
@@ -32,7 +32,7 @@ bx as (
   join documento_parcela qb on qb._iddocumento = db.iddoc and qb.oid > {{corte_parcela}}
   join documento_parcela_pagamento b on b._iddocumento = qb._iddocumento and b._idsequencia = qb._idsequencia
     and b._idparcela = qb._idparcela and b.oid > {{corte_baixa}}
-  where db.financeiro = 'P'
+  where db.financeiro in ('P', 'R')
   group by db.dia
 ),
 cf as (

@@ -5,9 +5,12 @@ import { data, inteiro, inteiros, lerColunasEsperadas, modeloErp, montar } from 
 
 // Formato que sql/erp/documentos.sql devolve (DocumentoErp do contrato).
 type Item = { oid: number; produto: number; quantidade: string | null; valor_liquido: string | null; vendedor: number | null }
-type Pagamento = { oid: number; forma: number; valor: string }
+type Pagamento = { oid: number; forma: number; valor: string; sequencia: number | null }
 type Baixa = { oid: number; pago_em: string | null; valor: string; forma: number | null; status: string | null }
-type Parcela = { oid: number; lancado_em: string | null; vencimento: string | null; valor: string; status: string | null; descricao: string | null; baixas: Baixa[] }
+type Parcela = {
+  oid: number; lancado_em: string | null; vencimento: string | null; valor: string; status: string | null; descricao: string | null
+  sequencia: number | null; baixas: Baixa[]
+}
 type Conferencia = { oid: number; forma: number; calculado: string | null; informado: string | null }
 type DocumentoErp = {
   oid: number; codigo: number; modelo: string; status: string | null; movimento: string | null; financeiro: string | null
@@ -193,7 +196,7 @@ test('pagamento, parcela e baixa respeitam cada um o corte da sua tabela', async
   assert.deepEqual(d.parcelas[0].baixas.map((b) => b.oid), [31])
 })
 
-test('parcelas só vêm em documento que paga; cada baixa vai para a parcela do mesmo documento, sequência e parcela', async () => {
+test('parcelas vêm em documento a pagar e a receber; cada baixa vai para a parcela do mesmo documento, sequência e parcela', async () => {
   await falso.inserir('documento', [
     documento(185, 61, { modelo: 'TM', tipomovimento: 'E', tipomovimentofinanceiro: 'P' }),
     documento(186, 117, { modelo: 'PA', tipomovimento: 'S', tipomovimentofinanceiro: 'R' }),
@@ -213,14 +216,17 @@ test('parcelas só vêm em documento que paga; cada baixa vai para a parcela do 
   assert.deepEqual(troca.parcelas, [
     {
       oid: 1, lancado_em: '2026-09-28T10:00:00', vencimento: '2026-09-28T00:00:00', valor: '77.000000', status: 'B', descricao: 'Troca de Mercadoria - Adiantamento',
-      baixas: [{ oid: 1, pago_em: '2026-09-28T11:00:00', valor: '77.000000', forma: 5, status: 'E' }],
+      sequencia: 1, baixas: [{ oid: 1, pago_em: '2026-09-28T11:00:00', valor: '77.000000', forma: 5, status: 'E' }],
     },
     {
       oid: 2, lancado_em: '2026-09-28T10:00:00', vencimento: '2026-10-28T00:00:00', valor: '10.000000', status: 'P', descricao: null,
-      baixas: [{ oid: 4, pago_em: '2026-09-29T09:00:00', valor: '10.000000', forma: 1, status: 'C' }],
+      sequencia: 1, baixas: [{ oid: 4, pago_em: '2026-09-29T09:00:00', valor: '10.000000', forma: 1, status: 'C' }],
     },
   ])
-  assert.deepEqual(pedido.parcelas, [])
+  assert.deepEqual(pedido.parcelas, [
+    { oid: 3, lancado_em: '2026-09-28T11:00:00', vencimento: '2026-09-28T11:00:00', valor: '77.000000', status: 'B', descricao: null,
+      sequencia: 1, baixas: [{ oid: 3, pago_em: '2026-09-28T11:00:00', valor: '77.000000', forma: 5, status: 'E' }] },
+  ])
 })
 
 test('documento sem filhos traz as listas vazias, e não null', async () => {
@@ -255,7 +261,10 @@ test('valores numeric chegam como texto exato, sem perder casas nem algarismos',
     ['1.123456789', '12345678901234567.123456', 1],
     [null, null, null],
   ])
-  assert.deepEqual(d.pagamentos, [{ oid: 1, forma: 1, valor: '50.000000' }, { oid: 2, forma: 1, valor: '-5.000000' }])
+  assert.deepEqual(d.pagamentos, [
+    { oid: 1, forma: 1, valor: '50.000000', sequencia: 2 },
+    { oid: 2, forma: 1, valor: '-5.000000', sequencia: 3 },
+  ])
 })
 
 test('datas saem como AAAA-MM-DDTHH:MM:SS, sem fuso, e as vazias como null', async () => {
@@ -287,7 +296,7 @@ test('um documento completo sai com exatamente as chaves do DocumentoErp', async
     criado_em: '2026-09-28T15:09:00', fechado_em: '2026-09-28T15:48:00', pessoa: null,
     turno_caixa: 0, turno_usuario: 0, turno_numero: 0, natureza: 530,
     itens: [{ oid: 1873, produto: 5278, quantidade: '1.000000', valor_liquido: '25.000000', vendedor: 1 }],
-    pagamentos: [{ oid: 1, forma: 2, valor: '25.000000' }],
+    pagamentos: [{ oid: 1, forma: 2, valor: '25.000000', sequencia: 1 }],
     parcelas: [],
     conferencia: [],
     conferencia_abaixo_corte: 0,

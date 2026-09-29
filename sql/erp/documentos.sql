@@ -27,7 +27,8 @@ select coalesce(json_agg(json_build_object(
     select json_agg(json_build_object(
       'oid', p.oid,
       'forma', p.idpagamento,
-      'valor', p.valor::text
+      'valor', p.valor::text,
+      'sequencia', p._idsequencia
     ) order by p.oid)
     from documento_pagamento p
     where p._iddocumento = d._iddocumento and p.oid > {{corte_pagamento}}
@@ -40,6 +41,7 @@ select coalesce(json_agg(json_build_object(
       'valor', q.valparcela::text,
       'status', q.status,
       'descricao', q.descricao,
+      'sequencia', q._idsequencia,
       'baixas', coalesce((
         select json_agg(json_build_object(
           'oid', b.oid,
@@ -54,7 +56,7 @@ select coalesce(json_agg(json_build_object(
       ), '[]')
     ) order by q.oid)
     from documento_parcela q
-    where q._iddocumento = d._iddocumento and q.oid > {{corte_parcela}} and d.tipomovimentofinanceiro = 'P'
+    where q._iddocumento = d._iddocumento and q.oid > {{corte_parcela}} and d.tipomovimentofinanceiro in ('P', 'R')
   ), '[]'),
   'conferencia', coalesce((
     select json_agg(json_build_object(
