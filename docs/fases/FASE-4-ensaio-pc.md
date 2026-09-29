@@ -55,7 +55,35 @@ noite ok: documentos_lidos=301, documentos_novos=146, apagados=0, movimentos=209
 real	2m12.516s
 ```
 
-**Achado (`DONE_WITH_CONCERNS`):** o comando terminou com `noite ok` (não `noite aviso`), mas imprimiu, antes da linha de resultado, o resumo de códigos sem tradução acumulados — exatamente o caso que o brief da tarefa manda anotar em vez de corrigir código: seis códigos novos do ERP real ainda sem tradução no Kaizen (tipo "EM"; forma "6" e "7"; situação "S"; status_parcela "C"; e mais um não listado no topo). Isso é a rotina de hora em hora (tarefa 9) funcionando como desenhado — ela lista o que não sabe traduzir e pede para levar à próxima sessão — e não impede o cálculo: `avisos=0` (nenhum aviso do tipo que bloqueia o cálculo do dia) e as 546 respostas foram gravadas. Fica registrado para a próxima sessão tratar os seis códigos, como o próprio texto pede.
+**Correção do orquestrador (29/09, depois da primeira versão deste registro):** o parágrafo abaixo, na primeira versão, tratava o resumo impresso como um achado — código sem tradução hoje. Está errado. Conferido no banco do PC, só leitura:
+
+```
+$ docker exec -i kaizen-postgres-1 psql -U postgres -d kaizen -At <<'SQL'
+select campo, codigo, valor from kaizen.traducao where fonte = 'meuerp' and (
+  (campo = 'forma' and codigo in ('6','7','8')) or
+  (campo = 'situacao' and codigo = 'S') or
+  (campo = 'status_parcela' and codigo = 'C') or
+  (campo = 'tipo' and codigo in ('EM','MN'))
+) order by campo, codigo;
+SQL
+forma|6|pix
+forma|7|credito
+forma|8|debito
+situacao|S|pendente
+status_parcela|C|cancelada
+tipo|EM|alteracao_em_massa
+tipo|MN|manifesto_nfe
+```
+
+As 7 traduções da migração 009 estão todas no banco. E, olhando `kaizen.execucao` (`inicio at time zone 'America/Fortaleza'`, `resultado`, `avisos`):
+
+```
+5|hora|t|2026-09-28 09:09:49|aviso|codigo:tipo:EM
+6|hora|t|2026-09-28 11:08:36|aviso|codigo:forma:6, codigo:forma:7, codigo:situacao:S, codigo:status_parcela:C, codigo:tipo:EM, codigo:tipo:MN
+7|noite|t|2026-09-29 08:59:56|ok|avisos=[] (a noite deste ensaio)
+```
+
+Os seis avisos do resumo impresso vêm das execuções 5 e 6, de 28/09 (09h09 e 11h08) — **antes** de a migração 009 (que trouxe essas 7 traduções) ter sido aplicada no banco do PC. Como o PC não tem Telegram, o resumo nunca foi aceito (`resumo_ok=false` nas execuções 5 e 6), e a rotina do resumo das 22h junta os avisos de todas as execuções desde o último resumo aceito — por isso eles reapareceram hoje, presos num resumo antigo. A execução 7, a própria noite deste ensaio, terminou `ok` com `avisos=[]`: nenhum código sem tradução foi encontrado rodando com a 009 já aplicada. Não sobra achado: **o veredito da tarefa passa de `DONE_WITH_CONCERNS` para `DONE`**, e não há necessidade de "levar à próxima sessão" nenhum código — os seis já têm tradução.
 
 Depois, só lendo, no banco do PC:
 
@@ -241,11 +269,11 @@ Voltou a `sem meta cadastrada` e `saldo do banco não digitado`, como esperado.
 | Verificação de migrações mudadas desde a tarefa 5 | sem diferença, seguiu |
 | 1. migrar | `012_regras, 013_resposta` — igual ao esperado |
 | 2. Link de novo | 6183 documentos, 0 novos, 5271 vendas válidas, 141 dias comparados — igual ao esperado |
-| 3. noite --manual | 546 respostas, 2m12,516s; achado: 6 códigos sem tradução (`DONE_WITH_CONCERNS`, ver acima) |
+| 3. noite --manual | 546 respostas, 2m12,516s, `avisos=[]` na própria execução (id 7); o resumo impresso é das execuções 5 e 6 de 28/09, de antes da 009 no PC — as 7 traduções já estão no banco (corrigido, ver acima) |
 | 3. conferências de natureza/respostas | todas batem |
-| 4. indicadores dos 6 meses + virada | vendido e devolução de cada mês batem centavo a centavo; soma do vendido bate; soma da devolução um centavo diferente do brief por arredondamento (não é bug, ver acima); financeiro de 25/09 e 26/09 batem; compras batem |
+| 4. indicadores dos 6 meses + virada | vendido e devolução de cada mês batem centavo a centavo; soma do vendido bate; soma da devolução um centavo diferente do brief por arredondamento (não é bug, mesma diferença já presente em `FASE-3-relatorio.md`, ver acima); financeiro de 25/09 e 26/09 batem; compras batem |
 | 4. três conferências do orquestrador | todas batem (5.262; 1708=true/5336=false; 0 descrições vazias) |
 | 5. dia fora da história | mensagem e saída 1, igual ao esperado |
 | comandos do dono | meta, meta do vendedor e saldo aparecem e desaparecem nos indicadores como esperado |
 
-**Veredito da tarefa: `DONE_WITH_CONCERNS`** — nenhum número saiu errado; o único achado é o resumo de códigos sem tradução que a própria rotina pede para levar à próxima sessão (não é código para consertar agora) e a nota de arredondamento de um centavo, já presente no relatório da Fase 3, sem efeito em nenhum número calculado pelo Kaizen.
+**Veredito da tarefa: `DONE`** (corrigido pelo orquestrador em 29/09; a primeira versão deste registro dizia `DONE_WITH_CONCERNS` por engano — ver a correção acima). Nenhum número saiu errado: as seis conferências de vendido e devolução batem centavo a centavo, as três conferências extras do orquestrador batem, a noite deste ensaio (execução 7) terminou `ok` com `avisos=[]`, e as 7 traduções da migração 009 (forma 6/7/8, situação S, status_parcela C, tipo EM/MN) estão todas no banco. O resumo de códigos sem tradução que apareceu no console era de duas execuções de 28/09, de antes da 009 ter sido aplicada no PC, nunca incluídas num resumo aceito porque o PC não tem Telegram; não é um código sem tradução hoje, e não sobra nenhum código para "levar à próxima sessão". A diferença de um centavo na soma exibida da devolução é só arredondamento de exibição, já presente no relatório da Fase 3, sem efeito em nenhum número calculado pelo Kaizen.
