@@ -4,3 +4,4 @@
 - [.superpowers/sdd/ é gitignored](project_superpowers_sdd_gitignore.md) — briefs e task-N-report.md nunca entram em commit; edite-os normalmente, não tente git add
 - [guarda-bash recusa "ssh"/"scp" soltos até em prosa](project_guarda_bash_ssh_scp_solto.md) — mensagem de commit com "ssh falso" é bloqueada; escreva "ssh-falso"
 - [Forçar um SQLSTATE real do Postgres num teste](project_teste_erro_postgres_real_via_trigger.md) — gatilho com `raise exception using errcode`, não `pg_terminate_backend` (flakiness)
+- [sql/migracoes/ bloqueado pela permissão](project_sql_migracoes_bloqueado_permissao.md) — Write (mesmo arquivo novo) e até Glob/find do settings.json são recusados; não insista, devolva o conteúdo pronto no relatório

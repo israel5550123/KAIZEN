@@ -1,3 +1,5 @@
 - [Atribuição de commit não reprova](feedback_atribuicao_commit.md) — divergência no Co-Authored-By (Opus 5.5 do brief vs Sonnet 5 real) é observação, não achado
 - [Conferir horário Fortaleza pelo git](tecnica_conferir_horario_fortaleza.md) — comparar "quando" do registro com `git log -1 --format=%ai`; diferença de ~3h = UTC rotulado como Fortaleza
 - [Mensagem do commit vs registro](tecnica_mensagem_commit_vs_registro.md) — quando um passo é adiado no despacho, checar se a mensagem literal do commit (pré-escrita no brief) ainda é verdadeira; achado real na Fase 4 Tarefa 3
+- [Relatório ausente em tarefa operacional](tecnica_relatorio_ausente_tarefa_operacional.md) — task-N-report.md que nunca existiu não é achado quando a tarefa é ensaio/operação (o registro da fase já é a alegação); é achado se a tarefa tiver código
+- [Worktree sem tocar o repo](tecnica_worktree_sem_tocar_repo.md) — reproduzir RED e medir antes/depois com `git worktree` + junção de `node_modules` + import por `file://`, sem editar nada na árvore principal
