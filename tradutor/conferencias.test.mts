@@ -102,18 +102,19 @@ function documentoErp(oid: number, codigo: number, modelo: string, conferenciaAb
   }
 }
 
-test('codigosSemTraducao acha o modelo ZZ e a forma 9 com a contagem, e ignora traduzidos, vazios e os da Link', async () => {
+test('codigosSemTraducao acha o modelo ZZ e a forma 99 com a contagem, e ignora traduzidos, vazios e os da Link', async () => {
+  // Forma 99 (e não mais 9): a migração 014 traduziu a forma 9 (boleto) depois que este teste foi escrito.
   const a = await inserirDocumento('meuerp', '185', 'ZZ', 'E', 'S', 'R')
   await inserirItem(a, '1873', 'S')
-  await inserirPagamento(a, '1', '9')
+  await inserirPagamento(a, '1', '99')
   await inserirPagamento(a, '2', '1')
   const b = await inserirDocumento('meuerp', '186', 'ZZ', null, null, null)
   await inserirItem(b, '1874', null)
-  await inserirConferencia(b, '31', '9')
+  await inserirConferencia(b, '31', '99')
   await inserirConferencia(b, '32', '5')
   const c = await inserirDocumento('meuerp', '187', 'CP', 'E', 'N', 'P')
   const parcela = await inserirParcela(c, '1', 'P')
-  await inserirBaixa(parcela, '1', '9', 'E')
+  await inserirBaixa(parcela, '1', '99', 'E')
   await inserirBaixa(parcela, '2', null, null)
   const daLink = await inserirDocumento('link', '9001', 'XX', 'Q', null, null)
   await inserirPagamento(daLink, '3', '77')
@@ -121,8 +122,8 @@ test('codigosSemTraducao acha o modelo ZZ e a forma 9 com a contagem, e ignora t
   assert.deepEqual(await codigosSemTraducao(banco.cliente), [
     {
       tipo: 'codigo_sem_traducao',
-      chave: 'codigo:forma:9',
-      texto: 'o código "9" de forma apareceu 3 vez(es) e não tem tradução no Kaizen',
+      chave: 'codigo:forma:99',
+      texto: 'o código "99" de forma apareceu 3 vez(es) e não tem tradução no Kaizen',
     },
     {
       tipo: 'codigo_sem_traducao',
