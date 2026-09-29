@@ -243,9 +243,10 @@ A contagem esperada em `testes-esperados.txt` ao fim de cada tarefa (329 no iní
 | 8 | 11 | 391 |
 | 9 | 16 | 407 |
 | 10 | 12 | 419 |
-| 11 | 0 | 419 |
-| 12 | 0 | 419 |
-| 13 | 0 | 419 |
+| correção da revisão da branch no meio da fase | 3 | 422 |
+| 11 | 0 | 422 |
+| 12 | 0 | 422 |
+| 13 | 0 | 422 |
 
 ## Revisão da branch no meio da fase
 

@@ -3,3 +3,4 @@
 - [date com TZ=Fortaleza não converte no Git Bash](project_date_tz_fortaleza_git_bash.md) — devolve UTC com rótulo errado; use git log --format=%ai ou mtime (-0300), não `date`
 - [.superpowers/sdd/ é gitignored](project_superpowers_sdd_gitignore.md) — briefs e task-N-report.md nunca entram em commit; edite-os normalmente, não tente git add
 - [guarda-bash recusa "ssh"/"scp" soltos até em prosa](project_guarda_bash_ssh_scp_solto.md) — mensagem de commit com "ssh falso" é bloqueada; escreva "ssh-falso"
+- [Forçar um SQLSTATE real do Postgres num teste](project_teste_erro_postgres_real_via_trigger.md) — gatilho com `raise exception using errcode`, não `pg_terminate_backend` (flakiness)
