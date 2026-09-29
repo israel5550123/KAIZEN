@@ -62,23 +62,28 @@ export async function inserirItem(
   )
 }
 
-export async function inserirPagamento(c: Cliente, documentoId: number, p: { forma: string; valor: string }): Promise<void> {
+// sequencia é o _idsequencia do ERP novo (migração 015), que liga o pagamento à parcela a receber; ausente = vazia.
+export async function inserirPagamento(
+  c: Cliente,
+  documentoId: number,
+  p: { forma: string; valor: string; sequencia?: number },
+): Promise<void> {
   await c.query(
-    `insert into kaizen.documento_pagamento (documento_id, origem_tabela, origem_id, forma, valor)
-     values ($1, 'documento_pagamento', $2, $3, $4)`,
-    [documentoId, proximo(), p.forma, p.valor],
+    `insert into kaizen.documento_pagamento (documento_id, origem_tabela, origem_id, forma, valor, sequencia)
+     values ($1, 'documento_pagamento', $2, $3, $4, $5)`,
+    [documentoId, proximo(), p.forma, p.valor, p.sequencia ?? null],
   )
 }
 
 export async function inserirParcela(
   c: Cliente,
   documentoId: number,
-  p: { lancadoEm: string; vencimento: string; valor: string; status: string },
+  p: { lancadoEm: string; vencimento: string; valor: string; status: string; sequencia?: number },
 ): Promise<number> {
   const { rows } = await c.query<{ id: string }>(
-    `insert into kaizen.parcela (documento_id, origem_tabela, origem_id, lancado_em, vencimento, valor, status)
-     values ($1, 'documento_parcela', $2, $3, $4, $5, $6) returning id`,
-    [documentoId, proximo(), p.lancadoEm, p.vencimento, p.valor, p.status],
+    `insert into kaizen.parcela (documento_id, origem_tabela, origem_id, lancado_em, vencimento, valor, status, sequencia)
+     values ($1, 'documento_parcela', $2, $3, $4, $5, $6, $7) returning id`,
+    [documentoId, proximo(), p.lancadoEm, p.vencimento, p.valor, p.status, p.sequencia ?? null],
   )
   return Number(rows[0].id)
 }

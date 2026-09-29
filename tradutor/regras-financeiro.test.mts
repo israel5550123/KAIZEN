@@ -4,7 +4,7 @@ import { criarBancoKaizen } from './apoio-teste.mts'
 import type { BancoTeste } from './apoio-teste.mts'
 import type { Cliente } from './banco.mts'
 import {
-  inserirBaixa, inserirConferencia, inserirDocumento, inserirNatureza, inserirPagamento, inserirParcela,
+  inserirBaixa, inserirConferencia, inserirDocumento, inserirItem, inserirNatureza, inserirPagamento, inserirParcela,
 } from './apoio-regras.mts'
 import { responder } from './indicadores.mts'
 
@@ -83,6 +83,19 @@ async function conta(fonte: Fonte = 'meuerp'): Promise<number> {
 
 async function parcela(documento: number, vencimento: string, valor: string, status = 'P', lancadoEm = '2026-09-01'): Promise<number> {
   return inserirParcela(c, documento, { lancadoEm, vencimento, valor, status })
+}
+
+// Venda de R$ 500,00 em 05/10/2026 (spec do boleto a receber, seção 3): R$ 100,00 no Pix, sequência 1, baixado
+// no ato (parcela já nasce baixada, status 'B'); R$ 400,00 no boleto, sequência 2, parcela pendente (status 'P',
+// vencimento 20/10). Devolve a parcela do boleto, para o teste acrescentar a baixa dela.
+async function vendaComBoleto(): Promise<number> {
+  const id = await inserirDocumento(c, { modelo: 'PA', natureza: '530', naturezaId: natureza.pedido, criadoEm: '2026-10-05 10:00:00' })
+  await inserirItem(c, id, { produto: '60', sentido: 'S', quantidade: '1', valor: '500.00' })
+  await inserirPagamento(c, id, { forma: '2', valor: '100.00', sequencia: 1 })
+  const pix = await inserirParcela(c, id, { lancadoEm: '2026-10-05', vencimento: '2026-10-05', valor: '100.00', status: 'B', sequencia: 1 })
+  await inserirBaixa(c, pix, { pagoEm: '2026-10-05', valor: '100.00', forma: '2', status: 'E' })
+  await inserirPagamento(c, id, { forma: '9', valor: '400.00', sequencia: 2 })
+  return inserirParcela(c, id, { lancadoEm: '2026-10-05', vencimento: '2026-10-20', valor: '400.00', status: 'P', sequencia: 2 })
 }
 
 const semEntrada = { dinheiro: 0, pix: 0, credito: 0, debito: 0, cartao: 0, outras: 0 }
@@ -454,4 +467,47 @@ test('fluxo previsto: os 30 dias depois do dia, com os recebíveis de cartão e 
     '2026-10-20': { saidas: 560 },
     '2026-11-05': { saidas: 600 },
   }))
+})
+
+test('boleto: só o Pix (R$ 100,00) entra em 05/10; sem baixa ainda, outras fica em 0,00 até em 18/10 (decisão do dono, 29/09)', async () => {
+  await vendaComBoleto()
+  const d5 = await responder(c, 'financeiro', '2026-10-05')
+  assert.deepEqual(d5.fluxo_realizado.dia.entradas, { ...semEntrada, pix: 100 })
+  const d18 = await responder(c, 'financeiro', '2026-10-18')
+  assert.deepEqual(d18.fluxo_realizado.dia.entradas, semEntrada)
+})
+
+test('boleto: a baixa de R$ 400,00 em 18/10 (forma 9, status E) entra em outras nesse dia e no mês, sem mudar o Pix de 05/10', async () => {
+  const parcelaBoleto = await vendaComBoleto()
+  await inserirBaixa(c, parcelaBoleto, { pagoEm: '2026-10-18', valor: '400.00', forma: '9', status: 'E' })
+
+  const d18 = await responder(c, 'financeiro', '2026-10-18')
+  assert.deepEqual(d18.fluxo_realizado.dia.entradas, { ...semEntrada, outras: 400 })
+  assert.deepEqual(d18.fluxo_realizado.mes.entradas, { ...semEntrada, pix: 100, outras: 400 })
+})
+
+test('boleto: baixa parcial em 10/10 (150,00) e 18/10 (250,00) soma outras em cada dia e os 400,00 no mês', async () => {
+  const parcelaBoleto = await vendaComBoleto()
+  await inserirBaixa(c, parcelaBoleto, { pagoEm: '2026-10-10', valor: '150.00', forma: '9', status: 'E' })
+  await inserirBaixa(c, parcelaBoleto, { pagoEm: '2026-10-18', valor: '250.00', forma: '9', status: 'E' })
+
+  const d10 = await responder(c, 'financeiro', '2026-10-10')
+  assert.deepEqual(d10.fluxo_realizado.dia.entradas, { ...semEntrada, outras: 150 })
+  const d18 = await responder(c, 'financeiro', '2026-10-18')
+  assert.deepEqual(d18.fluxo_realizado.dia.entradas, { ...semEntrada, outras: 250 })
+  assert.deepEqual(d18.fluxo_realizado.mes.entradas, { ...semEntrada, pix: 100, outras: 400 })
+})
+
+test('boleto: a baixa estornada (status C) não entra em outras', async () => {
+  const parcelaBoleto = await vendaComBoleto()
+  await inserirBaixa(c, parcelaBoleto, { pagoEm: '2026-10-18', valor: '400.00', forma: '9', status: 'C' })
+
+  const d18 = await responder(c, 'financeiro', '2026-10-18')
+  assert.deepEqual(d18.fluxo_realizado.dia.entradas, semEntrada)
+})
+
+test('boleto: a parcela do boleto pendente (sem baixa) não entra nas contas a pagar de 05/10', async () => {
+  await vendaComBoleto()
+  const d5 = await responder(c, 'financeiro', '2026-10-05')
+  assert.deepEqual(d5.contas_a_pagar.total, { parcelas: 0, valor: 0 })
 })

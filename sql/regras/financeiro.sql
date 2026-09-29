@@ -52,22 +52,30 @@ saldo as (
 ),
 -- Pagamentos dos documentos do caixa, cada documento pela fonte do dia dele, com a forma traduzida.
 pagamento as (
-  select dp.dia, dp.papel, tf.valor as forma, pg.valor
+  select dp.id as documento_id, dp.fonte, dp.dia, dp.papel, tf.valor as forma, pg.sequencia, pg.valor
   from papel dp
   join kaizen.documento_pagamento pg on pg.documento_id = dp.id
   left join kaizen.traducao tf on tf.fonte = dp.fonte and tf.campo = 'forma' and tf.codigo = pg.forma
   where dp.papel in ('venda', 'troca', 'suprimento', 'suprimento_adicional', 'sangria')
     and dp.fonte = case when dp.dia <= date '2026-09-25' then 'link' else 'meuerp' end
 ),
--- Entradas: pagamentos das vendas, menos o vale (forma troca). Crédito, débito e cartão entram no dia seguinte
--- ao da venda (o recebível); dinheiro, Pix e as outras formas, no dia da venda.
+-- Entradas: pagamentos das vendas, menos o vale (forma troca) e o boleto. Crédito, débito e cartão entram no dia seguinte
+-- ao da venda (o recebível); dinheiro, Pix e as outras formas, no dia da venda. O boleto entra no dia em que é pago
+-- (decisão do dono, 29/09): cada baixa válida da parcela do mesmo pagamento (a mesma sequência), em `outras`.
 entrada as (
   select
     case when p.forma in ('credito', 'debito', 'cartao') then p.dia + 1 else p.dia end as dia,
     case when p.forma in ('dinheiro', 'pix', 'credito', 'debito', 'cartao') then p.forma else 'outras' end as forma,
     p.valor
   from pagamento p
-  where p.papel = 'venda' and p.forma is distinct from 'troca'
+  where p.papel = 'venda' and p.forma is distinct from 'troca' and p.forma is distinct from 'boleto'
+  union all
+  select b.pago_em, 'outras', b.valor
+  from pagamento p
+  join kaizen.parcela pa on pa.documento_id = p.documento_id and pa.sequencia = p.sequencia
+  join kaizen.baixa b on b.parcela_id = pa.id
+  join kaizen.traducao tb on tb.fonte = p.fonte and tb.campo = 'status_baixa' and tb.codigo = b.status
+  where p.papel = 'venda' and p.forma = 'boleto' and tb.valor = 'valida'
 ),
 -- Saídas: baixas válidas das contas a pagar, pela data da baixa e pela fonte desse dia, menos a forma troca;
 -- mais o dinheiro devolvido nas trocas, no dia da troca.

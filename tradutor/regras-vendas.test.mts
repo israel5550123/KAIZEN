@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { criarBancoKaizen } from './apoio-teste.mts'
 import type { BancoTeste } from './apoio-teste.mts'
 import type { Cliente } from './banco.mts'
-import { inserirDocumento, inserirFuncionario, inserirItem, inserirNatureza, inserirProduto } from './apoio-regras.mts'
+import { inserirDocumento, inserirFuncionario, inserirItem, inserirNatureza, inserirPagamento, inserirProduto } from './apoio-regras.mts'
 import { carregarCasosLink, criarLinkFalsa } from './link-falsa.mts'
 import type { LinkFalsa } from './link-falsa.mts'
 import { traduzirLink } from './link.mts'
@@ -324,4 +324,14 @@ test('percentual_meta com meta e sem venda no dia útil: sai 0, não vazio (ajus
   assert.deepEqual({ realizado: mes.realizado, meta: mes.meta, percentual_meta: mes.percentual_meta, ritmo: mes.ritmo }, {
     realizado: 0, meta: 1000, percentual_meta: 0, ritmo: 0,
   })
+}))
+
+test('boleto: a venda de R$ 500,00 (Pix 100 + boleto 400 pendente) conta os R$ 500,00 no vendido de 05/10, o dia da venda (decisão do dono, 29/09)', () => isolado(async () => {
+  const id = await inserirDocumento(c, { modelo: 'PA', natureza: '530', naturezaId: natureza530, pessoa: '484', criadoEm: '2026-10-05 10:00:00' })
+  await inserirItem(c, id, { produto: '60', sentido: 'S', quantidade: '1', valor: '500.00', vendedor: '1' })
+  await inserirPagamento(c, id, { forma: '2', valor: '100.00' })
+  await inserirPagamento(c, id, { forma: '9', valor: '400.00' })
+
+  const { dia } = await responder(c, 'vendas', '2026-10-05')
+  assert.equal(dia.vendido, 500)
 }))
