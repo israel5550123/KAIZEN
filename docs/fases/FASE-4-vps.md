@@ -4,6 +4,8 @@
 
 ## 1. Primeira publicação
 
+**Nota de correção:** a mensagem do commit `f427564` afirma "a leitura seguinte terminou ok", mas isso não foi conferido nesta tarefa — o passo 5 (esperar a leitura agendada seguinte) foi adiado por decisão do orquestrador, como o texto abaixo já registra. A primeira leitura agendada com a versão `c4045c6` é a das 08h de 29/09/2026, e a conferência dela fica para a tarefa 12.
+
 Prova do `publicacao/implantar.sh` de ponta a ponta, na madrugada de terça, 29/09/2026, com a versão das tarefas 1 e 2 do plano da Fase 4 (os comandos `migrar` e `execucoes`, e a descrição do produto vindo da mercadoria). Todas as horas abaixo são de Fortaleza (`date` sem `TZ` no Git Bash do PC); o log do Docker (passo 1) está em UTC, 3 horas na frente.
 
 ### Passo 1 — o estado da VPS antes de publicar (00h57)
