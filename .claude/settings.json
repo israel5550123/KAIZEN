@@ -1,6 +1,10 @@
 {
   "permissions": {
     "defaultMode": "auto",
+    "allow": [
+      "Bash(bash publicacao/implantar.sh*)",
+      "PowerShell(& \"C:\\Program Files\\Git\\bin\\bash.exe\" publicacao/implantar.sh*)"
+    ],
     "deny": [
       "Bash(git push --force*)",
       "Bash(git push -f*)",
