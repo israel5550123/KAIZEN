@@ -1,2 +1,3 @@
 - [Atribuição de commit não reprova](feedback_atribuicao_commit.md) — divergência no Co-Authored-By (Opus 5.5 do brief vs Sonnet 5 real) é observação, não achado
 - [Conferir horário Fortaleza pelo git](tecnica_conferir_horario_fortaleza.md) — comparar "quando" do registro com `git log -1 --format=%ai`; diferença de ~3h = UTC rotulado como Fortaleza
+- [Mensagem do commit vs registro](tecnica_mensagem_commit_vs_registro.md) — quando um passo é adiado no despacho, checar se a mensagem literal do commit (pré-escrita no brief) ainda é verdadeira; achado real na Fase 4 Tarefa 3
