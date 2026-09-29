@@ -136,7 +136,9 @@ async function montarLoja(): Promise<void> {
     { oid: 1848, _iddocumento: 123, _idlocalestoque: 1, datahora: '2026-09-29 10:15:00', idmercadoriavariacao: 60, qtdsaldoatual: '3.000000', qtdnovosaldo: '2.000000' },
   ])
   await falso.inserir('mercadoria_estoque', [{ oid: 1, _idempresa: 1, _idlocalestoque: 1, _idmercadoriavariacao: 60, qtdsaldo: '2.000000' }])
-  await falso.inserir('mercadoria_variacao', [{ _idmercadoriavariacao: 60, descricao: 'Produto 60', idmercadoria: 60 }])
+  // Como no ERP em 28/09: a variação 60 tem a descrição vazia, e a descrição está na mercadoria 730.
+  await falso.inserir('mercadoria', [{ _idmercadoria: 730, descricao: 'BROCA CHATA P/ MADEIRA 1" X 6" WORKER' }])
+  await falso.inserir('mercadoria_variacao', [{ _idmercadoriavariacao: 60, descricao: '', idmercadoria: 730 }])
   await falso.inserir('mercadoria_variacao_empresa', [{ _idempresa: 1, _idmercadoriavariacao: 60, flaginativo: 'F' }])
   await falso.inserir('pessoa', [{ _idpessoa: 1, nome: 'Igor', flaginativo: 'F' }])
   await falso.inserir('pessoa_funcionario', [{ _idempresa: 1, _idpessoa: 1, idusuario: 18152, tipo: 'V', flaginativo: 'F' }])
@@ -169,6 +171,13 @@ test('execução ok grava os documentos e registra ok com as contagens', async (
     { id: 1, tipo: 'hora', manual: false, resultado: 'ok', mensagem: null, contagens, avisos: [], telegram_ok: null, terminou: true },
   ])
   assert.deepEqual(enviadas, [])
+})
+
+test('a execução grava o produto 60 no Kaizen com a descrição da mercadoria 730', async () => {
+  await montarLoja()
+  assert.equal((await rodar(horaEm(TERCA, 14))).resultado, 'ok')
+  const produtos = await banco.cliente.query(`select fonte, codigo, descricao from kaizen.produto order by codigo`)
+  assert.deepEqual(produtos.rows, [{ fonte: 'meuerp', codigo: '60', descricao: 'BROCA CHATA P/ MADEIRA 1" X 6" WORKER' }])
 })
 
 test('a segunda execução sem mudança no ERP continua ok e não duplica nada', async () => {

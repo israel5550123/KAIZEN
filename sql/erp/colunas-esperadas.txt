@@ -50,6 +50,7 @@ documento_parcela_pagamento oid integer
 documento_parcela_pagamento status varchar
 documento_parcela_pagamento valpagamento numeric
 mercadoria _idmercadoria integer
+mercadoria descricao varchar
 mercadoria idgrupo integer
 mercadoria idsecao integer
 mercadoria idsubgrupo integer

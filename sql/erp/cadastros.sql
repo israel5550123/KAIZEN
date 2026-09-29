@@ -2,7 +2,7 @@ select json_build_object(
   'produtos', coalesce((
     select json_agg(json_build_object(
       'codigo', v._idmercadoriavariacao,
-      'descricao', v.descricao,
+      'descricao', m.descricao,
       'grupo', g.descricao,
       'secao', s.descricao,
       'subgrupo', sg.descricao,

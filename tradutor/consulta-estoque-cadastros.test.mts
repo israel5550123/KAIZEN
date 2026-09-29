@@ -64,15 +64,19 @@ test('estoque: sem movimentos e sem foto, as duas listas vêm vazias, e não nul
   assert.deepEqual(await lerEstoqueFalso(1847), { movimentos: [], foto: [] })
 })
 
-test('cadastros: o produto traz grupo, seção e subgrupo da mercadoria, a marca da variação e o custo em texto', async () => {
+test('cadastros: o produto traz descrição, grupo, seção e subgrupo da mercadoria, a marca da variação e o custo em texto', async () => {
   await falso.inserir('mercadoria_grupo', [{ _idgrupo: 1, descricao: 'FERRAGENS' }, { _idgrupo: 2, descricao: 'ELETRICA' }])
   await falso.inserir('mercadoria_secao', [{ _idsecao: 3, descricao: 'FERRAMENTAS' }])
   await falso.inserir('mercadoria_subgrupo', [{ _idsubgrupo: 4, descricao: 'CHAVES' }])
   await falso.inserir('mercadoria_marca', [{ _idmarca: 5, descricao: 'MARCA A' }, { _idmarca: 6, descricao: 'MARCA B' }])
-  await falso.inserir('mercadoria', [{ _idmercadoria: 10, idgrupo: 1, idsecao: 3, idsubgrupo: 4 }])
+  await falso.inserir('mercadoria', [
+    { _idmercadoria: 10, descricao: 'CHAVE PHILIPS 1/4', idgrupo: 1, idsecao: 3, idsubgrupo: 4 },
+    { _idmercadoria: 11, descricao: 'CHAVE PHILIPS 3/8', idgrupo: 1, idsecao: 3, idsubgrupo: 4 },
+  ])
+  // No ERP, cada variação tem a sua mercadoria e a descrição da variação está vazia (medido em 28/09: 1.029 de 1.029).
   await falso.inserir('mercadoria_variacao', [
-    { _idmercadoriavariacao: 2139, idmercadoria: 10, descricao: 'CHAVE PHILIPS 3/8', idmarca: 6 },
-    { _idmercadoriavariacao: 2138, idmercadoria: 10, descricao: 'CHAVE PHILIPS 1/4', idmarca: 5 },
+    { _idmercadoriavariacao: 2139, idmercadoria: 11, descricao: '', idmarca: 6 },
+    { _idmercadoriavariacao: 2138, idmercadoria: 10, descricao: '', idmarca: 5 },
   ])
   await falso.inserir('mercadoria_custo', [
     { _idempresa: 1, _idmercadoriavariacao: 2138, valcusto: '12.345600' },
@@ -91,11 +95,21 @@ test('cadastros: o produto traz grupo, seção e subgrupo da mercadoria, a marca
 })
 
 test('cadastros: produto sem linha de custo vem com custo vazio, e não zero; o que não tem linha vem vazio', async () => {
+  // Sem a linha da mercadoria 99, a descrição vem vazia: o texto da variação não é lido.
   await falso.inserir('mercadoria_variacao', [{ _idmercadoriavariacao: 60, idmercadoria: 99, descricao: 'PARAFUSO', idmarca: null }])
   await falso.inserir('mercadoria_custo', [{ _idempresa: 2, _idmercadoriavariacao: 60, valcusto: '5.000000' }])
   await falso.inserir('mercadoria_variacao_empresa', [{ _idempresa: 2, _idmercadoriavariacao: 60, flaginativo: 'T' }])
   assert.deepEqual((await lerCadastrosFalso()).produtos, [
-    { codigo: 60, descricao: 'PARAFUSO', grupo: null, secao: null, subgrupo: null, marca: null, custo: null, inativo: null },
+    { codigo: 60, descricao: null, grupo: null, secao: null, subgrupo: null, marca: null, custo: null, inativo: null },
+  ])
+})
+
+test('cadastros: a descrição do produto 60 é a da mercadoria 730, e não a da variação, vazia no ERP', async () => {
+  // O produto 60 do ERP em 28/09: variação com descrição vazia, ligada à mercadoria 730.
+  await falso.inserir('mercadoria', [{ _idmercadoria: 730, descricao: 'BROCA CHATA P/ MADEIRA 1" X 6" WORKER' }])
+  await falso.inserir('mercadoria_variacao', [{ _idmercadoriavariacao: 60, idmercadoria: 730, descricao: '' }])
+  assert.deepEqual((await lerCadastrosFalso()).produtos, [
+    { codigo: 60, descricao: 'BROCA CHATA P/ MADEIRA 1" X 6" WORKER', grupo: null, secao: null, subgrupo: null, marca: null, custo: null, inativo: null },
   ])
 })
 

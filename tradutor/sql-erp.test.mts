@@ -48,9 +48,9 @@ test('montar recusa marcador sem valor, valor sem marcador e marcador malformado
   assert.throws(() => montar('select {{Maiuscula}}', {}), /malformado/)
 })
 
-test('lerColunasEsperadas lê as 108 colunas, em ordem, sem repetição, com tipo conhecido', () => {
+test('lerColunasEsperadas lê as 109 colunas, em ordem, sem repetição, com tipo conhecido', () => {
   const colunas = lerColunasEsperadas()
-  assert.equal(colunas.length, 108)
+  assert.equal(colunas.length, 109)
   assert.deepEqual(colunas[0], { tabela: 'documento', coluna: '_iddocumento', tipo: 'integer' })
   assert.deepEqual(colunas[colunas.length - 1], { tabela: 'pessoa_funcionario', coluna: 'tipo', tipo: 'varchar' })
   for (let i = 1; i < colunas.length; i++) {
