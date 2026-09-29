@@ -16,10 +16,4 @@ inteiro com "ssh/scp solto", mesmo que nenhum `ssh` de verdade seja chamado.
 **Por quê:** o hook lê `tool_input.command` como string bruta e testa a regex
 nela; não sabe distinguir heredoc/comentário/prosa de comando.
 
-**Como aplicar:** ao escrever a mensagem de um commit (ou qualquer comando
-Bash) que precise mencionar "ssh" ou "scp" em português corrido, hifenize ou
-pontue de forma que a palavra não fique seguida de espaço logo após
-"ssh"/"scp" — por exemplo "ssh-falso" em vez de "ssh falso". Vale para a
-Tarefa 1 da Fase 4 (`publicacao/implantar.sh`, que usa `ssh` de verdade e é
-testado com um substituto) e qualquer tarefa futura que documente esse script
-no texto do commit.
+**Como aplicar:** não tente passar a palavra pela trava (nada de hífen ou disfarce): a trava é do dono. Escreva a mensagem de commit sem ela ("acesso remoto", "o programa de acesso à VPS"), e escreva textos de arquivo que precisem dela pelo editor de arquivos (Write/Edit), não por heredoc no Bash. Lição da Fase 4 em docs/LICOES.md.

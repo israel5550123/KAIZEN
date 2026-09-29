@@ -6501,7 +6501,7 @@ Expected: `migrar: nenhuma migração pendente` (ou só as migrações novas des
 Espere a leitura agendada da hora cheia seguinte (das 8h às 19h, de segunda a sábado; se a publicação for depois das 19h, a das 22h ou a das 8h do dia útil seguinte). Depois, na janela:
 
 Run: `bash publicacao/implantar.sh log 2` e `bash publicacao/implantar.sh rodar execucoes 2026-09-28`
-Expected: no log, a linha `hora ok: …, respostas=3` (ou `noite ok: …`) depois do `crond`; na tabela, todas as leituras agendadas desde o início da fase (28/09, depois das 19h28) com resultado `ok`, inclusive a primeira com a imagem de `main`.
+Expected: no log, a linha da leitura (`hora …: …, respostas=3`, ou `noite …`) depois do `crond`; na tabela, nenhuma `falha` e nenhuma `pulada` desde o início da fase (28/09, depois das 19h28), inclusive na primeira leitura com a imagem de `main`. Enquanto a migração 014 não entrar (pendência do dono, `docs/DECISOES.md`, 29/09), as leituras terminam `aviso` só pelos códigos `forma:9` e `tipo:AE`; confira os avisos da leitura nova com `rodar execucoes` e registre-os. Um aviso de outro código, uma `falha` ou uma `pulada`: pare e devolva `BLOCKED`.
 
 - [ ] **Passo 4: o registro**
 
@@ -6511,5 +6511,5 @@ Acrescente a `docs/fases/FASE-4-vps.md` a seção "3. A versão final", com a ho
 
 ```bash
 git add docs/fases/FASE-4-vps.md
-git commit -m "Fase 4: a VPS na versão final de main; a leitura seguinte terminou ok"
+git commit -m "Fase 4: a VPS na versão final de main; a leitura seguinte sem falha, com o aviso dos dois códigos novos"
 ```

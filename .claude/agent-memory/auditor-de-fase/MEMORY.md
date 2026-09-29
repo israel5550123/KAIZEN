@@ -1,1 +1,1 @@
-- [Pontos cegos das fases](pontos-cegos-das-fases.md) — restauração do dono, premissas do ERP novo, frases de composição, DECISOES incompleto, ledger gitignored; provas só com SELECT
+- [Pontos cegos das fases](pontos-cegos-das-fases.md) — DECISOES incompleto (2 fases seguidas), tarefa pós-mescla prometendo ok, restauração do dono, composições; provas só lendo, inclusive na VPS

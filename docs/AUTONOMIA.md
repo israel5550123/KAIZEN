@@ -81,7 +81,7 @@ Toda decisão que o dono *poderia* querer tomar vai para `docs/DECISOES.md`, uma
 
 **Assinatura dos commits.** O plano não escreve nome de modelo na linha `Co-Authored-By`: cada agente assina com a atribuição que o sistema lhe dá, que é a do modelo que de fato escreveu. Na Fase 3, o nome fixo no plano virou achado do revisor duas vezes (`docs/LICOES.md`).
 
-**Números do relatório.** Antes de despachar o auditor, o orquestrador despacha um verificador independente que refaz, a partir do banco, cada número do relatório da fase; número que ele não reproduz é corrigido antes da auditoria. Todo número composto é escrito com as partes que o somam ("6.009: 5.397 das vendas válidas, 35 das canceladas..."). Na Fase 3, uma composição errada escapou três vezes (`docs/LICOES.md`).
+**Números do relatório.** Antes de despachar o auditor, o orquestrador despacha um verificador independente que refaz, a partir do banco, cada número do relatório da fase; número que ele não reproduz é corrigido antes da auditoria. Todo número composto é escrito com as partes que o somam ("6.009: 5.397 das vendas válidas, 35 das canceladas..."). Na Fase 3, uma composição errada escapou três vezes (`docs/LICOES.md`). O mesmo verificador confere cada decisão que o relatório cita contra uma entrada de `docs/DECISOES.md`; e toda decisão da spec que muda o que o dono lê ganha entrada lá antes do relatório. Nas Fases 3 e 4, decisões ficaram só na spec, e o relatório dizia que estavam no `DECISOES.md` (`docs/LICOES.md`).
 
 ### Modelo de `/goal` para uma fase
 

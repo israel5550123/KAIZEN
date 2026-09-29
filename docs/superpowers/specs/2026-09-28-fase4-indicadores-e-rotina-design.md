@@ -145,7 +145,7 @@ Comandos novos em `tradutor/principal.mts` que o script usa:
 
 - Na primeira gravação, `natureza_id` é a última versão daquele código.
 - Quando o documento é regravado com o mesmo código, `natureza_id` não muda. Se o código mudou, passa à última versão do novo código.
-- Documento com código que não está em `kaizen.natureza` fica com `natureza_id` vazio. A conferência de códigos sem tradução (`tradutor/conferencias.mts`) passa a olhar também o campo `natureza` e gera o aviso de código sem tradução (decisão 7).
+- Documento com código que não está em `kaizen.natureza` fica com `natureza_id` vazio. Quando a versão desse código aparece numa leitura seguinte, o documento regravado passa a ter essa versão (a regra de não trocar vale só para quem já tinha versão; correção da revisão final). A conferência de códigos sem tradução (`tradutor/conferencias.mts`) passa a olhar também o campo `natureza` e gera o aviso de código sem tradução (decisão 7).
 
 **Link.** Uma migração grava as três naturezas da Link (decisão 9) e a tradução `natureza_pelo_modelo`: `A/true` e `T/true` → `pedido`, `P/false` → `orcamento`, `55` → `nota_entrada`. O comando da Link grava `natureza` e `natureza_id` nos documentos desses modelos. Os outros (caixa, contas) ficam sem natureza, como no ERP novo.
 
@@ -264,7 +264,7 @@ Na ordem, dentro das janelas, tudo pelo `implantar.sh`. Tudo o que for rodado na
 6. **`rodar indicadores`** com hoje e o último dia de cada mês da Link (2026-04-30, 05-31, 06-30, 07-31, 08-31 e 09-25): as três respostas de cada dia. O vendido do mês de cada um desses dias é o da tabela por mês do `FASE-3-relatorio.md` (58.825,56; 132.684,79; 140.882,93; 145.743,81; 140.782,78; 118.204,98), e a soma dos seis dá R$ 737.124,85. O a pagar de 25/09 é 94 parcelas, R$ 245.864,76 (fonte Link). Também `rodar indicadores 2026-09-26`: 81 parcelas, R$ 217.491,43 (fonte ERP novo).
 7. **`rodar teste-telegram`**: "o Telegram aceitou a mensagem".
 8. **`rodar execucoes 2026-09-28`**: as leituras agendadas desde o início da fase (28/09, depois das 19h28) com resultado `ok`.
-9. **No fim da fase, depois do merge**: `publicar` (main); esperar a leitura agendada da hora cheia seguinte; `rodar execucoes 2026-09-28` e `log 2`. Todas as leituras agendadas da fase estão `ok`, inclusive a primeira com a imagem de `main`.
+9. **No fim da fase, depois do merge**: `publicar` (main); esperar a leitura agendada da hora cheia seguinte; `rodar execucoes 2026-09-28` e `log 2`. Todas as leituras agendadas da fase estão `ok`, inclusive a primeira com a imagem de `main`. (Correção de 29/09: desde as 09h de 29/09, dois códigos novos do ERP sem tradução põem as leituras em `aviso`; até a migração 014, que é do dono, o esperado é nenhuma `falha` e nenhuma `pulada`, com `aviso` só por esses dois códigos. `docs/DECISOES.md`, 29/09.)
 
 ## 12. Testes
 

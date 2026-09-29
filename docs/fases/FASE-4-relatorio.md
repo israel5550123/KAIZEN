@@ -88,11 +88,12 @@ Antes da VPS, a fase inteira rodou no banco do PC com o ERP de verdade: a noite 
 - Cada tarefa passou por um revisor independente. Das 12 tarefas feitas antes do merge, só a primeira publicação teve correção: a mensagem do commit afirmava uma conferência que tinha sido adiada; o registro ganhou uma nota corrigindo. A 13ª (voltar a VPS para `main` e conferir a leitura seguinte) acontece depois do merge.
 - A sessão parou três vezes no limite de uso da conta. Os agentes interrompidos foram retomados de onde pararam; o implementador da tarefa 12 parou depois de publicar e carregar a Link na VPS, e o orquestrador fez os passos restantes pelo `implantar.sh` e escreveu o registro, revisado por um revisor independente.
 - **A revisão da branch inteira no meio da fase** (quatro lentes, cada achado conferido por um verificador que tentou derrubá-lo): 16 achados, 5 se sustentaram, todos pequenos. Viraram uma correção (o banco caindo no meio do cálculo passa a ser avisado como banco fora) e três testes que faltavam.
+- **O auditor de fase** (contexto limpo, 29/09 das 13h50 às 14h20): **APROVADA** (`docs/fases/FASE-4-auditoria.md`). Ele rodou a suíte (424 de 424), refez cinco números por consultas próprias (projeção de 25/09, ruptura e encalhe de 26/09, o a pagar de 25/09, a média das segundas) e leu as execuções na VPS. Pediu, antes do merge, que quatro decisões que estavam só na spec entrassem no `DECISOES.md`; entraram, e a falta virou regra no `AUTONOMIA.md` (segunda fase seguida).
 - **A revisão final** (o modelo mais capaz, lendo a branch inteira e conferindo números no banco do PC por consultas próprias): "pronto para merge", sem nada crítico ou importante. Dos 6 menores, quatro viraram correção (os itens sem vendedor passam a ser sinalizados; um documento que chega antes da sua natureza passa a ganhá-la depois; o financeiro ficou de 4 a 10 vezes mais rápido nos fins de mês (de 1,2–1,4 s para 0,13–0,31 s por dia); um texto da spec) e dois ficaram registrados (item 4 de "O que é seu" e as decisões).
 
 ## O que é seu
 
-1. **Aprovar a tradução dos dois códigos novos do ERP** (as leituras voltam a `ok`): a forma 9, "Boleto", e o tipo `AE`, o ajuste de custo que a tela de formação de preço grava. O SQL (uma migração nova, `014`) está pronto em `docs/DECISOES.md` (29/09, "Pendência para o dono"). O agente tentou gravar a migração e o sistema de permissões do Claude Code recusou, porque ela vai ao banco de produção na leitura seguinte; pela regra do ambiente, ele não contorna a recusa. Para aplicar: numa sessão, diga que aprova a migração 014; a sessão cria o arquivo com o teste, publica pelo `implantar.sh` e confere a leitura seguinte.
+1. **Aprovar a tradução dos dois códigos novos do ERP** (as leituras voltam a `ok`): a forma 9, "Boleto", e o tipo `AE`, o ajuste de custo que a tela de formação de preço grava. O SQL (uma migração nova, `014`) está pronto em `docs/DECISOES.md` (29/09, "Pendência para o dono"). O agente tentou gravar a migração e o sistema de permissões do Claude Code recusou, porque ela vai ao banco de produção na leitura seguinte; pela regra do ambiente, ele não contorna a recusa. Para aplicar: numa sessão, diga que aprova a migração 014; a sessão cria o arquivo com o teste, publica pelo `implantar.sh` e confere a leitura seguinte. Decida junto (o auditor apontou): hoje o boleto só aparece em pagamento de nota de entrada (a nota 439, R$ 2.382,18), que não entra no dinheiro que entrou; se um dia uma **venda** for paga em boleto, a regra do financeiro põe o valor nas entradas do dia da venda, e não no dia em que o boleto é pago.
 2. **Digitar as metas de outubro e, quando quiser a folga, o saldo do banco**, até o app existir. No Postgres da VPS (passo 14 do roteiro `publicacao/README.md`, sem a opção só de leitura), trocando os valores:
    - meta da loja: `insert into kaizen.meta (mes, valor) values ('2026-10-01', 150000);`
    - meta de um vendedor (o código do ERP: Igor 1, Daniele 999005): `insert into kaizen.meta (mes, vendedor, valor) values ('2026-10-01', '1', 70000);`
@@ -114,7 +115,11 @@ Estão em `docs/DECISOES.md`, seção "Fase 4", com o porquê e o que muda se es
 - o estoque só a partir de 26/09 (a Link não guardava histórico; reconstruí-lo seria inventar);
 - a soma dos vendedores com "outros" pode diferir do total do mês em até 1 centavo por parte, porque cada parte é arredondada por si (em 25/09, 117.541,26 contra 117.541,25), em vez de calcular "outros" por diferença, que poderia mostrar "outros: −R$ 0,01";
 - a quebra de 28/09 com os turnos de teste mantida, porque é o que o ERP mostra;
-- a suíte de testes de ~11 minutos aceita.
+- a suíte de testes de ~11 minutos aceita;
+- a Link com três naturezas próprias (pedido, orçamento, nota de entrada), com o comportamento que ela tinha, em vez das naturezas do ERP novo;
+- a pergunta 2 em contagem de produtos por classe, e não em reais (as notas da Link não têm valor);
+- a parcela excluída no ERP deixa de contar também nos dias passados: o a pagar de um dia já calculado pode mudar (26/09 foi de 81 para 79 parcelas depois das duas exclusões de hoje), porque o ERP não guarda quando a parcela foi excluída;
+- a natureza que muda no ERP é avisada no resumo das 22h, e não na hora.
 
 ## Limites conhecidos
 
