@@ -52,6 +52,8 @@ export function textoFalha(horaExecucao: number, motivo: MotivoFalha, horaUltima
       return `Kaizen: o ERP mudou por dentro, e o Kaizen parou para não gravar errado. Abra uma sessão com o Claude e cole esta mensagem: ${detalhe}`
     case 'banco_fora':
       return `Kaizen: a leitura das ${h}h falhou — o banco do Kaizen não respondeu.`
+    case 'indicadores':
+      return `Kaizen: a leitura das ${h}h terminou, mas o cálculo dos indicadores falhou — ${detalhe}. ${continuam}Abra uma sessão com o Claude e cole esta mensagem.`
     case 'outra':
       return `Kaizen: a leitura das ${h}h falhou — ${detalhe}. ${continuam}Abra uma sessão com o Claude e cole esta mensagem.`
   }

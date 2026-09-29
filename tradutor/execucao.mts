@@ -7,6 +7,7 @@ import { avisosDeFaltas, codigosSemTraducao, estoqueDiverge, fechamentosComResto
 import { FOLGA_OID, PRAZO_MIN, TAMANHO_FATIA, TRAVA } from './constantes.mts'
 import { ErroErp } from './erp.mts'
 import type { Erp } from './erp.mts'
+import { calcularRespostas, diasDaHistoria } from './indicadores.mts'
 import { emFortaleza, horariosFaltando, inicioDaJanela, proximoHorario, rotuloHora } from './janela.mts'
 import { contarDocumentosErp, lerCortes, maiorOid, oidsComParcelaAberta } from './kaizen.mts'
 import {
@@ -270,6 +271,15 @@ async function rodar(cliente: Cliente, opcoes: Opcoes, dep: Dependencias, estado
     estado.avisos.push(...(await compararTotais(cliente, totais, maiorVivo, movimentoAte)))
   }
 
+  // Depois das conferências, as três respostas: a hora calcula hoje; a noite, todos os dias desde 01/04/2026.
+  const hoje = emFortaleza(agora).data
+  let respostas: number
+  try {
+    respostas = await calcularRespostas(cliente, noite ? diasDaHistoria(hoje) : [hoje])
+  } catch (erro) {
+    throw new ErroKaizen({ tipo: 'indicadores', detalhe: mensagemDe(erro) })
+  }
+
   const contagens: Record<string, number> = {
     documentos_lidos: carga.lidos.lidos,
     documentos_novos: carga.lidos.novos,
@@ -281,6 +291,7 @@ async function rodar(cliente: Cliente, opcoes: Opcoes, dep: Dependencias, estado
     funcionarios: carga.cadastros.funcionarios,
     fornecedores: carga.cadastros.fornecedores,
     avisos: estado.avisos.length,
+    respostas,
   }
   const resultado: Resultado = estado.avisos.length > 0 ? 'aviso' : 'ok'
   await registrarFim(cliente, id, { resultado, mensagem: null, contagens, avisos: estado.avisos })
@@ -312,8 +323,9 @@ async function falhar(cliente: Cliente, opcoes: Opcoes, dep: Dependencias, estad
     }
   }
   let horaBoa: number | null = null
-  if (estado.gravou) {
+  if (estado.gravou && motivo.tipo !== 'indicadores') {
     // A carga desta execução foi gravada e a falha veio depois (a comparação da noite): os dados são os desta hora.
+    // Se o que falhou foi o cálculo, as respostas continuam as da última execução boa.
     horaBoa = emFortaleza(agora).hora
   } else {
     try {

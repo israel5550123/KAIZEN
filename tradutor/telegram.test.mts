@@ -102,6 +102,18 @@ test('textoFalha de outro motivo, com e sem a hora da última leitura boa', () =
   )
 })
 
+test('textoFalha do cálculo dos indicadores: a leitura terminou, com e sem a hora da última leitura boa', () => {
+  const motivo = { tipo: 'indicadores', detalhe: 'division by zero' } as const
+  assert.equal(
+    textoFalha(14, motivo, 13, 'às 15h'),
+    'Kaizen: a leitura das 14h terminou, mas o cálculo dos indicadores falhou — division by zero. Os dados do Kaizen continuam os das 13h. Abra uma sessão com o Claude e cole esta mensagem.',
+  )
+  assert.equal(
+    textoFalha(22, motivo, null, 'em 30/09 às 8h'),
+    'Kaizen: a leitura das 22h terminou, mas o cálculo dos indicadores falhou — division by zero. Abra uma sessão com o Claude e cole esta mensagem.',
+  )
+})
+
 test('textoFalha com um detalhe enorme cabe no Telegram e mantém o que fazer no fim', () => {
   const detalhe = 'x'.repeat(10_000)
   const outra = textoFalha(14, { tipo: 'outra', detalhe }, 13, 'às 15h')

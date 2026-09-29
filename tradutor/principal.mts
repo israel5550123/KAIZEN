@@ -6,12 +6,13 @@ import { PRAZO_MIN } from './constantes.mts'
 import { criarErp } from './erp.mts'
 import { executar, registrarEstouro } from './execucao.mts'
 import type { Dependencias, Saida } from './execucao.mts'
+import { calcularRespostas, diasDaHistoria, linhasDoDia } from './indicadores.mts'
 import { emFortaleza, somarDias } from './janela.mts'
 import { criarEnvioTelegram, textoTeste } from './telegram.mts'
 import { ErroKaizen } from './tipos.mts'
 import type { TipoExecucao } from './tipos.mts'
 
-const USO = 'uso: node tradutor/principal.mts hora|noite [--manual] | teste-telegram | conferencia [produto ...] | migrar | execucoes [AAAA-MM-DD]'
+const USO = 'uso: node tradutor/principal.mts hora|noite [--manual] | teste-telegram | conferencia [produto ...] | migrar | execucoes [AAAA-MM-DD] | indicadores AAAA-MM-DD...'
 
 export async function comPrazo<T>(fazer: () => Promise<T>, prazoMs: number, aoEstourar: () => Promise<void>): Promise<T> {
   return new Promise<T>((resolver, rejeitar) => {
@@ -81,6 +82,28 @@ export async function principal(argumentos: string[], env: Record<string, string
     try {
       for (const linha of await listarExecucoes(cliente, desde)) console.log(linha)
       return 0
+    } finally {
+      await cliente.end().catch(() => undefined)
+    }
+  }
+  if (comando === 'indicadores' && resto.length > 0 && resto.every((dia) => /^\d{4}-\d{2}-\d{2}$/.test(dia))) {
+    // Só os dias de 01/04/2026 até hoje, em Fortaleza; fora disso, nada é calculado. Não registra execução nem manda Telegram.
+    const historia = diasDaHistoria(emFortaleza(Date.now()).data)
+    const fora = resto.filter((dia) => !historia.includes(dia))
+    if (fora.length > 0) {
+      console.log(`indicadores falha: fora da história (de 01/04/2026 até hoje): ${fora.join(', ')}; nada foi calculado`)
+      return 1
+    }
+    const cliente = await conectar(lerConfig(env).kaizenUrl)
+    try {
+      await calcularRespostas(cliente, resto)
+      for (const dia of resto) {
+        for (const linha of await linhasDoDia(cliente, dia)) console.log(linha)
+      }
+      return 0
+    } catch (erro) {
+      console.log(`indicadores falha: ${erro instanceof Error ? erro.message : String(erro)}`)
+      return 1
     } finally {
       await cliente.end().catch(() => undefined)
     }

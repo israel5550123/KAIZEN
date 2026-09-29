@@ -159,7 +159,7 @@ test('execução ok grava os documentos e registra ok com as contagens', async (
 
   const contagens = {
     documentos_lidos: 2, documentos_novos: 2, apagados: 0, movimentos: 1, foto: 1,
-    produtos: 1, pessoas: 1, funcionarios: 1, fornecedores: 0, avisos: 0,
+    produtos: 1, pessoas: 1, funcionarios: 1, fornecedores: 0, avisos: 0, respostas: 3,
   }
   assert.deepEqual(saida, { resultado: 'ok', avisos: [], mensagem: null, contagens })
   const docs = await banco.cliente.query(`select origem_id, codigo, modelo from kaizen.documento order by origem_id`)

@@ -105,7 +105,7 @@ test('o comando "hora" lê o ERP pela API, grava no banco da KAIZEN_URL, imprime
     assert.equal(await principal(['hora'], ambiente, fetchFalso), 1)
 
     assert.deepEqual(impressos, [
-      'hora ok: documentos_lidos=1, documentos_novos=1, apagados=0, movimentos=0, foto=0, produtos=0, pessoas=0, funcionarios=0, fornecedores=0, avisos=0',
+      'hora ok: documentos_lidos=1, documentos_novos=1, apagados=0, movimentos=0, foto=0, produtos=0, pessoas=0, funcionarios=0, fornecedores=0, avisos=0, respostas=3',
       'hora falha: sem contagens — o ERP respondeu com erro (HTTP 502)',
     ])
     const gravados = await banco.cliente.query(`select origem_id, modelo from kaizen.documento`)

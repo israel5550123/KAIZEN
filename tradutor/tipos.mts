@@ -10,7 +10,7 @@ export type TipoAviso =
   | 'codigo_sem_traducao' | 'natureza_mudou' | 'documento_apagado' | 'fechamento_com_resto' | 'estoque_diverge'
   | 'movimento_sumiu' | 'total_diferente' | 'execucao_faltou' | 'execucao_pulada'
 export type Aviso = { tipo: TipoAviso; chave: string; texto: string }
-export type TipoFalha = 'erp_fora' | 'token' | 'estrutura' | 'banco_fora' | 'outra'
+export type TipoFalha = 'erp_fora' | 'token' | 'estrutura' | 'banco_fora' | 'indicadores' | 'outra'
 export type MotivoFalha = { tipo: TipoFalha; detalhe: string }
 export class ErroKaizen extends Error {
   motivo: MotivoFalha
