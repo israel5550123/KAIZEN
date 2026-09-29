@@ -384,6 +384,31 @@ test('fechamentos do dia: quebra = informado − calculado, por forma e por fech
   ])
 })
 
+// Correção da revisão (item 4): fechamento da Link (fonte pela decisão 16), com as formas cruas dela.
+test('fechamento da Link em 15/09: dinheiro, pix e cartao entram na quebra; a nota promissória (troca) fica fora; um FC do ERP novo no mesmo dia não aparece', async () => {
+  const f = await inserirDocumento(c, { fonte: 'link', modelo: 'caixa_fechamento', status: null, codigo: '77', criadoEm: '2026-09-15 18:00:00' })
+  await inserirConferencia(c, f, { forma: 'dinheiro', calculado: '500.00', informado: '480.00' })
+  await inserirConferencia(c, f, { forma: 'pix', calculado: '100.00', informado: '110.00' })
+  await inserirConferencia(c, f, { forma: 'cartao', calculado: '200.00', informado: '200.00' })
+  await inserirConferencia(c, f, { forma: 'nota_promissoria', calculado: '50.00', informado: '0.00' }) // troca: fora
+  // Um FC do ERP novo no mesmo dia: a fonte de 15/09 (antes de 26/09) é a Link, então esse fechamento não aparece.
+  const fcNovo = await inserirDocumento(c, { modelo: 'FC', codigo: '900', criadoEm: '2026-09-15 19:00:00' })
+  await inserirConferencia(c, fcNovo, { forma: '1', calculado: '10.00', informado: '10.00' })
+
+  const { caixa } = await responder(c, 'financeiro', '2026-09-15')
+  assert.deepEqual(caixa.fechamentos, [
+    {
+      codigo: '77',
+      quebra: -10, // -20,00 (dinheiro) + 10,00 (pix) + 0 (cartão)
+      formas: [
+        { forma: 'cartao', calculado: 200, informado: 200, quebra: 0 },
+        { forma: 'dinheiro', calculado: 500, informado: 480, quebra: -20 },
+        { forma: 'pix', calculado: 100, informado: 110, quebra: 10 },
+      ],
+    },
+  ])
+})
+
 test('um mês que começa na Link e termina no ERP novo soma as entradas e as saídas das duas fontes', async () => {
   // Link: pix em 02/09; débito em 25/09, que entra em 26/09; uma baixa em 10/09.
   await venda('2026-09-02 10:00:00', [['Pix', '1000.00']], 'link')

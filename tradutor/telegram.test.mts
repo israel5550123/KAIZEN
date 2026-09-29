@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import {
   criarEnvioTelegram, textoFalha, textoVolta, textoTeste, deveAvisarFalha, deveAvisarVolta, textoResumo,
 } from './telegram.mts'
+import { avisoNaturezaMudou } from './avisos.mts'
 import type { Anterior } from './registro.mts'
 import type { Aviso, Resultado, TipoAviso } from './tipos.mts'
 
@@ -205,6 +206,19 @@ test('textoResumo agrupa por tipo, na ordem dos tipos, com título, contagem e o
   })
 })
 
+// Correção da revisão (item 2): o aviso natureza_mudou tem de aparecer no resumo, com o título do grupo (avisos.mts).
+test('textoResumo com o aviso natureza_mudou traz o título do grupo e a linha do aviso', () => {
+  const av = avisoNaturezaMudou('530', 'PEDIDO DE VENDA', '6', ['mexe no financeiro: sim → não'])
+  assert.deepEqual(textoResumo([av], [], '2026-09-29'), {
+    texto: [
+      'Kaizen — resumo de 29/09:',
+      'Naturezas de operação que mudaram no ERP (1) — os documentos novos já seguem a configuração nova; confira se foi de propósito:',
+      '- A natureza 530 (PEDIDO DE VENDA) mudou no ERP: mexe no financeiro: sim → não.',
+    ].join('\n'),
+    chaves: ['natureza:530:6'],
+  })
+})
+
 test('textoResumo mostra até 5 exemplos por tipo e diz quantos ficaram de fora', () => {
   const avisos = [1, 2, 3, 4, 5, 6, 7, 8].map((n) =>
     aviso('estoque_diverge', `estoque:${n}:virada:1`, `o saldo do produto ${n} no ERP (1) não bate com os movimentos (0)`))
@@ -267,11 +281,12 @@ test('textoResumo só com avisos já informados traz o cabeçalho e a linha dos 
 })
 
 test('textoResumo passa de 4.000 caracteres: corta aviso por aviso, diz quantos ficaram de fora e só devolve as chaves que saíram', () => {
+  // Os 9 tipos de ORDEM_DOS_TIPOS (correção da revisão, item 2: falta aqui apagava natureza_mudou do resumo sem pegar).
   const tipos: TipoAviso[] = [
-    'codigo_sem_traducao', 'documento_apagado', 'fechamento_com_resto', 'estoque_diverge',
+    'codigo_sem_traducao', 'natureza_mudou', 'documento_apagado', 'fechamento_com_resto', 'estoque_diverge',
     'movimento_sumiu', 'total_diferente', 'execucao_faltou', 'execucao_pulada',
   ]
-  // 48 avisos novos de 150 caracteres, 6 de cada tipo, e um já informado no resumo anterior.
+  // 54 avisos novos de 150 caracteres, 6 de cada tipo, e um já informado no resumo anterior.
   const jaInformado = aviso('codigo_sem_traducao', 'codigo:tipo:AM', 'o código "AM" de tipo apareceu 1 vez(es) e não tem tradução no Kaizen')
   const avisos = [jaInformado, ...tipos.flatMap((tipo) =>
     [1, 2, 3, 4, 5, 6].map((n) => aviso(tipo, `${tipo}:${n}`, `aviso ${n} de ${tipo} `.padEnd(150, '.'))))]
@@ -279,16 +294,16 @@ test('textoResumo passa de 4.000 caracteres: corta aviso por aviso, diz quantos 
   assert.ok(texto !== null)
   assert.ok(texto.length <= 4000, `tem ${texto.length} caracteres`)
   assert.ok(texto.startsWith('Kaizen — resumo de 29/09:\nCódigos novos no ERP (6) — '))
-  // Cabem os 4 primeiros tipos inteiros (24 avisos) e 2 dos movimentos sumidos: ficam de fora 22 dos 48.
-  assert.ok(texto.endsWith('\n- aviso 2 de movimento_sumiu '.padEnd(153, '.')
-    + '\ne mais 22 avisos (o detalhe está no registro da execução)\nContinuam 1 avisos já informados.'), texto.slice(-300))
+  // Cabem os 4 primeiros tipos inteiros (24 avisos) e 2 do estoque que não bate: ficam de fora 28 dos 54.
+  assert.ok(texto.endsWith('\n- aviso 2 de estoque_diverge '.padEnd(153, '.')
+    + '\ne mais 28 avisos (o detalhe está no registro da execução)\nContinuam 1 avisos já informados.'), texto.slice(-300))
   // nenhuma linha sai pela metade: toda linha de aviso tem os 150 caracteres
   for (const linha of texto.split('\n').filter((l) => l.startsWith('- aviso'))) assert.equal(linha.length, 152)
   // As chaves cortadas não entram: no próximo resumo esses avisos, se continuarem, saem por inteiro.
   assert.deepEqual(chaves, [
     'codigo:tipo:AM',
     ...tipos.slice(0, 4).flatMap((tipo) => [1, 2, 3, 4, 5, 6].map((n) => `${tipo}:${n}`)),
-    'movimento_sumiu:1', 'movimento_sumiu:2',
+    'estoque_diverge:1', 'estoque_diverge:2',
   ])
-  assert.ok(!texto.includes('aviso 1 de execucao_faltou'))
+  assert.ok(!texto.includes('aviso 1 de movimento_sumiu'))
 })

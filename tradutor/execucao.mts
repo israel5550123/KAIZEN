@@ -277,7 +277,10 @@ async function rodar(cliente: Cliente, opcoes: Opcoes, dep: Dependencias, estado
   try {
     respostas = await calcularRespostas(cliente, noite ? diasDaHistoria(hoje) : [hoje])
   } catch (erro) {
-    throw new ErroKaizen({ tipo: 'indicadores', detalhe: mensagemDe(erro) })
+    // A queda do banco durante o cálculo continua banco_fora (motivoDe já reconhece); só o que sobra vira indicadores.
+    const motivo = motivoDe(erro)
+    if (motivo.tipo !== 'outra') throw erro
+    throw new ErroKaizen({ tipo: 'indicadores', detalhe: motivo.detalhe })
   }
 
   const contagens: Record<string, number> = {

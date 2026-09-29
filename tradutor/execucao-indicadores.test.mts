@@ -123,6 +123,42 @@ test('a hora das 14h com o cálculo falhando depois da carga: falha com o detalh
   assert.deepEqual(enviadas.slice(1), ['Kaizen: voltou a funcionar às 15h.'])
 })
 
+// Correção da revisão (item 1): a queda do banco durante o cálculo continua banco_fora, não vira indicadores.
+// Sem seam no código de produção: um gatilho em kaizen.resposta levanta o erro real do Postgres para uma queda
+// administrativa (57P01), que motivoDe já reconhece (tradutor/execucao.test.mts, "motivoDe classifica cada erro").
+test('a hora das 14h com o cálculo derrubado por um 57P01 real do Postgres: o motivo é banco_fora, não indicadores', async () => {
+  await montarAbertura()
+  const as13 = await rodar(horaEm('2026-09-29', 13))
+  assert.equal(as13.resultado, 'ok')
+
+  await banco.cliente.query(`
+    create function kaizen.teste_derrubar_57p01() returns trigger language plpgsql as $$
+    begin
+      raise exception 'terminating connection due to administrator command' using errcode = '57P01';
+    end
+    $$;
+    create trigger teste_derrubar_57p01 before insert on kaizen.resposta
+      for each row execute function kaizen.teste_derrubar_57p01();
+  `)
+  let as14: Saida
+  try {
+    as14 = await rodar(horaEm('2026-09-29', 14))
+  } finally {
+    await banco.cliente.query(`
+      drop trigger teste_derrubar_57p01 on kaizen.resposta;
+      drop function kaizen.teste_derrubar_57p01();
+    `)
+  }
+
+  const detalhe = 'terminating connection due to administrator command'
+  assert.equal(as14.resultado, 'falha')
+  assert.equal(as14.mensagem, detalhe)
+  // O texto é o de banco fora, não o de indicadores (que falaria em "cálculo dos indicadores falhou").
+  assert.deepEqual(enviadas, ['Kaizen: a leitura das 14h falhou — o banco do Kaizen não respondeu.'])
+  const linha = await banco.cliente.query(`select resultado, mensagem, telegram_ok from kaizen.execucao where id = 2`)
+  assert.deepEqual(linha.rows, [{ resultado: 'falha', mensagem: detalhe, telegram_ok: true }])
+})
+
 test('a hora num dia sem venda até aquele momento termina ok e grava as três respostas de hoje, só de hoje', async () => {
   await montarAbertura()
   const saida = await rodar(horaEm('2026-09-29', 8))

@@ -272,17 +272,34 @@ test('encalhe e produto novo em 28/09/2026: o 1708 (só ajuste de custo) é enca
   await inserirVirada(c, '1435', '9')
   await inserirProduto(c, { codigo: '1435', custo: '7.00' })
   await documento('vendaLink', '2026-07-15', [['1435', 'S', '1', '30.00']])
+  // Correção da revisão (item 3): a "véspera" da entrada vem do movimento (origem_id::bigint), não da virada.
+  // 1440: virada 10, mas dois movimentos antes da entrada (28/09), de origem_id '9999' (saldo 0) e '10000' (saldo 4).
+  // Por bigint o '10000' vence: a véspera é 4, positiva, não é novo; sem venda no período, é encalhe. Como texto,
+  // '9999' > '10000' e venceria (saldo 0): sairia novo, e não encalhe.
+  await inserirVirada(c, '1440', '10')
+  await inserirProduto(c, { codigo: '1440', custo: '2.50' })
+  await inserirMovimento(c, { produto: '1440', momento: '2026-09-27 09:00:00', saldoAntes: '10', saldoDepois: '0', origemId: '9999' })
+  await inserirMovimento(c, { produto: '1440', momento: '2026-09-27 15:00:00', saldoAntes: '10', saldoDepois: '4', origemId: '10000' })
+  await documento('nota', '2026-09-28', [['1440', 'E', '5', '0']])
+  // 1441: virada 10, mas um movimento de ajuste com saldo 0 antes da entrada (28/09): a véspera é 0 (não a virada),
+  // então é novo, mesmo com o estoque positivo (5) que a entrada deixa depois. Pela virada (10) não seria novo.
+  await inserirVirada(c, '1441', '10')
+  await inserirProduto(c, { codigo: '1441', custo: '1.00' })
+  await inserirMovimento(c, { produto: '1441', momento: '2026-09-27 09:00:00', saldoAntes: '10', saldoDepois: '0', origemId: '8000' })
+  await documento('nota', '2026-09-28', [['1441', 'E', '5', '0']])
+  await inserirMovimento(c, { produto: '1441', momento: '2026-09-28 10:00:00', saldoAntes: '0', saldoDepois: '5', origemId: '8001' })
 
   const r = await compras('2026-09-28')
   assert.deepEqual(campo(r, 'encalhe'), {
     '1435': false, '1708': true, '5336': false, '1437': true, '1438': false, '1429': true, '1430': true, '1431': false,
+    '1440': true, '1441': false,
   })
-  // 164 × 8,29 + 10 × 2,5006 + 4 × (sem custo) + 8 × 3,333333 = 1.359,56 + 25,006 + 26,666664 = 1.411,232664; arredonda
-  // só o total (produto a produto, 1.359,56 + 25,01 + 26,67 = 1.411,24).
-  assert.deepEqual(r.encalhe, { produtos: 4, valor: 1411.23 })
-  // Compras do período (01/07 a 28/09): 5336, 1437, 1438, 1429 (Link), 1430 e 1431 (ERP novo), nenhum com venda no
-  // período. O ajuste de custo do 1708 não é compra.
-  assert.deepEqual(r.compras_por_classe, { A: 0, B: 0, C: 0, sem_venda: 6 })
+  // 164 × 8,29 + 10 × 2,5006 + 4 × (sem custo) + 8 × 3,333333 + 4 × 2,50 = 1.359,56 + 25,006 + 26,666664 + 10,00 =
+  // 1.421,232664; arredonda só o total (produto a produto, 1.359,56 + 25,01 + 26,67 + 10,00 = 1.421,24).
+  assert.deepEqual(r.encalhe, { produtos: 5, valor: 1421.23 })
+  // Compras do período (01/07 a 28/09): 5336, 1437, 1438, 1429 (Link), 1430, 1431, 1440 e 1441 (ERP novo), nenhum
+  // com venda no período. O ajuste de custo do 1708 não é compra.
+  assert.deepEqual(r.compras_por_classe, { A: 0, B: 0, C: 0, sem_venda: 8 })
 })
 
 test('ruptura, estoque negativo e custo zero em 28/09/2026', async () => {
