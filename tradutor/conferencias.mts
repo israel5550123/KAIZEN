@@ -5,7 +5,8 @@ import {
   avisoCodigoSemTraducao, avisoEstoqueDiverge, avisoExecucaoFaltou, avisoFechamentoComResto,
 } from './avisos.mts'
 
-// Cada código cru do ERP novo e o campo de kaizen.traducao que o explica.
+// Cada código cru do ERP novo e o campo de kaizen.traducao que o explica; o código da natureza é explicado por
+// kaizen.natureza. Natureza vazia (documento sem natureza no ERP, ou gravado antes da Fase 4) não é código.
 const SQL_CODIGOS_SEM_TRADUCAO = `
 with documento_erp as (
   select id from kaizen.documento where fonte = 'meuerp'
@@ -18,6 +19,8 @@ achado (campo, codigo) as (
   select 'movimento', d.movimento from kaizen.documento d where d.fonte = 'meuerp'
   union all
   select 'financeiro', d.financeiro from kaizen.documento d where d.fonte = 'meuerp'
+  union all
+  select 'natureza', d.natureza from kaizen.documento d where d.fonte = 'meuerp'
   union all
   select 'sentido', i.sentido from kaizen.documento_item i join documento_erp d on d.id = i.documento_id
   union all
@@ -36,10 +39,16 @@ achado (campo, codigo) as (
 select c.campo, c.codigo, count(*)::int as quantidade
 from achado c
 where c.codigo is not null
-  and not exists (
-    select 1 from kaizen.traducao t
-    where t.fonte = 'meuerp' and t.campo = c.campo and t.codigo = c.codigo
-  )
+  and case c.campo
+    when 'natureza' then not exists (
+      select 1 from kaizen.natureza n
+      where n.fonte = 'meuerp' and n.codigo = c.codigo
+    )
+    else not exists (
+      select 1 from kaizen.traducao t
+      where t.fonte = 'meuerp' and t.campo = c.campo and t.codigo = c.codigo
+    )
+  end
 group by c.campo, c.codigo
 order by c.campo collate "C", c.codigo collate "C"`
 

@@ -10,7 +10,7 @@ const LIMITE = 4000
 const DETALHE_MAXIMO = 3000
 
 const ORDEM_DOS_TIPOS: TipoAviso[] = [
-  'codigo_sem_traducao', 'documento_apagado', 'fechamento_com_resto', 'estoque_diverge',
+  'codigo_sem_traducao', 'natureza_mudou', 'documento_apagado', 'fechamento_com_resto', 'estoque_diverge',
   'movimento_sumiu', 'total_diferente', 'execucao_faltou', 'execucao_pulada',
 ]
 

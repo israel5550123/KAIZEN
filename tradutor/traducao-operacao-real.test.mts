@@ -10,9 +10,10 @@ import { codigosSemTraducao } from './conferencias.mts'
 
 // A migração 009 traduz os 7 códigos que a primeira leitura da operação real (28/09/2026, 17h23) achou sem
 // tradução (docs/superpowers/plans/2026-09-28-fase2-conferencia-codigos.md). O banco recebe só até a 008: o
-// primeiro teste precisa ver os 7 avisos antes da 009, e só ela os resolve.
+// primeiro teste precisa ver os 7 avisos antes da 009, e só ela os resolve. A 010 entra junto desde o começo: a
+// conferência de códigos lê a natureza do documento, que só existe a partir dela.
 const ATE_A_008 = readdirSync(PASTA_MIGRACOES)
-  .filter((nome) => nome.endsWith('.sql') && nome <= '008_de_para_link_resposta_dono.sql')
+  .filter((nome) => nome.endsWith('.sql') && (nome <= '008_de_para_link_resposta_dono.sql' || nome === '010_natureza.sql'))
   .sort()
 
 let banco: BancoTeste

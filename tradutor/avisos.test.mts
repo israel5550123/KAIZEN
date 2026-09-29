@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import {
   formatarReais, diaMes, avisoCodigoSemTraducao, avisoDocumentoApagado, avisoFechamentoComResto,
   avisoEstoqueDiverge, avisoMovimentoSumiu, avisoTotalDiferente, avisoExecucaoFaltou, avisoExecucaoPulada,
-  TITULOS, O_QUE_FAZER,
+  avisoNaturezaMudou, TITULOS, O_QUE_FAZER,
 } from './avisos.mts'
 
 test('formatarReais escreve reais com vírgula e ponto de milhar, a partir do texto do Postgres', () => {
@@ -57,6 +57,19 @@ test('avisoCodigoSemTraducao: a chave não leva a contagem, para o mesmo código
     tipo: 'codigo_sem_traducao',
     chave: 'codigo:tipo:AM',
     texto: 'o código "AM" de tipo apareceu 3 vez(es) e não tem tradução no Kaizen',
+  })
+})
+
+test('avisoNaturezaMudou junta as mudanças com "; ", leva a versão nova na chave e deixa de fora a descrição vazia', () => {
+  assert.deepEqual(avisoNaturezaMudou('530', 'PEDIDO DE VENDA', '6', ['mexe no financeiro: sim → não']), {
+    tipo: 'natureza_mudou',
+    chave: 'natureza:530:6',
+    texto: 'A natureza 530 (PEDIDO DE VENDA) mudou no ERP: mexe no financeiro: sim → não.',
+  })
+  assert.deepEqual(avisoNaturezaMudou('77', null, '12', ['categoria: V → C', 'mexe no estoque: não → sim']), {
+    tipo: 'natureza_mudou',
+    chave: 'natureza:77:12',
+    texto: 'A natureza 77 mudou no ERP: categoria: V → C; mexe no estoque: não → sim.',
   })
 })
 
@@ -133,6 +146,7 @@ test('avisoExecucaoPulada leva na chave a execução que segurava a trava', () =
 test('TITULOS e O_QUE_FAZER têm um texto para cada tipo de aviso, na ordem do resumo', () => {
   assert.deepEqual(Object.entries(TITULOS), [
     ['codigo_sem_traducao', 'Códigos novos no ERP'],
+    ['natureza_mudou', 'Naturezas de operação que mudaram no ERP'],
     ['documento_apagado', 'Documentos apagados no ERP'],
     ['fechamento_com_resto', 'Fechamentos com linha de teste'],
     ['estoque_diverge', 'Estoque que não bate'],
@@ -144,6 +158,7 @@ test('TITULOS e O_QUE_FAZER têm um texto para cada tipo de aviso, na ordem do r
   const leve = 'leve este resumo à próxima sessão com o Claude'
   assert.deepEqual(Object.entries(O_QUE_FAZER), [
     ['codigo_sem_traducao', leve],
+    ['natureza_mudou', 'os documentos novos já seguem a configuração nova; confira se foi de propósito'],
     ['documento_apagado', 'pergunte à gerente ou ao suporte'],
     ['fechamento_com_resto', 'a quebra desse turno não é confiável'],
     ['estoque_diverge', leve],

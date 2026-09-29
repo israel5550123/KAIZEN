@@ -9,7 +9,7 @@ order by e->>'oid', x.parte desc;
 
 insert into kaizen.documento (
   fonte, origem_tabela, origem_id, codigo, modelo, status, movimento, financeiro,
-  criado_em, fechado_em, pessoa, turno_caixa, turno_usuario, turno_numero
+  criado_em, fechado_em, pessoa, turno_caixa, turno_usuario, turno_numero, natureza, natureza_id
 )
 select
   'meuerp', 'documento', l.origem_id,
@@ -17,7 +17,10 @@ select
   (l.j->>'criado_em')::timestamp, (l.j->>'fechado_em')::timestamp, l.j->>'pessoa',
   nullif((l.j->>'turno_caixa')::integer, 0),
   nullif((l.j->>'turno_usuario')::integer, 0),
-  nullif((l.j->>'turno_numero')::integer, 0)
+  nullif((l.j->>'turno_numero')::integer, 0),
+  l.j->>'natureza',
+  -- a última versão do código, gravada nesta mesma transação antes dos documentos; sem versão, fica vazia
+  (select max(n.id) from kaizen.natureza n where n.fonte = 'meuerp' and n.codigo = l.j->>'natureza')
 from pg_temp.doc_lido l
 order by l.origem_id::bigint
 on conflict (fonte, origem_tabela, origem_id) do update set
@@ -31,7 +34,13 @@ on conflict (fonte, origem_tabela, origem_id) do update set
   pessoa = excluded.pessoa,
   turno_caixa = excluded.turno_caixa,
   turno_usuario = excluded.turno_usuario,
-  turno_numero = excluded.turno_numero;
+  turno_numero = excluded.turno_numero,
+  natureza = excluded.natureza,
+  -- a versão da natureza é a da primeira gravação com aquele código: regravar com o mesmo código não troca
+  natureza_id = case
+    when documento.natureza is not distinct from excluded.natureza then documento.natureza_id
+    else excluded.natureza_id
+  end;
 
 drop table if exists pg_temp.doc_alvo;
 

@@ -40,7 +40,7 @@ test('cria uma tabela por tabela da lista, só com as colunas da lista, todas ac
        order by table_name::text collate "C", column_name::text collate "C"`,
     )
     const esperadas = lerColunasEsperadas().map((c) => ({ tabela: c.tabela, coluna: c.coluna, tipo: TIPO_NO_POSTGRES[c.tipo], nulo: 'YES' }))
-    assert.equal(r.rows.length, 109)
+    assert.equal(r.rows.length, 119)
     assert.deepEqual(r.rows, esperadas)
     const restricoes = await falso.cliente.query(`select count(*) as n from information_schema.table_constraints where table_schema = 'public'`)
     assert.equal(restricoes.rows[0].n, '0')

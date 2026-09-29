@@ -7,7 +7,7 @@ export type TabelaCorte =
   | 'documento_cancelamento_historico' | 'mercadoria_estoque_historico'
 export type Cortes = Record<TabelaCorte, number>
 export type TipoAviso =
-  | 'codigo_sem_traducao' | 'documento_apagado' | 'fechamento_com_resto' | 'estoque_diverge'
+  | 'codigo_sem_traducao' | 'natureza_mudou' | 'documento_apagado' | 'fechamento_com_resto' | 'estoque_diverge'
   | 'movimento_sumiu' | 'total_diferente' | 'execucao_faltou' | 'execucao_pulada'
 export type Aviso = { tipo: TipoAviso; chave: string; texto: string }
 export type TipoFalha = 'erp_fora' | 'token' | 'estrutura' | 'banco_fora' | 'outra'

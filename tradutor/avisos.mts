@@ -38,6 +38,15 @@ export function avisoCodigoSemTraducao(campo: string, codigo: string, quantidade
   }
 }
 
+// Uma natureza que o Kaizen já tinha mudou no ERP. A versão nova vai na chave: cada mudança é um aviso só.
+export function avisoNaturezaMudou(codigo: string, descricao: string | null, versao: string, mudancas: string[]): Aviso {
+  return {
+    tipo: 'natureza_mudou',
+    chave: `natureza:${codigo}:${versao}`,
+    texto: `A natureza ${codigo}${descricao === null ? '' : ` (${descricao})`} mudou no ERP: ${mudancas.join('; ')}.`,
+  }
+}
+
 export function avisoDocumentoApagado(a: Apagado): Aviso {
   return {
     tipo: 'documento_apagado',
@@ -97,6 +106,7 @@ export function avisoExecucaoPulada(idQueSegura: number): Aviso {
 // Na ordem de TipoAviso: é a ordem dos grupos no resumo das 22h.
 export const TITULOS: Record<TipoAviso, string> = {
   codigo_sem_traducao: 'Códigos novos no ERP',
+  natureza_mudou: 'Naturezas de operação que mudaram no ERP',
   documento_apagado: 'Documentos apagados no ERP',
   fechamento_com_resto: 'Fechamentos com linha de teste',
   estoque_diverge: 'Estoque que não bate',
@@ -110,6 +120,7 @@ const LEVAR_AO_CLAUDE = 'leve este resumo à próxima sessão com o Claude'
 
 export const O_QUE_FAZER: Record<TipoAviso, string> = {
   codigo_sem_traducao: LEVAR_AO_CLAUDE,
+  natureza_mudou: 'os documentos novos já seguem a configuração nova; confira se foi de propósito',
   documento_apagado: 'pergunte à gerente ou ao suporte',
   fechamento_com_resto: 'a quebra desse turno não é confiável',
   estoque_diverge: LEVAR_AO_CLAUDE,

@@ -11,6 +11,7 @@ select coalesce(json_agg(json_build_object(
   'turno_caixa', d.idcaixaabertura,
   'turno_usuario', d.idusuarioabertura,
   'turno_numero', d.idabertura,
+  'natureza', nullif(d.idnaturezaoperacao, 0),
   'itens', coalesce((
     select json_agg(json_build_object(
       'oid', m.oid,

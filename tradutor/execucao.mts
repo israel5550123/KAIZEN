@@ -14,6 +14,7 @@ import {
   lerEstoque, lerTotaisErp, lerVivos,
 } from './leitura.mts'
 import { aplicarMigracoes } from './migracoes.mts'
+import { gravarNaturezas, lerNaturezas } from './natureza.mts'
 import {
   anteriorValida, avisosParaResumo, execucaoPresa, horaDaUltimaBoa, marcarInterrompidas, marcarResumo,
   marcarTelegram, registrarFim, registrarInicio, registrarPulada, ultimaNoiteBoa, ultimoInicioNaoManualMs,
@@ -234,6 +235,8 @@ async function rodar(cliente: Cliente, opcoes: Opcoes, dep: Dependencias, estado
   const textoEstoque = await lerEstoque(erp, cortes, movimentosAcimaDe)
   if (noite) await conferirMovimentos(cliente, textoEstoque)
   const textoCadastros = await lerCadastros(erp)
+  // Depois dos documentos: a natureza que um documento lido usa já existe no ERP quando as naturezas são lidas.
+  const textoNaturezas = await lerNaturezas(erp)
 
   // Os avisos da carga só valem se ela for gravada: ficam aqui até o commit.
   const avisosDaCarga: Aviso[] = []
@@ -242,8 +245,11 @@ async function rodar(cliente: Cliente, opcoes: Opcoes, dep: Dependencias, estado
     await colocarEntrada(cliente, 'vivos', [textoVivos])
     await colocarEntrada(cliente, 'estoque', [textoEstoque])
     await colocarEntrada(cliente, 'cadastros', [textoCadastros])
+    await colocarEntrada(cliente, 'naturezas', [textoNaturezas])
     // Cadastros antes, para o aviso de documento apagado já ter o nome do vendedor.
     const cadastros = await gravarCadastros(cliente)
+    // Naturezas antes dos documentos, para o documento novo receber a versão desta leitura.
+    avisosDaCarga.push(...(await gravarNaturezas(cliente)))
     const lidos = await gravarDocumentos(cliente)
     avisosDaCarga.push(...(await fechamentosComResto(cliente)))
     const apagados = await apagarSumidos(cliente)

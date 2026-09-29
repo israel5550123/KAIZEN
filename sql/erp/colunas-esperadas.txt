@@ -1,9 +1,12 @@
+config_entrada_saida _idempresa integer
+config_entrada_saida idnaturezatrocamercadoria integer
 documento _iddocumento integer
 documento datahora timestamp
 documento datahoramovimento timestamp
 documento idabertura integer
 documento idcaixaabertura integer
 documento idempresa integer
+documento idnaturezaoperacao integer
 documento idpessoa integer
 documento idusuarioabertura integer
 documento modelo varchar
@@ -90,6 +93,13 @@ mercadoria_variacao_pessoa _idpessoa integer
 mercadoria_variacao_pessoa flaginativo varchar
 municipio _idmunicipio integer
 municipio nome varchar
+natureza_operacao _idempresa integer
+natureza_operacao _idnatureza integer
+natureza_operacao descricao varchar
+natureza_operacao flagmovimentarestoque varchar
+natureza_operacao flagmovimentarfinanceiro varchar
+natureza_operacao flagreservaestoque varchar
+natureza_operacao tipocategoria varchar
 pessoa _idpessoa integer
 pessoa cnpjcpf varchar
 pessoa flaginativo varchar

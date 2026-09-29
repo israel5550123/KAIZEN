@@ -48,10 +48,11 @@ test('montar recusa marcador sem valor, valor sem marcador e marcador malformado
   assert.throws(() => montar('select {{Maiuscula}}', {}), /malformado/)
 })
 
-test('lerColunasEsperadas lê as 109 colunas, em ordem, sem repetição, com tipo conhecido', () => {
+test('lerColunasEsperadas lê as 119 colunas, em ordem, sem repetição, com tipo conhecido', () => {
   const colunas = lerColunasEsperadas()
-  assert.equal(colunas.length, 109)
-  assert.deepEqual(colunas[0], { tabela: 'documento', coluna: '_iddocumento', tipo: 'integer' })
+  // 109 até a tarefa 2 e 10 da natureza: documento.idnaturezaoperacao, 7 de natureza_operacao e 2 de config_entrada_saida.
+  assert.equal(colunas.length, 119)
+  assert.deepEqual(colunas[0], { tabela: 'config_entrada_saida', coluna: '_idempresa', tipo: 'integer' })
   assert.deepEqual(colunas[colunas.length - 1], { tabela: 'pessoa_funcionario', coluna: 'tipo', tipo: 'varchar' })
   for (let i = 1; i < colunas.length; i++) {
     const a = colunas[i - 1]
@@ -59,5 +60,5 @@ test('lerColunasEsperadas lê as 109 colunas, em ordem, sem repetição, com tip
     assert.ok(a.tabela < b.tabela || (a.tabela === b.tabela && a.coluna < b.coluna), `fora de ordem ou repetida: ${b.tabela}.${b.coluna}`)
   }
   assert.deepEqual([...new Set(colunas.map((c) => c.tipo))].sort(), ['integer', 'numeric', 'text', 'timestamp', 'varchar'])
-  assert.equal(new Set(colunas.map((c) => c.tabela)).size, 22)
+  assert.equal(new Set(colunas.map((c) => c.tabela)).size, 24)
 })

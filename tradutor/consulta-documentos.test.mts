@@ -12,7 +12,7 @@ type Conferencia = { oid: number; forma: number; calculado: string | null; infor
 type DocumentoErp = {
   oid: number; codigo: number; modelo: string; status: string | null; movimento: string | null; financeiro: string | null
   criado_em: string; fechado_em: string | null; pessoa: number | null
-  turno_caixa: number | null; turno_usuario: number | null; turno_numero: number | null
+  turno_caixa: number | null; turno_usuario: number | null; turno_numero: number | null; natureza: number | null
   itens: Item[]; pagamentos: Pagamento[]; parcelas: Parcela[]; conferencia: Conferencia[]; conferencia_abaixo_corte: number
 }
 
@@ -272,7 +272,10 @@ test('datas saem como AAAA-MM-DDTHH:MM:SS, sem fuso, e as vazias como null', asy
 
 test('um documento completo sai com exatamente as chaves do DocumentoErp', async () => {
   await falso.inserir('documento', [
-    documento(185, 58, { idpessoa: null, idcaixaabertura: 0, idusuarioabertura: 0, idabertura: 0, datahora: '2026-09-28 15:09:00', datahoramovimento: '2026-09-28 15:48:00' }),
+    documento(185, 58, {
+      idpessoa: null, idcaixaabertura: 0, idusuarioabertura: 0, idabertura: 0, datahora: '2026-09-28 15:09:00', datahoramovimento: '2026-09-28 15:48:00',
+      idnaturezaoperacao: 530,
+    }),
   ])
   await falso.inserir('documento_mercadoria', [
     { oid: 1873, _iddocumento: 58, _idsequencia: 1, idmercadoriavariacao: 5278, qtd: '1.000000', valtotalliquido: '25.000000', idpessoafuncionario: 1 },
@@ -282,7 +285,7 @@ test('um documento completo sai com exatamente as chaves do DocumentoErp', async
   assert.deepEqual(d, {
     oid: 185, codigo: 58, modelo: 'PA', status: 'E', movimento: 'S', financeiro: 'R',
     criado_em: '2026-09-28T15:09:00', fechado_em: '2026-09-28T15:48:00', pessoa: null,
-    turno_caixa: 0, turno_usuario: 0, turno_numero: 0,
+    turno_caixa: 0, turno_usuario: 0, turno_numero: 0, natureza: 530,
     itens: [{ oid: 1873, produto: 5278, quantidade: '1.000000', valor_liquido: '25.000000', vendedor: 1 }],
     pagamentos: [{ oid: 1, forma: 2, valor: '25.000000' }],
     parcelas: [],

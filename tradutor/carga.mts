@@ -8,7 +8,7 @@ function lerCarga(nome: string): string {
 }
 
 // Os arquivos de sql/carga têm vários comandos; o pg devolve um resultado por comando, e o resumo é o do último.
-async function rodarCarga(cliente: Cliente, nome: string): Promise<Array<Record<string, unknown>>> {
+export async function rodarCarga(cliente: Cliente, nome: string): Promise<Array<Record<string, unknown>>> {
   const resultado = (await cliente.query(lerCarga(nome))) as unknown as QueryResult | QueryResult[]
   const ultimo = Array.isArray(resultado) ? resultado[resultado.length - 1] : resultado
   return ultimo.rows
@@ -16,7 +16,7 @@ async function rodarCarga(cliente: Cliente, nome: string): Promise<Array<Record<
 
 export async function colocarEntrada(
   cliente: Cliente,
-  assunto: 'documentos' | 'vivos' | 'estoque' | 'cadastros',
+  assunto: 'documentos' | 'vivos' | 'estoque' | 'cadastros' | 'naturezas',
   partes: string[],
 ): Promise<void> {
   await cliente.query(lerCarga('entrada'))
