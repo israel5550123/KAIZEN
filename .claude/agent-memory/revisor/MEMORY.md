@@ -3,3 +3,4 @@
 - [Mensagem do commit vs registro](tecnica_mensagem_commit_vs_registro.md) — quando um passo é adiado no despacho, checar se a mensagem literal do commit (pré-escrita no brief) ainda é verdadeira; achado real na Fase 4 Tarefa 3
 - [Relatório ausente em tarefa operacional](tecnica_relatorio_ausente_tarefa_operacional.md) — task-N-report.md que nunca existiu não é achado quando a tarefa é ensaio/operação (o registro da fase já é a alegação); é achado se a tarefa tiver código
 - [Worktree sem tocar o repo](tecnica_worktree_sem_tocar_repo.md) — reproduzir RED e medir antes/depois com `git worktree` + junção de `node_modules` + import por `file://`, sem editar nada na árvore principal
+- [AT TIME ZONE pode converter 2x](tecnica_at_time_zone_dupla_conversao.md) — se a sessão já está em -03, `AT TIME ZONE 'America/Fortaleza'` dá hora errada; preferir `coluna::text`
