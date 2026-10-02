@@ -109,6 +109,7 @@ Monte isto no Claude Design antes da primeira tela. As regras visuais da seção
 - **Algarismos tabulares** (todos os algarismos com a mesma largura, para alinhar em coluna) em todo número; números alinhados à direita nas tabelas.
 - **Tamanho e densidade (proposta):** texto corrido de 15 a 16 px; nada abaixo de 13 px no computador e de 14 px no celular; números principais de 28 a 40 px; linha de tabela de uns 36 px no computador (C2, R1 e M3 dependem disso). Alvos de toque no celular com pelo menos 44 px.
 - **Definição de cada número:** no computador, ao passar o mouse; no celular, ao tocar no ícone "i" ao lado do número.
+- **Movimento quase nenhum:** só ao abrir e fechar painel lateral, diálogo, menu, calendário e folha que sobe de baixo, e ao abrir o cartão de pergunta, em 150 a 200 ms, desacelerando no fim. Nada de animação ao trocar de tela, nos números, nos gráficos ou ao carregar. Com "reduzir movimento" ligado no computador ou no celular, nenhuma animação (decisão do dono, 02/10).
 
 ### Formatos em português do Brasil
 
