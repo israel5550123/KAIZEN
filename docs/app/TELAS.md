@@ -719,7 +719,7 @@ Responda pelo número. Onde há proposta, ela vale até a resposta. As de "Antes
 3. O OBJETIVO diz que a gerente vê a loja inteira, menos digitar metas e saldo. Isso vale para o Financeiro, ou o senhor quer esconder alguma parte dele?
 4. Quer o "Esqueci a senha"? O Firebase manda o e-mail de troca de graça.
 5. Réguas iniciais. Elas dão o estado das três perguntas já na 5b e viram as réguas da Fase 6. Proposta:
-   - Vendas: ritmo da loja de 1 ou mais no lugar, atenção de 0,90 a 0,99, fora abaixo de 0,90; ritmo de vendedor abaixo de 0,80; projeção abaixo da meta; item sem vendedor acima de 0.
+   - Vendas: ritmo da loja de 1 ou mais no lugar, atenção de 0,90 a 0,99, fora abaixo de 0,90; ritmo de vendedor nas mesmas faixas da loja; projeção abaixo da meta; item sem vendedor acima de 0.
    - Financeiro: fora com folga em 7 dias negativa; atenção com folga em 30 dias negativa; contas vencidas acima de R$ 0.
    - Compras: comprados sem venda a partir de quantos produtos? Ruptura de curva A acima de 0.
    - Caixa: quebra acima de R$ 5, para mais ou para menos.
