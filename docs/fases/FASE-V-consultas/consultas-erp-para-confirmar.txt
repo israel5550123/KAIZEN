@@ -1,0 +1,25 @@
+Consultas só de leitura (SELECT) para fechar as lacunas da frente "API e dados do ERP".
+Rodar uma por vez, no PC do dono (onde está o .env com MEUERP_TOKEN), com a ferramenta que já existe:
+  node --env-file=.env ferramentas/consultar-erp.mts "<SELECT abaixo>"
+A ferramenta passa pela trava tradutor/somente-leitura.mts (só SELECT/WITH, um comando, sem comentário).
+Nenhuma delas escreve no ERP.
+
+1) Existe no banco do ERP algum campo de vendedor/representante/contato ligado à pessoa?
+select c.table_name as tabela, c.column_name as coluna, c.data_type as tipo from information_schema.columns c where c.table_schema = 'public' and c.table_name like 'pessoa%' and c.column_name ~ '(funcionario|vendedor|represent|usuario|fone|celular|email|whats|contato|fantasia|apelido|situacao|limite)' order by c.table_name, c.column_name
+
+2) Que colunas o item da venda tem para promoção, tabela de preço, desconto e devolução?
+select c.column_name as coluna, c.data_type as tipo from information_schema.columns c where c.table_schema = 'public' and c.table_name = 'documento_mercadoria' and c.column_name ~ '(promo|desconto|tabela|bruto|unitario|acrescimo|origem|devol)' order by c.column_name
+
+3) Que tabelas existem de preço, promoção, produto relacionado e kit?
+select t.table_name as tabela from information_schema.tables t where t.table_schema = 'public' and t.table_name ~ '(promocao|tabela_preco|relacionad|composicao|kit)' order by t.table_name
+
+4) Quantas tabelas de preço e promoções existem hoje (depois de saber os nomes pela 3)?
+select (select count(*) from tabela_preco) as tabelas_preco, (select count(*) from promocao) as promocoes
+   (ajustar os nomes das tabelas ao que a consulta 3 devolver)
+
+5) Quantos clientes têm celular/fone preenchido (depois de saber as colunas pela 1)?
+   exemplo, se as colunas forem pessoa.celular e pessoa.fone:
+select count(*) as pessoas, count(*) filter (where nullif(btrim(p.celular), '') is not null) as com_celular, count(*) filter (where nullif(btrim(p.fone), '') is not null) as com_fone from pessoa p where p.tipo in ('C', 'A')
+
+6) O vendedor gravado nas vendas desde 28/09 se divide entre Igor (1) e Daniele (999005)? (conferência 5 da Fase 2, aberta)
+select m.idpessoafuncionario as vendedor, count(distinct d._iddocumento) as vendas, sum(m.valtotalliquido)::text as valor from documento d join documento_mercadoria m on m._iddocumento = d._iddocumento where d.datahora >= '2026-09-28' and d.status = 'E' and d.tipomovimento = 'S' and d.tipomovimentofinanceiro = 'R' group by m.idpessoafuncionario order by m.idpessoafuncionario

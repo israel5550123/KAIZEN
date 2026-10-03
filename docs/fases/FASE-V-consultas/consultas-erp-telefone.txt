@@ -1,0 +1,21 @@
+Consultas SÓ DE LEITURA ao ERP (Meu ERP Online), para medir telefone e vendedor responsável no cadastro.
+NÃO FORAM EXECUTADAS: esta sessão (nuvem, 03/10/2026) não tem o .env com o MEUERP_TOKEN.
+
+Onde rodar: no PC do dono, na pasta do Kaizen, com o .env que já existe lá, pela ferramenta já usada nas fases:
+  node --env-file=.env ferramentas/consultar-erp.mts "<SELECT>"
+A ferramenta passa cada consulta por tradutor/somente-leitura.mts (recusa tudo que não for SELECT/WITH,
+";", comentário e palavras de escrita) e usa o endpoint consulta/sql, que a própria API limita a SELECT.
+As consultas abaixo já respeitam essas regras (sem ";", sem comentário, sem palavra proibida).
+
+1) Descobrir onde o cadastro guarda telefone e se existe "vendedor do cliente" (só nomes de coluna):
+node --env-file=.env ferramentas/consultar-erp.mts "select table_name, column_name, data_type from information_schema.columns where table_schema = 'public' and table_name like 'pessoa%' and column_name ~ '(fone|celular|whats|vendedor|representante|funcionario)' order by table_name, column_name"
+
+2) Onde ficam os leads do CRM (nomes de coluna):
+node --env-file=.env ferramentas/consultar-erp.mts "select table_name, column_name from information_schema.columns where table_schema = 'public' and table_name like '%lead%' order by table_name, column_name"
+
+3) MODELO, a ajustar pelo resultado do passo 1 (supõe colunas "celular" e "fone" na tabela pessoa):
+node --env-file=.env ferramentas/consultar-erp.mts "select count(*) as pessoas, count(*) filter (where nullif(trim(p.celular), '') is not null) as com_celular, count(*) filter (where length(regexp_replace(coalesce(p.celular, ''), '[^0-9]', '', 'g')) in (10, 11)) as celular_com_10_ou_11_digitos, count(*) filter (where nullif(trim(p.fone), '') is not null) as com_fone, count(*) filter (where nullif(trim(p.celular), '') is not null or nullif(trim(p.fone), '') is not null) as com_algum_telefone from pessoa p where p._idpessoa <> 999007"
+
+Pela API (GET), o mesmo dado está em pessoa.contato.celular / fone / foneComercial (swagger: PublicaPessoaContatoResponse),
+e o lead tem "telefone" (PublicaLeadResponse). Uma leitura GET da API já foi negada pelo classificador de permissões
+em 28/09 (docs/DECISOES.md, entrada da situação S); por isso a rota indicada é o consulta/sql acima.
