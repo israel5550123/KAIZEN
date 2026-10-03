@@ -1,0 +1,129 @@
+vendas de cada dia (01 a 21/10) iguais às da prancha Gráficos: ok
+valor exato de cada dia arredonda para o da prancha Gráficos (21 dias): ok
+dias úteis de outubro iguais aos da prancha Gráficos (26 dias): ok
+vendas de hoje por hora iguais às da prancha Gráficos (8h a 14h): ok
+saldo previsto de 20/10 a 04/11 igual ao da prancha Gráficos (16 pontos, arredondado): ok
+as 5 contas (fornecedor, dia, parcela, valor) iguais às da prancha Tabela: ok
+total da prancha Tabela "Total · 5 contas R$ 33.100,00" igual ao livro: ok
+curvas da prancha Barra dividida: 66 A · 44,0%, 40 B · 26,7%, 31 C · 20,7%, 13 sem venda · 8,7%: ok
+contas por semana da prancha Barra dividida: R$ 8.620,00 (26,0%) e R$ 24.480,00 (74,0%): ok
+21 números do Cartão de pergunta (Vendas, Compras, Financeiro e estados) iguais aos do livro: ok
+9 números da prancha Número grande (−R$ 57,6 mil, −0,06, R$ 11,5 mil, −R$ 3,3 mil, +8 produtos, +R$ 0,3 mil...) batem com o livro: ok
+linhas da prancha Indicador (Loja 0,94 · 61,6%; Igor 1,04 · 68,0%; Daniele 0,82 · 53,6%) iguais às do livro: ok
+visões da prancha Abas e filtros (Encalhe 38, Ruptura 3, Comprados sem venda 13) e o período "90 dias até 21/10 (24/07 a 21/10)": ok
+cartão de 15/09 da Moldura do celular (R$ 76,8 mil, 51,2%, ritmo 1,02, 12 de 24, projeção R$ 153,6 mil, faixa) igual ao livro: ok
+parágrafo "Dados de exemplo" do README: meta, realizado, ritmo, projeção, vendedores, compras, saldo, folga, quebra e dias sem expediente iguais ao livro: ok
+lista "fictícios de propósito" do README: R$ 3,8 mil, R$ 11,5 mil há 7 dias, 30 parados há 30 dias, média R$ 5,5 mil dos 16 dias, folga em 30 dias R$ 2,2 mil: ok
+textos do ajuste da meta do Igor (prancha Formulário) iguais aos do livro: ok
+texto da IA e dica do ritmo (pranchas Bloco IA e Dica) citados no livro iguais aos das pranchas: ok
+cliente de exemplo do Design System: Marcenaria Bom Jesus sumida há 74 dias, última compra sáb, 08/08/2026 (fecha com 21/10): ok
+21/10/2026 é quarta-feira; 15/09/2026 é terça; 18/10/2026 é domingo; 12/10/2026 é segunda: ok
+outubro: 26 dias úteis (segunda a sábado, menos 12/10); 17 até 21/10, contando hoje; faltam 9: ok
+setembro: 24 dias úteis (menos 07/09 e 26/09); 12 até 15/09: ok
+novembro: 24 dias úteis com 02/11 fechado (5 domingos): ok
+período de compras: de 24/07 a 21/10 são 90 dias: ok
+saldo velho: de 12/09 a 21/10 são 39 dias: ok
+nenhuma venda em domingo nem em 12/10; venda em todos os outros dias de 01 a 21/10: ok
+nenhuma das 28 contas vence em domingo: ok
+compras dos 90 dias em dia de loja aberta e nunca em 26 ou 27/09 (inventário e domingo da troca de ERP): ok
+saldos do banco digitados para dias de loja aberta, e digitados no dia seguinte: ok
+fechamentos de caixa só em dias de loja aberta, um por dia, de 01 a 20/10: ok
+vendas por dia de 01 a 21/10 somam R$ 92,4 mil (R$ 92.400,00 exatos): ok
+média dos 16 dias completos com venda = R$ 5.518,75 → R$ 5,5 mil: ok
+acumulado dia a dia confere com a soma das vendas de cada dia: ok
+meta em degraus: sobe R$ 5.769,23 por dia útil; até 21/10 = R$ 98.076,92 → R$ 98,1 mil: ok
+vendas de hoje por hora somam R$ 4.100,00 em 24 vendas: ok
+percentual da loja: 92.400 ÷ 150.000 = 61,6%: ok
+ritmo da loja: 92.400 ÷ (150.000 × 17 ÷ 26) = 0,9421 → 0,94, atenção (0,90 a 0,99): ok
+Igor: R$ 51.012,40 ÷ R$ 75.000,00 = 68,0%; ritmo 1,0403 → 1,04 (no lugar); falta R$ 23.987,60: ok
+Daniele: R$ 40.193,80 ÷ R$ 75.000,00 = 53,6%; ritmo 0,8196 → 0,82 (fora); falta R$ 34.806,20: ok
+canônicos dos vendedores: Igor R$ 51,0 mil · 68,0% · 1,04; Daniele R$ 40,2 mil · 53,6% · 0,82 (fora); Outros R$ 1,2 mil: ok
+vendedores + Outros = loja no mês (R$ 51.012,40 + R$ 40.193,80 + R$ 1.193,80 = R$ 92.400,00): ok
+vendedores + Outros = loja hoje (R$ 2.296,40 + R$ 1.658,70 + R$ 144,90 = R$ 4.100,00): ok
+vendas no mês: 341 + 279 + 22 = 642; hoje: 13 + 10 + 1 = 24: ok
+falta da loja R$ 57.600,00 (−R$ 57,6 mil) e R$ 6.400,00 por dia útil restante (÷ 9): ok
+vendido − devoluções = realizado: mês R$ 93.540,00 − R$ 1.140,00 = R$ 92.400,00; hoje R$ 4.100,00 − R$ 0,00: ok
+projeção pela regra do Kaizen: R$ 88.300,00 até ontem + médias de 8 semanas dos 10 dias úteis de 21 a 31/10 = R$ 143.796,30 → R$ 143,8 mil: ok
+projeção − meta = −R$ 6.203,70 → −R$ 6,2 mil: ok
+médias de 8 semanas plausíveis contra outubro (cada uma a menos de R$ 400,00 da média dos mesmos dias de outubro): ok
+hoje contra um dia como hoje: R$ 4,1 mil − R$ 3,8 mil = +R$ 0,3 mil: ok
+formas de hoje somam R$ 4.100,00 (Pix 70,0%, cartão 22,2%, dinheiro 7,8%): ok
+cartão a creditar amanhã = crédito + débito de hoje = R$ 910,00: ok
+mix por grupo: em cada um dos 11 grupos, Igor + Daniele + Outros = loja: ok
+mix: os grupos somam o realizado de cada um (loja R$ 92.400,00, Igor R$ 51.012,40, Daniele R$ 40.193,80, Outros R$ 1.193,80): ok
+mix: partes recalculadas e cada coluna soma 100% (± 0,2 de arredondamento): ok
+julho, agosto e setembro: Igor + Daniele + Outros = loja (R$ 145,0, 140,0 e 148,9 mil): ok
+15/09: R$ 76,8 mil ÷ R$ 150 mil = 51,2%; ritmo 76,8 ÷ (150 × 12 ÷ 24) = 1,02; projeção em linha reta 76,8 ÷ 12 × 24 = R$ 153,6 mil: ok
+15/09: Igor R$ 41,0 mil (54,7%, 1,09) + Daniele R$ 34,6 mil (46,1%, 0,92) + Outros R$ 1,2 mil = R$ 76,8 mil: ok
+15/09: folga em 7 dias R$ 36.900,00 − R$ 29.400,00 = R$ 7.500,00; em 30 dias − R$ 35.600,00 = R$ 1.300,00; 63 + 38 + 29 + 11 = 141 comprados: ok
+comprados em 90 dias: 66 A + 40 B + 31 C + 13 sem venda = 150: ok
+partes da barra das curvas: 66 ÷ 150 = 44,0%; 40 ÷ 150 = 26,7%; 31 ÷ 150 = 20,7%; 13 ÷ 150 = 8,7% (somam 100,1% pelo arredondamento, como no Design System): ok
+há 30 dias: 61 + 37 + 30 + 10 = 138 comprados; 10 sem venda = a comparação do cartão Comprados sem venda: ok
+encalhe: 38 produtos, cada um com valor parado = estoque × custo: ok
+os 38 produtos parados somam R$ 24.620,10 → R$ 24,6 mil: ok
+encalhe: todos com estoque acima de zero, nenhuma venda desde 24/07 e lista em ordem de valor parado: ok
+encalhe há 30 dias: 30 produtos e R$ 19.740,00 → +8 produtos e +R$ 4,9 mil: ok
+encalhe com compra nos 90 dias: 5 produtos, todos antigos (vendiam antes) e com a compra dentro de 24/07 a 21/10; nota da Link sem valor, do ERP novo com valor = unidades × custo: ok
+estoque médio de cada produto parado = média do estoque no fim de cada dia, de 26/09 a 21/10 (26 dias): ok
+comprados sem venda: 5 em encalhe + 8 novos em carência = 13: ok
+novos: primeira compra a menos de 60 dias de 21/10, a partir de 28/09, sem venda; carência até a primeira compra + 60 dias: ok
+estoque médio dos 8 novos confere com a data da primeira compra: ok
+produto novo da C3: 29/09 + 60 dias = 28/11; primeira compra há 22 dias: ok
+ruptura: 3 produtos (Dobradiça 35 mm, Corrediça 450 mm, Puxador 128 mm), todos curva A, estoque 0, cobertura 0 e venda nos 90 dias: ok
+ruptura na mesma ordem por R$ e por unidades (a ordem do cartão do Início e da visão Ruptura): ok
+giro da ruptura = unidades ÷ estoque médio (12,3; 8,9; 9,3): ok
+ruptura há 30 dias: 1 → +2; comprados sem venda há 30 dias: 10 → +3; estoque negativo há 30 dias: 4 → −2: ok
+estoque negativo: 2 produtos, abaixo de zero e sem venda nos 90 dias (por isso fora da ruptura): ok
+custo zero: 7 produtos, todos com custo R$ 0,00 no cadastro: ok
+visão Todos: 712 com venda + 38 em encalhe + 8 novos sem venda + 2 negativos sem venda = 760: ok
+curva ABC por valor: 98 + 176 + 438 = 712 produtos; R$ 335.500,00 + R$ 63.150,00 + R$ 21.250,00 = R$ 419.900,00: ok
+curva ABC por quantidade: 84 + 160 + 468 = 712 produtos; 42.150 + 7.890 + 2.800 = 52.840 unidades: ok
+curva ABC: A até 80% e A + B até 95% (por valor: 79,9% e 94,9%; por quantidade: 79,8% e 94,7%), partes recalculadas: ok
+a venda dos 90 dias (R$ 419.900,00) = 24 a 31/07 R$ 38.600,00 + agosto + setembro + outubro até 21/10 (R$ 92.400,00); agosto e setembro iguais aos da K2: ok
+compras por classe cabem na curva: 66 ≤ 98 produtos A; 40 ≤ 176 B; 31 ≤ 438 C: ok
+visão por grupo: 760 produtos, 52.840 unidades e R$ 419.900,00 nos 11 grupos: ok
+visão por grupo: produtos em encalhe e valor parado de cada grupo = os da lista dos 38 (somam 38 e R$ 24.620,10): ok
+visão por grupo: giro = unidades ÷ estoque médio e cobertura = estoque ÷ (unidades ÷ 90), recalculados nos 11 grupos: ok
+"Onde o estoque está parado" = os 5 grupos de maior cobertura (Iluminação LED 184, Acessórios 163, Puxadores 132, Ferramentas 118, Colas 97 dias): ok
+visão por fornecedor: 760 produtos, 52.840 unidades, R$ 419.900,00; encalhe e valor parado de cada um = os da lista: ok
+12 maiores em R$: em ordem decrescente, com os 3 da ruptura, giro e cobertura recalculados; nenhum deles passa da classe A por valor: ok
+C3 (Corrediça oculta 500 mm): estoque 14 até 01/10 e 34 desde 02/10; estoque médio 29,4; valor parado 34 × R$ 58,00 = R$ 1.972,00: ok
+C3: comprou 24 (14/04), vendeu 10 (abr 3 + mai 5 + jun 2), sobraram 14 na troca de ERP, +20 em 02/10 = 34; nota de 02/10: 20 × R$ 58,00 = R$ 1.160,00: ok
+C3: 90 anteriores = 7 un. × R$ 104,90 = R$ 734,30; venda por mês × preço: ok
+C3: a nota 48213 (02/10) é a conta da Ferragens Norte que vence em 22/10, R$ 6.480,00, lançada em 02/10: ok
+C3, Dobradiça 35 mm: 300 na troca de ERP + 200 em 06/10 − 500 vendidas = 0 em 19/10; estoque nunca negativo; estoque médio 150,2; giro 1.840 ÷ 150,2 = 12,3: ok
+C3, Dobradiça 35 mm: 180 + 600 + 650 + 410 = 1.840 un. em 90 dias × R$ 7,00 = R$ 12.880,00; outubro = vendas de 01 a 19/10: ok
+as 5 contas de 22 a 28/10 somam R$ 33.100,00 (6.480 + 2.140 + 9.900 + 3.580 + 11.000); nenhuma vencida: ok
+folga em 7 dias = R$ 41.300,00 − R$ 33.100,00 = R$ 8.200,00: ok
+até 20/11: 11 parcelas somam R$ 39.100,00; folga em 30 dias = R$ 41.300,00 − R$ 39.100,00 = R$ 2.200,00: ok
+total em aberto: 22 parcelas, R$ 84.300,00: ok
+saldo previsto dia a dia (20/10 a 20/11) = saldo − contas acumuladas; 28/10 = folga em 7 dias; 20/11 = folga em 30 dias; nunca abaixo de zero: ok
+o cartão a creditar (R$ 910,00) fica fora da linha: com ele, 28/10 daria R$ 9,1 mil, e não R$ 8,2 mil: ok
+contas por semana: R$ 8.620,00 (22 e 23/10) + R$ 24.480,00 (26 a 28/10) = R$ 33.100,00; 26,0% e 74,0%: ok
+folga de 7 dias atrás: saldo de 13/10 R$ 37.620,00 − 6 contas de 14 a 21/10 (R$ 26.120,00, já pagas) = R$ 11.500,00 → R$ 11,5 mil; diferença −R$ 3,3 mil: ok
+o saldo que a folga de 14/10 usou é o último digitado até 14/10: o de 13/10, R$ 37.620,00: ok
+total de 14/10: R$ 84.300,00 − R$ 22.300,00 lançadas depois (11 parcelas) + R$ 26.120,00 pagas (6) = R$ 88.120,00 em 17 parcelas; diferença −R$ 3.820,00: ok
+folga em 30 dias de 7 dias atrás: R$ 11.500,00 − R$ 35.500,00 (contas de 22/10 a 13/11 já lançadas em 14/10) = −R$ 24.000,00: ok
+contas lançadas até hoje e com vencimento depois do lançamento: ok
+parcelas da mesma nota têm o mesmo valor e numeração sem buraco (NF 1184: 2, 3 e 4 de 4; NF 48877: 1 a 3 de 3; NF 7781, NF 2209, NF 10044 e NF 5577): ok
+folga negativa (estado): com saldo de R$ 29.900,00, folga em 7 dias = −R$ 3.200,00 e o primeiro dia negativo do saldo previsto é 28/10: ok
+fluxo do mês: entradas por forma somam R$ 92.180,00 (Pix 70,2%, cartão 22,8%, dinheiro 7,0%; a loja: 70/22/7): ok
+K1: 10 saldos, do mais novo ao mais velho; o último é R$ 41.300,00 para 20/10, digitado em 21/10 às 07h12; o de 19/10 é R$ 43.150,00 (texto do Apagar); o de 01/10 é R$ 48.000,00: ok
+fechamento de 20/10: quebra de cada forma = informado − calculado; total R$ 0,00 (bateu nas 4 formas): ok
+gaveta de 20/10: R$ 470,00 + R$ 150,00 − R$ 390,00 − R$ 80,00 = R$ 150,00 = o calculado do dinheiro: ok
+movimentos de 20/10: suprimento R$ 150,00 e sangrias R$ 200,00 + R$ 190,00 = R$ 390,00, iguais aos da gaveta: ok
+20/10: vendas por forma somam o vendido (R$ 5.980,00); − R$ 80,00 de devolução = R$ 5.900,00 = a barra de 20/10 da V1; Pix, crédito e débito calculados = vendidos: ok
+09/10 (fora): débito R$ 652,00 − R$ 690,00 = −R$ 38,00, acima da tolerância de R$ 5,00; gaveta R$ 150,00; vendido − devoluções = R$ 6.400,00 = a barra de 09/10 da V1: ok
+mês: 16 fechamentos; quebras somam −R$ 42,50 (dinheiro −R$ 4,50; débito −R$ 38,00); média −R$ 2,66 por fechamento: ok
+mês: só 09/10 passa da tolerância de R$ 5,00 (02/10 tem −R$ 5,00, que não passa); quebra de 20/10 = R$ 0,00: ok
+mês: números de fechamento em sequência (nº 200 a 215) e o de 20/10 é o do cartão: ok
+gaveta de hoje até 14h05: R$ 320,00 (= dinheiro das vendas de hoje) + R$ 150,00 − R$ 200,00 = R$ 270,00: ok
+K2 outubro: Igor R$ 75.000,00 + Daniele R$ 75.000,00 = R$ 150.000,00 = meta da loja; diferença R$ 0,00: ok
+K2 depois do ajuste do Igor para R$ 60.000,00: R$ 135.000,00 nos vendedores, diferença de R$ 15.000,00 para a loja: ok
+K2 novembro: Igor R$ 72.500,00 + Daniele R$ 72.500,00 = R$ 145.000,00 = meta da loja; dezembro sem meta, 26 dias úteis (menos 25/12): ok
+K2: a lista de meses vai de abril de 2026 a outubro de 2027 (19 meses): ok
+K2: dias úteis de outubro 26, setembro 24 e novembro 24 iguais aos do calendário: ok
+o livro não dá nome à gerente nem a outras pessoas da equipe (só Igor, Daniele, Outros e o dono Israel): ok
+e-mails do livro só no domínio reservado example.com: ok
+144 valores do JSON (encalhe, contas, vendas por dia, acumulado, mix, saldo previsto, caixa) aparecem iguais no livro: ok
+o livro marca a origem de cada número (DS ou novo) e tem uma seção por tela, de G1 a K2: ok

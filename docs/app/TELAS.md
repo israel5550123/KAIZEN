@@ -738,6 +738,7 @@ Responda pelo número. Onde há proposta, ela vale até a resposta. As de "Antes
 13. A curva ABC precisa de outro período além dos 90 dias até o dia (mês fechado, ano)?
 14. As listas de saneamento (custo zero e estoque negativo) vão para alguém da loja corrigir no ERP? Se sim, precisa de botão para baixar ou imprimir?
 15. A previsão dos 30 dias conta só o que é certo (contas e o cartão de amanhã, proposta), ou também uma estimativa das entradas de Pix e dinheiro pelas vendas projetadas?
+46. No Início, quando a loja está no lugar mas um vendedor está em atenção ou fora (por exemplo, em 15/09: loja com ritmo 1,02 e Daniele com 0,92), o cartão de Vendas continua "No lugar", sem cor e sem linha de exceção (proposta, como no Design System), ou passa a mostrar o vendedor numa linha de exceção?
 
 **Para a Fase 6**
 

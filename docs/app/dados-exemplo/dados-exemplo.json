@@ -1,0 +1,4310 @@
+{
+ "sobre": {
+  "titulo": "Livro de dados de exemplo das telas da Fase 5 (G1 a K2)",
+  "design_system": "1790997087-c8ea",
+  "legenda": {
+   "canonico": "veio do Design System (README ou pranchas) e não muda",
+   "novo": "inventado agora, calculado para fechar com o resto"
+  }
+ },
+ "base": {
+  "hoje": "2026-10-21",
+  "hora": "14h05",
+  "proxima": "15h",
+  "origem": "canonico",
+  "atualizado": "Atualizado às 14h05 · próxima às 15h",
+  "pessoa": {
+   "nome": "Israel",
+   "perfil": "Dono",
+   "iniciais": "IS",
+   "origem": "canonico"
+  },
+  "pessoas_nas_telas": [
+   "Igor",
+   "Daniele",
+   "Outros (sem meta própria)",
+   "Israel (só o dono: conta, Entrar, quem digitou)"
+  ],
+  "loja": {
+   "abre": "7h",
+   "fecha": "18h",
+   "sabado_fecha": "12h",
+   "dias": "segunda a sábado",
+   "origem": "novo",
+   "nota": "horário da docs/LOJA.md; sábado é meio expediente, mas conta como dia útil inteiro"
+  },
+  "dias_sem_expediente": [
+   {
+    "data": "2026-05-01",
+    "descricao": "Dia do Trabalho",
+    "origem": "canonico"
+   },
+   {
+    "data": "2026-09-07",
+    "descricao": "Independência",
+    "origem": "canonico"
+   },
+   {
+    "data": "2026-09-26",
+    "descricao": "Inventário da troca de ERP",
+    "origem": "canonico"
+   },
+   {
+    "data": "2026-10-12",
+    "descricao": "Nossa Senhora Aparecida",
+    "origem": "canonico"
+   },
+   {
+    "data": "2026-11-02",
+    "descricao": "Finados",
+    "origem": "novo"
+   },
+   {
+    "data": "2026-12-25",
+    "descricao": "Natal",
+    "origem": "novo"
+   }
+  ],
+  "outubro": {
+   "dias_uteis": 26,
+   "decorridos": 17,
+   "uteis": [
+    1,
+    2,
+    3,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    13,
+    14,
+    15,
+    16,
+    17,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31
+   ],
+   "domingos": [
+    4,
+    11,
+    18,
+    25
+   ],
+   "origem": "canonico"
+  },
+  "setembro": {
+   "dias_uteis": 24,
+   "decorridos_ate_15": 12,
+   "origem": "canonico"
+  },
+  "novembro": {
+   "dias_uteis": 24,
+   "fechados": [
+    "2026-11-02"
+   ],
+   "origem": "novo",
+   "nota": "02/11 (Finados) marcado; 20/11 (Consciência Negra) a loja abre e não entra"
+  },
+  "regua": {
+   "ritmo": "no lugar com 1,00 ou mais; atenção de 0,90 a 0,99; fora abaixo de 0,90",
+   "folga": "fora com folga em 7 dias negativa; atenção com folga em 30 dias negativa",
+   "ruptura_curva_A": "acima de 0 é fora",
+   "caixa": "quebra acima de R$ 5,00, para mais ou para menos, é fora",
+   "saldo": "velho depois de 3 dias (atenção)",
+   "origem": "proposta da TELAS.md, pergunta 5 (provisória)"
+  }
+ },
+ "vendas": {
+  "mes": {
+   "meta": 150000.0,
+   "realizado": 92400.0,
+   "percentual_meta": 61.6,
+   "ritmo": 0.94,
+   "ritmo_exato": 0.9421,
+   "estado": "atenção",
+   "dias_uteis": 26,
+   "decorridos": 17,
+   "faltam_dias": 9,
+   "meta_ate_hoje": 98076.92,
+   "falta": 57600.0,
+   "por_dia_util_restante": 6400.0,
+   "projecao": 143796.3,
+   "projecao_menos_meta": -6203.7,
+   "realizado_ate_ontem": 88300.0,
+   "medias_8_semanas": {
+    "seg": 5912.5,
+    "ter": 6004.8,
+    "qua": 5987.6,
+    "qui": 6093.4,
+    "sex": 6211.3,
+    "sáb": 3497.2
+   },
+   "dias_restantes_contando_hoje": [
+    "2026-10-21",
+    "2026-10-22",
+    "2026-10-23",
+    "2026-10-24",
+    "2026-10-26",
+    "2026-10-27",
+    "2026-10-28",
+    "2026-10-29",
+    "2026-10-30",
+    "2026-10-31"
+   ],
+   "vendido": 93540.0,
+   "devolucoes": 1140.0,
+   "vendas": 642,
+   "sem_vendedor": {
+    "itens": 0,
+    "valor": 0.0
+   },
+   "origem": {
+    "meta": "canonico",
+    "realizado": "canonico",
+    "percentual_meta": "canonico",
+    "ritmo": "canonico",
+    "dias": "canonico",
+    "projecao": "canonico",
+    "meta_ate_hoje": "canonico",
+    "falta": "canonico",
+    "medias_8_semanas": "novo",
+    "vendido/devolucoes/vendas": "novo",
+    "por_dia_util_restante": "novo"
+   }
+  },
+  "dia": {
+   "realizado": 4100.0,
+   "vendido": 4100.0,
+   "devolucoes": 0.0,
+   "vendas": 24,
+   "ate": "14h05",
+   "dia_como_hoje": 3800.0,
+   "diferenca_dia_como_hoje": 300.0,
+   "formas": {
+    "pix": 2870.0,
+    "credito": 540.0,
+    "debito": 370.0,
+    "dinheiro": 320.0
+   },
+   "sem_vendedor": {
+    "itens": 0,
+    "valor": 0.0
+   },
+   "origem": {
+    "realizado/vendas/dia_como_hoje": "canonico",
+    "vendido/devolucoes/formas": "novo"
+   }
+  },
+  "por_dia": [
+   {
+    "data": "2026-10-01",
+    "realizado": 5812.4,
+    "mil_canonico": 5.8,
+    "acumulado": 5812.4,
+    "meta_acumulada": 5769.23,
+    "dia_util": true,
+    "situacao": "dia completo"
+   },
+   {
+    "data": "2026-10-02",
+    "realizado": 6168.8,
+    "mil_canonico": 6.2,
+    "acumulado": 11981.2,
+    "meta_acumulada": 11538.46,
+    "dia_util": true,
+    "situacao": "dia completo"
+   },
+   {
+    "data": "2026-10-03",
+    "realizado": 3427.5,
+    "mil_canonico": 3.4,
+    "acumulado": 15408.7,
+    "meta_acumulada": 17307.69,
+    "dia_util": true,
+    "situacao": "sábado (meio expediente)"
+   },
+   {
+    "data": "2026-10-04",
+    "realizado": 0.0,
+    "mil_canonico": 0,
+    "acumulado": 15408.7,
+    "meta_acumulada": 17307.69,
+    "dia_util": false,
+    "situacao": "domingo"
+   },
+   {
+    "data": "2026-10-05",
+    "realizado": 5881.1,
+    "mil_canonico": 5.9,
+    "acumulado": 21289.8,
+    "meta_acumulada": 23076.92,
+    "dia_util": true,
+    "situacao": "dia completo"
+   },
+   {
+    "data": "2026-10-06",
+    "realizado": 6341.3,
+    "mil_canonico": 6.3,
+    "acumulado": 27631.1,
+    "meta_acumulada": 28846.15,
+    "dia_util": true,
+    "situacao": "dia completo"
+   },
+   {
+    "data": "2026-10-07",
+    "realizado": 5677.4,
+    "mil_canonico": 5.7,
+    "acumulado": 33308.5,
+    "meta_acumulada": 34615.38,
+    "dia_util": true,
+    "situacao": "dia completo"
+   },
+   {
+    "data": "2026-10-08",
+    "realizado": 6008.7,
+    "mil_canonico": 6.0,
+    "acumulado": 39317.2,
+    "meta_acumulada": 40384.62,
+    "dia_util": true,
+    "situacao": "dia completo"
+   },
+   {
+    "data": "2026-10-09",
+    "realizado": 6400.0,
+    "mil_canonico": 6.4,
+    "acumulado": 45717.2,
+    "meta_acumulada": 46153.85,
+    "dia_util": true,
+    "situacao": "dia completo"
+   },
+   {
+    "data": "2026-10-10",
+    "realizado": 3519.8,
+    "mil_canonico": 3.5,
+    "acumulado": 49237.0,
+    "meta_acumulada": 51923.08,
+    "dia_util": true,
+    "situacao": "sábado (meio expediente)"
+   },
+   {
+    "data": "2026-10-11",
+    "realizado": 0.0,
+    "mil_canonico": 0,
+    "acumulado": 49237.0,
+    "meta_acumulada": 51923.08,
+    "dia_util": false,
+    "situacao": "domingo"
+   },
+   {
+    "data": "2026-10-12",
+    "realizado": 0.0,
+    "mil_canonico": 0,
+    "acumulado": 49237.0,
+    "meta_acumulada": 51923.08,
+    "dia_util": false,
+    "situacao": "feriado (sem expediente)"
+   },
+   {
+    "data": "2026-10-13",
+    "realizado": 6133.1,
+    "mil_canonico": 6.1,
+    "acumulado": 55370.1,
+    "meta_acumulada": 57692.31,
+    "dia_util": true,
+    "situacao": "dia completo"
+   },
+   {
+    "data": "2026-10-14",
+    "realizado": 5785.5,
+    "mil_canonico": 5.8,
+    "acumulado": 61155.6,
+    "meta_acumulada": 63461.54,
+    "dia_util": true,
+    "situacao": "dia completo"
+   },
+   {
+    "data": "2026-10-15",
+    "realizado": 5972.7,
+    "mil_canonico": 6.0,
+    "acumulado": 67128.3,
+    "meta_acumulada": 69230.77,
+    "dia_util": true,
+    "situacao": "dia completo"
+   },
+   {
+    "data": "2026-10-16",
+    "realizado": 6204.2,
+    "mil_canonico": 6.2,
+    "acumulado": 73332.5,
+    "meta_acumulada": 75000.0,
+    "dia_util": true,
+    "situacao": "dia completo"
+   },
+   {
+    "data": "2026-10-17",
+    "realizado": 3590.2,
+    "mil_canonico": 3.6,
+    "acumulado": 76922.7,
+    "meta_acumulada": 80769.23,
+    "dia_util": true,
+    "situacao": "sábado (meio expediente)"
+   },
+   {
+    "data": "2026-10-18",
+    "realizado": 0.0,
+    "mil_canonico": 0,
+    "acumulado": 76922.7,
+    "meta_acumulada": 80769.23,
+    "dia_util": false,
+    "situacao": "domingo"
+   },
+   {
+    "data": "2026-10-19",
+    "realizado": 5477.3,
+    "mil_canonico": 5.5,
+    "acumulado": 82400.0,
+    "meta_acumulada": 86538.46,
+    "dia_util": true,
+    "situacao": "dia completo"
+   },
+   {
+    "data": "2026-10-20",
+    "realizado": 5900.0,
+    "mil_canonico": 5.9,
+    "acumulado": 88300.0,
+    "meta_acumulada": 92307.69,
+    "dia_util": true,
+    "situacao": "dia completo"
+   },
+   {
+    "data": "2026-10-21",
+    "realizado": 4100.0,
+    "mil_canonico": 4.1,
+    "acumulado": 92400.0,
+    "meta_acumulada": 98076.92,
+    "dia_util": true,
+    "situacao": "hoje, até 14h05"
+   }
+  ],
+  "media_dias_completos": 5518.75,
+  "dias_completos": 16,
+  "por_hora": [
+   {
+    "hora": "8h",
+    "realizado": 310.0,
+    "vendas": 2,
+    "mil_canonico": 0.3
+   },
+   {
+    "hora": "9h",
+    "realizado": 590.0,
+    "vendas": 4,
+    "mil_canonico": 0.6
+   },
+   {
+    "hora": "10h",
+    "realizado": 920.0,
+    "vendas": 5,
+    "mil_canonico": 0.9
+   },
+   {
+    "hora": "11h",
+    "realizado": 780.0,
+    "vendas": 4,
+    "mil_canonico": 0.8
+   },
+   {
+    "hora": "12h",
+    "realizado": 410.0,
+    "vendas": 3,
+    "mil_canonico": 0.4
+   },
+   {
+    "hora": "13h",
+    "realizado": 680.0,
+    "vendas": 5,
+    "mil_canonico": 0.7
+   },
+   {
+    "hora": "14h",
+    "realizado": 410.0,
+    "vendas": 1,
+    "mil_canonico": 0.4
+   }
+  ],
+  "vendedores": [
+   {
+    "nome": "Daniele",
+    "codigo": 12,
+    "realizado_mes": 40193.8,
+    "meta": 75000.0,
+    "percentual_meta": 53.6,
+    "ritmo": 0.82,
+    "ritmo_exato": 0.8196,
+    "estado": "fora",
+    "falta": 34806.2,
+    "realizado_dia": 1658.7,
+    "vendas_mes": 279,
+    "vendas_dia": 10,
+    "clientes_atendidos": 104,
+    "origem": {
+     "realizado_mes(mil)": "canonico",
+     "meta": "canonico",
+     "percentual_meta": "canonico",
+     "ritmo": "canonico",
+     "resto": "novo"
+    }
+   },
+   {
+    "nome": "Igor",
+    "codigo": 11,
+    "realizado_mes": 51012.4,
+    "meta": 75000.0,
+    "percentual_meta": 68.0,
+    "ritmo": 1.04,
+    "ritmo_exato": 1.0403,
+    "estado": "no lugar",
+    "falta": 23987.6,
+    "realizado_dia": 2296.4,
+    "vendas_mes": 341,
+    "vendas_dia": 13,
+    "clientes_atendidos": 128,
+    "origem": {
+     "realizado_mes(mil)": "canonico",
+     "meta": "canonico",
+     "percentual_meta": "canonico",
+     "ritmo": "canonico",
+     "resto": "novo"
+    }
+   }
+  ],
+  "outros": {
+   "nome": "Outros (sem meta própria)",
+   "realizado_mes": 1193.8,
+   "realizado_dia": 144.9,
+   "vendas_mes": 22,
+   "vendas_dia": 1,
+   "nota": "venda de quem não é vendedor no ERP (hoje, a gerente); conta só na meta da loja",
+   "origem": {
+    "realizado_mes(mil)": "canonico",
+    "resto": "novo"
+   }
+  },
+  "excecao_sem_vendedor_exemplo_de_estado": {
+   "itens_mes": 3,
+   "valor_mes": 112.5,
+   "itens_dia": 0,
+   "valor_dia": 0.0,
+   "origem": "novo"
+  },
+  "mix_mes": {
+   "grupos": [
+    {
+     "grupo": "Dobradiças",
+     "loja": 18300.0,
+     "igor": 11774.79,
+     "daniele": 6431.01,
+     "outros": 94.2,
+     "parte_loja": 19.8,
+     "parte_igor": 23.1,
+     "parte_daniele": 16.0
+    },
+    {
+     "grupo": "Corrediças",
+     "loja": 16170.0,
+     "igor": 10784.03,
+     "daniele": 5385.97,
+     "outros": 0.0,
+     "parte_loja": 17.5,
+     "parte_igor": 21.1,
+     "parte_daniele": 13.4
+    },
+    {
+     "grupo": "Puxadores",
+     "loja": 12200.0,
+     "igor": 6953.2,
+     "daniele": 5185.0,
+     "outros": 61.8,
+     "parte_loja": 13.2,
+     "parte_igor": 13.6,
+     "parte_daniele": 12.9
+    },
+    {
+     "grupo": "Parafusos e fixação",
+     "loja": 10160.0,
+     "igor": 3879.41,
+     "daniele": 5868.29,
+     "outros": 412.3,
+     "parte_loja": 11.0,
+     "parte_igor": 7.6,
+     "parte_daniele": 14.6
+    },
+    {
+     "grupo": "Fitas de borda",
+     "loja": 8870.0,
+     "igor": 3884.95,
+     "daniele": 4863.45,
+     "outros": 121.6,
+     "parte_loja": 9.6,
+     "parte_igor": 7.6,
+     "parte_daniele": 12.1
+    },
+    {
+     "grupo": "Chapas de MDF",
+     "loja": 8220.0,
+     "igor": 4763.33,
+     "daniele": 3456.67,
+     "outros": 0.0,
+     "parte_loja": 8.9,
+     "parte_igor": 9.3,
+     "parte_daniele": 8.6
+    },
+    {
+     "grupo": "Colas e adesivos",
+     "loja": 5910.0,
+     "igor": 2458.0,
+     "daniele": 3215.5,
+     "outros": 236.5,
+     "parte_loja": 6.4,
+     "parte_igor": 4.8,
+     "parte_daniele": 8.0
+    },
+    {
+     "grupo": "Acessórios de cozinha",
+     "loja": 4900.0,
+     "igor": 2649.15,
+     "daniele": 2250.85,
+     "outros": 0.0,
+     "parte_loja": 5.3,
+     "parte_igor": 5.2,
+     "parte_daniele": 5.6
+    },
+    {
+     "grupo": "Iluminação LED",
+     "loja": 3790.0,
+     "igor": 2021.47,
+     "daniele": 1768.53,
+     "outros": 0.0,
+     "parte_loja": 4.1,
+     "parte_igor": 4.0,
+     "parte_daniele": 4.4
+    },
+    {
+     "grupo": "Ferramentas e abrasivos",
+     "loja": 3330.0,
+     "igor": 1684.62,
+     "daniele": 1446.98,
+     "outros": 198.4,
+     "parte_loja": 3.6,
+     "parte_igor": 3.3,
+     "parte_daniele": 3.6
+    },
+    {
+     "grupo": "Sem grupo",
+     "loja": 550.0,
+     "igor": 159.45,
+     "daniele": 321.55,
+     "outros": 69.0,
+     "parte_loja": 0.6,
+     "parte_igor": 0.3,
+     "parte_daniele": 0.8
+    }
+   ],
+   "origem": "novo",
+   "nota": "ordem do maior para o menor na loja; cada vendedor ordena pelo próprio valor"
+  },
+  "clientes_atendidos_fase8_daniele": {
+   "origem": "novo",
+   "fase": 8,
+   "total": 104,
+   "maiores": [
+    {
+     "cliente": "Marcenaria São Francisco",
+     "realizado": 2180.4
+    },
+    {
+     "cliente": "Móveis Planejados Calhau",
+     "realizado": 1940.0
+    },
+    {
+     "cliente": "Oficina Monte Castelo",
+     "realizado": 1615.2
+    },
+    {
+     "cliente": "Marcenaria Ponta d'Areia",
+     "realizado": 1402.9
+    },
+    {
+     "cliente": "Arte em Madeira Renascença",
+     "realizado": 1288.0
+    }
+   ]
+  },
+  "meses_anteriores": {
+   "origem": "novo",
+   "julho": {
+    "loja": 145000.0,
+    "Igor": 76200.0,
+    "Daniele": 66100.0,
+    "Outros": 2700.0
+   },
+   "agosto": {
+    "loja": 140000.0,
+    "Igor": 72800.0,
+    "Daniele": 64900.0,
+    "Outros": 2300.0
+   },
+   "setembro": {
+    "loja": 148900.0,
+    "Igor": 78400.0,
+    "Daniele": 68000.0,
+    "Outros": 2500.0
+   },
+   "nota": "julho e agosto seguem a docs/LOJA.md (145 e 140 mil); setembro é novo, depois do cartão de 15/09"
+  },
+  "exemplo_15_09": {
+   "data": "2026-09-15",
+   "meta": 150000.0,
+   "realizado": 76800.0,
+   "percentual_meta": 51.2,
+   "ritmo": 1.02,
+   "decorridos": 12,
+   "dias_uteis": 24,
+   "projecao": 153600.0,
+   "estado": "no lugar",
+   "faixa": "Você está vendo terça, 15/09/2026 · calculado em 20/10 às 22h04",
+   "origem": {
+    "meta/realizado/%/ritmo/dias/projecao/faixa": "canonico",
+    "vendedores": "novo",
+    "compras/financeiro": "novo"
+   },
+   "vendedores": [
+    {
+     "nome": "Igor",
+     "realizado": 41000.0,
+     "meta": 75000.0,
+     "percentual_meta": 54.7,
+     "ritmo": 1.09
+    },
+    {
+     "nome": "Daniele",
+     "realizado": 34600.0,
+     "meta": 75000.0,
+     "percentual_meta": 46.1,
+     "ritmo": 0.92
+    },
+    {
+     "nome": "Outros (sem meta própria)",
+     "realizado": 1200.0
+    }
+   ],
+   "compras": {
+    "periodo": "18/06 a 15/09",
+    "comprados": 141,
+    "A": 63,
+    "B": 38,
+    "C": 29,
+    "sem_venda": 11,
+    "estoque": "estoque desconhecido antes de 26/09/2026 (sem encalhe e sem ruptura)"
+   },
+   "financeiro": {
+    "saldo": 36900.0,
+    "saldo_data": "2026-09-14",
+    "a_pagar_7": 29400.0,
+    "contas_7": 4,
+    "folga_7": 7500.0,
+    "a_pagar_30": 35600.0,
+    "folga_30": 1300.0,
+    "quebra": 0.0,
+    "quebra_data": "2026-09-15"
+   },
+   "nota": "a projeção de R$ 153,6 mil é conta em linha reta (76,8 ÷ 12 × 24), não a regra do Kaizen; é canônica e fica"
+  }
+ },
+ "compras": {
+  "periodo": {
+   "de": "2026-07-24",
+   "ate": "2026-10-21",
+   "texto": "90 dias até 21/10 (24/07 a 21/10)",
+   "origem": "canonico"
+  },
+  "comprados": {
+   "total": 150,
+   "A": 66,
+   "B": 40,
+   "C": 31,
+   "sem_venda": 13,
+   "percentuais": {
+    "A": 44.0,
+    "B": 26.7,
+    "C": 20.7,
+    "sem_venda": 8.7
+   },
+   "frase": "Comprou 150 produtos em 90 dias: 66 curva A, 40 B, 31 C e 13 sem venda",
+   "origem": "canonico",
+   "ha_30_dias": {
+    "total": 138,
+    "A": 61,
+    "B": 37,
+    "C": 30,
+    "sem_venda": 10,
+    "origem": "novo"
+   }
+  },
+  "estoque_conhecido_desde": "2026-09-26",
+  "rodape": "Estoque conhecido desde 26/09/2026. Valor parado pelo custo atual do cadastro.",
+  "abc_valor": {
+   "A": {
+    "produtos": 98,
+    "liquido": 335500.0,
+    "parte": 79.9
+   },
+   "B": {
+    "produtos": 176,
+    "liquido": 63150.0,
+    "parte": 15.0
+   },
+   "C": {
+    "produtos": 438,
+    "liquido": 21250.0,
+    "parte": 5.1
+   },
+   "total": {
+    "produtos": 712,
+    "liquido": 419900.0
+   }
+  },
+  "abc_quantidade": {
+   "A": {
+    "produtos": 84,
+    "quantidade": 42150,
+    "parte": 79.8
+   },
+   "B": {
+    "produtos": 160,
+    "quantidade": 7890,
+    "parte": 14.9
+   },
+   "C": {
+    "produtos": 468,
+    "quantidade": 2800,
+    "parte": 5.3
+   },
+   "total": {
+    "produtos": 712,
+    "quantidade": 52840
+   }
+  },
+  "abc_origem": "novo",
+  "vendas_90_dias_por_mes": {
+   "24 a 31/07": 38600.0,
+   "agosto": 140000.0,
+   "setembro": 148900.0,
+   "outubro (até 21/10)": 92400.0,
+   "origem": "novo"
+  },
+  "encalhe": {
+   "produtos": 38,
+   "valor": 24620.1,
+   "ha_30_dias": {
+    "produtos": 30,
+    "valor": 19740.0
+   },
+   "lista": [
+    {
+     "codigo": "20500",
+     "descricao": "Corrediça oculta 500 mm",
+     "grupo": "Corrediças",
+     "marca": "Deslizza",
+     "fornecedor": "Ferragens Norte",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 34,
+     "estoque_medio": 29.4,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 58.0,
+     "valor_parado": 1972.0,
+     "ultima_venda": "2026-06-27",
+     "marcas": [
+      "encalhe",
+      "comprado em 90 dias"
+     ],
+     "comprado_90": {
+      "data": "2026-10-02",
+      "nf": "48213",
+      "unidades": 20,
+      "erp": "novo (com valor)",
+      "valor": 1160.0
+     }
+    },
+    {
+     "codigo": "70412",
+     "descricao": "Perfil LED de sobrepor 3 m",
+     "grupo": "Iluminação LED",
+     "marca": "Luzmóvel",
+     "fornecedor": "Luz e Perfil Distribuidora",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 28,
+     "estoque_medio": 28.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 64.5,
+     "valor_parado": 1806.0,
+     "ultima_venda": "2026-05-18",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "61820",
+     "descricao": "Chapa MDF 18 mm nogueira rústica",
+     "grupo": "Chapas de MDF",
+     "marca": "Chapa Norte",
+     "fornecedor": "Madeiras do Vale",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 6,
+     "estoque_medio": 6.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 289.0,
+     "valor_parado": 1734.0,
+     "ultima_venda": "2026-07-03",
+     "marcas": [
+      "encalhe",
+      "comprado em 90 dias"
+     ],
+     "comprado_90": {
+      "data": "2026-08-12",
+      "nf": "1102",
+      "unidades": 6,
+      "erp": "anterior (nota sem valor)"
+     }
+    },
+    {
+     "codigo": "50233",
+     "descricao": "Lixeira de embutir 2 cestos 30 L",
+     "grupo": "Acessórios de cozinha",
+     "marca": "Cozimax",
+     "fornecedor": "Casa do Marceneiro Atacado",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 7,
+     "estoque_medio": 7.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 189.0,
+     "valor_parado": 1323.0,
+     "ultima_venda": "2026-06-11",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "30960",
+     "descricao": "Puxador perfil gola 3 m preto",
+     "grupo": "Puxadores",
+     "marca": "Puxare",
+     "fornecedor": "Casa do Marceneiro Atacado",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 12,
+     "estoque_medio": 12.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 98.0,
+     "valor_parado": 1176.0,
+     "ultima_venda": "2026-07-22",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "50118",
+     "descricao": "Porta-talheres 60 cm cinza",
+     "grupo": "Acessórios de cozinha",
+     "marca": "Cozimax",
+     "fornecedor": "Casa do Marceneiro Atacado",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 15,
+     "estoque_medio": 15.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 72.0,
+     "valor_parado": 1080.0,
+     "ultima_venda": "2026-05-29",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "70225",
+     "descricao": "Fita LED 5 m 12 V branca fria",
+     "grupo": "Iluminação LED",
+     "marca": "Luzmóvel",
+     "fornecedor": "Luz e Perfil Distribuidora",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 30,
+     "estoque_medio": 30.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 34.9,
+     "valor_parado": 1047.0,
+     "ultima_venda": "2026-07-14",
+     "marcas": [
+      "encalhe",
+      "comprado em 90 dias"
+     ],
+     "comprado_90": {
+      "data": "2026-09-16",
+      "nf": "2188",
+      "unidades": 30,
+      "erp": "anterior (nota sem valor)"
+     }
+    },
+    {
+     "codigo": "80340",
+     "descricao": "Serra copo 35 mm",
+     "grupo": "Ferramentas e abrasivos",
+     "marca": "Marcenex",
+     "fornecedor": "Ferragens Norte",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 18,
+     "estoque_medio": 18.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 52.0,
+     "valor_parado": 936.0,
+     "ultima_venda": "2026-06-09",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "30455",
+     "descricao": "Puxador concha 96 mm inox",
+     "grupo": "Puxadores",
+     "marca": "Puxare",
+     "fornecedor": "Casa do Marceneiro Atacado",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 68,
+     "estoque_medio": 68.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 13.5,
+     "valor_parado": 918.0,
+     "ultima_venda": "2026-06-20",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "50390",
+     "descricao": "Cesto aramado de canto 4 em 1",
+     "grupo": "Acessórios de cozinha",
+     "marca": "Cozimax",
+     "fornecedor": "Casa do Marceneiro Atacado",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 4,
+     "estoque_medio": 4.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 228.0,
+     "valor_parado": 912.0,
+     "ultima_venda": "2026-04-30",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "70610",
+     "descricao": "Spot LED de embutir 3 W",
+     "grupo": "Iluminação LED",
+     "marca": "Luzmóvel",
+     "fornecedor": "Luz e Perfil Distribuidora",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 40,
+     "estoque_medio": 40.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 19.8,
+     "valor_parado": 792.0,
+     "ultima_venda": "2026-07-05",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "10520",
+     "descricao": "Dobradiça para vidro 4 mm",
+     "grupo": "Dobradiças",
+     "marca": "Ferrolar",
+     "fornecedor": "Ferragens Norte",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 48,
+     "estoque_medio": 48.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 15.9,
+     "valor_parado": 763.2,
+     "ultima_venda": "2026-05-17",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "50277",
+     "descricao": "Suporte regulável para micro-ondas",
+     "grupo": "Acessórios de cozinha",
+     "marca": "Cozimax",
+     "fornecedor": "Casa do Marceneiro Atacado",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 9,
+     "estoque_medio": 9.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 79.0,
+     "valor_parado": 711.0,
+     "ultima_venda": "2026-06-26",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "30188",
+     "descricao": "Puxador botão de cerâmica branco",
+     "grupo": "Puxadores",
+     "marca": "Puxare",
+     "fornecedor": "Casa do Marceneiro Atacado",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 85,
+     "estoque_medio": 85.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 7.9,
+     "valor_parado": 671.5,
+     "ultima_venda": "2026-05-08",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "90115",
+     "descricao": "Cola de contato 2,8 kg",
+     "grupo": "Colas e adesivos",
+     "marca": "Colaforte",
+     "fornecedor": "Bordas & Colas Nordeste",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 6,
+     "estoque_medio": 5.3,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 104.0,
+     "valor_parado": 624.0,
+     "ultima_venda": "2026-07-15",
+     "marcas": [
+      "encalhe",
+      "comprado em 90 dias"
+     ],
+     "comprado_90": {
+      "data": "2026-09-29",
+      "nf": "9971",
+      "unidades": 6,
+      "erp": "novo (com valor)",
+      "valor": 624.0
+     }
+    },
+    {
+     "codigo": "70733",
+     "descricao": "Driver LED 60 W 12 V",
+     "grupo": "Iluminação LED",
+     "marca": "Luzmóvel",
+     "fornecedor": "Luz e Perfil Distribuidora",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 11,
+     "estoque_medio": 11.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 54.0,
+     "valor_parado": 594.0,
+     "ultima_venda": "2026-06-10",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "80412",
+     "descricao": "Jogo de brocas para madeira, 5 peças",
+     "grupo": "Ferramentas e abrasivos",
+     "marca": "Marcenex",
+     "fornecedor": "Ferragens Norte",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 14,
+     "estoque_medio": 14.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 39.9,
+     "valor_parado": 558.6,
+     "ultima_venda": "2026-05-21",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "40720",
+     "descricao": "Fita de borda 22 mm carvalho, 20 m",
+     "grupo": "Fitas de borda",
+     "marca": "Bordacor",
+     "fornecedor": "Bordas & Colas Nordeste",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 26,
+     "estoque_medio": 26.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 21.0,
+     "valor_parado": 546.0,
+     "ultima_venda": "2026-07-02",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "30612",
+     "descricao": "Puxador alça 320 mm dourado",
+     "grupo": "Puxadores",
+     "marca": "Puxare",
+     "fornecedor": "Casa do Marceneiro Atacado",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 21,
+     "estoque_medio": 21.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 24.9,
+     "valor_parado": 522.9,
+     "ultima_venda": "2026-06-12",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "50455",
+     "descricao": "Escorredor de pratos para armário 80 cm",
+     "grupo": "Acessórios de cozinha",
+     "marca": "Cozimax",
+     "fornecedor": "Casa do Marceneiro Atacado",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 6,
+     "estoque_medio": 6.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 84.0,
+     "valor_parado": 504.0,
+     "ultima_venda": "2026-05-19",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "20350",
+     "descricao": "Corrediça telescópica 350 mm preta",
+     "grupo": "Corrediças",
+     "marca": "Deslizza",
+     "fornecedor": "Ferragens Norte",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 22,
+     "estoque_medio": 22.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 21.5,
+     "valor_parado": 473.0,
+     "ultima_venda": "2026-07-04",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "70548",
+     "descricao": "Sensor de presença para LED",
+     "grupo": "Iluminação LED",
+     "marca": "Luzmóvel",
+     "fornecedor": "Luz e Perfil Distribuidora",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 16,
+     "estoque_medio": 16.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 28.5,
+     "valor_parado": 456.0,
+     "ultima_venda": "2026-05-27",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "30744",
+     "descricao": "Puxador cava 1,5 m alumínio",
+     "grupo": "Puxadores",
+     "marca": "Puxare",
+     "fornecedor": "Casa do Marceneiro Atacado",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 9,
+     "estoque_medio": 9.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 47.0,
+     "valor_parado": 423.0,
+     "ultima_venda": "2026-07-01",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "80266",
+     "descricao": "Disco de lixa 125 mm grão 120, caixa com 50",
+     "grupo": "Ferramentas e abrasivos",
+     "marca": "Marcenex",
+     "fornecedor": "Ferragens Norte",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 11,
+     "estoque_medio": 11.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 36.0,
+     "valor_parado": 396.0,
+     "ultima_venda": "2026-06-23",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "90330",
+     "descricao": "Silicone acético transparente 280 g",
+     "grupo": "Colas e adesivos",
+     "marca": "Colaforte",
+     "fornecedor": "Bordas & Colas Nordeste",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 40,
+     "estoque_medio": 40.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 9.2,
+     "valor_parado": 368.0,
+     "ultima_venda": "2026-07-06",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "50612",
+     "descricao": "Cabideiro retrátil para armário",
+     "grupo": "Acessórios de cozinha",
+     "marca": "Cozimax",
+     "fornecedor": "Casa do Marceneiro Atacado",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 5,
+     "estoque_medio": 5.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 69.0,
+     "valor_parado": 345.0,
+     "ultima_venda": "2026-06-16",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "70318",
+     "descricao": "Luminária LED sobre bancada 60 cm",
+     "grupo": "Iluminação LED",
+     "marca": "Luzmóvel",
+     "fornecedor": "Luz e Perfil Distribuidora",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 8,
+     "estoque_medio": 8.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 41.0,
+     "valor_parado": 328.0,
+     "ultima_venda": "2026-06-24",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "30833",
+     "descricao": "Puxador ponto 32 mm preto",
+     "grupo": "Puxadores",
+     "marca": "Puxare",
+     "fornecedor": "Casa do Marceneiro Atacado",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 52,
+     "estoque_medio": 52.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 6.1,
+     "valor_parado": 317.2,
+     "ultima_venda": "2026-05-13",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "10612",
+     "descricao": "Dobradiça de canto 165°",
+     "grupo": "Dobradiças",
+     "marca": "Ferrolar",
+     "fornecedor": "Ferragens Norte",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 14,
+     "estoque_medio": 14.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 21.9,
+     "valor_parado": 306.6,
+     "ultima_venda": "2026-07-07",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "80551",
+     "descricao": "Formão 3/4\" cabo plástico",
+     "grupo": "Ferramentas e abrasivos",
+     "marca": "Marcenex",
+     "fornecedor": "Ferragens Norte",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 10,
+     "estoque_medio": 10.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 28.4,
+     "valor_parado": 284.0,
+     "ultima_venda": "2026-05-12",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "40855",
+     "descricao": "Fita de borda 45 mm branco TX, 50 m",
+     "grupo": "Fitas de borda",
+     "marca": "Bordacor",
+     "fornecedor": "Bordas & Colas Nordeste",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 6,
+     "estoque_medio": 6.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 46.0,
+     "valor_parado": 276.0,
+     "ultima_venda": "2026-06-25",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "30290",
+     "descricao": "Puxador de embutir redondo 35 mm latão",
+     "grupo": "Puxadores",
+     "marca": "Puxare",
+     "fornecedor": "Casa do Marceneiro Atacado",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 38,
+     "estoque_medio": 38.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 6.9,
+     "valor_parado": 262.2,
+     "ultima_venda": "2026-07-09",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "50780",
+     "descricao": "Pé regulável para armário 100 mm, jogo com 4",
+     "grupo": "Acessórios de cozinha",
+     "marca": "Cozimax",
+     "fornecedor": "Casa do Marceneiro Atacado",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 12,
+     "estoque_medio": 12.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 19.9,
+     "valor_parado": 238.8,
+     "ultima_venda": "2026-06-29",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "70815",
+     "descricao": "Fonte LED 12 V 2 A",
+     "grupo": "Iluminação LED",
+     "marca": "Luzmóvel",
+     "fornecedor": "Luz e Perfil Distribuidora",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 14,
+     "estoque_medio": 14.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 16.4,
+     "valor_parado": 229.6,
+     "ultima_venda": "2026-07-08",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "90512",
+     "descricao": "Cola instantânea gel 100 g",
+     "grupo": "Colas e adesivos",
+     "marca": "Colaforte",
+     "fornecedor": "Bordas & Colas Nordeste",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 18,
+     "estoque_medio": 12.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 11.9,
+     "valor_parado": 214.2,
+     "ultima_venda": "2026-06-30",
+     "marcas": [
+      "encalhe",
+      "comprado em 90 dias"
+     ],
+     "comprado_90": {
+      "data": "2026-10-09",
+      "nf": "9990",
+      "unidades": 12,
+      "erp": "novo (com valor)",
+      "valor": 142.8
+     }
+    },
+    {
+     "codigo": "60570",
+     "descricao": "Parafuso cabeça chata 5 × 70 mm, caixa com 500",
+     "grupo": "Parafusos e fixação",
+     "marca": "Fixamais",
+     "fornecedor": "Parafusos & Cia",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 7,
+     "estoque_medio": 7.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 27.5,
+     "valor_parado": 192.5,
+     "ultima_venda": "2026-06-14",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "80714",
+     "descricao": "Grosa meia-cana 8\"",
+     "grupo": "Ferramentas e abrasivos",
+     "marca": "Marcenex",
+     "fornecedor": "Ferragens Norte",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 7,
+     "estoque_medio": 7.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 24.0,
+     "valor_parado": 168.0,
+     "ultima_venda": "2026-06-18",
+     "marcas": [
+      "encalhe"
+     ]
+    },
+    {
+     "codigo": "30915",
+     "descricao": "Puxador concha 64 mm níquel",
+     "grupo": "Puxadores",
+     "marca": "Puxare",
+     "fornecedor": "Casa do Marceneiro Atacado",
+     "classe_valor": "sem venda",
+     "classe_quantidade": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 26,
+     "estoque_medio": 26.0,
+     "giro": 0.0,
+     "cobertura_dias": null,
+     "custo": 5.8,
+     "valor_parado": 150.8,
+     "ultima_venda": "2026-06-03",
+     "marcas": [
+      "encalhe"
+     ]
+    }
+   ],
+   "origem": {
+    "produtos/valor (mil)": "canonico",
+    "há 30 dias: produtos": "canonico",
+    "há 30 dias: valor": "novo",
+    "lista": "novo"
+   }
+  },
+  "ruptura": {
+   "produtos": 3,
+   "curva_A": 3,
+   "ha_30_dias": 1,
+   "lista": [
+    {
+     "codigo": "10235",
+     "descricao": "Dobradiça 35 mm",
+     "grupo": "Dobradiças",
+     "marca": "Ferrolar",
+     "fornecedor": "Ferragens Norte",
+     "classe_valor": "A",
+     "classe_quantidade": "A",
+     "liquido_90": 12880.0,
+     "quantidade_90": 1840,
+     "estoque": 0,
+     "estoque_medio": 150.2,
+     "giro": 12.3,
+     "cobertura_dias": 0,
+     "custo": 5.2,
+     "valor_parado": null,
+     "ultima_venda": "2026-10-19",
+     "marcas": [
+      "ruptura"
+     ]
+    },
+    {
+     "codigo": "20450",
+     "descricao": "Corrediça 450 mm",
+     "grupo": "Corrediças",
+     "marca": "Deslizza",
+     "fornecedor": "Ferragens Norte",
+     "classe_valor": "A",
+     "classe_quantidade": "A",
+     "liquido_90": 11124.0,
+     "quantidade_90": 412,
+     "estoque": 0,
+     "estoque_medio": 46.2,
+     "giro": 8.9,
+     "cobertura_dias": 0,
+     "custo": 15.8,
+     "valor_parado": null,
+     "ultima_venda": "2026-10-20",
+     "marcas": [
+      "ruptura"
+     ]
+    },
+    {
+     "codigo": "30128",
+     "descricao": "Puxador 128 mm",
+     "grupo": "Puxadores",
+     "marca": "Puxare",
+     "fornecedor": "Casa do Marceneiro Atacado",
+     "classe_valor": "A",
+     "classe_quantidade": "A",
+     "liquido_90": 6555.0,
+     "quantidade_90": 380,
+     "estoque": 0,
+     "estoque_medio": 41.0,
+     "giro": 9.3,
+     "cobertura_dias": 0,
+     "custo": 9.9,
+     "valor_parado": null,
+     "ultima_venda": "2026-10-17",
+     "marcas": [
+      "ruptura"
+     ]
+    }
+   ],
+   "origem": {
+    "contagem e nomes": "canonico",
+    "lista com números": "novo",
+    "há 30 dias": "novo"
+   }
+  },
+  "comprados_sem_venda": {
+   "produtos": 13,
+   "em_encalhe": 5,
+   "novos_em_carencia": 8,
+   "ha_30_dias": 10,
+   "novos": [
+    {
+     "codigo": "70290",
+     "descricao": "Perfil LED de embutir 2 m",
+     "grupo": "Iluminação LED",
+     "marca": "Luzmóvel",
+     "fornecedor": "Luz e Perfil Distribuidora",
+     "classe_valor": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 40,
+     "estoque_medio": 35.4,
+     "custo": 38.0,
+     "valor_em_estoque": 1520.0,
+     "primeira_entrada": "2026-09-29",
+     "nf": "2209",
+     "carencia_ate": "2026-11-28",
+     "ultima_venda": null,
+     "marcas": [
+      "novo, em carência até 28/11"
+     ]
+    },
+    {
+     "codigo": "10712",
+     "descricao": "Dobradiça slide-on 35 mm curva com amortecedor",
+     "grupo": "Dobradiças",
+     "marca": "Ferrolar",
+     "fornecedor": "Ferragens Norte",
+     "classe_valor": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 200,
+     "estoque_medio": 161.5,
+     "custo": 9.8,
+     "valor_em_estoque": 1960.0,
+     "primeira_entrada": "2026-10-01",
+     "nf": "48166",
+     "carencia_ate": "2026-11-30",
+     "ultima_venda": null,
+     "marcas": [
+      "novo, em carência até 30/11"
+     ]
+    },
+    {
+     "codigo": "20550",
+     "descricao": "Corrediça telescópica 550 mm com amortecedor",
+     "grupo": "Corrediças",
+     "marca": "Deslizza",
+     "fornecedor": "Ferragens Norte",
+     "classe_valor": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 40,
+     "estoque_medio": 24.6,
+     "custo": 44.0,
+     "valor_em_estoque": 1760.0,
+     "primeira_entrada": "2026-10-06",
+     "nf": "48390",
+     "carencia_ate": "2026-12-05",
+     "ultima_venda": null,
+     "marcas": [
+      "novo, em carência até 05/12"
+     ]
+    },
+    {
+     "codigo": "30388",
+     "descricao": "Puxador alça 160 mm grafite",
+     "grupo": "Puxadores",
+     "marca": "Puxare",
+     "fornecedor": "Casa do Marceneiro Atacado",
+     "classe_valor": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 120,
+     "estoque_medio": 64.6,
+     "custo": 11.2,
+     "valor_em_estoque": 1344.0,
+     "primeira_entrada": "2026-10-08",
+     "nf": "5612",
+     "carencia_ate": "2026-12-07",
+     "ultima_venda": null,
+     "marcas": [
+      "novo, em carência até 07/12"
+     ]
+    },
+    {
+     "codigo": "40330",
+     "descricao": "Fita de borda 22 mm freijó, 20 m",
+     "grupo": "Fitas de borda",
+     "marca": "Bordacor",
+     "fornecedor": "Bordas & Colas Nordeste",
+     "classe_valor": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 60,
+     "estoque_medio": 53.1,
+     "custo": 19.5,
+     "valor_em_estoque": 1170.0,
+     "primeira_entrada": "2026-09-29",
+     "nf": "9971",
+     "carencia_ate": "2026-11-28",
+     "ultima_venda": null,
+     "marcas": [
+      "novo, em carência até 28/11"
+     ]
+    },
+    {
+     "codigo": "50840",
+     "descricao": "Organizador de gaveta ajustável",
+     "grupo": "Acessórios de cozinha",
+     "marca": "Cozimax",
+     "fornecedor": "Casa do Marceneiro Atacado",
+     "classe_valor": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 24,
+     "estoque_medio": 8.3,
+     "custo": 36.0,
+     "valor_em_estoque": 864.0,
+     "primeira_entrada": "2026-10-13",
+     "nf": "5640",
+     "carencia_ate": "2026-12-12",
+     "ultima_venda": null,
+     "marcas": [
+      "novo, em carência até 12/12"
+     ]
+    },
+    {
+     "codigo": "90612",
+     "descricao": "Cola PVA extra 1 kg",
+     "grupo": "Colas e adesivos",
+     "marca": "Colaforte",
+     "fornecedor": "Bordas & Colas Nordeste",
+     "classe_valor": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 48,
+     "estoque_medio": 12.9,
+     "custo": 14.9,
+     "valor_em_estoque": 715.2,
+     "primeira_entrada": "2026-10-15",
+     "nf": "10018",
+     "carencia_ate": "2026-12-14",
+     "ultima_venda": null,
+     "marcas": [
+      "novo, em carência até 14/12"
+     ]
+    },
+    {
+     "codigo": "60455",
+     "descricao": "Cavilha de madeira 8 × 40 mm, pacote com 100",
+     "grupo": "Parafusos e fixação",
+     "marca": "Fixamais",
+     "fornecedor": "Parafusos & Cia",
+     "classe_valor": "sem venda",
+     "liquido_90": 0.0,
+     "quantidade_90": 0,
+     "estoque": 30,
+     "estoque_medio": 6.9,
+     "custo": 7.9,
+     "valor_em_estoque": 237.0,
+     "primeira_entrada": "2026-10-16",
+     "nf": "7781",
+     "carencia_ate": "2026-12-15",
+     "ultima_venda": null,
+     "marcas": [
+      "novo, em carência até 15/12"
+     ]
+    }
+   ],
+   "origem": {
+    "contagem": "canonico",
+    "lista e há 30 dias": "novo"
+   }
+  },
+  "estoque_negativo": {
+   "produtos": 2,
+   "ha_30_dias": 4,
+   "lista": [
+    {
+     "codigo": "10901",
+     "descricao": "Dobradiça piano 1 m latonada",
+     "grupo": "Dobradiças",
+     "marca": "Ferrolar",
+     "fornecedor": "Ferragens Norte",
+     "estoque": -3,
+     "ultima_venda": "2026-07-11",
+     "classe_valor": "sem venda",
+     "marcas": [
+      "estoque negativo"
+     ],
+     "nota": "sem venda nos 90 dias; provável erro de contagem no inventário de 26/09"
+    },
+    {
+     "codigo": "20990",
+     "descricao": "Trilho superior de porta de correr 2 m",
+     "grupo": "Corrediças",
+     "marca": "Deslizza",
+     "fornecedor": "Ferragens Norte",
+     "estoque": -2,
+     "ultima_venda": "2026-06-02",
+     "classe_valor": "sem venda",
+     "marcas": [
+      "estoque negativo"
+     ],
+     "nota": "sem venda nos 90 dias; provável erro de contagem no inventário de 26/09"
+    }
+   ],
+   "origem": "novo"
+  },
+  "custo_zero": {
+   "produtos": 7,
+   "lista": [
+    {
+     "codigo": "60520",
+     "descricao": "Parafuso chipboard 4 × 50 mm, caixa com 500",
+     "grupo": "Parafusos e fixação",
+     "classe_valor": "B",
+     "estoque": 64,
+     "ultima_venda": "2026-10-20",
+     "custo": 0.0,
+     "marcas": [
+      "custo zero"
+     ]
+    },
+    {
+     "codigo": "40118",
+     "descricao": "Fita de borda 19 mm branco TX, 20 m",
+     "grupo": "Fitas de borda",
+     "classe_valor": "B",
+     "estoque": 85,
+     "ultima_venda": "2026-10-21",
+     "custo": 0.0,
+     "marcas": [
+      "custo zero"
+     ]
+    },
+    {
+     "codigo": "90118",
+     "descricao": "Cola branca PVA 500 g",
+     "grupo": "Colas e adesivos",
+     "classe_valor": "C",
+     "estoque": 40,
+     "ultima_venda": "2026-10-16",
+     "custo": 0.0,
+     "marcas": [
+      "custo zero"
+     ]
+    },
+    {
+     "codigo": "30512",
+     "descricao": "Puxador concha 128 mm preto",
+     "grupo": "Puxadores",
+     "classe_valor": "C",
+     "estoque": 22,
+     "ultima_venda": "2026-10-08",
+     "custo": 0.0,
+     "marcas": [
+      "custo zero"
+     ]
+    },
+    {
+     "codigo": "80118",
+     "descricao": "Lixa d'água grão 220",
+     "grupo": "Ferramentas e abrasivos",
+     "classe_valor": "C",
+     "estoque": 150,
+     "ultima_venda": "2026-10-14",
+     "custo": 0.0,
+     "marcas": [
+      "custo zero"
+     ]
+    },
+    {
+     "codigo": "60910",
+     "descricao": "Cantoneira metálica 30 mm, pacote com 10",
+     "grupo": "Parafusos e fixação",
+     "classe_valor": "C",
+     "estoque": 18,
+     "ultima_venda": "2026-10-13",
+     "custo": 0.0,
+     "marcas": [
+      "custo zero"
+     ]
+    },
+    {
+     "codigo": "99001",
+     "descricao": "Corte de chapa (serviço)",
+     "grupo": "Sem grupo",
+     "classe_valor": "C",
+     "estoque": 0,
+     "ultima_venda": "2026-10-21",
+     "custo": 0.0,
+     "marcas": [
+      "custo zero"
+     ]
+    }
+   ],
+   "origem": "novo",
+   "nota": "cadastro de hoje, sem comparação"
+  },
+  "maiores_90_dias": [
+   {
+    "codigo": "10235",
+    "descricao": "Dobradiça 35 mm",
+    "grupo": "Dobradiças",
+    "marca": "Ferrolar",
+    "fornecedor": "Ferragens Norte",
+    "classe_valor": "A",
+    "classe_quantidade": "A",
+    "liquido_90": 12880.0,
+    "quantidade_90": 1840,
+    "estoque": 0,
+    "estoque_medio": 150.2,
+    "giro": 12.3,
+    "cobertura_dias": 0,
+    "custo": 5.2,
+    "valor_parado": null,
+    "ultima_venda": "2026-10-19",
+    "marcas": [
+     "ruptura"
+    ]
+   },
+   {
+    "codigo": "20450",
+    "descricao": "Corrediça 450 mm",
+    "grupo": "Corrediças",
+    "marca": "Deslizza",
+    "fornecedor": "Ferragens Norte",
+    "classe_valor": "A",
+    "classe_quantidade": "A",
+    "liquido_90": 11124.0,
+    "quantidade_90": 412,
+    "estoque": 0,
+    "estoque_medio": 46.2,
+    "giro": 8.9,
+    "cobertura_dias": 0,
+    "custo": 15.8,
+    "valor_parado": null,
+    "ultima_venda": "2026-10-20",
+    "marcas": [
+     "ruptura"
+    ]
+   },
+   {
+    "codigo": "61815",
+    "descricao": "Chapa MDF 15 mm branco TX",
+    "grupo": "Chapas de MDF",
+    "marca": "Chapa Norte",
+    "fornecedor": "Madeiras do Vale",
+    "classe_valor": "A",
+    "classe_quantidade": "B",
+    "liquido_90": 10348.0,
+    "quantidade_90": 52,
+    "estoque": 18,
+    "estoque_medio": 21.5,
+    "giro": 2.4,
+    "cobertura_dias": 31,
+    "valor_parado": null,
+    "ultima_venda": "2026-10-21",
+    "marcas": []
+   },
+   {
+    "codigo": "40122",
+    "descricao": "Fita de borda 22 mm branco TX, 20 m",
+    "grupo": "Fitas de borda",
+    "marca": "Bordacor",
+    "fornecedor": "Bordas & Colas Nordeste",
+    "classe_valor": "A",
+    "classe_quantidade": "A",
+    "liquido_90": 9089.0,
+    "quantidade_90": 610,
+    "estoque": 240,
+    "estoque_medio": 255.0,
+    "giro": 2.4,
+    "cobertura_dias": 35,
+    "valor_parado": null,
+    "ultima_venda": "2026-10-21",
+    "marcas": []
+   },
+   {
+    "codigo": "20400",
+    "descricao": "Corrediça telescópica 400 mm",
+    "grupo": "Corrediças",
+    "marca": "Deslizza",
+    "fornecedor": "Ferragens Norte",
+    "classe_valor": "A",
+    "classe_quantidade": "A",
+    "liquido_90": 7650.0,
+    "quantidade_90": 300,
+    "estoque": 96,
+    "estoque_medio": 104.0,
+    "giro": 2.9,
+    "cobertura_dias": 29,
+    "valor_parado": null,
+    "ultima_venda": "2026-10-21",
+    "marcas": []
+   },
+   {
+    "codigo": "30128",
+    "descricao": "Puxador 128 mm",
+    "grupo": "Puxadores",
+    "marca": "Puxare",
+    "fornecedor": "Casa do Marceneiro Atacado",
+    "classe_valor": "A",
+    "classe_quantidade": "A",
+    "liquido_90": 6555.0,
+    "quantidade_90": 380,
+    "estoque": 0,
+    "estoque_medio": 41.0,
+    "giro": 9.3,
+    "cobertura_dias": 0,
+    "custo": 9.9,
+    "valor_parado": null,
+    "ultima_venda": "2026-10-17",
+    "marcas": [
+     "ruptura"
+    ]
+   },
+   {
+    "codigo": "60415",
+    "descricao": "Parafuso chipboard 4 × 40 mm, caixa com 500",
+    "grupo": "Parafusos e fixação",
+    "marca": "Fixamais",
+    "fornecedor": "Parafusos & Cia",
+    "classe_valor": "A",
+    "classe_quantidade": "A",
+    "liquido_90": 6510.0,
+    "quantidade_90": 210,
+    "estoque": 95,
+    "estoque_medio": 102.0,
+    "giro": 2.1,
+    "cobertura_dias": 41,
+    "valor_parado": null,
+    "ultima_venda": "2026-10-21",
+    "marcas": []
+   },
+   {
+    "codigo": "61818",
+    "descricao": "Chapa MDF 18 mm branco TX",
+    "grupo": "Chapas de MDF",
+    "marca": "Chapa Norte",
+    "fornecedor": "Madeiras do Vale",
+    "classe_valor": "A",
+    "classe_quantidade": "B",
+    "liquido_90": 6412.0,
+    "quantidade_90": 28,
+    "estoque": 9,
+    "estoque_medio": 12.4,
+    "giro": 2.3,
+    "cobertura_dias": 29,
+    "valor_parado": null,
+    "ultima_venda": "2026-10-20",
+    "marcas": []
+   },
+   {
+    "codigo": "90215",
+    "descricao": "Cola de contato 750 g",
+    "grupo": "Colas e adesivos",
+    "marca": "Colaforte",
+    "fornecedor": "Bordas & Colas Nordeste",
+    "classe_valor": "A",
+    "classe_quantidade": "A",
+    "liquido_90": 6235.0,
+    "quantidade_90": 290,
+    "estoque": 110,
+    "estoque_medio": 118.0,
+    "giro": 2.5,
+    "cobertura_dias": 34,
+    "valor_parado": null,
+    "ultima_venda": "2026-10-21",
+    "marcas": []
+   },
+   {
+    "codigo": "10226",
+    "descricao": "Dobradiça 26 mm reta",
+    "grupo": "Dobradiças",
+    "marca": "Ferrolar",
+    "fornecedor": "Ferragens Norte",
+    "classe_valor": "A",
+    "classe_quantidade": "A",
+    "liquido_90": 5934.0,
+    "quantidade_90": 860,
+    "estoque": 400,
+    "estoque_medio": 420.0,
+    "giro": 2.0,
+    "cobertura_dias": 42,
+    "valor_parado": null,
+    "ultima_venda": "2026-10-21",
+    "marcas": []
+   },
+   {
+    "codigo": "20300",
+    "descricao": "Corrediça telescópica 300 mm",
+    "grupo": "Corrediças",
+    "marca": "Deslizza",
+    "fornecedor": "Ferragens Norte",
+    "classe_valor": "A",
+    "classe_quantidade": "A",
+    "liquido_90": 5500.0,
+    "quantidade_90": 250,
+    "estoque": 70,
+    "estoque_medio": 76.0,
+    "giro": 3.3,
+    "cobertura_dias": 25,
+    "valor_parado": null,
+    "ultima_venda": "2026-10-21",
+    "marcas": []
+   },
+   {
+    "codigo": "50320",
+    "descricao": "Lixeira de embutir 15 L",
+    "grupo": "Acessórios de cozinha",
+    "marca": "Cozimax",
+    "fornecedor": "Casa do Marceneiro Atacado",
+    "classe_valor": "A",
+    "classe_quantidade": "B",
+    "liquido_90": 5289.0,
+    "quantidade_90": 41,
+    "estoque": 12,
+    "estoque_medio": 13.1,
+    "giro": 3.1,
+    "cobertura_dias": 26,
+    "valor_parado": null,
+    "ultima_venda": "2026-10-19",
+    "marcas": []
+   }
+  ],
+  "visoes": {
+   "Todos": 760,
+   "Curva ABC": 712,
+   "Encalhe": 38,
+   "Ruptura": 3,
+   "Comprados nos 90 dias": 150,
+   "Comprados sem venda": 13,
+   "Estoque negativo": 2,
+   "Custo zero": 7,
+   "origem": {
+    "Encalhe/Ruptura/Comprados sem venda": "canonico",
+    "resto": "novo"
+   },
+   "todos_composicao": {
+    "com venda nos 90 dias": 712,
+    "encalhe": 38,
+    "novos sem venda": 8,
+    "estoque negativo sem venda": 2
+   }
+  },
+  "por_grupo": {
+   "grupos": [
+    {
+     "grupo": "Dobradiças",
+     "produtos": 68,
+     "quantidade_90": 14200,
+     "liquido_90": 83200.0,
+     "estoque": 9800,
+     "estoque_medio": 10300,
+     "giro": 1.38,
+     "cobertura_dias": 62,
+     "encalhe_produtos": 2,
+     "valor_parado": 1069.8
+    },
+    {
+     "grupo": "Corrediças",
+     "produtos": 54,
+     "quantidade_90": 6100,
+     "liquido_90": 73500.0,
+     "estoque": 4300,
+     "estoque_medio": 4500,
+     "giro": 1.36,
+     "cobertura_dias": 63,
+     "encalhe_produtos": 2,
+     "valor_parado": 2445.0
+    },
+    {
+     "grupo": "Puxadores",
+     "produtos": 132,
+     "quantidade_90": 5400,
+     "liquido_90": 55400.0,
+     "estoque": 7900,
+     "estoque_medio": 7800,
+     "giro": 0.69,
+     "cobertura_dias": 132,
+     "encalhe_produtos": 8,
+     "valor_parado": 4441.6
+    },
+    {
+     "grupo": "Parafusos e fixação",
+     "produtos": 168,
+     "quantidade_90": 18500,
+     "liquido_90": 46200.0,
+     "estoque": 9200,
+     "estoque_medio": 9700,
+     "giro": 1.91,
+     "cobertura_dias": 45,
+     "encalhe_produtos": 1,
+     "valor_parado": 192.5
+    },
+    {
+     "grupo": "Fitas de borda",
+     "produtos": 74,
+     "quantidade_90": 2900,
+     "liquido_90": 40300.0,
+     "estoque": 2100,
+     "estoque_medio": 2200,
+     "giro": 1.32,
+     "cobertura_dias": 65,
+     "encalhe_produtos": 2,
+     "valor_parado": 822.0
+    },
+    {
+     "grupo": "Chapas de MDF",
+     "produtos": 36,
+     "quantidade_90": 1150,
+     "liquido_90": 37400.0,
+     "estoque": 380,
+     "estoque_medio": 410,
+     "giro": 2.8,
+     "cobertura_dias": 30,
+     "encalhe_produtos": 1,
+     "valor_parado": 1734.0
+    },
+    {
+     "grupo": "Colas e adesivos",
+     "produtos": 41,
+     "quantidade_90": 1900,
+     "liquido_90": 26900.0,
+     "estoque": 2050,
+     "estoque_medio": 2000,
+     "giro": 0.95,
+     "cobertura_dias": 97,
+     "encalhe_produtos": 3,
+     "valor_parado": 1206.2
+    },
+    {
+     "grupo": "Acessórios de cozinha",
+     "produtos": 63,
+     "quantidade_90": 640,
+     "liquido_90": 22300.0,
+     "estoque": 1160,
+     "estoque_medio": 1150,
+     "giro": 0.56,
+     "cobertura_dias": 163,
+     "encalhe_produtos": 7,
+     "valor_parado": 5113.8
+    },
+    {
+     "grupo": "Iluminação LED",
+     "produtos": 58,
+     "quantidade_90": 820,
+     "liquido_90": 17200.0,
+     "estoque": 1680,
+     "estoque_medio": 1640,
+     "giro": 0.5,
+     "cobertura_dias": 184,
+     "encalhe_produtos": 7,
+     "valor_parado": 5252.6
+    },
+    {
+     "grupo": "Ferramentas e abrasivos",
+     "produtos": 59,
+     "quantidade_90": 1190,
+     "liquido_90": 15100.0,
+     "estoque": 1560,
+     "estoque_medio": 1540,
+     "giro": 0.77,
+     "cobertura_dias": 118,
+     "encalhe_produtos": 5,
+     "valor_parado": 2342.6
+    },
+    {
+     "grupo": "Sem grupo",
+     "produtos": 7,
+     "quantidade_90": 40,
+     "liquido_90": 2400.0,
+     "estoque": 30,
+     "estoque_medio": 31,
+     "giro": 1.29,
+     "cobertura_dias": 68,
+     "encalhe_produtos": 0,
+     "valor_parado": 0.0
+    }
+   ],
+   "origem": "novo"
+  },
+  "onde_esta_parado": [
+   {
+    "grupo": "Iluminação LED",
+    "produtos": 58,
+    "quantidade_90": 820,
+    "liquido_90": 17200.0,
+    "estoque": 1680,
+    "estoque_medio": 1640,
+    "giro": 0.5,
+    "cobertura_dias": 184,
+    "encalhe_produtos": 7,
+    "valor_parado": 5252.6
+   },
+   {
+    "grupo": "Acessórios de cozinha",
+    "produtos": 63,
+    "quantidade_90": 640,
+    "liquido_90": 22300.0,
+    "estoque": 1160,
+    "estoque_medio": 1150,
+    "giro": 0.56,
+    "cobertura_dias": 163,
+    "encalhe_produtos": 7,
+    "valor_parado": 5113.8
+   },
+   {
+    "grupo": "Puxadores",
+    "produtos": 132,
+    "quantidade_90": 5400,
+    "liquido_90": 55400.0,
+    "estoque": 7900,
+    "estoque_medio": 7800,
+    "giro": 0.69,
+    "cobertura_dias": 132,
+    "encalhe_produtos": 8,
+    "valor_parado": 4441.6
+   },
+   {
+    "grupo": "Ferramentas e abrasivos",
+    "produtos": 59,
+    "quantidade_90": 1190,
+    "liquido_90": 15100.0,
+    "estoque": 1560,
+    "estoque_medio": 1540,
+    "giro": 0.77,
+    "cobertura_dias": 118,
+    "encalhe_produtos": 5,
+    "valor_parado": 2342.6
+   },
+   {
+    "grupo": "Colas e adesivos",
+    "produtos": 41,
+    "quantidade_90": 1900,
+    "liquido_90": 26900.0,
+    "estoque": 2050,
+    "estoque_medio": 2000,
+    "giro": 0.95,
+    "cobertura_dias": 97,
+    "encalhe_produtos": 3,
+    "valor_parado": 1206.2
+   }
+  ],
+  "por_fornecedor": {
+   "origem": "novo",
+   "fornecedores": [
+    {
+     "fornecedor": "Ferragens Norte",
+     "produtos": 212,
+     "quantidade_90": 21950,
+     "liquido_90": 176200.0,
+     "encalhe_produtos": 9,
+     "valor_parado": 5857.4
+    },
+    {
+     "fornecedor": "Casa do Marceneiro Atacado",
+     "produtos": 196,
+     "quantidade_90": 6040,
+     "liquido_90": 78100.0,
+     "encalhe_produtos": 15,
+     "valor_parado": 9555.4
+    },
+    {
+     "fornecedor": "Parafusos & Cia",
+     "produtos": 171,
+     "quantidade_90": 18540,
+     "liquido_90": 48600.0,
+     "encalhe_produtos": 1,
+     "valor_parado": 192.5
+    },
+    {
+     "fornecedor": "Bordas & Colas Nordeste",
+     "produtos": 118,
+     "quantidade_90": 4800,
+     "liquido_90": 67200.0,
+     "encalhe_produtos": 5,
+     "valor_parado": 2028.2
+    },
+    {
+     "fornecedor": "Madeiras do Vale",
+     "produtos": 36,
+     "quantidade_90": 1150,
+     "liquido_90": 37400.0,
+     "encalhe_produtos": 1,
+     "valor_parado": 1734.0
+    },
+    {
+     "fornecedor": "Luz e Perfil Distribuidora",
+     "produtos": 27,
+     "quantidade_90": 360,
+     "liquido_90": 12400.0,
+     "encalhe_produtos": 7,
+     "valor_parado": 5252.6
+    }
+   ]
+  }
+ },
+ "C3": {
+  "principal": {
+   "codigo": "20500",
+   "descricao": "Corrediça oculta 500 mm",
+   "grupo": "Corrediças",
+   "marca": "Deslizza",
+   "fornecedor": "Ferragens Norte",
+   "estoque": 34,
+   "estoque_medio": 29.4,
+   "custo": 58.0,
+   "valor_parado": 1972.0,
+   "ultima_venda": "2026-06-27",
+   "estado": "Encalhe",
+   "classe_valor": "sem venda",
+   "classe_quantidade": "sem venda",
+   "liquido_90": 0.0,
+   "quantidade_90": 0,
+   "giro": 0.0,
+   "cobertura_dias": null,
+   "anteriores_90": {
+    "de": "2026-04-25",
+    "ate": "2026-07-23",
+    "quantidade": 7,
+    "liquido": 734.3
+   },
+   "preco": 104.9,
+   "primeira_entrada": "2026-04-14",
+   "venda_por_mes": [
+    {
+     "mes": "abr",
+     "quantidade": 3,
+     "liquido": 314.7
+    },
+    {
+     "mes": "mai",
+     "quantidade": 5,
+     "liquido": 524.5
+    },
+    {
+     "mes": "jun",
+     "quantidade": 2,
+     "liquido": 209.8
+    },
+    {
+     "mes": "jul",
+     "quantidade": 0,
+     "liquido": 0.0
+    },
+    {
+     "mes": "ago",
+     "quantidade": 0,
+     "liquido": 0.0
+    },
+    {
+     "mes": "set",
+     "quantidade": 0,
+     "liquido": 0.0
+    },
+    {
+     "mes": "out",
+     "quantidade": 0,
+     "liquido": 0.0
+    }
+   ],
+   "estoque_por_dia": [
+    {
+     "data": "2026-09-26",
+     "estoque": 14
+    },
+    {
+     "data": "2026-09-27",
+     "estoque": 14
+    },
+    {
+     "data": "2026-09-28",
+     "estoque": 14
+    },
+    {
+     "data": "2026-09-29",
+     "estoque": 14
+    },
+    {
+     "data": "2026-09-30",
+     "estoque": 14
+    },
+    {
+     "data": "2026-10-01",
+     "estoque": 14
+    },
+    {
+     "data": "2026-10-02",
+     "estoque": 34
+    },
+    {
+     "data": "2026-10-03",
+     "estoque": 34
+    },
+    {
+     "data": "2026-10-04",
+     "estoque": 34
+    },
+    {
+     "data": "2026-10-05",
+     "estoque": 34
+    },
+    {
+     "data": "2026-10-06",
+     "estoque": 34
+    },
+    {
+     "data": "2026-10-07",
+     "estoque": 34
+    },
+    {
+     "data": "2026-10-08",
+     "estoque": 34
+    },
+    {
+     "data": "2026-10-09",
+     "estoque": 34
+    },
+    {
+     "data": "2026-10-10",
+     "estoque": 34
+    },
+    {
+     "data": "2026-10-11",
+     "estoque": 34
+    },
+    {
+     "data": "2026-10-12",
+     "estoque": 34
+    },
+    {
+     "data": "2026-10-13",
+     "estoque": 34
+    },
+    {
+     "data": "2026-10-14",
+     "estoque": 34
+    },
+    {
+     "data": "2026-10-15",
+     "estoque": 34
+    },
+    {
+     "data": "2026-10-16",
+     "estoque": 34
+    },
+    {
+     "data": "2026-10-17",
+     "estoque": 34
+    },
+    {
+     "data": "2026-10-18",
+     "estoque": 34
+    },
+    {
+     "data": "2026-10-19",
+     "estoque": 34
+    },
+    {
+     "data": "2026-10-20",
+     "estoque": 34
+    },
+    {
+     "data": "2026-10-21",
+     "estoque": 34
+    }
+   ],
+   "entradas": [
+    {
+     "data": "2026-10-02",
+     "nf": "48213",
+     "fornecedor": "Ferragens Norte",
+     "unidades": 20,
+     "valor": 1160.0,
+     "custo_unitario": 58.0
+    },
+    {
+     "data": "2026-04-14",
+     "nf": "3391",
+     "fornecedor": "Ferragens Norte",
+     "unidades": 24,
+     "valor": null,
+     "custo_unitario": null,
+     "nota": "esta nota não guardava valor (ERP anterior)"
+    }
+   ],
+   "historia": "comprou 24 em 14/04, vendeu 10 até 27/06 e parou; na virada havia 14; comprou mais 20 em 02/10 e não vendeu nenhum",
+   "origem": "novo"
+  },
+  "ruptura_dobradica_35": {
+   "codigo": "10235",
+   "descricao": "Dobradiça 35 mm",
+   "grupo": "Dobradiças",
+   "marca": "Ferrolar",
+   "fornecedor": "Ferragens Norte",
+   "liquido_90": 12880.0,
+   "quantidade_90": 1840,
+   "estoque": 0,
+   "estoque_medio": 150.2,
+   "giro": 12.3,
+   "custo": 5.2,
+   "ultima_venda": "2026-10-19",
+   "estado": "Ruptura",
+   "preco": 7.0,
+   "primeira_entrada": "2026-04-14",
+   "venda_por_mes": [
+    {
+     "mes": "abr",
+     "quantidade": 310
+    },
+    {
+     "mes": "mai",
+     "quantidade": 590
+    },
+    {
+     "mes": "jun",
+     "quantidade": 640
+    },
+    {
+     "mes": "jul",
+     "quantidade": 610
+    },
+    {
+     "mes": "ago",
+     "quantidade": 600
+    },
+    {
+     "mes": "set",
+     "quantidade": 650
+    },
+    {
+     "mes": "out",
+     "quantidade": 410
+    }
+   ],
+   "venda_90_por_trecho": {
+    "24 a 31/07": 180,
+    "agosto": 600,
+    "setembro": 650,
+    "outubro": 410
+   },
+   "estoque_por_dia": [
+    {
+     "data": "2026-09-26",
+     "estoque": 300
+    },
+    {
+     "data": "2026-09-27",
+     "estoque": 300
+    },
+    {
+     "data": "2026-09-28",
+     "estoque": 270
+    },
+    {
+     "data": "2026-09-29",
+     "estoque": 240
+    },
+    {
+     "data": "2026-09-30",
+     "estoque": 210
+    },
+    {
+     "data": "2026-10-01",
+     "estoque": 180
+    },
+    {
+     "data": "2026-10-02",
+     "estoque": 150
+    },
+    {
+     "data": "2026-10-03",
+     "estoque": 135
+    },
+    {
+     "data": "2026-10-04",
+     "estoque": 135
+    },
+    {
+     "data": "2026-10-05",
+     "estoque": 105
+    },
+    {
+     "data": "2026-10-06",
+     "estoque": 275
+    },
+    {
+     "data": "2026-10-07",
+     "estoque": 245
+    },
+    {
+     "data": "2026-10-08",
+     "estoque": 215
+    },
+    {
+     "data": "2026-10-09",
+     "estoque": 185
+    },
+    {
+     "data": "2026-10-10",
+     "estoque": 170
+    },
+    {
+     "data": "2026-10-11",
+     "estoque": 170
+    },
+    {
+     "data": "2026-10-12",
+     "estoque": 170
+    },
+    {
+     "data": "2026-10-13",
+     "estoque": 140
+    },
+    {
+     "data": "2026-10-14",
+     "estoque": 110
+    },
+    {
+     "data": "2026-10-15",
+     "estoque": 80
+    },
+    {
+     "data": "2026-10-16",
+     "estoque": 50
+    },
+    {
+     "data": "2026-10-17",
+     "estoque": 35
+    },
+    {
+     "data": "2026-10-18",
+     "estoque": 35
+    },
+    {
+     "data": "2026-10-19",
+     "estoque": 0
+    },
+    {
+     "data": "2026-10-20",
+     "estoque": 0
+    },
+    {
+     "data": "2026-10-21",
+     "estoque": 0
+    }
+   ],
+   "vendas_desde_virada": {
+    "2026-09-28": 30,
+    "2026-09-29": 30,
+    "2026-09-30": 30,
+    "2026-10-01": 30,
+    "2026-10-02": 30,
+    "2026-10-03": 15,
+    "2026-10-05": 30,
+    "2026-10-06": 30,
+    "2026-10-07": 30,
+    "2026-10-08": 30,
+    "2026-10-09": 30,
+    "2026-10-10": 15,
+    "2026-10-13": 30,
+    "2026-10-14": 30,
+    "2026-10-15": 30,
+    "2026-10-16": 30,
+    "2026-10-17": 15,
+    "2026-10-19": 35
+   },
+   "entradas": [
+    {
+     "data": "2026-10-06",
+     "nf": "48390",
+     "fornecedor": "Ferragens Norte",
+     "unidades": 200,
+     "valor": 1040.0,
+     "custo_unitario": 5.2
+    },
+    {
+     "data": "2026-09-05",
+     "nf": "3874",
+     "fornecedor": "Ferragens Norte",
+     "unidades": 600,
+     "valor": null,
+     "nota": "esta nota não guardava valor (ERP anterior)"
+    },
+    {
+     "data": "2026-07-18",
+     "nf": "3702",
+     "fornecedor": "Ferragens Norte",
+     "unidades": 600,
+     "valor": null,
+     "nota": "esta nota não guardava valor (ERP anterior)"
+    }
+   ],
+   "origem": {
+    "nome": "canonico",
+    "resto": "novo"
+   }
+  },
+  "novo_em_carencia": {
+   "codigo": "70290",
+   "descricao": "Perfil LED de embutir 2 m",
+   "grupo": "Iluminação LED",
+   "marca": "Luzmóvel",
+   "fornecedor": "Luz e Perfil Distribuidora",
+   "classe_valor": "sem venda",
+   "liquido_90": 0.0,
+   "quantidade_90": 0,
+   "estoque": 40,
+   "estoque_medio": 35.4,
+   "custo": 38.0,
+   "valor_em_estoque": 1520.0,
+   "primeira_entrada": "2026-09-29",
+   "nf": "2209",
+   "carencia_ate": "2026-11-28",
+   "ultima_venda": null,
+   "marcas": [
+    "novo, em carência até 28/11"
+   ],
+   "estado": "novo, em carência até 28/11",
+   "origem": "novo",
+   "nota": "não está em encalhe porque a primeira compra (29/09) tem menos de 60 dias"
+  }
+ },
+ "financeiro": {
+  "saldo_banco": {
+   "valor": 41300.0,
+   "data": "2026-10-20",
+   "digitado_por": "Israel",
+   "digitado_em": "21/10 às 07h12",
+   "idade_dias": 1,
+   "origem": {
+    "valor/data": "canonico",
+    "quem/quando": "novo"
+   }
+  },
+  "contas_a_pagar": {
+   "vencidas": {
+    "parcelas": 0,
+    "valor": 0.0
+   },
+   "ate_7_dias": {
+    "parcelas": 5,
+    "valor": 33100.0,
+    "ate": "2026-10-28"
+   },
+   "ate_30_dias": {
+    "parcelas": 11,
+    "valor": 39100.0,
+    "ate": "2026-11-20"
+   },
+   "total": {
+    "parcelas": 22,
+    "valor": 84300.0
+   },
+   "total_ha_7_dias": {
+    "data": "2026-10-14",
+    "parcelas": 17,
+    "valor": 88120.0
+   },
+   "lista": [
+    {
+     "vencimento": "2026-10-22",
+     "fornecedor": "Ferragens Norte",
+     "descricao": "Compra de ferragens",
+     "documento": "NF 48213",
+     "parcela": "1 de 1",
+     "valor": 6480.0,
+     "lancada_em": "2026-10-02",
+     "situacao": "a vencer",
+     "origem": "canonico"
+    },
+    {
+     "vencimento": "2026-10-23",
+     "fornecedor": "Energia (Equatorial)",
+     "descricao": "Conta de luz de setembro",
+     "documento": "boleto 0923-118",
+     "parcela": "—",
+     "valor": 2140.0,
+     "lancada_em": "2026-10-09",
+     "situacao": "a vencer",
+     "origem": "canonico"
+    },
+    {
+     "vencimento": "2026-10-26",
+     "fornecedor": "Madeiras do Vale",
+     "descricao": "Compra de chapas de MDF",
+     "documento": "NF 1184",
+     "parcela": "2 de 4",
+     "valor": 9900.0,
+     "lancada_em": "2026-09-25",
+     "situacao": "a vencer",
+     "origem": "canonico"
+    },
+    {
+     "vencimento": "2026-10-27",
+     "fornecedor": "Parafusos & Cia",
+     "descricao": "Compra de parafusos",
+     "documento": "NF 7024",
+     "parcela": "3 de 3",
+     "valor": 3580.0,
+     "lancada_em": "2026-08-27",
+     "situacao": "a vencer",
+     "origem": "canonico"
+    },
+    {
+     "vencimento": "2026-10-28",
+     "fornecedor": "Aluguel da loja",
+     "descricao": "Aluguel de outubro",
+     "documento": "boleto 1028",
+     "parcela": "—",
+     "valor": 11000.0,
+     "lancada_em": "2026-10-01",
+     "situacao": "a vencer",
+     "origem": "canonico"
+    },
+    {
+     "vencimento": "2026-10-30",
+     "fornecedor": "Bordas & Colas Nordeste",
+     "descricao": "Compra de fitas e colas",
+     "documento": "NF 10044",
+     "parcela": "1 de 2",
+     "valor": 1900.0,
+     "lancada_em": "2026-10-16",
+     "situacao": "a vencer",
+     "origem": "novo"
+    },
+    {
+     "vencimento": "2026-11-02",
+     "fornecedor": "Casa do Marceneiro Atacado",
+     "descricao": "Compra de puxadores",
+     "documento": "NF 5577",
+     "parcela": "2 de 3",
+     "valor": 2400.0,
+     "lancada_em": "2026-09-02",
+     "situacao": "a vencer",
+     "origem": "novo"
+    },
+    {
+     "vencimento": "2026-11-10",
+     "fornecedor": "Contador",
+     "descricao": "Honorários de outubro",
+     "documento": "boleto 1110",
+     "parcela": "—",
+     "valor": 950.0,
+     "lancada_em": "2026-10-15",
+     "situacao": "a vencer",
+     "origem": "novo"
+    },
+    {
+     "vencimento": "2026-11-10",
+     "fornecedor": "Internet da loja",
+     "descricao": "Fibra de novembro",
+     "documento": "boleto 8812",
+     "parcela": "—",
+     "valor": 250.0,
+     "lancada_em": "2026-10-15",
+     "situacao": "a vencer",
+     "origem": "novo"
+    },
+    {
+     "vencimento": "2026-11-16",
+     "fornecedor": "Mensalidade do ERP",
+     "descricao": "Novembro",
+     "documento": "boleto 4471",
+     "parcela": "—",
+     "valor": 300.0,
+     "lancada_em": "2026-10-15",
+     "situacao": "a vencer",
+     "origem": "novo"
+    },
+    {
+     "vencimento": "2026-11-18",
+     "fornecedor": "Água da loja",
+     "descricao": "Conta de outubro",
+     "documento": "boleto 2210",
+     "parcela": "—",
+     "valor": 200.0,
+     "lancada_em": "2026-10-15",
+     "situacao": "a vencer",
+     "origem": "novo"
+    },
+    {
+     "vencimento": "2026-11-26",
+     "fornecedor": "Madeiras do Vale",
+     "descricao": "Compra de chapas de MDF",
+     "documento": "NF 1184",
+     "parcela": "3 de 4",
+     "valor": 9900.0,
+     "lancada_em": "2026-09-25",
+     "situacao": "a vencer",
+     "origem": "novo"
+    },
+    {
+     "vencimento": "2026-11-30",
+     "fornecedor": "Bordas & Colas Nordeste",
+     "descricao": "Compra de fitas e colas",
+     "documento": "NF 10044",
+     "parcela": "2 de 2",
+     "valor": 1900.0,
+     "lancada_em": "2026-10-16",
+     "situacao": "a vencer",
+     "origem": "novo"
+    },
+    {
+     "vencimento": "2026-11-30",
+     "fornecedor": "Ferragens Norte",
+     "descricao": "Compra de ferragens",
+     "documento": "NF 48877",
+     "parcela": "1 de 3",
+     "valor": 4200.0,
+     "lancada_em": "2026-10-16",
+     "situacao": "a vencer",
+     "origem": "novo"
+    },
+    {
+     "vencimento": "2026-12-02",
+     "fornecedor": "Casa do Marceneiro Atacado",
+     "descricao": "Compra de puxadores",
+     "documento": "NF 5577",
+     "parcela": "3 de 3",
+     "valor": 2400.0,
+     "lancada_em": "2026-09-02",
+     "situacao": "a vencer",
+     "origem": "novo"
+    },
+    {
+     "vencimento": "2026-12-03",
+     "fornecedor": "Parafusos & Cia",
+     "descricao": "Compra de parafusos e cavilhas",
+     "documento": "NF 7781",
+     "parcela": "1 de 2",
+     "valor": 2100.0,
+     "lancada_em": "2026-10-16",
+     "situacao": "a vencer",
+     "origem": "novo"
+    },
+    {
+     "vencimento": "2026-12-07",
+     "fornecedor": "Luz e Perfil Distribuidora",
+     "descricao": "Compra de perfis de LED",
+     "documento": "NF 2209",
+     "parcela": "1 de 2",
+     "valor": 2150.0,
+     "lancada_em": "2026-09-29",
+     "situacao": "a vencer",
+     "origem": "novo"
+    },
+    {
+     "vencimento": "2026-12-28",
+     "fornecedor": "Madeiras do Vale",
+     "descricao": "Compra de chapas de MDF",
+     "documento": "NF 1184",
+     "parcela": "4 de 4",
+     "valor": 9900.0,
+     "lancada_em": "2026-09-25",
+     "situacao": "a vencer",
+     "origem": "novo"
+    },
+    {
+     "vencimento": "2026-12-30",
+     "fornecedor": "Ferragens Norte",
+     "descricao": "Compra de ferragens",
+     "documento": "NF 48877",
+     "parcela": "2 de 3",
+     "valor": 4200.0,
+     "lancada_em": "2026-10-16",
+     "situacao": "a vencer",
+     "origem": "novo"
+    },
+    {
+     "vencimento": "2027-01-04",
+     "fornecedor": "Parafusos & Cia",
+     "descricao": "Compra de parafusos e cavilhas",
+     "documento": "NF 7781",
+     "parcela": "2 de 2",
+     "valor": 2100.0,
+     "lancada_em": "2026-10-16",
+     "situacao": "a vencer",
+     "origem": "novo"
+    },
+    {
+     "vencimento": "2027-01-06",
+     "fornecedor": "Luz e Perfil Distribuidora",
+     "descricao": "Compra de perfis de LED",
+     "documento": "NF 2209",
+     "parcela": "2 de 2",
+     "valor": 2150.0,
+     "lancada_em": "2026-09-29",
+     "situacao": "a vencer",
+     "origem": "novo"
+    },
+    {
+     "vencimento": "2027-01-29",
+     "fornecedor": "Ferragens Norte",
+     "descricao": "Compra de ferragens",
+     "documento": "NF 48877",
+     "parcela": "3 de 3",
+     "valor": 4200.0,
+     "lancada_em": "2026-10-16",
+     "situacao": "a vencer",
+     "origem": "novo"
+    }
+   ],
+   "origem": {
+    "vencidas, até 7 dias e as 5 contas": "canonico",
+    "até 30 dias (soma)": "canonico",
+    "resto": "novo"
+   }
+  },
+  "folga_7": 8200.0,
+  "folga_30": 2200.0,
+  "folga_7_ha_7_dias": 11500.0,
+  "folga_30_ha_7_dias": -24000.0,
+  "historico_14_10": {
+   "saldo_usado": {
+    "data": "2026-10-13",
+    "valor": 37620.0
+   },
+   "pagas_de_14_a_21": [
+    {
+     "vencimento": "2026-10-14",
+     "fornecedor": "Ferragens Norte",
+     "documento": "NF 47530",
+     "parcela": "2 de 2",
+     "valor": 7860.0,
+     "situacao": "paga"
+    },
+    {
+     "vencimento": "2026-10-15",
+     "fornecedor": "Madeiras do Vale",
+     "documento": "NF 1187",
+     "parcela": "1 de 1",
+     "valor": 4180.0,
+     "situacao": "paga"
+    },
+    {
+     "vencimento": "2026-10-16",
+     "fornecedor": "Luz e Perfil Distribuidora",
+     "documento": "NF 2161",
+     "parcela": "1 de 1",
+     "valor": 3150.0,
+     "situacao": "paga"
+    },
+    {
+     "vencimento": "2026-10-19",
+     "fornecedor": "Bordas & Colas Nordeste",
+     "documento": "NF 9932",
+     "parcela": "2 de 2",
+     "valor": 2470.0,
+     "situacao": "paga"
+    },
+    {
+     "vencimento": "2026-10-19",
+     "fornecedor": "Casa do Marceneiro Atacado",
+     "documento": "NF 5520",
+     "parcela": "1 de 1",
+     "valor": 1620.0,
+     "situacao": "paga"
+    },
+    {
+     "vencimento": "2026-10-20",
+     "fornecedor": "Imposto (Simples)",
+     "documento": "DAS de setembro (estimativa)",
+     "parcela": "—",
+     "valor": 6840.0,
+     "situacao": "paga"
+    }
+   ],
+   "soma_pagas": 26120.0,
+   "lancadas_depois_de_14": 11,
+   "soma_lancadas_depois": 22300.0,
+   "conhecidas_em_14_que_vencem_de_22_10_a_13_11": 35500.0,
+   "origem": {
+    "folga 7 há 7 dias": "canonico",
+    "resto": "novo"
+   }
+  },
+  "semanas": [
+   {
+    "texto": "de 22 a 23/10",
+    "valor": 8620.0
+   },
+   {
+    "texto": "de 26 a 28/10",
+    "valor": 24480.0
+   }
+  ],
+  "saldo_previsto": [
+   {
+    "data": "2026-10-20",
+    "saidas": 0.0,
+    "saldo_previsto": 41300.0,
+    "parcelas": 0
+   },
+   {
+    "data": "2026-10-21",
+    "saidas": 0.0,
+    "saldo_previsto": 41300.0,
+    "parcelas": 0
+   },
+   {
+    "data": "2026-10-22",
+    "saidas": 6480.0,
+    "saldo_previsto": 34820.0,
+    "parcelas": 1
+   },
+   {
+    "data": "2026-10-23",
+    "saidas": 2140.0,
+    "saldo_previsto": 32680.0,
+    "parcelas": 1
+   },
+   {
+    "data": "2026-10-24",
+    "saidas": 0.0,
+    "saldo_previsto": 32680.0,
+    "parcelas": 0
+   },
+   {
+    "data": "2026-10-25",
+    "saidas": 0.0,
+    "saldo_previsto": 32680.0,
+    "parcelas": 0
+   },
+   {
+    "data": "2026-10-26",
+    "saidas": 9900.0,
+    "saldo_previsto": 22780.0,
+    "parcelas": 1
+   },
+   {
+    "data": "2026-10-27",
+    "saidas": 3580.0,
+    "saldo_previsto": 19200.0,
+    "parcelas": 1
+   },
+   {
+    "data": "2026-10-28",
+    "saidas": 11000.0,
+    "saldo_previsto": 8200.0,
+    "parcelas": 1
+   },
+   {
+    "data": "2026-10-29",
+    "saidas": 0.0,
+    "saldo_previsto": 8200.0,
+    "parcelas": 0
+   },
+   {
+    "data": "2026-10-30",
+    "saidas": 1900.0,
+    "saldo_previsto": 6300.0,
+    "parcelas": 1
+   },
+   {
+    "data": "2026-10-31",
+    "saidas": 0.0,
+    "saldo_previsto": 6300.0,
+    "parcelas": 0
+   },
+   {
+    "data": "2026-11-01",
+    "saidas": 0.0,
+    "saldo_previsto": 6300.0,
+    "parcelas": 0
+   },
+   {
+    "data": "2026-11-02",
+    "saidas": 2400.0,
+    "saldo_previsto": 3900.0,
+    "parcelas": 1
+   },
+   {
+    "data": "2026-11-03",
+    "saidas": 0.0,
+    "saldo_previsto": 3900.0,
+    "parcelas": 0
+   },
+   {
+    "data": "2026-11-04",
+    "saidas": 0.0,
+    "saldo_previsto": 3900.0,
+    "parcelas": 0
+   },
+   {
+    "data": "2026-11-05",
+    "saidas": 0.0,
+    "saldo_previsto": 3900.0,
+    "parcelas": 0
+   },
+   {
+    "data": "2026-11-06",
+    "saidas": 0.0,
+    "saldo_previsto": 3900.0,
+    "parcelas": 0
+   },
+   {
+    "data": "2026-11-07",
+    "saidas": 0.0,
+    "saldo_previsto": 3900.0,
+    "parcelas": 0
+   },
+   {
+    "data": "2026-11-08",
+    "saidas": 0.0,
+    "saldo_previsto": 3900.0,
+    "parcelas": 0
+   },
+   {
+    "data": "2026-11-09",
+    "saidas": 0.0,
+    "saldo_previsto": 3900.0,
+    "parcelas": 0
+   },
+   {
+    "data": "2026-11-10",
+    "saidas": 1200.0,
+    "saldo_previsto": 2700.0,
+    "parcelas": 2
+   },
+   {
+    "data": "2026-11-11",
+    "saidas": 0.0,
+    "saldo_previsto": 2700.0,
+    "parcelas": 0
+   },
+   {
+    "data": "2026-11-12",
+    "saidas": 0.0,
+    "saldo_previsto": 2700.0,
+    "parcelas": 0
+   },
+   {
+    "data": "2026-11-13",
+    "saidas": 0.0,
+    "saldo_previsto": 2700.0,
+    "parcelas": 0
+   },
+   {
+    "data": "2026-11-14",
+    "saidas": 0.0,
+    "saldo_previsto": 2700.0,
+    "parcelas": 0
+   },
+   {
+    "data": "2026-11-15",
+    "saidas": 0.0,
+    "saldo_previsto": 2700.0,
+    "parcelas": 0
+   },
+   {
+    "data": "2026-11-16",
+    "saidas": 300.0,
+    "saldo_previsto": 2400.0,
+    "parcelas": 1
+   },
+   {
+    "data": "2026-11-17",
+    "saidas": 0.0,
+    "saldo_previsto": 2400.0,
+    "parcelas": 0
+   },
+   {
+    "data": "2026-11-18",
+    "saidas": 200.0,
+    "saldo_previsto": 2200.0,
+    "parcelas": 1
+   },
+   {
+    "data": "2026-11-19",
+    "saidas": 0.0,
+    "saldo_previsto": 2200.0,
+    "parcelas": 0
+   },
+   {
+    "data": "2026-11-20",
+    "saidas": 0.0,
+    "saldo_previsto": 2200.0,
+    "parcelas": 0
+   }
+  ],
+  "saldo_previsto_canonico_mil": [
+   [
+    "20/10",
+    41.3
+   ],
+   [
+    "21/10",
+    41.3
+   ],
+   [
+    "22/10",
+    34.8
+   ],
+   [
+    "23/10",
+    32.7
+   ],
+   [
+    "24/10",
+    32.7
+   ],
+   [
+    "25/10",
+    32.7
+   ],
+   [
+    "26/10",
+    22.8
+   ],
+   [
+    "27/10",
+    19.2
+   ],
+   [
+    "28/10",
+    8.2
+   ],
+   [
+    "29/10",
+    8.2
+   ],
+   [
+    "30/10",
+    6.3
+   ],
+   [
+    "31/10",
+    6.3
+   ],
+   [
+    "01/11",
+    6.3
+   ],
+   [
+    "02/11",
+    3.9
+   ],
+   [
+    "03/11",
+    3.9
+   ],
+   [
+    "04/11",
+    3.9
+   ]
+  ],
+  "cartao_a_creditar": {
+   "credito_em": "2026-10-22",
+   "valor": 910.0,
+   "origem": "novo",
+   "nota": "crédito R$ 540,00 + débito R$ 370,00 vendidos hoje até 14h05; aparece como barra própria e não entra na linha do saldo previsto nem na folga"
+  },
+  "fluxo_mes": {
+   "de": "2026-10-01",
+   "ate": "2026-10-21",
+   "origem": "novo",
+   "entradas": {
+    "dinheiro": 6420.0,
+    "pix": 64730.0,
+    "credito": 12180.0,
+    "debito": 8850.0
+   },
+   "saidas": 99240.0,
+   "setembro_mesmo_periodo": {
+    "de": "2026-09-01",
+    "ate": "2026-09-21",
+    "entradas": 101350.0,
+    "saidas": 94870.0
+   },
+   "nota": "as compras da troca de dono venceram no começo de outubro; card sem clique até a F4 existir",
+   "entradas_total": 92180.0
+  },
+  "fonte": "Posição pelo ERP novo desde 26/09 (até 25/09, pelo ERP anterior)",
+  "nota_contas": "Conta paga e ainda não baixada no ERP continua em aberto e reduz a folga."
+ },
+ "K1": {
+  "linha": "O ERP não sabe o saldo do banco. Digite o saldo para o Kaizen calcular a folga.",
+  "ultimo": {
+   "valor": 41300.0,
+   "data": "2026-10-20",
+   "ha_dias": 1,
+   "quem": "Israel",
+   "quando": "21/10 às 07h12"
+  },
+  "historico": [
+   {
+    "data": "2026-10-20",
+    "valor": 41300.0,
+    "quem": "Israel",
+    "quando": "21/10 às 07h12"
+   },
+   {
+    "data": "2026-10-19",
+    "valor": 43150.0,
+    "quem": "Israel",
+    "quando": "20/10 às 07h05"
+   },
+   {
+    "data": "2026-10-16",
+    "valor": 42480.0,
+    "quem": "Israel",
+    "quando": "17/10 às 08h20"
+   },
+   {
+    "data": "2026-10-15",
+    "valor": 40950.0,
+    "quem": "Israel",
+    "quando": "16/10 às 07h30"
+   },
+   {
+    "data": "2026-10-13",
+    "valor": 37620.0,
+    "quem": "Israel",
+    "quando": "14/10 às 07h18"
+   },
+   {
+    "data": "2026-10-09",
+    "valor": 39480.0,
+    "quem": "Israel",
+    "quando": "10/10 às 08h02"
+   },
+   {
+    "data": "2026-10-08",
+    "valor": 42170.0,
+    "quem": "Israel",
+    "quando": "09/10 às 07h25"
+   },
+   {
+    "data": "2026-10-06",
+    "valor": 45900.0,
+    "quem": "Israel",
+    "quando": "07/10 às 07h40"
+   },
+   {
+    "data": "2026-10-02",
+    "valor": 46350.0,
+    "quem": "Israel",
+    "quando": "03/10 às 08h15"
+   },
+   {
+    "data": "2026-10-01",
+    "valor": 48000.0,
+    "quem": "Israel",
+    "quando": "02/10 às 07h10"
+   }
+  ],
+  "formulario_exemplo": {
+   "data": "2026-10-21",
+   "valor": 42780.0,
+   "depois_de_salvar": "Saldo salvo. A folga nova aparece na próxima atualização, às 15h."
+  },
+  "substituir": "Já existe R$ 41.300,00 em 20/10. Substituir?",
+  "apagar": "Apagar o saldo de 20/10 (R$ 41.300,00)? A folga volta a usar o saldo de 19/10 (R$ 43.150,00).",
+  "erros": {
+   "valor": "Digite um valor em reais, no formato 41.300,00.",
+   "futuro": "A data não pode ser depois de hoje (21/10/2026).",
+   "antes": "A data não pode ser antes de 01/04/2026, o primeiro dia do Kaizen.",
+   "negativo": "Saldo negativo: −R$ 1.250,00. Confirmar?"
+  },
+  "nenhum": "Nenhum saldo digitado ainda. A folga só aparece depois do primeiro.",
+  "origem": {
+   "último saldo (valor e data)": "canonico",
+   "resto": "novo"
+  }
+ },
+ "caixa": {
+  "dia_20_10": {
+   "data": "2026-10-20",
+   "faixa": "Você está vendo terça, 20/10/2026 · calculado em 20/10 às 22h04",
+   "fechamento": {
+    "numero": 215,
+    "caixa": "Caixa 1",
+    "operador": "gerente",
+    "abertura": "07h02",
+    "fechamento": "18h14",
+    "formas": [
+     {
+      "forma": "Dinheiro",
+      "calculado": 150.0,
+      "informado": 150.0,
+      "quebra": 0.0
+     },
+     {
+      "forma": "Pix",
+      "calculado": 4190.0,
+      "informado": 4190.0,
+      "quebra": 0.0
+     },
+     {
+      "forma": "Crédito",
+      "calculado": 760.0,
+      "informado": 760.0,
+      "quebra": 0.0
+     },
+     {
+      "forma": "Débito",
+      "calculado": 560.0,
+      "informado": 560.0,
+      "quebra": 0.0
+     }
+    ]
+   },
+   "vendas_por_forma": {
+    "dinheiro": 470.0,
+    "pix": 4190.0,
+    "credito": 760.0,
+    "debito": 560.0
+   },
+   "vendido": 5980.0,
+   "devolucoes": 80.0,
+   "realizado": 5900.0,
+   "gaveta": {
+    "vendas_dinheiro": 470.0,
+    "suprimentos": 150.0,
+    "sangrias": 390.0,
+    "devolucoes_dinheiro": 80.0,
+    "gaveta": 150.0
+   },
+   "movimentos": [
+    {
+     "hora": "07h02",
+     "tipo": "Suprimento",
+     "valor": 150.0,
+     "operador": "gerente",
+     "observacao": "troco da abertura"
+    },
+    {
+     "hora": "12h20",
+     "tipo": "Sangria",
+     "valor": 200.0,
+     "operador": "gerente",
+     "observacao": "para o cofre"
+    },
+    {
+     "hora": "17h55",
+     "tipo": "Sangria",
+     "valor": 190.0,
+     "operador": "gerente",
+     "observacao": "para o cofre, fim do dia"
+    }
+   ],
+   "frase": "Bateu nas 4 formas.",
+   "origem": {
+    "quebra R$ 0,00 em 20/10": "canonico",
+    "resto": "novo"
+   }
+  },
+  "dia_21_10_ate_14h05": {
+   "frase": "O caixa deste dia ainda não fechou; último fechamento: 20/10.",
+   "gaveta": {
+    "vendas_dinheiro": 320.0,
+    "suprimentos": 150.0,
+    "sangrias": 200.0,
+    "devolucoes_dinheiro": 0.0,
+    "gaveta": 270.0
+   },
+   "movimentos": [
+    {
+     "hora": "07h03",
+     "tipo": "Suprimento",
+     "valor": 150.0,
+     "operador": "gerente",
+     "observacao": "troco da abertura"
+    },
+    {
+     "hora": "12h15",
+     "tipo": "Sangria",
+     "valor": 200.0,
+     "operador": "gerente",
+     "observacao": "para o cofre"
+    }
+   ],
+   "origem": "novo"
+  },
+  "dia_09_10_fora": {
+   "data": "2026-10-09",
+   "numero": 207,
+   "formas": [
+    {
+     "forma": "Dinheiro",
+     "calculado": 150.0,
+     "informado": 150.0,
+     "quebra": 0.0
+    },
+    {
+     "forma": "Pix",
+     "calculado": 4500.0,
+     "informado": 4500.0,
+     "quebra": 0.0
+    },
+    {
+     "forma": "Crédito",
+     "calculado": 790.0,
+     "informado": 790.0,
+     "quebra": 0.0
+    },
+    {
+     "forma": "Débito",
+     "calculado": 690.0,
+     "informado": 652.0,
+     "quebra": -38.0
+    }
+   ],
+   "vendas_por_forma": {
+    "dinheiro": 450.0,
+    "pix": 4500.0,
+    "credito": 790.0,
+    "debito": 690.0
+   },
+   "vendido": 6430.0,
+   "devolucoes": 30.0,
+   "gaveta": {
+    "vendas_dinheiro": 450.0,
+    "suprimentos": 150.0,
+    "sangrias": 420.0,
+    "devolucoes_dinheiro": 30.0,
+    "gaveta": 150.0
+   },
+   "origem": "novo"
+  },
+  "mes": {
+   "turnos": [
+    {
+     "data": "2026-10-01",
+     "fechamento_numero": 200,
+     "caixa": "Caixa 1",
+     "operador": "gerente",
+     "abertura": "07h01",
+     "fechamento": "18h10",
+     "quebra_formas": {
+      "dinheiro": 0.0,
+      "pix": 0.0,
+      "credito": 0.0,
+      "debito": 0.0
+     },
+     "quebra": 0.0,
+     "estado": "no lugar"
+    },
+    {
+     "data": "2026-10-02",
+     "fechamento_numero": 201,
+     "caixa": "Caixa 1",
+     "operador": "gerente",
+     "abertura": "07h02",
+     "fechamento": "18h11",
+     "quebra_formas": {
+      "dinheiro": -5.0,
+      "pix": 0.0,
+      "credito": 0.0,
+      "debito": 0.0
+     },
+     "quebra": -5.0,
+     "estado": "no lugar"
+    },
+    {
+     "data": "2026-10-03",
+     "fechamento_numero": 202,
+     "caixa": "Caixa 1",
+     "operador": "gerente",
+     "abertura": "07h03",
+     "fechamento": "12h12",
+     "quebra_formas": {
+      "dinheiro": 0.0,
+      "pix": 0.0,
+      "credito": 0.0,
+      "debito": 0.0
+     },
+     "quebra": 0.0,
+     "estado": "no lugar"
+    },
+    {
+     "data": "2026-10-05",
+     "fechamento_numero": 203,
+     "caixa": "Caixa 1",
+     "operador": "gerente",
+     "abertura": "07h04",
+     "fechamento": "18h13",
+     "quebra_formas": {
+      "dinheiro": 0.0,
+      "pix": 0.0,
+      "credito": 0.0,
+      "debito": 0.0
+     },
+     "quebra": 0.0,
+     "estado": "no lugar"
+    },
+    {
+     "data": "2026-10-06",
+     "fechamento_numero": 204,
+     "caixa": "Caixa 1",
+     "operador": "gerente",
+     "abertura": "07h05",
+     "fechamento": "18h14",
+     "quebra_formas": {
+      "dinheiro": 0.0,
+      "pix": 0.0,
+      "credito": 0.0,
+      "debito": 0.0
+     },
+     "quebra": 0.0,
+     "estado": "no lugar"
+    },
+    {
+     "data": "2026-10-07",
+     "fechamento_numero": 205,
+     "caixa": "Caixa 1",
+     "operador": "gerente",
+     "abertura": "07h01",
+     "fechamento": "18h15",
+     "quebra_formas": {
+      "dinheiro": 2.0,
+      "pix": 0.0,
+      "credito": 0.0,
+      "debito": 0.0
+     },
+     "quebra": 2.0,
+     "estado": "no lugar"
+    },
+    {
+     "data": "2026-10-08",
+     "fechamento_numero": 206,
+     "caixa": "Caixa 1",
+     "operador": "gerente",
+     "abertura": "07h02",
+     "fechamento": "18h10",
+     "quebra_formas": {
+      "dinheiro": 0.0,
+      "pix": 0.0,
+      "credito": 0.0,
+      "debito": 0.0
+     },
+     "quebra": 0.0,
+     "estado": "no lugar"
+    },
+    {
+     "data": "2026-10-09",
+     "fechamento_numero": 207,
+     "caixa": "Caixa 1",
+     "operador": "gerente",
+     "abertura": "07h03",
+     "fechamento": "18h11",
+     "quebra_formas": {
+      "dinheiro": 0.0,
+      "pix": 0.0,
+      "credito": 0.0,
+      "debito": -38.0
+     },
+     "quebra": -38.0,
+     "estado": "fora"
+    },
+    {
+     "data": "2026-10-10",
+     "fechamento_numero": 208,
+     "caixa": "Caixa 1",
+     "operador": "gerente",
+     "abertura": "07h04",
+     "fechamento": "12h12",
+     "quebra_formas": {
+      "dinheiro": 0.0,
+      "pix": 0.0,
+      "credito": 0.0,
+      "debito": 0.0
+     },
+     "quebra": 0.0,
+     "estado": "no lugar"
+    },
+    {
+     "data": "2026-10-13",
+     "fechamento_numero": 209,
+     "caixa": "Caixa 1",
+     "operador": "gerente",
+     "abertura": "07h05",
+     "fechamento": "18h13",
+     "quebra_formas": {
+      "dinheiro": 0.0,
+      "pix": 0.0,
+      "credito": 0.0,
+      "debito": 0.0
+     },
+     "quebra": 0.0,
+     "estado": "no lugar"
+    },
+    {
+     "data": "2026-10-14",
+     "fechamento_numero": 210,
+     "caixa": "Caixa 1",
+     "operador": "gerente",
+     "abertura": "07h01",
+     "fechamento": "18h14",
+     "quebra_formas": {
+      "dinheiro": 0.0,
+      "pix": 0.0,
+      "credito": 0.0,
+      "debito": 0.0
+     },
+     "quebra": 0.0,
+     "estado": "no lugar"
+    },
+    {
+     "data": "2026-10-15",
+     "fechamento_numero": 211,
+     "caixa": "Caixa 1",
+     "operador": "gerente",
+     "abertura": "07h02",
+     "fechamento": "18h15",
+     "quebra_formas": {
+      "dinheiro": -1.5,
+      "pix": 0.0,
+      "credito": 0.0,
+      "debito": 0.0
+     },
+     "quebra": -1.5,
+     "estado": "no lugar"
+    },
+    {
+     "data": "2026-10-16",
+     "fechamento_numero": 212,
+     "caixa": "Caixa 1",
+     "operador": "gerente",
+     "abertura": "07h03",
+     "fechamento": "18h10",
+     "quebra_formas": {
+      "dinheiro": 0.0,
+      "pix": 0.0,
+      "credito": 0.0,
+      "debito": 0.0
+     },
+     "quebra": 0.0,
+     "estado": "no lugar"
+    },
+    {
+     "data": "2026-10-17",
+     "fechamento_numero": 213,
+     "caixa": "Caixa 1",
+     "operador": "gerente",
+     "abertura": "07h04",
+     "fechamento": "12h11",
+     "quebra_formas": {
+      "dinheiro": 0.0,
+      "pix": 0.0,
+      "credito": 0.0,
+      "debito": 0.0
+     },
+     "quebra": 0.0,
+     "estado": "no lugar"
+    },
+    {
+     "data": "2026-10-19",
+     "fechamento_numero": 214,
+     "caixa": "Caixa 1",
+     "operador": "gerente",
+     "abertura": "07h05",
+     "fechamento": "18h12",
+     "quebra_formas": {
+      "dinheiro": 0.0,
+      "pix": 0.0,
+      "credito": 0.0,
+      "debito": 0.0
+     },
+     "quebra": 0.0,
+     "estado": "no lugar"
+    },
+    {
+     "data": "2026-10-20",
+     "fechamento_numero": 215,
+     "caixa": "Caixa 1",
+     "operador": "gerente",
+     "abertura": "07h02",
+     "fechamento": "18h14",
+     "quebra_formas": {
+      "dinheiro": 0.0,
+      "pix": 0.0,
+      "credito": 0.0,
+      "debito": 0.0
+     },
+     "quebra": 0.0,
+     "estado": "no lugar"
+    }
+   ],
+   "fechamentos": 16,
+   "quebra_total": -42.5,
+   "por_forma": {
+    "dinheiro": -4.5,
+    "pix": 0.0,
+    "credito": 0.0,
+    "debito": -38.0
+   },
+   "media_por_fechamento": -2.66,
+   "tolerancia": 5.0,
+   "origem": "novo"
+  },
+  "nota": "O fechamento é às cegas: o informado é a contagem do operador; a linha de troca fica fora."
+ },
+ "metas": {
+  "meses_da_lista": [
+   "4/2026",
+   "5/2026",
+   "6/2026",
+   "7/2026",
+   "8/2026",
+   "9/2026",
+   "10/2026",
+   "11/2026",
+   "12/2026",
+   "1/2027",
+   "2/2027",
+   "3/2027",
+   "4/2027",
+   "5/2027",
+   "6/2027",
+   "7/2027",
+   "8/2027",
+   "9/2027",
+   "10/2027"
+  ],
+  "outubro": {
+   "loja": 150000.0,
+   "Igor": 75000.0,
+   "Daniele": 75000.0,
+   "dias_uteis": 26,
+   "fechados": [
+    "2026-10-12"
+   ],
+   "origem": "canonico"
+  },
+  "setembro": {
+   "loja": 150000.0,
+   "Igor": 75000.0,
+   "Daniele": 75000.0,
+   "dias_uteis": 24,
+   "fechados": [
+    "2026-09-07",
+    "2026-09-26"
+   ],
+   "origem": {
+    "loja e dias": "canonico",
+    "vendedores": "novo"
+   }
+  },
+  "novembro": {
+   "loja": 145000.0,
+   "Igor": 72500.0,
+   "Daniele": 72500.0,
+   "dias_uteis": 24,
+   "fechados": [
+    "2026-11-02"
+   ],
+   "origem": "novo",
+   "nota": "digitadas pelo dono em 20/10; menores que as de outubro porque novembro tem 24 dias úteis, e não 26"
+  },
+  "dezembro": {
+   "loja": null,
+   "Igor": null,
+   "Daniele": null,
+   "dias_uteis": 26,
+   "fechados": [
+    "2026-12-25"
+   ],
+   "origem": "novo",
+   "estado": "Sem meta, o ritmo fica vazio."
+  },
+  "abril_a_agosto": "sem meta cadastrada",
+  "ajuste_igor_exemplo": {
+   "mes": "outubro de 2026",
+   "de": 75000.0,
+   "para": 60000.0,
+   "origem": "canonico",
+   "efeito": "O ritmo do Igor passa a ser medido contra R$ 60 mil, em vez de R$ 75 mil.",
+   "confirmacao": "A meta de outubro do Igor muda de R$ 75.000,00 para R$ 60.000,00. Confirmar?",
+   "conferencia_depois": {
+    "soma_vendedores": 135000.0,
+    "loja": 150000.0,
+    "diferenca": 15000.0,
+    "origem": "novo"
+   }
+  }
+ },
+ "mapa_telas": {
+  "G1": [
+   "base.pessoa"
+  ],
+  "I1": [
+   "vendas.mes",
+   "vendas.dia",
+   "vendas.vendedores",
+   "vendas.outros",
+   "vendas.exemplo_15_09",
+   "compras.comprados",
+   "compras.encalhe",
+   "compras.ruptura",
+   "financeiro",
+   "caixa.dia_20_10"
+  ],
+  "V1": [
+   "vendas.mes",
+   "vendas.dia",
+   "vendas.por_dia",
+   "vendas.por_hora",
+   "vendas.vendedores",
+   "vendas.outros",
+   "vendas.excecao_sem_vendedor_exemplo_de_estado"
+  ],
+  "V2": [
+   "vendas.vendedores",
+   "vendas.mix_mes",
+   "vendas.clientes_atendidos_fase8_daniele"
+  ],
+  "C1": [
+   "compras.periodo",
+   "compras.comprados",
+   "compras.encalhe",
+   "compras.ruptura",
+   "compras.comprados_sem_venda",
+   "compras.estoque_negativo",
+   "compras.custo_zero",
+   "compras.abc_valor",
+   "compras.abc_quantidade",
+   "compras.onde_esta_parado"
+  ],
+  "C2": [
+   "compras.visoes",
+   "compras.encalhe.lista",
+   "compras.ruptura.lista",
+   "compras.comprados_sem_venda",
+   "compras.estoque_negativo",
+   "compras.custo_zero",
+   "compras.maiores_90_dias",
+   "compras.por_grupo",
+   "compras.por_fornecedor"
+  ],
+  "C3": [
+   "C3"
+  ],
+  "F1": [
+   "financeiro",
+   "caixa.dia_20_10",
+   "caixa.dia_21_10_ate_14h05"
+  ],
+  "F2": [
+   "financeiro.contas_a_pagar",
+   "financeiro.saldo_previsto",
+   "financeiro.historico_14_10",
+   "financeiro.cartao_a_creditar"
+  ],
+  "K1": [
+   "K1"
+  ],
+  "F3": [
+   "caixa"
+  ],
+  "K2": [
+   "metas",
+   "vendas.meses_anteriores"
+  ]
+ }
+}
