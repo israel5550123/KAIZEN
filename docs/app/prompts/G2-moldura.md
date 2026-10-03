@@ -2,14 +2,14 @@
 
 Tela 1 da lista (`docs/app/TELAS.md`, seção 7, G2). É a primeira tela, então este prompt também cria o projeto onde ficarão todas as telas.
 
-**Antes de colar:** a rodada curta do Design System (`docs/app/prompts/00d-correcao-design-system.md`) tem de estar feita na conversa do Design System. Confira que o README dele tem a seção "Mudanças da rodada 2" e que a barra de baixo do celular diz "Painel". O projeto das telas guarda uma cópia do Design System no momento em que ele é instalado, e essa cópia não se atualiza sozinha.
+**Antes de colar:** a última rodada do Design System (`docs/app/prompts/00e-correcao-design-system.md`) tem de estar feita na conversa do Design System. Confira que o README dele tem a seção "Mudanças da rodada 3" e que a barra de baixo do celular diz "Painel". O projeto das telas guarda uma cópia do Design System no momento em que ele é instalado, e essa cópia não se atualiza sozinha.
 
 **Onde usar:** na aba Artifacts do claude.ai, comece um projeto novo pelo modelo **Design** (não o "Design System") e cole o texto abaixo. As próximas telas vão para este mesmo projeto, cada uma com o seu prompt. Quando aprovar a G2, mande o link do projeto para o Claude Code.
 
 ---
 
 ```text
-Vamos desenhar as telas do Kaizen, uma por vez, neste projeto. Use o Design System "Kaizen" (https://claude.ai/artifact/FminwsQQNCX6hoF9ZXoSso): instale a versão cujo README tem a seção "Mudanças da rodada 2" (se não tiver, pare e me avise) e use as classes e os tokens dele (tokens.css e components/bundle.css). Não invente componente, cor, letra ou espaçamento fora dele; se faltar algo, use o mais próximo e me diga no fim o que faltou.
+Vamos desenhar as telas do Kaizen, uma por vez, neste projeto. Use o Design System "Kaizen" (https://claude.ai/artifact/FminwsQQNCX6hoF9ZXoSso): instale a versão cujo README tem a seção "Mudanças da rodada 3" (se não tiver, pare e me avise) e use as classes e os tokens dele (tokens.css e components/bundle.css). Não invente componente, cor, letra ou espaçamento fora dele; se faltar algo, use o mais próximo e me diga no fim o que faltou.
 
 O QUE É O KAIZEN (contexto para todas as telas)
 App web de gestão à distância de uma loja de ferragens para marceneiros em São Luís (MA). O dono acompanha três perguntas (vendas contra a meta, compras, dinheiro para pagar as contas) no modelo meta → desvio → detalhe. Uso principal no computador (1920 × 1080). O celular é auxílio e só o dono usa (para consultar e para digitar o saldo do banco); gerente e vendedores usam só o computador. Textos em português do Brasil. O app só mostra números prontos; a tela não calcula. Avisos (régua cruzada, briefing, falha da atualização) vão só pelo Telegram: no app não há sino nem notificação.
@@ -56,7 +56,7 @@ Desenhe 8 pranchas na página "Moldura e entrada":
 
 7. G2-celular-calendario — igual à 6, com a folha que sobe de baixo (.k-veu-celular + .k-folha) aberta, com o calendário de outubro de 2026 (os mesmos dias marcados da prancha 2).
 
-8. G2-celular-dia-passado — igual à 6, com o botão do dia em "ter, 15/09" (sem "Hoje") destacado com as cores do .k-outro-dia (fundo cor-destaque-fundo, borda cor-destaque); o Design System não tem essa variante no celular: diga no fim que precisou dela. Logo abaixo, a mesma faixa neutra do computador, quebrando em linhas: "Você está vendo terça, 15/09/2026 · calculado em 20/10 às 22h04" e a ação "Voltar para hoje" (.k-acao), com 44 px de alvo.
+8. G2-celular-dia-passado — igual à 6, com o botão do dia em "ter, 15/09" (sem "Hoje") destacado (.k-dia-celular.k-outro-dia). Logo abaixo, a mesma faixa neutra do computador, quebrando em linhas: "Você está vendo terça, 15/09/2026 · calculado em 20/10 às 22h04" e a ação "Voltar para hoje" (.k-acao), com 44 px de alvo.
 
 O QUE CADA CLIQUE FAZ (para as pranchas que você ligar entre si, se quiser deixá-las clicáveis)
 - Item do menu → abre a tela, mantendo o dia escolhido.
