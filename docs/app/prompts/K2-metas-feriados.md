@@ -32,7 +32,7 @@ Desenhe 2 pranchas na página "Cadastros":
      Loja · [R$ 150.000,00] · R$ 145.000,00 · R$ 140.000,00 · R$ 148.900,00
      Igor · [R$ 75.000,00] · R$ 76.200,00 · R$ 72.800,00 · R$ 78.400,00
      Daniele · [R$ 75.000,00] · R$ 66.100,00 · R$ 64.900,00 · R$ 68.000,00
-   - cada campo é o de dinheiro do Design System (.k-entrada-prefixo com "R$"; input .k-entrada.k-num com inputmode="decimal"), com 140 px de largura (estilo local) e nome para o leitor de tela (aria-label "Meta de outubro da loja", "Meta de outubro do Igor", "Meta de outubro da Daniele"). A linha fica com a altura do campo (40 px, e não os 36 px da tabela): diga no fim;
+   - cada campo é o de dinheiro do Design System (.k-entrada-prefixo com "R$"; input .k-entrada.k-num com inputmode="decimal"), com 140 px de largura (152 px no campo da loja, para caber "150.000,00"; estilo local) e nome para o leitor de tela (aria-label "Meta de outubro da loja", "Meta de outubro do Igor", "Meta de outubro da Daniele"). A linha fica com a altura do campo (40 px, e não os 36 px da tabela): diga no fim;
    - os três realizados em .k-rotulo-regular (13 px, cinza), como comparação. Medido com as classes do Design System: assim a tabela cabe nos 664 px que a coluna tem em 1366; com 15 px ou com o campo mais largo, rola para o lado;
    - embaixo da tabela, a conferência (.k-dados): "Soma das metas dos vendedores" R$ 150.000,00 · "Meta da loja" R$ 150.000,00 · "Diferença" R$ 0,00, e a nota (.k-rotulo-regular) "Venda de quem não é vendedor no ERP conta só na meta da loja.";
    - os botões (.k-botoes): Salvar (.k-botao.k-principal), Copiar do mês anterior (.k-botao.k-secundario) e Desfazer (.k-botao.k-texto, desligado: nada foi mudado).

@@ -69,7 +69,7 @@ tab(['Número', 'Cartão e painel', 'Detalhe', 'Telas'], [
     ['Curva A em falta (ruptura)', '3 produtos', 'Dobradiça 35 mm, Corrediça 450 mm, Puxador 128 mm', 'I1, C1, C2, C3'],
     ['Encalhe', f'{enc["produtos"]} produtos · {mil(enc["valor"])}', brl(enc['valor']), 'I1, C1, C2'],
     ['Saldo do banco', 'R$ 41,3 mil (20/10)', brl(F['saldo_banco']['valor']), 'I1, F1, F2, K1'],
-    ['A pagar até 28/10', f'R$ 33,1 mil · 5 contas', brl(ctas['ate_7_dias']['valor']), 'I1, F1, F2'],
+    ['A pagar até 28/10', f'R$ 33,1 mil · 5 parcelas', brl(ctas['ate_7_dias']['valor']), 'I1, F1, F2'],
     ['A pagar até 20/11', mil(ctas['ate_30_dias']['valor']) + f' · {ctas["ate_30_dias"]["parcelas"]} parcelas', brl(ctas['ate_30_dias']['valor']), 'F1, F2'],
     ['Folga em 7 dias', mil(F['folga_7']), brl(F['folga_7']), 'I1, F1, F2'],
     ['Folga em 30 dias', mil(F['folga_30']), brl(F['folga_30']), 'I1, F1, F2'],
@@ -162,7 +162,7 @@ tab(['Item', 'Como aparece', 'Origem'], [
     ['Número', f'{mil(F["folga_7"])} · de folga em 7 dias', DS],
     ['Conta', 'Saldo de 20/10: R$ 41,3 mil − R$ 33,1 mil até 28/10', DS],
     ['Frase', 'Dá para pagar as contas dos próximos 7 dias.', DS],
-    ['Aberto', f'Folga em 7 dias (até 28/10) {mil(F["folga_7"])} · Folga em 30 dias (até 20/11) {mil(F["folga_30"])} · Saldo do banco em 20/10 {brl(41300)} · A vencer até 28/10: 5 contas {brl(ctas["ate_7_dias"]["valor"])} · Contas vencidas: nenhuma · Quebra do caixa no fechamento de 20/10 R$ 0,00 (link para F3)', DS],
+    ['Aberto', f'Folga em 7 dias (até 28/10) {mil(F["folga_7"])} · Folga em 30 dias (até 20/11) {mil(F["folga_30"])} · Saldo do banco em 20/10 {brl(41300)} · A vencer até 28/10: 5 parcelas {brl(ctas["ate_7_dias"]["valor"])} · Contas vencidas: nenhuma · Quebra do caixa no fechamento de 20/10 R$ 0,00 (link para F3)', DS],
 ])
 p('### Bloco "O que isso significa" (Fase 6)', '',
   'Texto (DS): "A loja está um pouco atrás da meta, com ritmo de 0,94. O atraso está na Daniele, com ritmo de 0,82; o Igor está adiantado, com 1,04. A projeção fecha em R$ 143,8 mil para a meta de R$ 150 mil." Linha: "escrito pela IA sobre os números das 14h; não calcula". Indisponível: "Texto da IA indisponível agora. Os números continuam valendo."', '')

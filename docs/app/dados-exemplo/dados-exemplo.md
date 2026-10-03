@@ -43,7 +43,7 @@ Quando uma tela mostra um destes, é este valor, neste formato.
 | Curva A em falta (ruptura) | 3 produtos | Dobradiça 35 mm, Corrediça 450 mm, Puxador 128 mm | I1, C1, C2, C3 |
 | Encalhe | 38 produtos · R$ 24,6 mil | R$ 24.620,10 | I1, C1, C2 |
 | Saldo do banco | R$ 41,3 mil (20/10) | R$ 41.300,00 | I1, F1, F2, K1 |
-| A pagar até 28/10 | R$ 33,1 mil · 5 contas | R$ 33.100,00 | I1, F1, F2 |
+| A pagar até 28/10 | R$ 33,1 mil · 5 parcelas | R$ 33.100,00 | I1, F1, F2 |
 | A pagar até 20/11 | R$ 39,1 mil · 11 parcelas | R$ 39.100,00 | F1, F2 |
 | Folga em 7 dias | R$ 8,2 mil | R$ 8.200,00 | I1, F1, F2 |
 | Folga em 30 dias | R$ 2,2 mil | R$ 2.200,00 | I1, F1, F2 |
@@ -150,7 +150,7 @@ Os três cartões são os da prancha Cartão de pergunta, com os mesmos números
 | Número | R$ 8,2 mil · de folga em 7 dias | DS |
 | Conta | Saldo de 20/10: R$ 41,3 mil − R$ 33,1 mil até 28/10 | DS |
 | Frase | Dá para pagar as contas dos próximos 7 dias. | DS |
-| Aberto | Folga em 7 dias (até 28/10) R$ 8,2 mil · Folga em 30 dias (até 20/11) R$ 2,2 mil · Saldo do banco em 20/10 R$ 41.300,00 · A vencer até 28/10: 5 contas R$ 33.100,00 · Contas vencidas: nenhuma · Quebra do caixa no fechamento de 20/10 R$ 0,00 (link para F3) | DS |
+| Aberto | Folga em 7 dias (até 28/10) R$ 8,2 mil · Folga em 30 dias (até 20/11) R$ 2,2 mil · Saldo do banco em 20/10 R$ 41.300,00 · A vencer até 28/10: 5 parcelas R$ 33.100,00 · Contas vencidas: nenhuma · Quebra do caixa no fechamento de 20/10 R$ 0,00 (link para F3) | DS |
 
 ### Bloco "O que isso significa" (Fase 6)
 
