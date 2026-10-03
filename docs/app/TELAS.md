@@ -63,9 +63,9 @@ Cada tela é desenhada inteira na primeira vez, com os blocos de fases futuras m
 | Grupo do menu | Itens (código) | Aparece na fase |
 | --- | --- | --- |
 | Início | Início (I1) | 5b |
-| Vendas | O desvio (V1), Padrões de venda (V3) | 5b |
+| Vendas | O desvio (V1), Padrões de venda (V3, adiada) | 5b |
 | Compras | O desvio (C1), Estoque e giro (C2) | 5b |
-| Financeiro | O desvio (F1), Contas a pagar (F2), Caixa (F3), Fluxo realizado (F4) | 5b |
+| Financeiro | O desvio (F1), Contas a pagar (F2), Caixa (F3), Fluxo realizado (F4, adiada) | 5b |
 | Relacionamento | Lista do dia (R4), Painel (R5), Clientes (R1), Tarefas (R3), Margem (R6), Leads (R7) | R1 e R3 na 7; o resto na 8 |
 | Mapa | Mapa (M2), Por bairro (M3), Localizações (M1), Concorrentes (M4) | M1 na 9; o resto na 10 |
 | Entregas | Entregas (E2) | 11 |
@@ -180,7 +180,7 @@ Toda tela, no desenho e depois na construção, passa por estes itens nos format
 
 ## 6. Inventário em ordem de prioridade
 
-Primeiro o Design System; depois tudo o que a Fase 5b constrói: a moldura, a entrada, o Início, as três perguntas do desvio ao detalhe, os cadastros do dono e, por último, as duas análises (V3 e F4). Depois os blocos da Fase 6 em diante: réguas, relacionamento, mapa, entregas. Dentro de cada bloco, primeiro a tela que as outras reaproveitam (R4 antes de R2, que abre ao lado dele; M2 antes de M1, que usa os pontos dele), mesmo quando a fase de construção é outra. A Fase 12 não cria tela: acrescenta a camada mole ao R2.
+Primeiro o Design System; depois tudo o que a Fase 5b constrói: a moldura, a entrada, o Início, as três perguntas do desvio ao detalhe, os cadastros do dono. As duas análises (V3 e F4) foram adiadas pelo dono em 03/10 para depois de o app estar no ar. Depois os blocos da Fase 6 em diante: réguas, relacionamento, mapa, entregas. Dentro de cada bloco, primeiro a tela que as outras reaproveitam (R4 antes de R2, que abre ao lado dele; M2 antes de M1, que usa os pontos dele), mesmo quando a fase de construção é outra. A Fase 12 não cria tela: acrescenta a camada mole ao R2.
 
 | Ordem | Código | Tela | Quem vê | Computador / celular | Fase |
 | --- | --- | --- | --- | --- | --- |
@@ -198,8 +198,8 @@ Primeiro o Design System; depois tudo o que a Fase 5b constrói: a moldura, a en
 | 11 | K1 | Saldo do banco | dono | os dois | 5b |
 | 12 | F3 | Caixa da loja | dono; gerente na 7 | os dois (celular só o dia) | 5b |
 | 13 | K2 | Metas e feriados | dono | só computador | 5b |
-| 14 | V3 | Padrões de venda | dono; gerente na 7 | só computador | 5b |
-| 15 | F4 | Fluxo de caixa realizado | dono; gerente na 7 | só computador | 5b |
+| 14 | V3 | Padrões de venda | dono; gerente na 7 | só computador | adiada (depois de o app no ar) |
+| 15 | F4 | Fluxo de caixa realizado | dono; gerente na 7 | só computador | adiada (depois de o app no ar) |
 | 16 | A1 | Réguas e avisos | dono | só computador | 6 |
 | 17 | R4 | Lista do dia | vendedor, gerente, dono | só computador | 8 |
 | 18 | R2 | Dossiê do cliente | dono, gerente, vendedor | os dois (celular: dono, só para ver) | 7 |
@@ -277,7 +277,7 @@ A Fase 6 também acrescenta o bloco "O que isso significa" em I1, V1, C1 e F1 (d
   - Tabela dos vendedores (tipo vendedor no ERP), pior ritmo primeiro: estado, ritmo, realizado do mês, meta, %, falta, realizado do dia, vendas no mês, clientes atendidos.
   - Linha "Outros (sem meta própria)": "venda de quem não é vendedor no ERP (hoje, a gerente); conta só na meta da loja".
   - Exceção "Itens sem vendedor" (itens e R$, no mês e no dia), só quando houver: "ficam fora do vendido, como no relatório 154 do ERP". Atalho "Padrões de venda".
-- **Cliques:** linha do vendedor → V2; cabeçalho → ordena; passar o mouse num número → definição ("Ritmo: realizado ÷ meta, dividido pela parte dos dias úteis que já passou; acima de 1, adiantado"); ponto do gráfico → acumulado e meta do dia; clicar num dia do gráfico → o app vai para aquele dia; "Cadastrar meta" (só dono) → K2; "Padrões de venda" → V3.
+- **Cliques:** linha do vendedor → V2; cabeçalho → ordena; passar o mouse num número → definição ("Ritmo: realizado ÷ meta, dividido pela parte dos dias úteis que já passou; acima de 1, adiantado"); ponto do gráfico → acumulado e meta do dia; clicar num dia do gráfico → o app vai para aquele dia; "Cadastrar meta" (só dono) → K2; "Padrões de venda" → V3 (adiada: sem esse link até a V3 existir).
 - **Estados:** mês sem venda (dia 1 cedo: zeros, ticket vazio); sem meta da loja (sem comparação, "Cadastrar meta"); vendedor sem meta ("sem meta" e "Cadastrar"); ninguém como vendedor no ERP (tabela vazia, tudo em Outros); vendedor novo no ERP ("novo no ERP, sem meta"); quem deixa de ser vendedor no ERP passa para Outros.
 
 ### V2 · Detalhe do vendedor
@@ -349,7 +349,7 @@ A Fase 6 também acrescenta o bloco "O que isso significa" em I1, V1, C1 e F1 (d
   - Contas a pagar em aberto, em quatro faixas (parcelas e R$): vencidas, até 7 dias, até 30 dias, total.
   - Próximos 30 dias: barras do que vence por dia e a linha do saldo previsto, com o zero e o primeiro dia negativo marcado.
   - Cartões: Caixa (quebra do último fechamento e gaveta); Fluxo do mês (entradas e saídas até hoje contra o mesmo período do mês anterior); Cartão a creditar amanhã. Nota: "Conta paga e ainda não baixada no ERP continua em aberto e reduz a folga."
-- **Cliques:** folga ou faixa → F2, no recorte; dia do gráfico → F2, na data; "Atualizar saldo" ou o saldo (só dono) → K1, num painel por cima; cartão Caixa → F3; Fluxo do mês ou Cartão a creditar → F4.
+- **Cliques:** folga ou faixa → F2, no recorte; dia do gráfico → F2, na data; "Atualizar saldo" ou o saldo (só dono) → K1, num painel por cima; cartão Caixa → F3; Fluxo do mês ou Cartão a creditar → F4 (adiada: sem clique até a F4 existir).
 - **Estados:** nenhuma conta em aberto; sem saldo (folgas vazias com "falta o saldo do banco"; contas e saídas aparecem); saldo velho (a folga aparece, com o aviso da data); folga negativa (fora: "faltam R$ 3.200,00 para o que vence até 09/10"); tudo bem ("o saldo cobre os próximos 30 dias"); sem fechamento hoje (o cartão mostra o último fechamento, com a data).
 
 ### F2 · Contas a pagar e previsão
