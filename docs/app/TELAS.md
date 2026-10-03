@@ -56,7 +56,7 @@ Cada tela é desenhada inteira na primeira vez, com os blocos de fases futuras m
 
 ### No computador (moldura G2)
 
-- **Barra de cima:** marca à esquerda; no centro, o seletor de dia "‹ Hoje · sexta, 02/10/2026 ›" (só nas telas das três perguntas) e, a partir da Fase 7, a busca de cliente (nome, código ou telefone → R2); à direita, "Atualizado às 14h05 · próxima às 15h" e a conta (nome, perfil, Sair).
+- **Barra de cima:** a marca fica uma vez só, no alto do menu lateral; na barra, o seletor de dia "‹ Hoje · sexta, 02/10/2026 ›" (só nas telas das três perguntas) e, a partir da Fase 7, a busca de cliente (nome, código ou telefone → R2); à direita, "Atualizado às 14h05 · próxima às 15h" e a conta (nome, perfil, Sair).
 - **Faixa de aviso** logo abaixo, só quando há o que dizer (desatualizado, dia passado, sem conexão, loja fechada no dia).
 - **Menu lateral fixo**, com ícone e nome, agrupado. No app, cada item aparece só na fase dele, sem "em breve"; no desenho, o menu mostra todos. Os detalhes (V2, C3, R2) não estão no menu: abrem por clique. Quem vê cada item está no inventário (seção 6).
 
@@ -228,13 +228,13 @@ A Fase 6 também acrescenta o bloco "O que isso significa" em I1, V1, C1 e F1 (d
 - **Quem vê:** todos, menos o entregador (E1 não tem moldura). O menu muda por perfil e por fase (seção 4); no desenho, mostra todos os grupos.
 - **Onde:** computador; celular sim, para o dono: barra de cima compacta, barra de baixo, calendário numa folha que sobe de baixo, sem atalhos.
 - **O que mostra:**
-  - Barra de cima: marca; seletor "‹ Hoje · sexta, 02/10/2026 ›" (só nas telas das três perguntas); busca de cliente (Fase 7); "Atualizado às 14h05 · próxima às 15h"; conta (nome, perfil, Sair).
+  - Barra de cima (a marca fica no alto do menu): seletor "‹ Hoje · sexta, 02/10/2026 ›" (só nas telas das três perguntas); busca de cliente (Fase 7); "Atualizado às 14h05 · próxima às 15h"; conta (nome, perfil, Sair).
   - Faixa de aviso, só quando há o que dizer: desatualizado, dia passado, sem conexão, hoje ainda sem atualização, loja fechada no dia escolhido.
   - Menu lateral fixo (seção 4).
   - Calendário do mês: domingos e dias sem expediente marcados; antes de 01/04/2026 e depois de hoje, desligados.
 - **Cliques:** item do menu → a tela, mantendo o dia; ‹ e › → dia anterior e seguinte (› desligado em hoje); data → calendário; "Voltar para hoje"; busca → R2; Sair → G1; "Tentar de novo" na faixa sem conexão. Atalhos: ← e → trocam o dia, 1, 2 e 3 abrem V1, C1 e F1, H volta para hoje.
 - **Uma faixa por vez:** sem conexão, depois desatualizado, depois as neutras; entre as neutras, a de dia passado é a última (num dia sem expediente fica a de loja fechada, com "Voltar para hoje"; quando o app abre sozinho no último dia calculado, antes da primeira atualização, fica a de hoje sem atualização). Decisão de 03/10.
-- **Estados:** desatualizado (faixa amarela, sem botão de recalcular: o app não manda rodar nada); dia passado (faixa neutra "Você está vendo terça, 15/09/2026 · calculado em 01/10 às 22h04", seletor destacado); hoje sem atualização, antes das 8h ou no domingo (abre no último dia calculado, com "A primeira atualização de hoje é às 8h"); loja fechada no dia ("Loja fechada neste dia"; os números do mês continuam).
+- **Estados:** desatualizado (faixa amarela, sem botão de recalcular: o app não manda rodar nada); dia passado (faixa neutra "Você está vendo terça, 15/09/2026 · calculado em 20/10 às 22h04", seletor destacado); hoje sem atualização, antes das 8h ou no domingo (abre no último dia calculado, com "A primeira atualização de hoje é às 8h"); loja fechada no dia ("Loja fechada no domingo, 18/10/2026. Os números do mês continuam.", com "Voltar para hoje"). No celular, a barra de cima não tem a marca: só o botão do dia, com "atualizado às 14h05".
 
 ### G1 · Entrar
 
