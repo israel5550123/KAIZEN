@@ -86,11 +86,11 @@ Cada tela é desenhada inteira na primeira vez, com os blocos de fases futuras m
 | --- | --- | --- |
 | Por que vendas está fora da meta? | I1 → V1 | 1 |
 | Quem está fora do ritmo e o que vende? | I1 → nome do vendedor → V2 | 1 |
-| Que produtos estão encalhados? | I1 → encalhe → C2 (visão Encalhe) | 1 |
-| Por que este produto encalhou? | I1 → encalhe → produto → C3 | 2 |
+| Que produtos estão encalhados? | I1 → abrir Compras → encalhe → C2 (visão Encalhe) | 2 (1 se o encalhe for a exceção do dia) |
+| Por que este produto encalhou? | I1 → abrir Compras → encalhe → produto → C3 | 3 |
 | O que vence esta semana? | I1 → "Ver o desvio" do Financeiro → folga em 7 dias → F2 | 2 |
-| O caixa fechou certo? | I1 → quebra → F3 | 1 |
-| Digitar o saldo do banco | I1 → "Digitar saldo" → K1 | 1 |
+| O caixa fechou certo? | I1 → abrir Financeiro → quebra → F3 | 2 |
+| Digitar o saldo do banco | I1 → "Digitar saldo" → K1 (o botão fica no cartão fechado quando falta o saldo ou ele está velho; senão, menu → K1) | 1 |
 | Cadastrar a meta do mês | menu → K2 | 1 |
 | Com quem eu falo hoje? (vendedor) | R4, a porta dele → nome → R2 | 1 |
 | Quem não voltou a comprar? (gerência) | menu → R5 → Retenção → R1 → nome → R2 | 3 |
@@ -130,7 +130,7 @@ Monte isto no Claude Design antes da primeira tela. As regras visuais da seção
 - **Calendário do mês:** domingos e dias sem expediente marcados; antes de 01/04/2026 e dias futuros, desligados.
 - **Faixa de aviso geral:** desatualizado (atenção), dia passado (neutra, com "Voltar para hoje"), sem conexão (cinza), loja fechada.
 - **Marca de estado:** ícone + palavra, nas versões neutra, atenção e fora, e "sem dado".
-- **Cartão de pergunta:** a pergunta, a marca de estado, a frase-resumo, os números principais e uma linha de exceção; o título e o rodapé "Ver o desvio ›" abrem o desvio, e os itens de dentro são links próprios.
+- **Cartão de pergunta** (aprovado pelo dono em 02/10): fechado, mostra a pergunta no título, a marca de estado, o número com a comparação, a frase-resumo, uma linha de exceção com nomes e o rodapé "Ver o desvio ›"; o título e o rodapé abrem o desvio, e os nomes e itens são links próprios. A seta é um botão próprio que abre o cartão no lugar e acrescenta o detalhe (barra de meta ou das curvas, a lista completa, encalhe, quebra do caixa). Em "no lugar", sem linha de exceção; aberto, os mesmos números, sem cor.
 - **Frase-resumo:** uma frase com números e nomes, que chega pronta do servidor.
 - **Número grande com unidade e comparação:** valor, "contra…" e a diferença, com a conta escrita embaixo quando ajuda (folga).
 - **Linha de indicador com barra de meta:** realizado, meta, % e a marca de onde deveria estar pelo ritmo.
@@ -257,11 +257,11 @@ A Fase 6 também acrescenta o bloco "O que isso significa" em I1, V1, C1 e F1 (d
 - **Onde:** computador, sem rolar: cabeçalho e bloco da IA no topo, três colunas iguais embaixo; celular sim: três cartões empilhados (estado, número principal e uma linha de exceção); a barra das classes e o "hoje contra um dia como hoje" só no computador (proposta).
 - **O que mostra:**
   - Cabeçalho: o dia e "dia útil 2 de 26". Fase 6: bloco "O que isso significa" no topo.
-  - Três colunas iguais, cada uma com a pergunta, a marca de estado e a frase-resumo; o título e o rodapé "Ver o desvio ›" abrem o desvio, e os itens de dentro são links próprios.
+  - Três colunas iguais, uma por pergunta, cada uma com o cartão de pergunta da seção 5: fechado, a pergunta, a marca, o número, a frase e uma linha de exceção com nomes; a seta abre o cartão no lugar com o resto dos blocos abaixo. Cabe sem rolar com um cartão aberto.
   - Vendas: realizado do mês contra a meta (R$ e %); ritmo; projeção e quanto fica abaixo ou acima da meta; hoje até agora contra o que um dia como hoje costumava ter vendido até esta hora (proposta); exceção em nomes ("Abaixo do ritmo: Daniele, 0,81"); itens sem vendedor, só se houver.
   - Compras: "Nos últimos 90 dias a loja comprou 212 produtos: 120 da curva A, 40 da B, 30 da C e 22 sem venda", com a barra dividida em quatro; encalhe (produtos e R$); ruptura (produtos).
   - Financeiro: folga em 7 e em 30 dias; saldo do banco e a data em que foi digitado; contas vencidas e a vencer em 7 dias; quebra do último fechamento de caixa.
-- **Cliques:** título ou rodapé de Vendas → V1; nome do vendedor → V2; itens sem vendedor → V1, no bloco dessa exceção; título ou rodapé de Compras → C1; encalhe ou ruptura → C2, na visão; título ou rodapé de Financeiro → F1; quebra → F3; "Digitar saldo" (só dono) → K1; "Cadastrar meta" (só dono) → K2.
+- **Cliques:** seta de um cartão → abre o cartão no lugar (e fecha); título ou rodapé de Vendas → V1; nome do vendedor → V2; itens sem vendedor → V1, no bloco dessa exceção; título ou rodapé de Compras → C1; encalhe ou ruptura → C2, na visão; título ou rodapé de Financeiro → F1; quebra → F3; "Digitar saldo" (só dono) → K1; "Cadastrar meta" (só dono) → K2.
 - **Estados:** tudo bem ("Vendas no ritmo"); sem meta (estado "sem meta", ritmo vazio, "Cadastrar meta"); sem venda hoje até agora; dia antes de 26/09/2026 ("estoque desconhecido" no lugar de encalhe e ruptura); saldo não digitado (folgas vazias e "Digitar saldo"); saldo velho (atenção, "saldo de 12/09"); uma pergunta sem resposta (só a coluna dela diz "Sem resposta para este dia").
 
 ### V1 · Vendas: o desvio
