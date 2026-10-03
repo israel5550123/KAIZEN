@@ -233,6 +233,7 @@ A Fase 6 também acrescenta o bloco "O que isso significa" em I1, V1, C1 e F1 (d
   - Menu lateral fixo (seção 4).
   - Calendário do mês: domingos e dias sem expediente marcados; antes de 01/04/2026 e depois de hoje, desligados.
 - **Cliques:** item do menu → a tela, mantendo o dia; ‹ e › → dia anterior e seguinte (› desligado em hoje); data → calendário; "Voltar para hoje"; busca → R2; Sair → G1; "Tentar de novo" na faixa sem conexão. Atalhos: ← e → trocam o dia, 1, 2 e 3 abrem V1, C1 e F1, H volta para hoje.
+- **Uma faixa por vez:** sem conexão, depois desatualizado, depois as neutras; entre as neutras, a de dia passado é a última (num dia sem expediente fica a de loja fechada, com "Voltar para hoje"; quando o app abre sozinho no último dia calculado, antes da primeira atualização, fica a de hoje sem atualização). Decisão de 03/10.
 - **Estados:** desatualizado (faixa amarela, sem botão de recalcular: o app não manda rodar nada); dia passado (faixa neutra "Você está vendo terça, 15/09/2026 · calculado em 01/10 às 22h04", seletor destacado); hoje sem atualização, antes das 8h ou no domingo (abre no último dia calculado, com "A primeira atualização de hoje é às 8h"); loja fechada no dia ("Loja fechada neste dia"; os números do mês continuam).
 
 ### G1 · Entrar
