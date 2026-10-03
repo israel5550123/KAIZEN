@@ -74,7 +74,7 @@ Cada tela é desenhada inteira na primeira vez, com os blocos de fases futuras m
 ### No celular do dono
 
 - Barra de cima compacta: o dia (tocar abre o calendário numa folha que sobe de baixo) e a hora da atualização; a mesma faixa de aviso.
-- Barra de baixo: Início, Vendas, Compras, Financeiro e, a partir da Fase 8, Relacionamento (abre R5). Sem Cadastros; o Saldo do banco (K1) abre a partir do F1. Sem atalhos de teclado.
+- Barra de baixo: Início, Vendas, Compras, Financeiro e, a partir da Fase 8, Painel (abre R5, o painel de relacionamento). Sem Cadastros; o Saldo do banco (K1) abre a partir do F1. Sem atalhos de teclado.
 
 ### O caminho meta → desvio → detalhe
 
